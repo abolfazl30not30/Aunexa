@@ -1,0 +1,8 @@
+@import url("IRANYekan.css");
+@import url("IranSans.css");
+
+body {
+    font-family: "IRANYekan", sans-serif;
+    direction: rtl !important;
+    background-color:#F2EDED;
+}
