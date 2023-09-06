@@ -8,6 +8,8 @@ import {IconButton, InputAdornment} from "@mui/material";
 import Link from "next/link";
 import Image from "next/image";
 import { TailSpin } from  'react-loader-spinner'
+import {useLoginMutation} from "../../redux/api/loginSlice"
+import axios from "axios";
 
 export default function MainForm() {
 
@@ -16,9 +18,18 @@ export default function MainForm() {
         password: yup.string().required("لطفا رمز عبور خود را وارد کنید")
     });
 
+    const [login, { isLoading,error }] = useLoginMutation()
+
     const [showPassword, setShowPassword] = useState(false);
 
     const handleClickShowPassword = () => setShowPassword(!showPassword);
+    const formData = {
+        client_secret : "PAXWQpSsbaMyg80VKiSlPqWH3xLyUkIM",
+        client_id:"msc_application",
+        grant_type:"password",
+        username:"",
+        password: "",
+    }
 
     const formik = useFormik({
 
@@ -30,7 +41,18 @@ export default function MainForm() {
         validationSchema: schema,
 
         onSubmit: async ({username, password}) => {
+            try{
+                const {data} = await axios.post('https://vipsoftware1.com/realms/msc/protocol/openid-connect/token', {...formData,username,password}, {
+                    headers: {
+                        'Content-Type': 'application/x-www-form-urlencoded'
+                    },
+                })
 
+                console.log(data)
+                // const userData = await login({...formData,username,password}).unwrap()
+            }catch (err){
+                console.log(err)
+            }
         },
     });
 
@@ -54,7 +76,7 @@ export default function MainForm() {
                     <div className="flex flex-col">
                         <label htmlFor="name" className="text-textGray mb-4">کد پرسنلی</label>
                         <TextField
-                            type="number"
+                            type="text"
                             name="username"
                             value={formik.values.username}
                             onChange={formik.handleChange}
