@@ -1,9 +1,10 @@
-import MainForm from "@/components/Login/MainForm";
+
+import Entrance from "@/components/Login/Entrance";
 
 export default function Login() {
     return (
         <>
-            <MainForm/>
+            <Entrance/>
         </>
     )
 }

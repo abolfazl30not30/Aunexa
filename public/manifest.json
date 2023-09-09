@@ -1,0 +1,11 @@
+{
+  "name": "Monaco Smart Center",
+  "short_name": "M.S.C",
+  "description": "A Progressive Web App built with Next.js",
+  "icons": [],
+  "theme_color": "#FFFFFF",
+  "background_color": "#FFFFFF",
+  "start_url": "/",
+  "display": "standalone",
+  "orientation": "portrait"
+}

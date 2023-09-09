@@ -25,7 +25,7 @@ export default function MainForm() {
     const handleClickShowPassword = () => setShowPassword(!showPassword);
     const formData = {
         client_secret : "PAXWQpSsbaMyg80VKiSlPqWH3xLyUkIM",
-        client_id:"msc_application",
+        client_id:"client1",
         grant_type:"password",
         username:"",
         password: "",

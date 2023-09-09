@@ -1,11 +1,13 @@
 'use client'
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react'
+import queryString from 'query-string'
+
+let base64encodedData = Buffer.from( "client1"+ ':' +"myClientSecretValue" ).toString('base64');
 
 const baseQuery = fetchBaseQuery({
-    baseUrl: 'https://vipsoftware1.com',
-    mode: "no-cors",
+    baseUrl: 'http://localhost:8000',
     prepareHeaders: (headers) => {
-        headers.set("Content-Type", `application/x-www-form-urlencoded`)
+        headers.set("Authorization", "Basic " + base64encodedData)
         return headers
     }
 })
@@ -16,9 +18,9 @@ export const loginSlice = createApi({
     endpoints: builder => ({
         login: builder.mutation({
             query: credentials => ({
-                url: '/realms/msc/protocol/openid-connect/token',
+                url: '/oauth2/token',
                 method: 'POST',
-                body: new URLSearchParams({...credentials})
+                body: new URLSearchParams(credentials)
             })
         }),
     })
