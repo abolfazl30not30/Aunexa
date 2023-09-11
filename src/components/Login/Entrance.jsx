@@ -1,11 +1,15 @@
 "use client"
 
-import React, {useState} from 'react';
-import Link from "next/link";
+import React from 'react';
 import Image from "next/image";
-
+import {generateCodeChallenge, generateCodeVerifier} from '../../helper/pkce';
 
 export default function Entrance() {
+
+
+    const verifier = generateCodeVerifier();
+    sessionStorage.setItem('codeVerifier', verifier);
+    const codeChallenge = generateCodeChallenge();
 
     return (
         <>
@@ -24,8 +28,8 @@ export default function Entrance() {
                     </h3>
                 </div>
                 <div>
-                    <a href="http://127.0.0.1:8000/oauth2/authorize?response_type=code&client_id=client1&redirect_uri=http://localhost:3000/redirect"
-                          className="block text-center w-full rounded-[0.5rem] py-3 bg-mainRed text-white font-bold text-mainRed hover:opacity-80 ">ورود
+                    <a href={`http://localhost:8080/oauth2/authorize?response_type=code&client_id=client1&scope=openid&redirect_uri=http://localhost:3000/redirect&code_challenge=${codeChallenge}&code_challenge_method=S256`}
+                       className="block text-center w-full rounded-[0.5rem] py-3 bg-mainRed text-white font-bold text-mainRed hover:opacity-80 ">ورود
                     </a>
                 </div>
             </div>

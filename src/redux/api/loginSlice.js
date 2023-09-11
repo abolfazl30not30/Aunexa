@@ -5,7 +5,7 @@ import queryString from 'query-string'
 let base64encodedData = Buffer.from( "client1"+ ':' +"myClientSecretValue" ).toString('base64');
 
 const baseQuery = fetchBaseQuery({
-    baseUrl: 'http://localhost:8000',
+    baseUrl: 'http://localhost:8080',
     prepareHeaders: (headers) => {
         headers.set("Authorization", "Basic " + base64encodedData)
         return headers

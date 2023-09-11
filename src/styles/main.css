@@ -6,3 +6,11 @@ body {
     direction: rtl !important;
     background-color:#F2EDED;
 }
+
+.table-body tr:nth-child(even){
+    background-color: #F8F8F8;
+}
+.css-10w330c-MuiButtonBase-root-MuiPaginationItem-root.Mui-selected {
+    background-color: #DB3746 !important;
+    color: white;
+}

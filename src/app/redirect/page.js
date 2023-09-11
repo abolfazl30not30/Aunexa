@@ -10,6 +10,7 @@ import React from "react";
 import "../../styles/loader.css"
 import { useDispatch } from 'react-redux'
 import { setCredentials } from '../../redux/api/authSlice'
+import {generateCodeVerifier} from "@/helper/pkce";
 
 export default function redirect() {
     const searchParams = useSearchParams()
@@ -19,39 +20,42 @@ export default function redirect() {
     const [login, { isLoading,error }] = useLoginMutation()
 
     const code = searchParams.get('code')
+
     const formData = {
         code:code,
         redirect_uri:"http://localhost:3000/redirect",
         client_id:"client1",
         grant_type:"authorization_code",
+        code_verifier:sessionStorage.getItem("codeVerifier")
     }
-    let base64encodedData = Buffer.from( "client1"+ ':' +"myClientSecretValue" ).toString('base64');
+
+    // let base64encodedData = Buffer.from( "client1"+ ':' +"myClientSecretValue" ).toString('base64');
     const handleLogin = async ()=>{
-        try{
-            const {data} = await axios.post('http://localhost:8000/oauth2/token', formData, {
-                headers: {
-                    'Access-Control-Allow-Origins':"*",
-                    'Content-Type': 'application/x-www-form-urlencoded',
-                    // "Authorization":"Basic " + base64encodedData,
-                },
-                auth: {
-                    username: "client1",
-                    password: "myClientSecretValue"
-                }
-            })
-            console.log(data)
-        }catch (err){
-            console.log(err)
-        }
-        // try {
-        //     const userData = await login(formData).unwrap()
-        //     dispatch(setCredentials({access_token:userData.access_token}))
-        //     router.push("/panel")
+        // try{
+        //     const {data} = await axios.post('http://localhost:8000/oauth2/token', formData, {
+        //         headers: {
+        //             'Content-Type': 'application/x-www-form-urlencoded',
+        //             // "Authorization":"Basic " + base64encodedData,
+        //         },
+        //         auth: {
+        //             username: "client1",
+        //             password: "myClientSecretValue"
+        //         }
+        //     })
+        //     console.log(data)
         // }catch (err){
-        //     if(err){
-        //          router.push("/")
-        //     }
+        //     console.log(err)
         // }
+        try {
+            const userData = await login(formData).unwrap()
+            dispatch(setCredentials({access_token:userData.access_token}))
+            localStorage.setItem("refresh_token",userData.refresh_token)
+            router.push("/panel")
+        }catch (err){
+            if(err){
+                 router.push("/")
+            }
+        }
     }
     useEffect(()=>{handleLogin()},[])
 

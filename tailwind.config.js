@@ -10,7 +10,14 @@ module.exports = {
       colors:{
         mainRed:"#DB3746",
         textGray:"#4E4E4E",
-        borderGray:"#E0E3E0"
+        gray80:"#4E4E4E",
+        gray70:"#797979",
+        gray9F:"#9F9F9F",
+        borderGray:"#E0E3E0",
+        greenBg:"#D9FCEB",
+        greenText:"#12D377",
+        orangeBg:"#FBE8DA",
+        orangeText:"#EB8338",
       },
       backgroundImage: {
         'gradient-radial': 'radial-gradient(var(--tw-gradient-stops))',
