@@ -73,7 +73,7 @@ export default function MainForm() {
                     </h3>
                 </div>
                 <form className="flex flex-col gap-5" onSubmit={formik.handleSubmit} method="POST">
-                    <div className="flex flex-col">
+                    <div className=" flex flex-col">
                         <label htmlFor="name" className="text-textGray mb-4">کد پرسنلی</label>
                         <TextField
                             type="text"
