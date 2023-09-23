@@ -1,16 +1,21 @@
 'use client'
 import React from 'react'
 import "../../styles/login.css"
-import {prefixer} from 'stylis';
-import createCache from "@emotion/cache";
-import rtlPlugin from "stylis-plugin-rtl";
 import Image from "next/image";
 import Link from "next/link";
 import {usePathname} from 'next/navigation'
+import {createTheme, ThemeProvider} from '@mui/material/styles';
+import rtlPlugin from 'stylis-plugin-rtl';
+import {prefixer} from 'stylis';
+import {CacheProvider} from '@emotion/react';
+import createCache from '@emotion/cache';
 
 const cacheRtl = createCache({
     key: 'muirtl',
     stylisPlugins: [prefixer, rtlPlugin],
+});
+const theme = createTheme({
+    direction: 'rtl',
 });
 
 export default function RootLayout({children}) {
@@ -130,7 +135,11 @@ export default function RootLayout({children}) {
 
                     </div>
                     <div className="m-5 h-screen w-[85%]">
-                        {children}
+                        <CacheProvider value={cacheRtl}>
+                            <ThemeProvider theme={theme}>
+                                {children}
+                            </ThemeProvider>
+                        </CacheProvider>
                     </div>
                 </div>
             </div>

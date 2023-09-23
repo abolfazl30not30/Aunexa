@@ -1,9 +1,79 @@
-import TextField from "@mui/material/TextField";
-import React from "react";
-import {FormControl, InputAdornment, OutlinedInput, Pagination, PaginationItem} from "@mui/material";
+'use client'
 
+import TextField from "@mui/material/TextField";
+import React, {useState} from "react";
+import {
+    Autocomplete,
+    FormControl,
+    IconButton,
+    InputAdornment,
+    OutlinedInput,
+    Pagination,
+    PaginationItem
+} from "@mui/material";
+import {
+    DialogContent,
+    DialogContentText,
+    Select,
+} from "@mui/material";
+import Dialog from "@mui/material/Dialog";
+import DialogActions from "@mui/material/DialogActions";
+import DialogTitle from "@mui/material/DialogTitle";
+import {TailSpin} from "react-loader-spinner";
+import * as yup from "yup";
+import {useFormik} from "formik";
+import persian from "react-date-object/calendars/persian";
+import persian_fa from "react-date-object/locales/persian_fa";
+import DatePicker from "react-multi-date-picker";
+import "react-multi-date-picker/styles/colors/red.css"
+
+import axios from "axios";
+import {formatModuleTrace} from "next/dist/build/webpack/plugins/wellknown-errors-plugin/getModuleTrace";
 
 export default function Dashboard() {
+    const [openAddData , setOpenAddData] = useState(false)
+
+    const handleOpenAddData = () =>{
+        setOpenAddData(true)
+    }
+
+    const handleCloseAddData = () =>{
+        setOpenAddData(false)
+    }
+    const top100Films = [
+        "کربوهیدارت",
+        "مس سولفات"
+    ]
+    const schema = yup.object().shape({
+        material: yup.string().required("لطفا نام محصول را وارد کنید"),
+        value: yup.string().required("لطفا مقدار محصول را وارد کنید"),
+        unit: yup.string().required("لطفا واحد محصول را وارد کنید"),
+        carTag: yup.string().required("لطفا پلاک وسیله نقلیه را وارد کنید"),
+        driver: yup.string().required("لطفا نام راننده را وارد کنید"),
+        supplier: yup.string().required("لطفا تامین کننده را وارد کنید"),
+    });
+
+    const formik = useFormik({
+
+        initialValues: {
+            material: "",
+            value: "",
+            unit:"",
+            expirationDate:"",
+            carTag:"",
+            driver:"",
+            supplier:""
+        },
+
+        validationSchema: schema,
+
+        onSubmit: async ({material, value ,unit,expirationDate}) => {
+            try{
+                console.log(expirationDate)
+            }catch (err){
+            }
+        },
+    });
     return (
         <>
             <div>
@@ -12,7 +82,7 @@ export default function Dashboard() {
                        <h2 className="font-[800] text-[1.1rem]">انبار مواد اولیه / بخش ورودی</h2>
                    </div>
                    <div className="">
-                       <button className="flex bg-mainRed text-white items-center text- px-3 py-2 rounded">
+                       <button className="flex bg-mainRed text-white items-center text- px-3 py-2 rounded" onClick={handleOpenAddData}>
                            ثبت مواد اولیه ورودی
                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none">
                            <path d="M7 12H17" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
@@ -197,6 +267,200 @@ export default function Dashboard() {
                         <Pagination count={10} shape="rounded"/>
                     </div>
                 </section>
+
+                <Dialog
+                    fullWidth={true}
+                    open={openAddData}
+                    keepMounted
+                    onClose={handleCloseAddData}
+                    aria-describedby="alert-dialog-slide-description"
+                    PaperProps={{
+                        style: {
+                            fontFamily: "IRANYekan",
+                        },
+                    }}>
+                    <DialogContent>
+                        <DialogContentText style={{ fontFamily: "IRANYekan" }}>
+                            <div className="flex justify-end">
+                                <button onClick={handleCloseAddData}>
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 14 14" fill="none">
+                                        <path d="M13 1L1 13M1 1L13 13" stroke="black" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                                    </svg>
+                                </button>
+                            </div>
+                            <div className="flex justify-center mb-7">
+                                <h3 className="text-[1.1rem]">ثبت مواداولیه ورودی</h3>
+                            </div>
+                            <form className="flex justify-center " onSubmit={formik.handleSubmit} method="POST">
+                                <div className="flex flex-col justify-center w-[90%] gap-5">
+                                    <div className=" flex flex-col">
+                                        <Autocomplete
+                                            fullWidth
+                                            disablePortal
+                                            id="combo-box-demo"
+                                            ListboxProps={{
+                                                sx: { fontFamily: "IRANYekan",fontSize:"0.8rem"},
+                                            }}
+                                            options={top100Films}
+                                            value={formik.values.material}
+                                            onChange={(event, newValue) => {
+                                                formik.setFieldValue("material", newValue)
+                                            }}
+                                            renderInput={(params) =>
+                                                <TextField
+                                                    error={formik.touched.material && Boolean(formik.errors.material)}
+                                                    helperText={formik.touched.material && formik.errors.material}
+                                                    {...params}
+                                                    InputProps={{ ...params.InputProps, style: {fontFamily: "IRANYekan",fontSize:"0.8rem"} }}
+                                                    placeholder="نوع محصول (اجباری)"
+                                                />}
+                                        />
+                                    </div>
+                                    <div className="flex">
+                                        <div className="w-[70%]">
+                                            <TextField
+                                                fullWidth
+                                                placeholder="مقدار (اجباری)"
+                                                type="text"
+                                                name="value"
+                                                value={formik.values.value}
+                                                onChange={formik.handleChange}
+                                                error={formik.touched.value && Boolean(formik.errors.value)}
+                                                helperText={formik.touched.value && formik.errors.value}
+                                                inputProps={{style: {fontFamily: "IRANYekan",fontSize:"0.8rem"}}}
+                                                InputLabelProps={{style: {fontFamily: "IRANYekan"}}}/>
+                                        </div>
+                                        <div className="w-[30%]">
+                                            <Autocomplete
+                                                fullWidth
+                                                disablePortal
+                                                id="combo-box-demo"
+                                                ListboxProps={{
+                                                    sx: { fontFamily: "IRANYekan",fontSize:"0.8rem"},
+                                                }}
+                                                options={top100Films}
+                                                value={formik.values.unit}
+                                                onChange={(event, newValue) => {
+                                                    formik.setFieldValue("unit", newValue)
+                                                }}
+                                                renderInput={(params) =>
+                                                    <TextField
+                                                        {...params}
+                                                        error={formik.touched.unit && Boolean(formik.errors.unit)}
+                                                        helperText={formik.touched.unit && formik.errors.unit}
+                                                        InputProps={{ ...params.InputProps, style: {fontFamily: "IRANYekan",fontSize:"0.8rem"} }}
+                                                        placeholder="واحد"
+                                                    />}
+                                            />
+                                        </div>
+                                    </div>
+                                    <div>
+                                        <DatePicker
+                                            calendarPosition={`bottom`}
+                                            className="red"
+                                            digits={['0', '1', '2', '3', '4', '5', '6', '7', '8', '9']}
+                                            format={`YYYY/MM/DD`}
+                                            containerStyle={{
+                                                width: "100%"
+                                            }}
+                                            placeholder="تاریخ انقضا (اختیاری)"
+                                            inputClass={`border border-[#D9D9D9] placeholder-neutral-300 text-gray-900 text-[0.8rem] rounded focus:ring-[#3B82F67F] focus:border-[#3B82F67F] block w-full px-3 py-4`}
+                                            value={formik.values.expirationDate}
+                                            onChange={(value) => {
+                                                formik.setFieldValue("expirationDate",value)
+                                            }}
+                                            mapDays={({date}) => {
+                                                let props = {}
+                                                let isWeekend = [6].includes(date.weekDay.index)
+
+                                                if (isWeekend)
+                                                    props.className = "highlight highlight-red";
+
+                                                return props
+                                            }}
+
+                                            weekDays={
+                                                [
+                                                    ["شنبه", "Sat"],
+                                                    ["یکشنبه", "Sun"],
+                                                    ["دوشنبه", "Mon"],
+                                                    ["سه شنبه", "Tue"],
+                                                    ["چهارشنبه", "Wed"],
+                                                    ["پنجشنبه", "Thu"],
+                                                    ["جمعه", "Fri"],
+                                                ]
+                                            }
+
+                                            calendar={persian}
+                                            locale={persian_fa}>
+                                            <button className="px-2 pb-4" onClick={() => {
+                                                formik.setFieldValue("expirationDate","")}}>
+                                                ریست
+                                            </button>
+                                        </DatePicker>
+                                    </div>
+                                    <div>
+                                        <TextField
+                                            fullWidth
+                                            placeholder="پلاک (اجباری)"
+                                            type="text"
+                                            name="carTag"
+                                            value={formik.values.carTag}
+                                            onChange={formik.handleChange}
+                                            error={formik.touched.carTag && Boolean(formik.errors.carTag)}
+                                            helperText={formik.touched.carTag && formik.errors.carTag}
+                                            inputProps={{style: {fontFamily: "IRANYekan",fontSize:"0.8rem"}}}
+                                            InputLabelProps={{style: {fontFamily: "IRANYekan"}}}/>
+                                    </div>
+                                    <div>
+                                        <TextField
+                                            fullWidth
+                                            placeholder="نام راننده (اجباری)"
+                                            type="text"
+                                            name="driver"
+                                            value={formik.values.driver}
+                                            onChange={formik.handleChange}
+                                            error={formik.touched.driver && Boolean(formik.errors.driver)}
+                                            helperText={formik.touched.driver && formik.errors.driver}
+                                            inputProps={{style: {fontFamily: "IRANYekan",fontSize:"0.8rem"}}}
+                                            InputLabelProps={{style: {fontFamily: "IRANYekan"}}}/>
+                                    </div>
+                                    <div>
+                                        <TextField
+                                            fullWidth
+                                            placeholder="تامین کننده (اجباری)"
+                                            type="text"
+                                            name="supplier"
+                                            value={formik.values.supplier}
+                                            onChange={formik.handleChange}
+                                            error={formik.touched.supplier && Boolean(formik.errors.supplier)}
+                                            helperText={formik.touched.supplier && formik.errors.supplier}
+                                            inputProps={{style: {fontFamily: "IRANYekan",fontSize:"0.8rem"}}}
+                                            InputLabelProps={{style: {fontFamily: "IRANYekan"}}}/>
+                                    </div>
+                                    <div>
+                                        <button type="submit"
+                                                className="w-full rounded-[0.5rem] py-3 hover:border hover:opacity-80 font-bold  bg-mainRed text-white">ثبت
+                                        </button>
+                                        <button disabled type="submit"
+                                                className="hidden flex gap-3 items-center justify-center w-full rounded-[0.5rem] py-3  border border-solid border-1 border-neutral-400 font-bold text-textGray bg-neutral-200">
+                                            <TailSpin
+                                                height="20"
+                                                width="20"
+                                                color="#4E4E4E"
+                                                ariaLabel="tail-spin-loading"
+                                                radius="1"
+                                                wrapperStyle={{}}
+                                                wrapperClass=""
+                                                visible={true}/>
+                                            ثبت
+                                        </button>
+                                    </div>
+                                </div>
+                            </form>
+                        </DialogContentText>
+                    </DialogContent>
+                </Dialog>
             </div>
         </>
     )
