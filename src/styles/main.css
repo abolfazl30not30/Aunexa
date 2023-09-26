@@ -14,3 +14,15 @@ body {
     background-color: #DB3746 !important;
     color: white;
 }
+.plate{
+    background-image: url("/car-plate-default.svg");
+    background-size: 100% 100%;
+    width: 100%;
+    height: 46px;
+    background-repeat: no-repeat;
+    display: inline-flex;
+    box-sizing: content-box;
+    border-radius: 5px;
+    max-width: 230px;
+    min-width: 230px;
+}

@@ -8,7 +8,7 @@ export default function Entrance() {
 
 
     const verifier = generateCodeVerifier();
-    sessionStorage.setItem('codeVerifier', verifier);
+    window.sessionStorage.setItem('codeVerifier', verifier);
     const codeChallenge = generateCodeChallenge();
 
     return (

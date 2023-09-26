@@ -32,6 +32,12 @@ import {formatModuleTrace} from "next/dist/build/webpack/plugins/wellknown-error
 
 export default function Dashboard() {
     const [openAddData , setOpenAddData] = useState(false)
+    const [carTag,setCarTag] = useState({
+        part1:"",
+        part2:"",
+        part3:"",
+        part4:"",
+    })
 
     const handleOpenAddData = () =>{
         setOpenAddData(true)
@@ -40,6 +46,18 @@ export default function Dashboard() {
     const handleCloseAddData = () =>{
         setOpenAddData(false)
     }
+    
+    const validate = (values, props ) => {
+        const errors = {};
+
+        if (!values.carTag) {
+            errors.email = 'Required';
+        } else if (!/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i.test(values.email)) {
+            errors.email = 'Invalid email address';
+        }
+
+        return errors;
+    };
     const top100Films = [
         "کربوهیدارت",
         "مس سولفات"
@@ -48,7 +66,6 @@ export default function Dashboard() {
         material: yup.string().required("لطفا نام محصول را وارد کنید"),
         value: yup.string().required("لطفا مقدار محصول را وارد کنید"),
         unit: yup.string().required("لطفا واحد محصول را وارد کنید"),
-        carTag: yup.string().required("لطفا پلاک وسیله نقلیه را وارد کنید"),
         driver: yup.string().required("لطفا نام راننده را وارد کنید"),
         supplier: yup.string().required("لطفا تامین کننده را وارد کنید"),
     });
@@ -61,6 +78,7 @@ export default function Dashboard() {
             unit:"",
             expirationDate:"",
             carTag:"",
+            carCode:"",
             driver:"",
             supplier:""
         },
@@ -350,8 +368,7 @@ export default function Dashboard() {
                                                         helperText={formik.touched.unit && formik.errors.unit}
                                                         InputProps={{ ...params.InputProps, style: {fontFamily: "IRANYekan",fontSize:"0.8rem"} }}
                                                         placeholder="واحد"
-                                                    />}
-                                            />
+                                                    />}/>
                                         </div>
                                     </div>
                                     <div>
@@ -400,17 +417,54 @@ export default function Dashboard() {
                                         </DatePicker>
                                     </div>
                                     <div>
-                                        <TextField
-                                            fullWidth
-                                            placeholder="پلاک (اجباری)"
-                                            type="text"
-                                            name="carTag"
-                                            value={formik.values.carTag}
-                                            onChange={formik.handleChange}
-                                            error={formik.touched.carTag && Boolean(formik.errors.carTag)}
-                                            helperText={formik.touched.carTag && formik.errors.carTag}
-                                            inputProps={{style: {fontFamily: "IRANYekan",fontSize:"0.8rem"}}}
-                                            InputLabelProps={{style: {fontFamily: "IRANYekan"}}}/>
+                                        <div className="flex flex-col md:flex-row">
+                                            <div className="plate w-full md:w-[47%] flex items-center pl-4">
+                                                <div>
+                                                    <div className="w-[55px] h-full pt-3  pl-1 pr-3">
+                                                        <input disabled={formik.values.carCode !== ""} type="text"  placeholder="55" maxLength="2" className="w-full h-full placeholder-neutral-300 text-center rounded"/>
+                                                    </div>
+                                                </div>
+                                                <div className="flex">
+                                                    <div className="w-[60px] h-full py-1 pl-1 pr-3 h-full">
+                                                        <input disabled={formik.values.carCode !== ""} type="text" placeholder="555" maxLength="3" className="w-full h-full placeholder-neutral-300 text-center rounded"/>
+                                                    </div>
+                                                    <div className="w-[55px] h-full p-1 h-full">
+                                                        <input disabled={formik.values.carCode !== ""} type="text" placeholder="الف" maxLength="1" className="w-full h-full placeholder-neutral-300 text-center rounded"/>
+                                                    </div>
+                                                    <div className="w-[50px] h-full py-1 pl-2 pr-1 h-full">
+                                                        <input disabled={formik.values.carCode !== ""} type="text" placeholder="55" maxLength="2" className="w-full h-full placeholder-neutral-300 text-center rounded"/>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div className="w-full md:w-[6%] flex justify-center items-center">
+                                            <span className="text-[1rem]">
+                                                یا
+                                            </span>
+                                            </div>
+                                            <div className="w-full md:w-[47%]">
+                                                <TextField
+                                                    disabled={formik.values.carTag !== ""}
+                                                    fullWidth
+                                                    placeholder="کد وسیله نقلیه(اجباری)"
+                                                    type="text"
+                                                    name="carCode"
+                                                    value={formik.values.carCode}
+                                                    onChange={formik.handleChange}
+                                                    error={formik.touched.carCode && Boolean(formik.errors.carCode)}
+                                                    // helperText={formik.touched.carTag && formik.errors.carTag}
+                                                    inputProps={{style: {fontFamily: "IRANYekan",fontSize:"0.8rem"}}}
+                                                    InputLabelProps={{style: {fontFamily: "IRANYekan"}}}/>
+                                            </div>
+                                        </div>
+                                        <div>
+                                            {
+                                                Boolean(formik.errors.carTag) && (
+                                                    <span className="mx-3 text-[0.6rem] text-red-600 ">
+                                                    {formik.errors.carTag}
+                                                </span>
+                                                )
+                                            }
+                                        </div>
                                     </div>
                                     <div>
                                         <TextField
