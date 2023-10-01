@@ -26,7 +26,7 @@ export default function redirect() {
         redirect_uri:"http://localhost:3000/redirect",
         client_id:"client1",
         grant_type:"authorization_code",
-        code_verifier:sessionStorage.getItem("codeVerifier")
+        code_verifier:window.sessionStorage.getItem("codeVerifier")
     }
 
     // let base64encodedData = Buffer.from( "client1"+ ':' +"myClientSecretValue" ).toString('base64');
