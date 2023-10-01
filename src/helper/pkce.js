@@ -11,7 +11,7 @@ const generateCodeVerifier = () => {
 }
 
 const generateCodeChallenge = () => {
-    const codeVerifier = sessionStorage.getItem('codeVerifier');
+    const codeVerifier = window.sessionStorage.getItem('codeVerifier');
     return base64Url(sha256(codeVerifier));
 }
 
