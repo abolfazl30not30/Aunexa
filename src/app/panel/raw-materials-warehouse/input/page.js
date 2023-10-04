@@ -12,6 +12,8 @@ import AddDataDialog from "@/components/Panel/rew-matrials-warehouse/input/AddDa
 import FilterDialog from "@/components/Panel/rew-matrials-warehouse/input/FilterDialog";
 import MoreInfoDialog from "@/components/Panel/rew-matrials-warehouse/input/MoreInfoDialog";
 import DeleteDialog from "@/components/Panel/rew-matrials-warehouse/input/DeleteDialog";
+import {useSelector} from "react-redux";
+import axios from "axios";
 
 export default function Dashboard() {
 
@@ -19,6 +21,31 @@ export default function Dashboard() {
     const [openFilter , setOpenFilter] = useState(false)
     const [openMoreInfo , setOpenMoreInfo] = useState(false)
     const [openDelete , setOpenDelete] = useState(false)
+
+    // const {
+    //     data: data,
+    //     isLoading,
+    //     isSuccess,
+    //     isError,
+    //     error
+    // } = useGetAllQuery()
+
+    const token = useSelector(state =>(state.auth.accessToken))
+    const handleGet = async ()=>{
+        await axios.get("http://localhost:9191/api/v1/inventory/primary-store-input",{
+            headers:{
+                Authorization: "Bearer " + token
+            }
+        }).then((res)=>{
+            console.log(res)
+        }).catch((err)=>{
+            console.log(err)
+        })
+    }
+    useEffect(()=>{
+        handleGet()
+    })
+
     const handleOpenAddData = () =>{
         setOpenAddData(true)
     }
