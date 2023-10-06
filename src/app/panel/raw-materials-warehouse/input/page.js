@@ -1,9 +1,10 @@
 'use client'
 
-import React, {useState} from "react";
+import React, {useEffect, useState} from "react";
+
 import {
     FormControl,
-    InputAdornment,
+    InputAdornment, Menu,
     OutlinedInput,
     Pagination,
 } from "@mui/material";
@@ -14,37 +15,47 @@ import MoreInfoDialog from "@/components/Panel/rew-matrials-warehouse/input/More
 import DeleteDialog from "@/components/Panel/rew-matrials-warehouse/input/DeleteDialog";
 import {useSelector} from "react-redux";
 import axios from "axios";
+import Link from "next/link";
+import { useGetAllQuery} from "@/redux/features/rew-matrials-warehouse/input/RMWIapiSlice";
 
-export default function Dashboard() {
+ function Dashboard() {
+     const { data = [], isLoading, isFetching, isError,error } = useGetAllQuery()
+    console.log(error?.message)
+    console.log(data)
 
     const [openAddData , setOpenAddData] = useState(false)
     const [openFilter , setOpenFilter] = useState(false)
     const [openMoreInfo , setOpenMoreInfo] = useState(false)
     const [openDelete , setOpenDelete] = useState(false)
 
-    // const {
-    //     data: data,
-    //     isLoading,
-    //     isSuccess,
-    //     isError,
-    //     error
-    // } = useGetAllQuery()
+    const [anchorElSort, setAnchorElSort] = React.useState(null);
+    const openSort = Boolean(anchorElSort);
 
-    const token = useSelector(state =>(state.auth.accessToken))
-    const handleGet = async ()=>{
-        await axios.get("http://localhost:9191/api/v1/inventory/primary-store-input",{
-            headers:{
-                Authorization: "Bearer " + token
-            }
-        }).then((res)=>{
-            console.log(res)
-        }).catch((err)=>{
-            console.log(err)
-        })
-    }
+    const handleOpenSortMenu = (event) => {
+        setAnchorElSort(event.currentTarget);
+    };
+    const handleCloseSortMenu = () => {
+        setAnchorElSort(null);
+    };
+
+
+
+    // const token = useSelector(state =>(state.auth.accessToken))
+    // const handleGet = async ()=>{
+    //     await axios.get("http://localhost:9191/api/v1/inventory/primary-store-input",{
+    //         headers:{
+    //             Authorization: "Bearer " + token
+    //         }
+    //     }).then((res)=>{
+    //         console.log(res)
+    //     }).catch((err)=>{
+    //         console.log(err)
+    //     })
+    // }
+
     useEffect(()=>{
-        handleGet()
-    })
+        // handleGet()
+    },[])
 
     const handleOpenAddData = () =>{
         setOpenAddData(true)
@@ -117,12 +128,52 @@ export default function Dashboard() {
                                 </svg>
                                 <span className="hidden md:inline">فیلتر کردن</span>
                             </button>
-                            <button className="flex items-center gap-2 text-[0.9rem] text-gray9F border border-1 border-solid border-borderGray rounded px-2 md:px-4 py-2">
-                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none">
-                                    <path d="M6 12H18M3 6H21M9 18H15" stroke="#9F9F9F" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
-                                </svg>
-                                <span className="hidden md:inline">مرتب سازی</span>
-                            </button>
+                            <div>
+                                <button onClick={handleOpenSortMenu} className="flex items-center gap-2 text-[0.9rem] text-gray9F border border-1 border-solid border-borderGray rounded px-2 md:px-4 py-2">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none">
+                                        <path d="M6 12H18M3 6H21M9 18H15" stroke="#9F9F9F" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                                    </svg>
+                                    <span className="hidden md:inline">مرتب سازی</span>
+                                </button>
+                                <Menu
+                                    anchorEl={anchorElSort}
+                                    id="account-menu"
+                                    open={openSort}
+                                    onClose={handleCloseSortMenu}
+                                    onClick={handleCloseSortMenu}
+                                    PaperProps={{
+                                        elevation: 0,
+                                        sx: {
+                                            width:"10rem",
+                                            bgcolor:"#fff",
+                                            borderRadius:"0.5rem",
+                                            overflow: 'visible',
+                                            filter: 'drop-shadow(0px 2px 3px rgba(0,0,0,0.1))',
+                                            mt: 1.5,
+                                            fontFamily:"IRANYekan",
+                                            '& .MuiAvatar-root': {
+                                                width: 32,
+                                                height: 32,
+                                                ml: -0.5,
+                                                mr: 1,
+                                            },
+                                        },
+                                    }}
+                                    transformOrigin={{ horizontal: 'left', vertical: 'top' }}
+                                    anchorOrigin={{ horizontal: 'left', vertical: 'bottom' }}>
+                                    <div className="px-2 py-2">
+                                        <div>
+                                            <Link href="/" className="flex gap-2 py-3 px-2 hover:bg-neutral-100">
+                                                <span className="text-gray70 text-[0.8rem] tracking-tighter">بر اساس جدید ترین</span>
+                                            </Link>
+                                            <Link href="/" className="flex gap-2 py-3 px-2 hover:bg-neutral-100 border-t border-t-[#D9D9D9]">
+                                                <span className="text-gray70 text-[0.8rem] tracking-tighter">بر اساس قدیمی ترین</span>
+                                            </Link>
+                                        </div>
+                                    </div>
+                                </Menu>
+                            </div>
+
                         </div>
                     </div>
 
@@ -226,3 +277,4 @@ export default function Dashboard() {
         </>
     )
 }
+export default Dashboard;

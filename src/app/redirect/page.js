@@ -54,7 +54,9 @@ export default function redirect() {
             }
         }
     }
-    useEffect(()=>{handleLogin()},[])
+    useEffect(()=>{
+        handleLogin()
+    },[])
 
     return (
         <>

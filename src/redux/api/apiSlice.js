@@ -1,5 +1,6 @@
+'use client'
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react'
-import {setCredentials, logOut, selectCurrentAccessToken} from './authSlice'
+import {setCredentials, logOut} from './authSlice'
 import {useLoginMutation} from "@/redux/api/loginSlice";
 
 const baseQuery = fetchBaseQuery({
@@ -14,38 +15,39 @@ const baseQuery = fetchBaseQuery({
 
 })
 
+const login = async () =>{
+    const formData = {
+        client_id:"client1",
+        refresh_token:window.sessionStorage.getItem("refresh_token"),
+        grant_type:"refresh_token",
+    }
+    const [login, { isLoading,error }] = useLoginMutation()
+    const refreshResult = await login(formData)
+    return refreshResult;
+}
 
 const baseQueryWithReauth = async (args, api, extraOptions) => {
     let result = await baseQuery(args, api, extraOptions)
 
-    const [login, { isLoading,error }] = useLoginMutation()
+    console.log("hello what up")
 
-    if (result?.error?.originalStatus === 401) {
-        console.log('sending refresh token')
-
-        const formData = {
-            client_id:"client1",
-            refresh_token:window.sessionStorage.getItem("refresh_token"),
-            grant_type:"refresh_token",
-        }
-
-        const refreshResult = await login(formData)
-        console.log(refreshResult)
-
-        if (refreshResult?.data) {
-            const user = api.getState().auth.user
-            api.dispatch(setCredentials({ ...refreshResult.data, user }))
-            result = await baseQuery(args, api, extraOptions)
-        } else {
-            api.dispatch(logOut())
-        }
-    }
+    // if (result?.error?.status === 500) {
+    //     console.log("refresh token")
+    //
+    //
+    //     if (refreshResult?.data) {
+    //         result = await baseQuery(args, api, extraOptions)
+    //     } else {
+    //         api.dispatch(logOut())
+    //     }
+    // }
 
     return result
 }
 
 export const apiSlice = createApi({
-    baseQuery: baseQuery,
+    reducerPath:"api",
+    baseQuery: baseQueryWithReauth,
     tagTypes: ['primary-store-input'],
     endpoints: builder => ({})
 })

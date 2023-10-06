@@ -1,4 +1,6 @@
 'use client'
+import React from "react"
+import ReactDOM  from "react-dom"
 import "../styles/globals.css";
 import "../styles/main.css";
 import {store} from '../redux/store'
