@@ -6,10 +6,15 @@ import {
 } from "@mui/material";
 import Dialog from "@mui/material/Dialog";
 import {TailSpin} from "react-loader-spinner";
+import {useDeleteMutation} from "@/redux/features/rew-matrials-warehouse/input/RMWIapiSlice";
 
 
 export default function DeleteDialog(props) {
-
+    const [handleDelete ,{isLoading}] = useDeleteMutation()
+    const deleteData = async () =>{
+        const res = await handleDelete(props.deleteTargetId)
+        props.handleCloseDelete()
+    }
     return(
         <>
             <Dialog
@@ -40,7 +45,7 @@ export default function DeleteDialog(props) {
                         </div>
                         <div className="flex justify-center mt-10 gap-4">
                             <div>
-                                <button type="submit"
+                                <button onClick={deleteData}
                                         className="px-6 py-2 text-[0.8rem] rounded-[0.5rem] py-3 hover:border hover:opacity-80 font-bold  bg-mainRed text-white">حذف
                                 </button>
                                 <button disabled type="submit"

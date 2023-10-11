@@ -4,7 +4,7 @@ import { apiSlice } from "../../../api/apiSlice";
 export const RMWIapiSlice  = apiSlice.injectEndpoints({
     endpoints: builder => ({
         getAll: builder.query({
-            query: () => 'inventory/primary-store-input',
+            query: (page = 1) => `inventory/primary-store-input?page=${page - 1}&size=10`,
             providesTags: ['primary-store-input']
         }),
         save: builder.mutation({
@@ -24,7 +24,7 @@ export const RMWIapiSlice  = apiSlice.injectEndpoints({
             invalidatesTags: ['primary-store-input']
         }),
         delete: builder.mutation({
-            query: ({ id }) => ({
+            query: ( id ) => ({
                 url: `inventory/primary-store-input/${id}`,
                 method: 'DELETE',
                 body: id

@@ -1,5 +1,5 @@
 'use client'
-import React, {useState} from 'react'
+import React, {useEffect, useState} from 'react'
 import "../../styles/login.css"
 import Image from "next/image";
 import Link from "next/link";
@@ -10,6 +10,9 @@ import {prefixer} from 'stylis';
 import {CacheProvider} from '@emotion/react';
 import createCache from '@emotion/cache';
 import {Divider, Drawer, ListItemIcon, Menu, MenuItem} from "@mui/material";
+import jwt_decode from "jwt-decode";
+import {setCredentials} from "@/redux/api/authSlice";
+import {useDispatch,useSelector} from "react-redux";
 
 const cacheRtl = createCache({
     key: 'muirtl',
@@ -21,6 +24,7 @@ const theme = createTheme({
 
 export default function RootLayout({children}) {
     const pathname = usePathname()
+    const dispatch = useDispatch()
 
     const [openAlertMenu,setOpenAlertMenu] = useState(false)
     const [anchorEl, setAnchorEl] = React.useState(null);
@@ -38,9 +42,6 @@ export default function RootLayout({children}) {
     const handleCloseAlertMenu = () => {
         setAnchorEl(null);
     };
-
-
-
     const handleOpenProfileMenu = (event) => {
         setAnchorElProfile(event.currentTarget);
     };

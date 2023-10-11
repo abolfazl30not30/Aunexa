@@ -1,6 +1,11 @@
+'use client'
+import {useSelector} from "react-redux";
 
 
 export default function Dashboard() {
+    const token = useSelector(state =>(state.auth))
+    console.log(token)
+
     return (
         <>
             <div>

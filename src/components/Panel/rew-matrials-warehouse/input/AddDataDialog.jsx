@@ -1,16 +1,7 @@
 'use client'
 import TextField from "@mui/material/TextField";
-import React, {useState} from "react";
-import {
-    Autocomplete,
-    FormControl,
- MenuItem,
-} from "@mui/material";
-import {
-    DialogContent,
-    DialogContentText,
-    Select,
-} from "@mui/material";
+import React, {useEffect, useState} from "react";
+import {Autocomplete, DialogContent, DialogContentText, FormControl, MenuItem, Select,} from "@mui/material";
 import Dialog from "@mui/material/Dialog";
 import {TailSpin} from "react-loader-spinner";
 import * as yup from "yup";
@@ -18,90 +9,163 @@ import {useFormik} from "formik";
 import persian from "react-date-object/calendars/persian";
 import persian_fa from "react-date-object/locales/persian_fa";
 import DatePicker from "react-multi-date-picker";
+import CircularProgress from '@mui/material/CircularProgress';
 import "react-multi-date-picker/styles/colors/red.css"
+import {useGetAllProductQuery} from "@/redux/features/product/ProductSlice";
+import {useSaveMutation} from "@/redux/features/rew-matrials-warehouse/input/RMWIapiSlice";
 
 
 export default function AddDataDialog(props) {
+    const alphabeticalList = [
+        {value: ""},
+        {value: "الف"},
+        {value: "ب"},
+        {value: "پ"},
+        {value: "ت"},
+        {value: "ث"},
+        {value: "ج"},
+        {value: "ح"},
+        {value: "د"},
+        {value: "ر"},
+        {value: "ز"},
+        {value: "ژ"},
+        {value: "س"},
+        {value: "ش"},
+        {value: "ص"},
+        {value: "ض"},
+        {value: "ط"},
+        {value: "ظ"},
+        {value: "ع"},
+        {value: "ف"},
+        {value: "ق"},
+        {value: "ک"},
+        {value: "گ"},
+        {value: "ل"},
+        {value: "م"},
+        {value: "ن"},
+        {value: "و"},
+        {value: "ه"},
+        {value: "ی"},
+        {value: "D"},
+        {value: "S"},
+    ]
+    const [product,setProduct] = useState()
+    const [date,setDate] = useState()
 
-    const validate = (values, props ) => {
+    const { data : productList  = [] , isLoading : isProductLoading, isFetching, isError } = useGetAllProductQuery()
+    const [submitData, { isLoading ,error}] = useSaveMutation()
+
+    const validate = (values, props) => {
         const errors = {};
 
-        if (!values.carTag && !values.carCode) {
-            errors.carTag = "لطفا پلاک یا کد وسیله نقلیه را وارد کنید";
-        } else if (!values.carCode && values.carTag) {
-            if(!/[0-9]{2}-[0-9]{3}-[0-9]{2}-./.test(values.carTag)){
-                errors.carTag = 'لطفا پلاک  وسیله نقلیه را کامل وارد کنید';
+        if (!values.machineTag && !values.machineCode) {
+            errors.machineTag = "لطفا پلاک یا کد وسیله نقلیه را وارد کنید";
+        } else if (!values.machineCode && values.machineTag) {
+            if (!/[0-9]{7}./.test(values.machineTag)) {
+                errors.machineTag = 'لطفا پلاک  وسیله نقلیه را کامل وارد کنید';
             }
         }
 
         return errors;
     };
 
-    const [carTag,setCarTag] = useState({
-        part1:"",
-        part2:"",
-        part3:"",
-        part4:"",
+    const [machineTag, setmachineTag] = useState({
+        part1: "",
+        part2: "",
+        part3: "",
+        part4: "",
     })
 
-    const top100Films = [
-        "کربوهیدارت",
-        "مس سولفات"
-    ]
+    const top100Films = ["Kg"]
+    
     const schema = yup.object().shape({
-        material: yup.string().required("لطفا نام محصول را وارد کنید"),
+        productId: yup.string().required("لطفا نام محصول را وارد کنید"),
         value: yup.string().required("لطفا مقدار محصول را وارد کنید"),
         unit: yup.string().required("لطفا واحد محصول را وارد کنید"),
-        driver: yup.string().required("لطفا نام راننده را وارد کنید"),
-        supplier: yup.string().required("لطفا تامین کننده را وارد کنید"),
+        driverName: yup.string().required("لطفا نام راننده را وارد کنید"),
+        producer: yup.string().required("لطفا تامین کننده را وارد کنید"),
     });
 
     const formik = useFormik({
 
         initialValues: {
-            material: "",
+            productId: "",
             value: "",
-            unit:"",
-            expirationDate:"",
-            carTag:"",
-            carCode:"",
-            driver:"",
-            supplier:""
+            unit: "",
+            expirationDate: "",
+            machineTag: "",
+            machineCode: "",
+            driverName: "",
+            producer: "",
         },
-        validate:validate,
+      
+        validate: validate,
 
         validationSchema: schema,
 
-        onSubmit: async ({material, value ,unit,expirationDate}) => {
-            try{
-                console.log(expirationDate)
-            }catch (err){
+        onSubmit: async (product,helpers) => {
+            const body = {...product,
+                organizationId:window.sessionStorage.getItem("organizationId"),
+                subOrganizationId:window.sessionStorage.getItem("subOrganizationId")
             }
+            const userData = await submitData(body)
+            console.log(error)
+            console.log(userData)
+            helpers.resetForm({
+                product
+            });
+            setDate("")
+            setProduct("")
+            setmachineTag({
+                part1: "",
+                part2: "",
+                part3: "",
+                part4: ""})
+            props.handleCloseAddData()
         },
     });
 
-    const handleCarTag = (e) =>{
-        if(e.target.name === "part1"){
-            setCarTag((co)=>({...co,part1:e.target.value}))
-        }else if(e.target.name === "part2"){
-            setCarTag((co)=>({...co,part2:e.target.value}))
-        }else if (e.target.name === "part3") {
-            setCarTag((co)=>({...co,part3:e.target.value}))
-        }else if (e.target.name === "part4") {
-            setCarTag((co)=>({...co,part4:e.target.value}))
+    useEffect(()=>{
+        const machineTagString = machineTag.part4 + machineTag.part2  + machineTag.part1  + machineTag.part3
+        console.log(machineTagString)
+        formik.setFieldValue("machineTag", machineTagString)
+    },[machineTag])
+    const handlemachineTag = (e) => {
+        if (e.target.name === "part1") {
+            setmachineTag((co) => ({...co, part1: e.target.value}))
+        } else if (e.target.name === "part2") {
+            setmachineTag((co) => ({...co, part2: e.target.value}))
+        } else if (e.target.name === "part3") {
+            setmachineTag((co) => ({...co, part3: e.target.value}))
+        } else if (e.target.name === "part4") {
+            setmachineTag((co) => ({...co, part4: e.target.value}))
         }
-        const carTagString = carTag.part4 +"-"+ carTag.part2+ "-" +carTag.part1+ "-" +carTag.part3
-        console.log(carTagString)
-        formik.setFieldValue("carTag", carTagString)
-    }
 
-    return(
+    }
+    const handleDateInput = (value) => {
+        setDate(value)
+        let month = value?.month < 10 ? ('0' + value?.month) : value?.month;
+        let day = value?.day < 10 ? ('0' + value?.day) : value?.day;
+        let convertDate = value?.year + '/' + month + '/' + day;
+        formik.setFieldValue("expirationDate", convertDate)
+    }
+    const handleReset = () =>{
+        formik.resetForm()
+        setDate("")
+        setProduct("")
+        setmachineTag({
+            part1: "",
+            part2: "",
+            part3: "",
+            part4: ""})
+    }
+    return (
         <>
             <Dialog
                 fullWidth={true}
                 open={props.openAddData}
                 keepMounted
-                onClose={props.handleCloseAddData}
+                onClose={()=>{props.handleCloseAddData();handleReset()}}
                 aria-describedby="alert-dialog-slide-description"
                 PaperProps={{
                     style: {
@@ -109,11 +173,13 @@ export default function AddDataDialog(props) {
                     },
                 }}>
                 <DialogContent>
-                    <DialogContentText style={{ fontFamily: "IRANYekan" }}>
+                    <DialogContentText style={{fontFamily: "IRANYekan"}}>
                         <div className="flex justify-end">
-                            <button onClick={props.handleCloseAddData}>
-                                <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 14 14" fill="none">
-                                    <path d="M13 1L1 13M1 1L13 13" stroke="black" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                            <button onClick={()=>{props.handleCloseAddData();handleReset()}}>
+                                <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 14 14"
+                                     fill="none">
+                                    <path d="M13 1L1 13M1 1L13 13" stroke="black" stroke-width="2"
+                                          stroke-linecap="round" stroke-linejoin="round"/>
                                 </svg>
                             </button>
                         </div>
@@ -125,22 +191,34 @@ export default function AddDataDialog(props) {
                                 <div className=" flex flex-col">
                                     <Autocomplete
                                         fullWidth
+                                        clearOnEscape
                                         disablePortal
                                         id="combo-box-demo"
                                         ListboxProps={{
-                                            sx: { fontFamily: "IRANYekan",fontSize:"0.8rem"},
+                                            sx: {fontFamily: "IRANYekan", fontSize: "0.8rem"},
                                         }}
-                                        options={top100Films}
-                                        value={formik.values.material}
+                                        options={productList}
+                                        getOptionLabel={(option) => option.persianName}
+                                        value={product}
                                         onChange={(event, newValue) => {
-                                            formik.setFieldValue("material", newValue)
+                                            setProduct(newValue)
+                                            formik.setFieldValue("productId", newValue?.id)
                                         }}
                                         renderInput={(params) =>
                                             <TextField
-                                                error={formik.touched.material && Boolean(formik.errors.material)}
-                                                helperText={formik.touched.material && formik.errors.material}
+                                                error={formik.touched.productId && Boolean(formik.errors.productId)}
+                                                helperText={formik.touched.productId && formik.errors.productId}
                                                 {...params}
-                                                InputProps={{ ...params.InputProps, style: {fontFamily: "IRANYekan",fontSize:"0.8rem"} }}
+                                                InputProps={{
+                                                    ...params.InputProps,
+                                                    style: {fontFamily: "IRANYekan", fontSize: "0.8rem"},
+                                                    endAdornment:(
+                                                        <React.Fragment>
+                                                            {isProductLoading ? <CircularProgress color="inherit" size={20} /> : null}
+                                                            {params.InputProps.endAdornment}
+                                                        </React.Fragment>
+                                                    )
+                                            }}
                                                 placeholder="نوع محصول (اجباری)"
                                             />}
                                     />
@@ -156,7 +234,7 @@ export default function AddDataDialog(props) {
                                             onChange={formik.handleChange}
                                             error={formik.touched.value && Boolean(formik.errors.value)}
                                             helperText={formik.touched.value && formik.errors.value}
-                                            inputProps={{style: {fontFamily: "IRANYekan",fontSize:"0.8rem"}}}
+                                            inputProps={{style: {fontFamily: "IRANYekan", fontSize: "0.8rem"}}}
                                             InputLabelProps={{style: {fontFamily: "IRANYekan"}}}/>
                                     </div>
                                     <div className="w-[30%]">
@@ -165,7 +243,7 @@ export default function AddDataDialog(props) {
                                             disablePortal
                                             id="combo-box-demo"
                                             ListboxProps={{
-                                                sx: { fontFamily: "IRANYekan",fontSize:"0.8rem"},
+                                                sx: {fontFamily: "IRANYekan", fontSize: "0.8rem"},
                                             }}
                                             options={top100Films}
                                             value={formik.values.unit}
@@ -177,7 +255,10 @@ export default function AddDataDialog(props) {
                                                     {...params}
                                                     error={formik.touched.unit && Boolean(formik.errors.unit)}
                                                     helperText={formik.touched.unit && formik.errors.unit}
-                                                    InputProps={{ ...params.InputProps, style: {fontFamily: "IRANYekan",fontSize:"0.8rem"} }}
+                                                    InputProps={{
+                                                        ...params.InputProps,
+                                                        style: {fontFamily: "IRANYekan", fontSize: "0.8rem"}
+                                                    }}
                                                     placeholder="واحد"
                                                 />}/>
                                     </div>
@@ -193,9 +274,9 @@ export default function AddDataDialog(props) {
                                         }}
                                         placeholder="تاریخ انقضا (اختیاری)"
                                         inputClass={`border border-[#D9D9D9] placeholder-neutral-300 text-gray-900 text-[0.8rem] rounded focus:ring-[#3B82F67F] focus:border-[#3B82F67F] block w-full px-3 py-4`}
-                                        value={formik.values.expirationDate}
+                                        value={date}
                                         onChange={(value) => {
-                                            formik.setFieldValue("expirationDate",value)
+                                            handleDateInput(value)
                                         }}
                                         mapDays={({date}) => {
                                             let props = {}
@@ -222,7 +303,9 @@ export default function AddDataDialog(props) {
                                         calendar={persian}
                                         locale={persian_fa}>
                                         <button className="px-2 pb-4" onClick={() => {
-                                            formik.setFieldValue("expirationDate","")}}>
+                                            setDate("")
+                                            formik.setFieldValue("expirationDate", "")
+                                        }}>
                                             ریست
                                         </button>
                                     </DatePicker>
@@ -232,30 +315,41 @@ export default function AddDataDialog(props) {
                                         <div className="plate w-full md:w-[47%] flex items-center pl-4">
                                             <div>
                                                 <div className="w-[55px] h-full pt-3  pl-1 pr-3">
-                                                    <input disabled={formik.values.carCode !== ""} name="part1" onChange={handleCarTag} value={carTag.part1}  type="text"  placeholder="55" maxLength="2" className="w-full h-full placeholder-neutral-300 text-center rounded"/>
+                                                    <input disabled={formik.values.machineCode !== ""} name="part1"
+                                                           onChange={handlemachineTag} value={machineTag.part1}
+                                                           type="text" placeholder="55" maxLength="2"
+                                                           className="w-full h-full placeholder-neutral-300 text-center rounded"/>
                                                 </div>
                                             </div>
                                             <div className="flex">
                                                 <div className="w-[60px] h-full py-1 pl-1 pr-3 h-full">
-                                                    <input disabled={formik.values.carCode !== ""} name="part2" onChange={handleCarTag} value={carTag.part2} type="text" placeholder="555" maxLength="3" className="w-full h-full placeholder-neutral-300 text-center rounded"/>
+                                                    <input disabled={formik.values.machineCode !== ""} name="part2"
+                                                           onChange={handlemachineTag} value={machineTag.part2}
+                                                           type="text" placeholder="555" maxLength="3"
+                                                           className="w-full h-full placeholder-neutral-300 text-center rounded"/>
                                                 </div>
                                                 <div>
-                                                    <FormControl sx={{width: "58px",bgcolor:"#fff" }} size="small">
+                                                    <FormControl sx={{width: "58px", bgcolor: "#fff"}} size="small">
                                                         <Select
-                                                            disabled={formik.values.carCode !== ""}
+                                                            disabled={formik.values.machineCode !== ""}
                                                             name="part3"
-                                                            value={carTag.part3}
-                                                            onChange={handleCarTag}
+                                                            value={machineTag.part3}
+                                                            onChange={handlemachineTag}
                                                             labelId="demo-select-small-label"
                                                             id="demo-select-small">
-                                                            <MenuItem value={"ا"}>الف</MenuItem>
-                                                            <MenuItem value={"ب"}>ب</MenuItem>
-                                                            <MenuItem value={"پ"}>پ</MenuItem>
+                                                            {
+                                                                alphabeticalList.map((alpha)=>(
+                                                                    <MenuItem value={alpha.value}>{alpha.value}</MenuItem>
+                                                                ))
+                                                            }
                                                         </Select>
                                                     </FormControl>
                                                 </div>
                                                 <div className="w-[50px] h-full py-1 pl-2 pr-1 h-full">
-                                                    <input disabled={formik.values.carCode !== ""} name="part4" onChange={handleCarTag}  value={carTag.part4} type="text" placeholder="55" maxLength="2" className="w-full h-full placeholder-neutral-300 text-center rounded"/>
+                                                    <input disabled={formik.values.machineCode !== ""} name="part4"
+                                                           onChange={handlemachineTag} value={machineTag.part4}
+                                                           type="text" placeholder="55" maxLength="2"
+                                                           className="w-full h-full placeholder-neutral-300 text-center rounded"/>
                                                 </div>
                                             </div>
                                         </div>
@@ -266,24 +360,24 @@ export default function AddDataDialog(props) {
                                         </div>
                                         <div className="w-full md:w-[47%]">
                                             <TextField
-                                                disabled={formik.values.carTag !== ""}
+                                                disabled={formik.values.machineTag !== ""}
                                                 fullWidth
                                                 placeholder="کد وسیله نقلیه(اجباری)"
                                                 type="text"
-                                                name="carCode"
-                                                value={formik.values.carCode}
+                                                name="machineCode"
+                                                value={formik.values.machineCode}
                                                 onChange={formik.handleChange}
-                                                error={formik.touched.carCode && Boolean(formik.errors.carCode)}
-                                                // helperText={formik.touched.carTag && formik.errors.carTag}
-                                                inputProps={{style: {fontFamily: "IRANYekan",fontSize:"0.8rem"}}}
+                                                error={formik.touched.machineCode && Boolean(formik.errors.machineCode)}
+                                                // helperText={formik.touched.machineTag && formik.errors.machineTag}
+                                                inputProps={{style: {fontFamily: "IRANYekan", fontSize: "0.8rem"}}}
                                                 InputLabelProps={{style: {fontFamily: "IRANYekan"}}}/>
                                         </div>
                                     </div>
                                     <div>
                                         {
-                                            Boolean(formik.errors.carTag) && (
+                                            Boolean(formik.errors.machineTag) && (
                                                 <span className="mx-3 text-[0.6rem] text-red-600 ">
-                                                    {formik.errors.carTag}
+                                                    {formik.errors.machineTag}
                                                 </span>
                                             )
                                         }
@@ -294,12 +388,12 @@ export default function AddDataDialog(props) {
                                         fullWidth
                                         placeholder="نام راننده (اجباری)"
                                         type="text"
-                                        name="driver"
-                                        value={formik.values.driver}
+                                        name="driverName"
+                                        value={formik.values.driverName}
                                         onChange={formik.handleChange}
-                                        error={formik.touched.driver && Boolean(formik.errors.driver)}
-                                        helperText={formik.touched.driver && formik.errors.driver}
-                                        inputProps={{style: {fontFamily: "IRANYekan",fontSize:"0.8rem"}}}
+                                        error={formik.touched.driverName && Boolean(formik.errors.driverName)}
+                                        helperText={formik.touched.driverName && formik.errors.driverName}
+                                        inputProps={{style: {fontFamily: "IRANYekan", fontSize: "0.8rem"}}}
                                         InputLabelProps={{style: {fontFamily: "IRANYekan"}}}/>
                                 </div>
                                 <div>
@@ -307,12 +401,12 @@ export default function AddDataDialog(props) {
                                         fullWidth
                                         placeholder="تامین کننده (اجباری)"
                                         type="text"
-                                        name="supplier"
-                                        value={formik.values.supplier}
+                                        name="producer"
+                                        value={formik.values.producer}
                                         onChange={formik.handleChange}
-                                        error={formik.touched.supplier && Boolean(formik.errors.supplier)}
-                                        helperText={formik.touched.supplier && formik.errors.supplier}
-                                        inputProps={{style: {fontFamily: "IRANYekan",fontSize:"0.8rem"}}}
+                                        error={formik.touched.producer && Boolean(formik.errors.producer)}
+                                        helperText={formik.touched.producer && formik.errors.producer}
+                                        inputProps={{style: {fontFamily: "IRANYekan", fontSize: "0.8rem"}}}
                                         InputLabelProps={{style: {fontFamily: "IRANYekan"}}}/>
                                 </div>
                                 <div>

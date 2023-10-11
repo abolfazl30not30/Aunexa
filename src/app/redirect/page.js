@@ -9,7 +9,7 @@ import Image from "next/image";
 import React from "react";
 import "../../styles/loader.css"
 import {useDispatch, useSelector} from 'react-redux'
-import { setCredentials } from '../../redux/api/authSlice'
+import {setAccessToken, setCredentials} from '../../redux/api/authSlice'
 import {generateCodeVerifier} from "@/helper/pkce";
 import jwt_decode from "jwt-decode";
 
@@ -36,17 +36,17 @@ export default function redirect() {
 
         try {
             const userData = await login(formData)
-            let tokenContent = jwt_decode(userData.data.access_token);
-            let credential = {
-                name:tokenContent.name,
-                role: tokenContent.role,
-                accessToken:userData.data.access_token,
-                profile:tokenContent.profile,
-                subOrganizationName: tokenContent.subOrganizationName,
-                subOrganizationId:tokenContent.subOrganizationId,
-            }
-            dispatch(setCredentials({...credential}))
+            dispatch(setAccessToken(userData?.data?.access_token))
+            let tokenContent = jwt_decode(userData?.data?.access_token);
+            console.log(tokenContent)
+            window.sessionStorage.setItem("name",tokenContent.name)
+            window.sessionStorage.setItem("role",tokenContent.role)
+            window.sessionStorage.setItem("profile",tokenContent.profile)
+            window.sessionStorage.setItem("subOrganizationName",tokenContent.subOrganizationName)
+            window.sessionStorage.setItem("organizationId",tokenContent.organizationId)
+            window.sessionStorage.setItem("subOrganizationId",tokenContent.subOrganizationId)
             window.sessionStorage.setItem("refresh_token",userData.data.refresh_token)
+
             router.push("/panel")
         }catch (err){
             if(err){
