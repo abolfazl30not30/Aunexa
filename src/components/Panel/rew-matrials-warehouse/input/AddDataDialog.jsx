@@ -11,7 +11,7 @@ import persian_fa from "react-date-object/locales/persian_fa";
 import DatePicker from "react-multi-date-picker";
 import CircularProgress from '@mui/material/CircularProgress';
 import "react-multi-date-picker/styles/colors/red.css"
-import {useGetAllProductQuery} from "@/redux/features/product/ProductSlice";
+import {useLazyGetAllProductQuery, useLazyGetAllUnitQuery} from "@/redux/features/product/ProductSlice";
 import {useSaveMutation} from "@/redux/features/rew-matrials-warehouse/input/RMWIapiSlice";
 
 
@@ -49,12 +49,28 @@ export default function AddDataDialog(props) {
         {value: "D"},
         {value: "S"},
     ]
-    const [product,setProduct] = useState(null)
+
     const [date,setDate] = useState("")
 
-    const { data : productList  = [] , isLoading : isProductLoading, isFetching, isError } = useGetAllProductQuery()
-    const [submitData, { isLoading:isSubmitLoading ,error}] = useSaveMutation()
+    const [product,setProduct] = useState(null)
+    const [openProductList,setOpenProductList] = useState(false)
+    const [getProductList,{ data : productList  = [] , isLoading : isProductLoading, isError: productIsError }] = useLazyGetAllProductQuery()
+    useEffect(()=>{
+        if(openProductList){
+            getProductList()
+        }
+    },[openProductList])
 
+    const [unit,setUnit] = useState(null)
+    const [openUnitList,setOpenUnitList] = useState(false)
+    const [getUnitList,{ data : unitList  = [] , isLoading : isUnitLoading, isError: unitIsError }] = useLazyGetAllUnitQuery()
+    useEffect(()=>{
+        if(openUnitList){
+            getUnitList()
+        }
+    },[openUnitList])
+
+    const [submitData, { isLoading:isSubmitLoading ,error}] = useSaveMutation()
     const validate = (values, props) => {
         const errors = {};
 
@@ -119,6 +135,7 @@ export default function AddDataDialog(props) {
             });
             setDate("")
             setProduct(null)
+            setUnit("")
             setmachineTag({
                 part1: "",
                 part2: "",
@@ -159,6 +176,7 @@ export default function AddDataDialog(props) {
         formik.resetForm()
         setDate("")
         setProduct(null)
+        setUnit("")
         setmachineTag({
             part1: "",
             part2: "",
@@ -196,6 +214,13 @@ export default function AddDataDialog(props) {
                             <div className="flex flex-col justify-center w-[90%] gap-5">
                                 <div className=" flex flex-col">
                                     <Autocomplete
+                                        open={openProductList}
+                                        onOpen={() => {
+                                            setOpenProductList(true);
+                                        }}
+                                        onClose={() => {
+                                            setOpenProductList(false);
+                                        }}
                                         fullWidth
                                         clearOnEscape
                                         disablePortal
@@ -246,16 +271,25 @@ export default function AddDataDialog(props) {
                                     </div>
                                     <div className="w-[30%]">
                                         <Autocomplete
+                                            open={openUnitList}
+                                            onOpen={() => {
+                                                setOpenUnitList(true);
+                                            }}
+                                            onClose={() => {
+                                                setOpenUnitList(false);
+                                            }}
                                             fullWidth
                                             disablePortal
                                             id="combo-box-demo"
                                             ListboxProps={{
                                                 sx: {fontFamily: "IRANYekan", fontSize: "0.8rem"},
                                             }}
-                                            options={top100Films}
-                                            value={formik.values.unit}
+                                            options={unitList}
+                                            getOptionLabel={(option) => option.abbreviation}
+                                            value={unit}
                                             onChange={(event, newValue) => {
-                                                formik.setFieldValue("unit", newValue)
+                                                setUnit(newValue)
+                                                formik.setFieldValue("unit", newValue.abbreviation)
                                             }}
                                             renderInput={(params) =>
                                                 <TextField

@@ -11,7 +11,10 @@ import persian_fa from "react-date-object/locales/persian_fa";
 import DatePicker, {DateObject} from "react-multi-date-picker";
 import CircularProgress from '@mui/material/CircularProgress';
 import "react-multi-date-picker/styles/colors/red.css"
-import {useGetAllProductQuery} from "@/redux/features/product/ProductSlice";
+import {
+    useLazyGetAllProductQuery,
+    useLazyGetAllUnitQuery
+} from "@/redux/features/product/ProductSlice";
 import { useUpdateMutation} from "@/redux/features/rew-matrials-warehouse/input/RMWIapiSlice";
 
 
@@ -49,10 +52,17 @@ export default function EditInfoDialog(props) {
         {value: "D"},
         {value: "S"},
     ]
-    const [product,setProduct] = useState(null)
     const [date,setDate] = useState("")
 
-        const { data : productList  = [] , isLoading : isProductLoading, isFetching, isError } = useGetAllProductQuery()
+    const [product,setProduct] = useState(null)
+    const [openProductList,setOpenProductList] = useState(false)
+    const [getProductList,{ data : productList  = [] , isLoading : isProductLoading, isError: productIsError }] = useLazyGetAllProductQuery()
+
+    const [unit,setUnit] = useState(null)
+    const [openUnitList,setOpenUnitList] = useState(false)
+    const [getUnitList,{ data : unitList  = [] , isLoading : isUnitLoading, isError: unitIsError }] = useLazyGetAllUnitQuery()
+
+
     const [submitData, { isLoading:isSubmitLoading ,error}] = useUpdateMutation()
 
     const validate = (values, props) => {
@@ -76,7 +86,6 @@ export default function EditInfoDialog(props) {
         part4: "",
     })
 
-    const top100Films = ["Kg"]
 
     const schema = yup.object().shape({
         productId: yup.string().required("لطفا نام محصول را وارد کنید"),
@@ -133,6 +142,11 @@ export default function EditInfoDialog(props) {
         const product = productList.filter((product)=> product.id === id)
         setProduct(product[0])
     }
+    const handleSetUnitInput = (ab) =>{
+        const units= unitList.filter((unit)=> unit.abbreviation === ab)
+        setUnit(units[0])
+    }
+
     const handleSetMachineTagInput = (machineTag) =>{
         if(machineTag !== "") {
             const tag = {
@@ -155,6 +169,8 @@ export default function EditInfoDialog(props) {
         setDate(newDate)
     }
     useEffect(()=>{
+        getProductList()
+        getUnitList()
         formik.setValues({
             id:props.editInfoTarget?.id,
             productId: props.editInfoTarget?.productId,
@@ -169,6 +185,7 @@ export default function EditInfoDialog(props) {
             producer: props.editInfoTarget?.producer,
         })
         handleSetProductInput(props.editInfoTarget?.productId)
+        handleSetUnitInput(props.editInfoTarget?.unit)
         handleSetMachineTagInput(props.editInfoTarget?.machineTag)
         handleSetExpirationDate(props.editInfoTarget?.expirationDate)
     },[props.openEditInfo])
@@ -243,6 +260,13 @@ export default function EditInfoDialog(props) {
                             <div className="flex flex-col justify-center w-[90%] gap-5">
                                 <div className=" flex flex-col">
                                     <Autocomplete
+                                        open={openProductList}
+                                        onOpen={() => {
+                                            setOpenProductList(true);
+                                        }}
+                                        onClose={() => {
+                                            setOpenProductList(false);
+                                        }}
                                         fullWidth
                                         clearOnEscape
                                         disablePortal
@@ -293,16 +317,25 @@ export default function EditInfoDialog(props) {
                                     </div>
                                     <div className="w-[30%]">
                                         <Autocomplete
+                                            open={openUnitList}
+                                            onOpen={() => {
+                                                setOpenUnitList(true);
+                                            }}
+                                            onClose={() => {
+                                                setOpenUnitList(false);
+                                            }}
                                             fullWidth
                                             disablePortal
                                             id="combo-box-demo"
                                             ListboxProps={{
                                                 sx: {fontFamily: "IRANYekan", fontSize: "0.8rem"},
                                             }}
-                                            options={top100Films}
-                                            value={formik.values.unit}
+                                            options={unitList}
+                                            getOptionLabel={(option) => option.abbreviation}
+                                            value={unit}
                                             onChange={(event, newValue) => {
-                                                formik.setFieldValue("unit", newValue)
+                                                setUnit(newValue)
+                                                formik.setFieldValue("unit", newValue?.abbreviation)
                                             }}
                                             renderInput={(params) =>
                                                 <TextField

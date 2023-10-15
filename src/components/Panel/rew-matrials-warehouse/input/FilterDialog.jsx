@@ -17,13 +17,17 @@ import persian_fa from "react-date-object/locales/persian_fa";
 import DatePicker from "react-multi-date-picker";
 import "react-multi-date-picker/styles/colors/red.css"
 import CircularProgress from "@mui/material/CircularProgress";
-import {useGetAllProductQuery} from "@/redux/features/product/ProductSlice";
+import { useLazyGetAllProductQuery} from "@/redux/features/product/ProductSlice";
+import {useEffect} from "react";
 
 
 export default function FilterDialog(props) {
 
-    const { data : productList  = [] , isLoading : isProductLoading, isFetching, isError } = useGetAllProductQuery()
+    const [getProductList,{ data : productList  = [] , isLoading : isProductLoading, isFetching, isError }] = useLazyGetAllProductQuery()
     const [product,setProduct] = useState(null)
+    useEffect(()=>{
+        getProductList()
+    },[])
 
     const top100Films = [
         "کربوهیدارت",
@@ -210,10 +214,8 @@ export default function FilterDialog(props) {
                                         }}
                                         options={productList}
                                         getOptionLabel={(option) => option.persianName}
-                                        value={product}
                                         onChange={(event, newValue) => {
-                                            setProduct(newValue)
-                                            formik.setFieldValue("productId", newValue?.id)
+
                                         }}
                                         renderInput={(params) =>
                                             <TextField
