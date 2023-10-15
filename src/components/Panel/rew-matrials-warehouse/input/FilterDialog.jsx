@@ -2,7 +2,7 @@
 import TextField from "@mui/material/TextField";
 import React, {useState} from "react";
 import {
-    Autocomplete,
+    Autocomplete, FormControl, InputLabel, MenuItem, OutlinedInput, Select,
 } from "@mui/material";
 import {
     DialogContent,
@@ -16,10 +16,14 @@ import persian from "react-date-object/calendars/persian";
 import persian_fa from "react-date-object/locales/persian_fa";
 import DatePicker from "react-multi-date-picker";
 import "react-multi-date-picker/styles/colors/red.css"
+import CircularProgress from "@mui/material/CircularProgress";
+import {useGetAllProductQuery} from "@/redux/features/product/ProductSlice";
 
 
 export default function FilterDialog(props) {
 
+    const { data : productList  = [] , isLoading : isProductLoading, isFetching, isError } = useGetAllProductQuery()
+    const [product,setProduct] = useState(null)
 
     const top100Films = [
         "کربوهیدارت",
@@ -31,17 +35,14 @@ export default function FilterDialog(props) {
         initialValues: {
             dateFrom: "",
             dateTo: "",
-            material:"",
-            carType:"",
+            productId:"",
+            vehicleId:"",
             status:"",
-            productionLine:"",
+            producer: "",
         },
 
         onSubmit: async ({}) => {
-            try{
 
-            }catch (err){
-            }
         },
     });
 
@@ -73,12 +74,10 @@ export default function FilterDialog(props) {
                         </div>
                         <form className="flex justify-center " onSubmit={formik.handleSubmit} method="POST">
                             <div className="flex flex-col justify-center w-[80%] gap-3">
-                                <div className="flex flex-col md:flex-row justify-between">
+                                <div className="flex flex-col md:flex-row justify-between gap-3">
                                     <div>
-                                        <div className="mb-2">
-                                            <label className="text-[0.8rem] text-gray80 ">از تاریخ</label>
-                                        </div>
                                         <DatePicker
+                                            placeholder="از تاریخ"
                                             calendarPosition={`bottom`}
                                             className="red"
                                             digits={['0', '1', '2', '3', '4', '5', '6', '7', '8', '9']}
@@ -122,10 +121,8 @@ export default function FilterDialog(props) {
                                         </DatePicker>
                                     </div>
                                     <div>
-                                        <div className="mb-2 mt-3 md:mt-0">
-                                            <label className="text-[0.8rem] text-gray80 ">تا تاریخ</label>
-                                        </div>
                                         <DatePicker
+                                            placeholder="تا تاریخ"
                                             calendarPosition={`bottom`}
                                             className="red"
                                             digits={['0', '1', '2', '3', '4', '5', '6', '7', '8', '9']}
@@ -170,104 +167,105 @@ export default function FilterDialog(props) {
                                     </div>
                                 </div>
                                 <div className=" flex flex-col">
-                                    <div className="mb-2">
-                                        <label className="text-[0.8rem] text-gray80 ">نوع محصول</label>
-                                    </div>
                                     <Autocomplete
                                         fullWidth
+                                        clearOnEscape
                                         disablePortal
                                         id="combo-box-demo"
                                         ListboxProps={{
-                                            sx: { fontFamily: "IRANYekan",fontSize:"0.8rem"},
+                                            sx: {fontFamily: "IRANYekan", fontSize: "0.8rem"},
                                         }}
-                                        options={top100Films}
-                                        value={formik.values.material}
+                                        options={productList}
+                                        getOptionLabel={(option) => option.persianName}
+                                        value={product}
                                         onChange={(event, newValue) => {
-                                            formik.setFieldValue("material", newValue)
+                                            setProduct(newValue)
+                                            formik.setFieldValue("productId", newValue?.id)
                                         }}
                                         renderInput={(params) =>
                                             <TextField
-                                                error={formik.touched.material && Boolean(formik.errors.material)}
-                                                helperText={formik.touched.material && formik.errors.material}
                                                 {...params}
-                                                InputProps={{ ...params.InputProps, style: {fontFamily: "IRANYekan",fontSize:"0.8rem"} }}
-                                            />}
-                                    />
+                                                InputProps={{
+                                                    ...params.InputProps,
+                                                    style: {fontFamily: "IRANYekan", fontSize: "0.8rem"},
+                                                    endAdornment:(
+                                                        <React.Fragment>
+                                                            {isProductLoading ? <CircularProgress color="inherit" size={20} /> : null}
+                                                            {params.InputProps.endAdornment}
+                                                        </React.Fragment>
+                                                    )
+                                                }}
+                                                placeholder="نوع محصول "
+                                            />}/>
+                                </div>
+                                <div className=" flex flex-col">
+                                    <Autocomplete
+                                        disabled
+                                        fullWidth
+                                        clearOnEscape
+                                        disablePortal
+                                        id="combo-box-demo"
+                                        ListboxProps={{
+                                            sx: {fontFamily: "IRANYekan", fontSize: "0.8rem"},
+                                        }}
+                                        options={productList}
+                                        getOptionLabel={(option) => option.persianName}
+                                        value={product}
+                                        onChange={(event, newValue) => {
+                                            setProduct(newValue)
+                                            formik.setFieldValue("productId", newValue?.id)
+                                        }}
+                                        renderInput={(params) =>
+                                            <TextField
+                                                {...params}
+                                                InputProps={{
+                                                    ...params.InputProps,
+                                                    style: {fontFamily: "IRANYekan", fontSize: "0.8rem"},
+                                                    endAdornment:(
+                                                        <React.Fragment>
+                                                            {isProductLoading ? <CircularProgress color="inherit" size={20} /> : null}
+                                                            {params.InputProps.endAdornment}
+                                                        </React.Fragment>
+                                                    )
+                                                }}
+                                                placeholder="وسیله نقلیه"
+                                            />}/>
+                                </div>
+                                <div className=" flex flex-col">
+                                    <FormControl fullWidth>
+                                        <InputLabel id="demo-simple-select-label" sx={{fontFamily: "IRANYekan", fontSize: "0.8rem",color:"#9F9F9F"}}>وضعیت</InputLabel>
+                                        <Select
+                                            labelId="demo-simple-select-label"
+                                            id="demo-simple-select"
+                                            value={formik.values.status}
+                                            name="status"
+                                            input={<OutlinedInput sx={{fontFamily: "IRANYekan", fontSize: "0.8rem"}} label="وضعیت" />}
+                                            sx={{fontFamily: "IRANYekan", fontSize: "0.8rem"}}
+                                            onChange={formik.handleChange}
+                                        >
+                                            <MenuItem value="" sx={{fontFamily: "IRANYekan", fontSize: "0.8rem"}}></MenuItem>
+                                            <MenuItem value="UNKNOWN" sx={{fontFamily: "IRANYekan", fontSize: "0.8rem"}}>نامعلوم</MenuItem>
+                                            <MenuItem value="CONFIRMED" sx={{fontFamily: "IRANYekan", fontSize: "0.8rem"}}>تایید شده</MenuItem>
+                                            <MenuItem value="TROUBLED" sx={{fontFamily: "IRANYekan", fontSize: "0.8rem"}}>مشکل دار</MenuItem>
+                                        </Select>
+                                    </FormControl>
                                 </div>
                                 <div className=" flex flex-col">
                                     <div className="mb-2">
-                                        <label className="text-[0.8rem] text-gray80 ">نوع وسیله</label>
+                                        <TextField
+                                            fullWidth
+                                            type="text"
+                                            name="producer"
+                                            value={formik.values.driverName}
+                                            onChange={formik.handleChange}
+                                            error={formik.touched.producer && Boolean(formik.errors.producer)}
+                                            helperText={formik.touched.producer && formik.errors.producer}
+                                            inputProps={{style: {fontFamily: "IRANYekan", fontSize: "0.8rem"}}}
+                                            InputLabelProps={{style: {fontFamily: "IRANYekan"}}}
+                                            placeholder="تامین کننده"
+                                        />
                                     </div>
-                                    <Autocomplete
-                                        fullWidth
-                                        disablePortal
-                                        id="combo-box-demo"
-                                        ListboxProps={{
-                                            sx: { fontFamily: "IRANYekan",fontSize:"0.8rem"},
-                                        }}
-                                        options={top100Films}
-                                        value={formik.values.carType}
-                                        onChange={(event, newValue) => {
-                                            formik.setFieldValue("material", newValue)
-                                        }}
-                                        renderInput={(params) =>
-                                            <TextField
-                                                error={formik.touched.carType && Boolean(formik.errors.carType)}
-                                                helperText={formik.touched.carType && formik.errors.carType}
-                                                {...params}
-                                                InputProps={{ ...params.InputProps, style: {fontFamily: "IRANYekan",fontSize:"0.8rem"} }}
-                                            />}
-                                    />
-                                </div>
-                                <div className=" flex flex-col">
-                                    <div className="mb-2">
-                                        <label className="text-[0.8rem] text-gray80 ">وضیعت</label>
-                                    </div>
-                                    <Autocomplete
-                                        fullWidth
-                                        disablePortal
-                                        id="combo-box-demo"
-                                        ListboxProps={{
-                                            sx: { fontFamily: "IRANYekan",fontSize:"0.8rem"},
-                                        }}
-                                        options={top100Films}
-                                        value={formik.values.status}
-                                        onChange={(event, newValue) => {
-                                            formik.setFieldValue("material", newValue)
-                                        }}
-                                        renderInput={(params) =>
-                                            <TextField
-                                                error={formik.touched.status && Boolean(formik.errors.status)}
-                                                helperText={formik.touched.status && formik.errors.status}
-                                                {...params}
-                                                InputProps={{ ...params.InputProps, style: {fontFamily: "IRANYekan",fontSize:"0.8rem"} }}
-                                            />}
-                                    />
-                                </div>
-                                <div className=" flex flex-col">
-                                    <div className="mb-2">
-                                        <label className="text-[0.8rem] text-gray80 ">لاین تولید</label>
-                                    </div>
-                                    <Autocomplete
-                                        fullWidth
-                                        disablePortal
-                                        id="combo-box-demo"
-                                        ListboxProps={{
-                                            sx: { fontFamily: "IRANYekan",fontSize:"0.8rem"},
-                                        }}
-                                        options={top100Films}
-                                        value={formik.values.productionLine}
-                                        onChange={(event, newValue) => {
-                                            formik.setFieldValue("material", newValue)
-                                        }}
-                                        renderInput={(params) =>
-                                            <TextField
-                                                error={formik.touched.productionLine && Boolean(formik.errors.productionLine)}
-                                                helperText={formik.touched.productionLine && formik.errors.productionLine}
-                                                {...params}
-                                                InputProps={{ ...params.InputProps, style: {fontFamily: "IRANYekan",fontSize:"0.8rem"} }}
-                                            />}
-                                    />
+
                                 </div>
                                 <div className="mt-4">
                                     <button type="submit"

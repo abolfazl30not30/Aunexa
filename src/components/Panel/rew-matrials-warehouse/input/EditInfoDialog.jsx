@@ -8,14 +8,14 @@ import * as yup from "yup";
 import {useFormik} from "formik";
 import persian from "react-date-object/calendars/persian";
 import persian_fa from "react-date-object/locales/persian_fa";
-import DatePicker from "react-multi-date-picker";
+import DatePicker, {DateObject} from "react-multi-date-picker";
 import CircularProgress from '@mui/material/CircularProgress';
 import "react-multi-date-picker/styles/colors/red.css"
 import {useGetAllProductQuery} from "@/redux/features/product/ProductSlice";
-import {useSaveMutation} from "@/redux/features/rew-matrials-warehouse/input/RMWIapiSlice";
+import { useUpdateMutation} from "@/redux/features/rew-matrials-warehouse/input/RMWIapiSlice";
 
 
-export default function AddDataDialog(props) {
+export default function EditInfoDialog(props) {
     const alphabeticalList = [
         {value: ""},
         {value: "الف"},
@@ -52,8 +52,8 @@ export default function AddDataDialog(props) {
     const [product,setProduct] = useState(null)
     const [date,setDate] = useState("")
 
-    const { data : productList  = [] , isLoading : isProductLoading, isFetching, isError } = useGetAllProductQuery()
-    const [submitData, { isLoading:isSubmitLoading ,error}] = useSaveMutation()
+        const { data : productList  = [] , isLoading : isProductLoading, isFetching, isError } = useGetAllProductQuery()
+    const [submitData, { isLoading:isSubmitLoading ,error}] = useUpdateMutation()
 
     const validate = (values, props) => {
         const errors = {};
@@ -77,7 +77,7 @@ export default function AddDataDialog(props) {
     })
 
     const top100Films = ["Kg"]
-    
+
     const schema = yup.object().shape({
         productId: yup.string().required("لطفا نام محصول را وارد کنید"),
         value: yup.string().required("لطفا مقدار محصول را وارد کنید"),
@@ -89,6 +89,7 @@ export default function AddDataDialog(props) {
     const formik = useFormik({
 
         initialValues: {
+            id:"",
             productId: "",
             productName:"",
             value: "",
@@ -100,7 +101,7 @@ export default function AddDataDialog(props) {
             driverName: "",
             producer: "",
         },
-      
+
         validate: validate,
 
         validationSchema: schema,
@@ -124,9 +125,53 @@ export default function AddDataDialog(props) {
                 part2: "",
                 part3: "",
                 part4: ""})
-            props.handleCloseAddData()
+
+            props.handleCloseEditInfo()
         },
     });
+    const handleSetProductInput = (id) =>{
+        const product = productList.filter((product)=> product.id === id)
+        setProduct(product[0])
+    }
+    const handleSetMachineTagInput = (machineTag) =>{
+        if(machineTag !== "") {
+            const tag = {
+                part1: machineTag.slice(5, 7),
+                part2: machineTag.slice(2, 5),
+                part3: machineTag.slice(7, 8),
+                part4: machineTag.slice(0, 2)
+            }
+            setmachineTag(tag)
+        }
+    }
+    const handleSetExpirationDate = (date)=>{
+        const newDate = new DateObject({
+            date: date,
+            format: "YYYY/MM/DD",
+            calendar: persian,
+            locale: persian_fa
+        })
+        console.log(newDate)
+        setDate(newDate)
+    }
+    useEffect(()=>{
+        formik.setValues({
+            id:props.editInfoTarget?.id,
+            productId: props.editInfoTarget?.productId,
+            productName:props.editInfoTarget?.productName,
+            value: props.editInfoTarget?.value,
+            unit: props.editInfoTarget?.unit,
+            expirationDate: props.editInfoTarget?.expirationDate,
+            machineTag: props.editInfoTarget?.machineTag,
+            machineCode: props.editInfoTarget?.machineCode,
+            vehicleType:props.editInfoTarget?.vehicleType,
+            driverName: props.editInfoTarget?.driverName,
+            producer: props.editInfoTarget?.producer,
+        })
+        handleSetProductInput(props.editInfoTarget?.productId)
+        handleSetMachineTagInput(props.editInfoTarget?.machineTag)
+        handleSetExpirationDate(props.editInfoTarget?.expirationDate)
+    },[props.openEditInfo])
 
     useEffect(()=>{
         const machineTagString = machineTag.part4 + machineTag.part2  + machineTag.part1  + machineTag.part3
@@ -165,13 +210,15 @@ export default function AddDataDialog(props) {
             part3: "",
             part4: ""})
     }
+
+
     return (
         <>
             <Dialog
                 fullWidth={true}
-                open={props.openAddData}
+                open={props.openEditInfo}
                 keepMounted
-                onClose={()=>{props.handleCloseAddData();handleReset()}}
+                onClose={()=>{props.handleCloseEditInfo();handleReset()}}
                 aria-describedby="alert-dialog-slide-description"
                 PaperProps={{
                     style: {
@@ -181,7 +228,7 @@ export default function AddDataDialog(props) {
                 <DialogContent>
                     <DialogContentText style={{fontFamily: "IRANYekan"}}>
                         <div className="flex justify-end">
-                            <button onClick={()=>{props.handleCloseAddData();handleReset()}}>
+                            <button onClick={()=>{props.handleCloseEditInfo();handleReset()}}>
                                 <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 14 14"
                                      fill="none">
                                     <path d="M13 1L1 13M1 1L13 13" stroke="black" stroke-width="2"
@@ -190,7 +237,7 @@ export default function AddDataDialog(props) {
                             </button>
                         </div>
                         <div className="flex justify-center mb-7">
-                            <h3 className="text-[1.1rem]">ثبت مواداولیه ورودی</h3>
+                            <h3 className="text-[1.1rem]">ویرایش مواداولیه ورودی</h3>
                         </div>
                         <form className="flex justify-center " onSubmit={formik.handleSubmit} method="POST">
                             <div className="flex flex-col justify-center w-[90%] gap-5">
@@ -225,7 +272,7 @@ export default function AddDataDialog(props) {
                                                             {params.InputProps.endAdornment}
                                                         </React.Fragment>
                                                     )
-                                            }}
+                                                }}
                                                 placeholder="نوع محصول (اجباری)"
                                             />}
                                     />
