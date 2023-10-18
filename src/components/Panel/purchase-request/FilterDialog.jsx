@@ -22,18 +22,75 @@ import {useEffect} from "react";
 
 
 export default function FilterDialog(props) {
+    const [dateFrom,setDateFrom] = useState("")
+    const [dateTo,setDateTo] = useState("")
 
-    const [getProductList,{ data : productList  = [] , isLoading : isProductLoading, isFetching, isError }] = useLazyGetAllProductQuery()
     const [product,setProduct] = useState(null)
+    const [openProductList,setOpenProductList] = useState(false)
+    const [getProductList,{ data : productList  = [] , isLoading : isProductLoading, isError: productIsError }] = useLazyGetAllProductQuery()
     useEffect(()=>{
-        getProductList()
-    },[])
+        if(openProductList){
+            getProductList()
+        }
+    },[openProductList])
+
+    const handleDateFromInput = (value) => {
+        if(value){
+            setDateFrom(value)
+            let month = value?.month < 10 ? ('0' + value?.month) : value?.month;
+            let day = value?.day < 10 ? ('0' + value?.day) : value?.day;
+            let convertDate = value?.year + '/' + month + '/' + day;
+            formik.setFieldValue("dateFrom", convertDate)
+        }else {
+            formik.setFieldValue("dateFrom", "")
+        }
+    }
+
+    const handleDateToInput = (value) => {
+        if(value){
+            setDateTo(value)
+            let month = value?.month < 10 ? ('0' + value?.month) : value?.month;
+            let day = value?.day < 10 ? ('0' + value?.day) : value?.day;
+            let convertDate = value?.year + '/' + month + '/' + day;
+            formik.setFieldValue("dateTo", convertDate)
+        }else {
+            formik.setFieldValue("dateTo", "")
+        }
+    }
 
     const top100Films = [
         "کربوهیدارت",
         "مس سولفات"
     ]
 
+    const handleURLSearchParams = (values) =>{
+        let params = new URLSearchParams()
+        if(values.dateFrom){
+            params.set("fromDate",values.dateFrom)
+        }
+        if(values.dateTo){
+            params.set("toDate",values.dateTo)
+        }
+        if(values.productId){
+            params.set("productId",values.productId)
+        }
+        if(values.vehicleId){
+            params.set("vehicleId",values.vehicleId)
+        }
+        if(values.status){
+            params.set("status",values.status)
+        }
+        if(values.producer){
+            params.set("producer",values.producer)
+        }
+        return params
+    }
+    const handleResetForm = () =>{
+        formik.resetForm()
+        setDateTo("")
+        setDateFrom("")
+        setProduct(null)
+    }
     const formik = useFormik({
 
         initialValues: {
@@ -45,8 +102,10 @@ export default function FilterDialog(props) {
             producer: "",
         },
 
-        onSubmit: async ({}) => {
-
+        onSubmit: (values) => {
+            let params = handleURLSearchParams(values)
+            props.setFilterItem(params.toString())
+            props.handleCloseFilter()
         },
     });
 
@@ -56,8 +115,8 @@ export default function FilterDialog(props) {
             <Dialog
                 fullWidth={true}
                 open={props.openFilter}
+                onClose={()=>{props.handleCloseFilter();}}
                 keepMounted
-                onClose={props.handleCloseFilter}
                 aria-describedby="alert-dialog-slide-description"
                 PaperProps={{
                     style: {
@@ -67,7 +126,7 @@ export default function FilterDialog(props) {
                 <DialogContent>
                     <DialogContentText style={{ fontFamily: "IRANYekan" }}>
                         <div className="flex justify-end">
-                            <button onClick={props.handleCloseFilter}>
+                            <button onClick={()=>{props.handleCloseFilter();}}>
                                 <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 14 14" fill="none">
                                     <path d="M13 1L1 13M1 1L13 13" stroke="black" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
                                 </svg>
@@ -92,7 +151,7 @@ export default function FilterDialog(props) {
                                             inputClass={`border border-[#D9D9D9] placeholder-neutral-300 text-gray-900 text-[0.8rem] rounded focus:ring-[#3B82F67F] focus:border-[#3B82F67F] block w-full px-3 py-4`}
                                             value={formik.values.dateFrom}
                                             onChange={(value) => {
-                                                formik.setFieldValue("dateFrom",value)
+                                              handleDateFromInput(value)
                                             }}
                                             mapDays={({date}) => {
                                                 let props = {}
@@ -118,8 +177,11 @@ export default function FilterDialog(props) {
 
                                             calendar={persian}
                                             locale={persian_fa}>
-                                            <button className="px-2 pb-4" onClick={() => {
-                                                formik.setFieldValue("dateFrom","")}}>
+                                            <button className="px-2 pb-4" onClick={(e) => {
+                                                e.preventDefault()
+                                                setDateFrom("")
+                                                formik.setFieldValue("dateFrom","")
+                                            }}>
                                                 ریست
                                             </button>
                                         </DatePicker>
@@ -137,7 +199,7 @@ export default function FilterDialog(props) {
                                             inputClass={`border border-[#D9D9D9] placeholder-neutral-300 text-gray-900 text-[0.8rem] rounded focus:ring-[#3B82F67F] focus:border-[#3B82F67F] block w-full px-3 py-4`}
                                             value={formik.values.dateTo}
                                             onChange={(value) => {
-                                                formik.setFieldValue("dateTo",value)
+                                                handleDateToInput(value)
                                             }}
                                             mapDays={({date}) => {
                                                 let props = {}
@@ -163,7 +225,9 @@ export default function FilterDialog(props) {
 
                                             calendar={persian}
                                             locale={persian_fa}>
-                                            <button className="px-2 pb-4" onClick={() => {
+                                            <button className="px-2 pb-4" onClick={(e) => {
+                                                e.preventDefault()
+                                                setDateTo("")
                                                 formik.setFieldValue("dateTo","")}}>
                                                 ریست
                                             </button>
@@ -172,6 +236,13 @@ export default function FilterDialog(props) {
                                 </div>
                                 <div className=" flex flex-col">
                                     <Autocomplete
+                                        open={openProductList}
+                                        onOpen={() => {
+                                            setOpenProductList(true);
+                                        }}
+                                        onClose={() => {
+                                            setOpenProductList(false);
+                                        }}
                                         fullWidth
                                         clearOnEscape
                                         disablePortal
@@ -188,6 +259,8 @@ export default function FilterDialog(props) {
                                         }}
                                         renderInput={(params) =>
                                             <TextField
+                                                error={formik.touched.productId && Boolean(formik.errors.productId)}
+                                                helperText={formik.touched.productId && formik.errors.productId}
                                                 {...params}
                                                 InputProps={{
                                                     ...params.InputProps,
@@ -199,8 +272,9 @@ export default function FilterDialog(props) {
                                                         </React.Fragment>
                                                     )
                                                 }}
-                                                placeholder="نوع محصول "
-                                            />}/>
+                                                placeholder="نوع محصول"
+                                            />}
+                                    />
                                 </div>
                                 <div className=" flex flex-col">
                                     <Autocomplete
@@ -258,7 +332,7 @@ export default function FilterDialog(props) {
                                             fullWidth
                                             type="text"
                                             name="producer"
-                                            value={formik.values.driverName}
+                                            value={formik.values.producer}
                                             onChange={formik.handleChange}
                                             error={formik.touched.producer && Boolean(formik.errors.producer)}
                                             helperText={formik.touched.producer && formik.errors.producer}

@@ -8,7 +8,6 @@ import Dialog from "@mui/material/Dialog";
 
 
 export default function MoreInfoDialog(props) {
-
     return(
         <>
             <Dialog
@@ -215,10 +214,10 @@ export default function MoreInfoDialog(props) {
                             </div>
                         </div>
                         <div className="md:hidden flex  justify-center mt-5 gap-3">
-                            <button  className="px-6 py-2 text-[0.8rem] text-mainRed border border-mainRed rounded hover:bg-mainRed hover:text-white">
+                            <button onClick={()=>{props.handleOpenDelete(props.moreInfoTarget.id);props.handleCloseMoreInfo()}} className="px-6 py-2 text-[0.8rem] text-mainRed border border-mainRed rounded hover:bg-mainRed hover:text-white">
                                 حذف
                             </button>
-                            <button  className="px-5 py-2 text-[0.8rem] text-[#4087DB] border border-[#4087DB] rounded hover:bg-[#4087DB] hover:text-white">
+                            <button onClick={()=>{props.handleOpenEditInfo(props.moreInfoTarget);props.handleCloseMoreInfo()}}  className="px-5 py-2 text-[0.8rem] text-[#4087DB] border border-[#4087DB] rounded hover:bg-[#4087DB] hover:text-white">
                                 ویرایش
                             </button>
                         </div>

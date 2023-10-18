@@ -8,17 +8,14 @@ import * as yup from "yup";
 import {useFormik} from "formik";
 import persian from "react-date-object/calendars/persian";
 import persian_fa from "react-date-object/locales/persian_fa";
-import DatePicker, {DateObject} from "react-multi-date-picker";
+import DatePicker from "react-multi-date-picker";
 import CircularProgress from '@mui/material/CircularProgress';
 import "react-multi-date-picker/styles/colors/red.css"
-import {
-    useLazyGetAllProductQuery,
-    useLazyGetAllUnitQuery
-} from "@/redux/features/product/ProductSlice";
-import { useUpdateMutation} from "@/redux/features/rew-matrials-warehouse/input/RMWIapiSlice";
+import {useLazyGetAllProductQuery, useLazyGetAllUnitQuery} from "@/redux/features/product/ProductSlice";
+import {useSaveMutation} from "@/redux/features/primary-store/input/RMWIapiSlice";
 
 
-export default function EditInfoDialog(props) {
+export default function AddDataDialog(props) {
     const alphabeticalList = [
         {value: ""},
         {value: "الف"},
@@ -52,19 +49,64 @@ export default function EditInfoDialog(props) {
         {value: "D"},
         {value: "S"},
     ]
-    const [date,setDate] = useState("")
 
+    //product input
     const [product,setProduct] = useState(null)
     const [openProductList,setOpenProductList] = useState(false)
     const [getProductList,{ data : productList  = [] , isLoading : isProductLoading, isError: productIsError }] = useLazyGetAllProductQuery()
-
+    useEffect(()=>{
+        if(openProductList){
+            getProductList()
+        }
+    },[openProductList])
+    //unit input
     const [unit,setUnit] = useState(null)
     const [openUnitList,setOpenUnitList] = useState(false)
     const [getUnitList,{ data : unitList  = [] , isLoading : isUnitLoading, isError: unitIsError }] = useLazyGetAllUnitQuery()
+    useEffect(()=>{
+        if(openUnitList){
+            getUnitList()
+        }
+    },[openUnitList])
 
+    //date input
+    const [date,setDate] = useState("")
+    const handleDateInput = (value) => {
+        if(value){
+            setDate(value)
+            let month = value?.month < 10 ? ('0' + value?.month) : value?.month;
+            let day = value?.day < 10 ? ('0' + value?.day) : value?.day;
+            let convertDate = value?.year + '/' + month + '/' + day;
+            formik.setFieldValue("expirationDate", convertDate)
+        }else {
+            formik.setFieldValue("expirationDate", "")
+        }
+    }
 
-    const [submitData, { isLoading:isSubmitLoading ,error}] = useUpdateMutation()
+    //machineTag input
+    const [machineTag, setmachineTag] = useState({
+        part1: "",
+        part2: "",
+        part3: "",
+        part4: "",
+    })
+    useEffect(()=>{
+        const machineTagString = machineTag.part4 + machineTag.part2  + machineTag.part1  + machineTag.part3
+        console.log(machineTagString)
+        formik.setFieldValue("machineTag", machineTagString)
+    },[machineTag])
 
+    const handlemachineTag = (e) => {
+        if (e.target.name === "part1") {
+            setmachineTag((co) => ({...co, part1: e.target.value}))
+        } else if (e.target.name === "part2") {
+            setmachineTag((co) => ({...co, part2: e.target.value}))
+        } else if (e.target.name === "part3") {
+            setmachineTag((co) => ({...co, part3: e.target.value}))
+        } else if (e.target.name === "part4") {
+            setmachineTag((co) => ({...co, part4: e.target.value}))
+        }
+    }
     const validate = (values, props) => {
         const errors = {};
 
@@ -79,14 +121,20 @@ export default function EditInfoDialog(props) {
         return errors;
     };
 
-    const [machineTag, setmachineTag] = useState({
-        part1: "",
-        part2: "",
-        part3: "",
-        part4: "",
-    })
+    const handleReset = () =>{
+        formik.resetForm()
+        setDate("")
+        setProduct(null)
+        setUnit(null)
+        setmachineTag({
+            part1: "",
+            part2: "",
+            part3: "",
+            part4: ""})
+    }
 
-
+    //submit data
+    const [submitData, { isLoading:isSubmitLoading ,error}] = useSaveMutation()
     const schema = yup.object().shape({
         productId: yup.string().required("لطفا نام محصول را وارد کنید"),
         value: yup.string().required("لطفا مقدار محصول را وارد کنید"),
@@ -96,9 +144,7 @@ export default function EditInfoDialog(props) {
     });
 
     const formik = useFormik({
-
         initialValues: {
-            id:"",
             productId: "",
             productName:"",
             value: "",
@@ -110,7 +156,7 @@ export default function EditInfoDialog(props) {
             driverName: "",
             producer: "",
         },
-
+      
         validate: validate,
 
         validationSchema: schema,
@@ -122,120 +168,18 @@ export default function EditInfoDialog(props) {
                 vehicleType:"نامعلوم"
             }
             const userData = await submitData(body)
-            console.log(error)
-            console.log(userData)
-            helpers.resetForm({
-                product
-            });
-            setDate("")
-            setProduct(null)
-            setmachineTag({
-                part1: "",
-                part2: "",
-                part3: "",
-                part4: ""})
-
-            props.handleCloseEditInfo()
+            handleReset()
+            props.handleCloseAddData()
         },
     });
-    const handleSetProductInput = (id) =>{
-        const product = productList.filter((product)=> product.id === id)
-        setProduct(product[0])
-    }
-    const handleSetUnitInput = (ab) =>{
-        const units= unitList.filter((unit)=> unit.abbreviation === ab)
-        setUnit(units[0])
-    }
-
-    const handleSetMachineTagInput = (machineTag) =>{
-        if(machineTag !== "") {
-            const tag = {
-                part1: machineTag.slice(5, 7),
-                part2: machineTag.slice(2, 5),
-                part3: machineTag.slice(7, 8),
-                part4: machineTag.slice(0, 2)
-            }
-            setmachineTag(tag)
-        }
-    }
-    const handleSetExpirationDate = (date)=>{
-        const newDate = new DateObject({
-            date: date,
-            format: "YYYY/MM/DD",
-            calendar: persian,
-            locale: persian_fa
-        })
-        console.log(newDate)
-        setDate(newDate)
-    }
-    useEffect(()=>{
-        getProductList()
-        getUnitList()
-        formik.setValues({
-            id:props.editInfoTarget?.id,
-            productId: props.editInfoTarget?.productId,
-            productName:props.editInfoTarget?.productName,
-            value: props.editInfoTarget?.value,
-            unit: props.editInfoTarget?.unit,
-            expirationDate: props.editInfoTarget?.expirationDate,
-            machineTag: props.editInfoTarget?.machineTag,
-            machineCode: props.editInfoTarget?.machineCode,
-            vehicleType:props.editInfoTarget?.vehicleType,
-            driverName: props.editInfoTarget?.driverName,
-            producer: props.editInfoTarget?.producer,
-        })
-        handleSetProductInput(props.editInfoTarget?.productId)
-        handleSetUnitInput(props.editInfoTarget?.unit)
-        handleSetMachineTagInput(props.editInfoTarget?.machineTag)
-        handleSetExpirationDate(props.editInfoTarget?.expirationDate)
-    },[props.openEditInfo])
-
-    useEffect(()=>{
-        const machineTagString = machineTag.part4 + machineTag.part2  + machineTag.part1  + machineTag.part3
-        console.log(machineTagString)
-        formik.setFieldValue("machineTag", machineTagString)
-    },[machineTag])
-
-
-    const handlemachineTag = (e) => {
-        if (e.target.name === "part1") {
-            setmachineTag((co) => ({...co, part1: e.target.value}))
-        } else if (e.target.name === "part2") {
-            setmachineTag((co) => ({...co, part2: e.target.value}))
-        } else if (e.target.name === "part3") {
-            setmachineTag((co) => ({...co, part3: e.target.value}))
-        } else if (e.target.name === "part4") {
-            setmachineTag((co) => ({...co, part4: e.target.value}))
-        }
-
-    }
-    const handleDateInput = (value) => {
-        setDate(value)
-        let month = value?.month < 10 ? ('0' + value?.month) : value?.month;
-        let day = value?.day < 10 ? ('0' + value?.day) : value?.day;
-        let convertDate = value?.year + '/' + month + '/' + day;
-        formik.setFieldValue("expirationDate", convertDate)
-    }
-
-    const handleReset = () =>{
-        formik.resetForm()
-        setDate("")
-        setProduct(null)
-        setmachineTag({
-            part1: "",
-            part2: "",
-            part3: "",
-            part4: ""})
-    }
-
 
     return (
         <>
             <Dialog
                 fullWidth={true}
-                open={props.openEditInfo}
+                open={props.openAddData}
                 keepMounted
-                onClose={()=>{props.handleCloseEditInfo();handleReset()}}
+                onClose={()=>{props.handleCloseAddData();handleReset()}}
                 aria-describedby="alert-dialog-slide-description"
                 PaperProps={{
                     style: {
@@ -245,7 +189,7 @@ export default function EditInfoDialog(props) {
                 <DialogContent>
                     <DialogContentText style={{fontFamily: "IRANYekan"}}>
                         <div className="flex justify-end">
-                            <button onClick={()=>{props.handleCloseEditInfo();handleReset()}}>
+                            <button onClick={()=>{props.handleCloseAddData();handleReset()}}>
                                 <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 14 14"
                                      fill="none">
                                     <path d="M13 1L1 13M1 1L13 13" stroke="black" stroke-width="2"
@@ -254,7 +198,7 @@ export default function EditInfoDialog(props) {
                             </button>
                         </div>
                         <div className="flex justify-center mb-7">
-                            <h3 className="text-[1.1rem]">ویرایش مواداولیه ورودی</h3>
+                            <h3 className="text-[1.1rem]">ثبت مواداولیه ورودی</h3>
                         </div>
                         <form className="flex justify-center " onSubmit={formik.handleSubmit} method="POST">
                             <div className="flex flex-col justify-center w-[90%] gap-5">
@@ -296,7 +240,7 @@ export default function EditInfoDialog(props) {
                                                             {params.InputProps.endAdornment}
                                                         </React.Fragment>
                                                     )
-                                                }}
+                                            }}
                                                 placeholder="نوع محصول (اجباری)"
                                             />}
                                     />
@@ -335,7 +279,7 @@ export default function EditInfoDialog(props) {
                                             value={unit}
                                             onChange={(event, newValue) => {
                                                 setUnit(newValue)
-                                                formik.setFieldValue("unit", newValue?.abbreviation)
+                                                formik.setFieldValue("unit", newValue.abbreviation)
                                             }}
                                             renderInput={(params) =>
                                                 <TextField

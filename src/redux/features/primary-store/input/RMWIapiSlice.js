@@ -4,7 +4,9 @@ import { apiSlice } from "../../../api/apiSlice";
 export const RMWIapiSlice  = apiSlice.injectEndpoints({
     endpoints: builder => ({
         getAll: builder.query({
-            query: ({page = 1, sort = "desc"}) => `inventory/primary-store-input?page=${page - 1}&size=10&sort=date,${sort}&sort=time,${sort}`,
+            query: ({page, sort ,filterItem}) => ({
+                url:`inventory/primary-store-input/filter?page=${page - 1}&size=10&sort=date,${sort}&sort=time,${sort}&${filterItem}`,
+            }),
             providesTags: ['primary-store-input']
         }),
         // getAll: builder.query({

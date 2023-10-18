@@ -56,6 +56,8 @@ export default function RootLayout({children}) {
     const handleCloseSidebar = () => {
         setOpenSidebar(false)
     };
+    const pages = useSelector((state)=> state.access.pages)
+    console.log(pages)
 
     return (
         <>
@@ -264,12 +266,12 @@ export default function RootLayout({children}) {
                                                 </svg>
                                             </summary>
                                             <ul className="flex flex-col gap-1 pr-2">
-                                                <li><Link href="/panel/raw-materials-warehouse/input"
+                                                <li><Link href="/panel/primary-store/input"
                                                           className="block py-2 px-5"><span
-                                                    className={pathname === "/panel/raw-materials-warehouse/input" ? "text-mainRed text-[0.9rem]" : "text-gray9F hover:text-textGray text-[0.9rem]"}>بخش ورودی</span></Link></li>
-                                                <li><Link href="/panel/raw-materials-warehouse/output"
+                                                    className={pathname === "/panel/primary-store/input" ? "text-mainRed text-[0.9rem]" : "text-gray9F hover:text-textGray text-[0.9rem]"}>بخش ورودی</span></Link></li>
+                                                <li><Link href="/panel/primary-store/output"
                                                           className="block py-2 px-5"><span
-                                                    className={pathname === "/panel/raw-materials-warehouse/output" ? "text-mainRed text-[0.9rem]" : "text-gray9F hover:text-textGray text-[0.9rem]"}>بخش خروجی</span></Link></li>
+                                                    className={pathname === "/panel/primary-store/output" ? "text-mainRed text-[0.9rem]" : "text-gray9F hover:text-textGray text-[0.9rem]"}>بخش خروجی</span></Link></li>
                                             </ul>
                                         </details>
                                     </div>
@@ -283,10 +285,10 @@ export default function RootLayout({children}) {
                                                 </svg>
                                             </summary>
                                             <ul className="flex flex-col gap-1 pr-2">
-                                                <li><Link href="/panel/equipment-warehouse/input"
+                                                <li><Link href="/panel/equipment-store/input"
                                                           className="block py-2 px-5"><span
                                                     className={pathname === "/panel/equipment-warehouse/input" ? "text-mainRed text-[0.9rem]" : "text-gray9F hover:text-textGray text-[0.9rem]"}>بخش ورودی</span></Link></li>
-                                                <li><Link href="/panel/equipment-warehouse/output"
+                                                <li><Link href="/panel/equipment-store/input"
                                                           className="block py-2 px-5"><span
                                                     className={pathname === "/panel/equipment-warehouse/output" ? "text-mainRed text-[0.9rem]" : "text-gray9F hover:text-textGray text-[0.9rem]"}>بخش خروجی</span></Link></li>
                                             </ul>
@@ -302,10 +304,10 @@ export default function RootLayout({children}) {
                                                 </svg>
                                             </summary>
                                             <ul className="flex flex-col gap-1 pr-2">
-                                                <li><Link href="/panel/product-warehouse/input"
+                                                <li><Link href="/panel/product-store/input"
                                                           className="block py-2 px-5"><span
                                                     className={pathname === "/panel/product-warehouse/input" ? "text-mainRed text-[0.9rem]" : "text-gray9F hover:text-textGray text-[0.9rem]"}>بخش ورودی</span></Link></li>
-                                                <li><Link href="/panel/product-warehouse/output"
+                                                <li><Link href="/panel/product-store/output"
                                                           className="block py-2 px-5"><span
                                                     className={pathname === "/panel/product-warehouse/output" ? "text-mainRed text-[0.9rem]" : "text-gray9F hover:text-textGray text-[0.9rem]"}>بخش خروجی</span></Link></li>
                                             </ul>
@@ -315,6 +317,21 @@ export default function RootLayout({children}) {
                                         <Link href="/panel/vehicles-and-equipment"
                                               className="block py-4 px-2 border-b border-b-1 border-b-solid  border-b-borderGray"><span
                                             className={pathname === "/panel/vehicles-and-equipment" ? "text-mainRed text-[0.9rem]" : "text-gray9F hover:text-textGray text-[0.9rem]"}>وسایل و تجهیزات</span></Link>
+                                    </div>
+                                    <div>
+                                        <Link href="/panel/purchase-request"
+                                              className="block py-4 px-2 border-b border-b-1 border-b-solid  border-b-borderGray"><span
+                                            className={pathname === "/panel/purchase-request" ? "text-mainRed text-[0.9rem]" : "text-gray9F hover:text-textGray text-[0.9rem]"}>درخواست خرید</span></Link>
+                                    </div>
+                                    <div>
+                                        <Link href="/panel/ticket"
+                                              className="block py-4 px-2 border-b border-b-1 border-b-solid  border-b-borderGray"><span
+                                            className={pathname === "/panel/ticket" ? "text-mainRed text-[0.9rem]" : "text-gray9F hover:text-textGray text-[0.9rem]"}>تیکت</span></Link>
+                                    </div>
+                                    <div>
+                                        <Link href="/panel/user-account"
+                                              className="block py-4 px-2 border-b border-b-1 border-b-solid  border-b-borderGray"><span
+                                            className={pathname === "/panel/user-account" ? "text-mainRed text-[0.9rem]" : "text-gray9F hover:text-textGray text-[0.9rem]"}>حساب کاربری</span></Link>
                                     </div>
                                 </div>
                             </div>
@@ -337,12 +354,12 @@ export default function RootLayout({children}) {
                                         </svg>
                                     </summary>
                                     <ul className="flex flex-col gap-1 pr-2">
-                                        <li><Link href="/panel/raw-materials-warehouse/input"
+                                        <li><Link href="/panel/primary-store/input"
                                                   className="block py-2 px-5"><span
-                                            className={pathname === "/panel/raw-materials-warehouse/input" ? "text-mainRed text-[0.9rem]" : "text-gray9F hover:text-textGray text-[0.9rem]"}>بخش ورودی</span></Link></li>
-                                        <li><Link href="/panel/raw-materials-warehouse/output"
+                                            className={pathname === "/panel/primary-store/input" ? "text-mainRed text-[0.9rem]" : "text-gray9F hover:text-textGray text-[0.9rem]"}>بخش ورودی</span></Link></li>
+                                        <li><Link href="/panel/primary-store/output"
                                                   className="block py-2 px-5"><span
-                                            className={pathname === "/panel/raw-materials-warehouse/output" ? "text-mainRed text-[0.9rem]" : "text-gray9F hover:text-textGray text-[0.9rem]"}>بخش خروجی</span></Link></li>
+                                            className={pathname === "/panel/primary-store/output" ? "text-mainRed text-[0.9rem]" : "text-gray9F hover:text-textGray text-[0.9rem]"}>بخش خروجی</span></Link></li>
                                     </ul>
                                 </details>
                             </div>
@@ -356,12 +373,12 @@ export default function RootLayout({children}) {
                                         </svg>
                                     </summary>
                                     <ul className="flex flex-col gap-1 pr-2">
-                                        <li><Link href="/panel/equipment-warehouse/input"
+                                        <li><Link href="/panel/equipment-store/input"
                                                   className="block py-2 px-5"><span
-                                            className={pathname === "/panel/equipment-warehouse/input" ? "text-mainRed text-[0.9rem]" : "text-gray9F hover:text-textGray text-[0.9rem]"}>بخش ورودی</span></Link></li>
-                                        <li><Link href="/panel/equipment-warehouse/output"
+                                            className={pathname === "/panel/equipment-store/input" ? "text-mainRed text-[0.9rem]" : "text-gray9F hover:text-textGray text-[0.9rem]"}>بخش ورودی</span></Link></li>
+                                        <li><Link href="/panel/equipment-store/output"
                                                   className="block py-2 px-5"><span
-                                            className={pathname === "/panel/equipment-warehouse/output" ? "text-mainRed text-[0.9rem]" : "text-gray9F hover:text-textGray text-[0.9rem]"}>بخش خروجی</span></Link></li>
+                                            className={pathname === "/panel/equipment-store/output" ? "text-mainRed text-[0.9rem]" : "text-gray9F hover:text-textGray text-[0.9rem]"}>بخش خروجی</span></Link></li>
                                     </ul>
                                 </details>
                             </div>
@@ -375,12 +392,12 @@ export default function RootLayout({children}) {
                                         </svg>
                                     </summary>
                                     <ul className="flex flex-col gap-1 pr-2">
-                                        <li><Link href="/panel/product-warehouse/input"
+                                        <li><Link href="/panel/product-store/input"
                                                   className="block py-2 px-5"><span
-                                            className={pathname === "/panel/product-warehouse/input" ? "text-mainRed text-[0.9rem]" : "text-gray9F hover:text-textGray text-[0.9rem]"}>بخش ورودی</span></Link></li>
-                                        <li><Link href="/panel/product-warehouse/output"
+                                            className={pathname === "/panel/product-store/input" ? "text-mainRed text-[0.9rem]" : "text-gray9F hover:text-textGray text-[0.9rem]"}>بخش ورودی</span></Link></li>
+                                        <li><Link href="/panel/product-store/output"
                                                   className="block py-2 px-5"><span
-                                            className={pathname === "/panel/product-warehouse/output" ? "text-mainRed text-[0.9rem]" : "text-gray9F hover:text-textGray text-[0.9rem]"}>بخش خروجی</span></Link></li>
+                                            className={pathname === "/panel/product-store/output" ? "text-mainRed text-[0.9rem]" : "text-gray9F hover:text-textGray text-[0.9rem]"}>بخش خروجی</span></Link></li>
                                     </ul>
                                 </details>
                             </div>
@@ -388,6 +405,21 @@ export default function RootLayout({children}) {
                                 <Link href="/panel/vehicles-and-equipment"
                                       className="block py-4 px-2 border-b border-b-1 border-b-solid  border-b-borderGray"><span
                                     className={pathname === "/panel/vehicles-and-equipment" ? "text-mainRed text-[0.9rem]" : "text-gray9F hover:text-textGray text-[0.9rem]"}>وسایل و تجهیزات</span></Link>
+                            </div>
+                            <div>
+                                <Link href="/panel/purchase-request"
+                                      className="block py-4 px-2 border-b border-b-1 border-b-solid  border-b-borderGray"><span
+                                    className={pathname === "/panel/purchase-request" ? "text-mainRed text-[0.9rem]" : "text-gray9F hover:text-textGray text-[0.9rem]"}>درخواست خرید</span></Link>
+                            </div>
+                            <div>
+                                <Link href="/panel/ticket"
+                                      className="block py-4 px-2 border-b border-b-1 border-b-solid  border-b-borderGray"><span
+                                    className={pathname === "/panel/ticket" ? "text-mainRed text-[0.9rem]" : "text-gray9F hover:text-textGray text-[0.9rem]"}>تیکت</span></Link>
+                            </div>
+                            <div>
+                                <Link href="/panel/user-account"
+                                      className="block py-4 px-2 border-b border-b-1 border-b-solid  border-b-borderGray"><span
+                                    className={pathname === "/panel/user-account" ? "text-mainRed text-[0.9rem]" : "text-gray9F hover:text-textGray text-[0.9rem]"}>حساب کاربری</span></Link>
                             </div>
                         </div>
                     </div>

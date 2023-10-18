@@ -12,13 +12,16 @@ import {useDispatch, useSelector} from 'react-redux'
 import {setAccessToken, setCredentials} from '../../redux/api/authSlice'
 import {generateCodeVerifier} from "@/helper/pkce";
 import jwt_decode from "jwt-decode";
+import {useGetAccessMutation} from "@/redux/api/getAccessSlice";
+import {setAccess} from "@/redux/permission/accessSlice";
 
 export default function redirect() {
     const searchParams = useSearchParams()
     const router = useRouter()
     const dispatch = useDispatch()
 
-    const [login, { isLoading,error }] = useLoginMutation()
+    const [login, { isLoading:isLoadingLogin,error:errorLogin }] = useLoginMutation()
+    const [getAccess, { isLoading:isLoadingAccess ,error:errorAccess }] = useGetAccessMutation()
 
     const code = searchParams.get('code')
 
@@ -37,8 +40,9 @@ export default function redirect() {
         try {
             const userData = await login(formData)
             dispatch(setAccessToken(userData?.data?.access_token))
+            const accessData = await getAccess({Token:userData?.data?.access_token})
+            dispatch(setAccess(accessData?.data?.pages))
             let tokenContent = jwt_decode(userData?.data?.access_token);
-            console.log(tokenContent)
             window.sessionStorage.setItem("name",tokenContent.name)
             window.sessionStorage.setItem("role",tokenContent.role)
             window.sessionStorage.setItem("profile",tokenContent.profile)
@@ -46,12 +50,12 @@ export default function redirect() {
             window.sessionStorage.setItem("organizationId",tokenContent.organizationId)
             window.sessionStorage.setItem("subOrganizationId",tokenContent.subOrganizationId)
             window.sessionStorage.setItem("refresh_token",userData.data.refresh_token)
-
             router.push("/panel")
         }catch (err){
-            if(err){
-                router.push("/")
-            }
+            console.log(err)
+            // if(err){
+            //     router.push("/")
+            // }
         }
     }
     useEffect(()=>{

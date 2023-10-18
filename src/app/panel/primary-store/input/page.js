@@ -1,31 +1,28 @@
 'use client'
 
-import React, {useState} from "react";
+import React, {useEffect, useState} from "react";
 
 import {FormControl, InputAdornment, Menu, OutlinedInput, Pagination, Skeleton,} from "@mui/material";
 
-import AddDataDialog from "@/components/Panel/rew-matrials-warehouse/input/AddDataDialog";
-import FilterDialog from "@/components/Panel/rew-matrials-warehouse/input/FilterDialog";
-import MoreInfoDialog from "@/components/Panel/rew-matrials-warehouse/input/MoreInfoDialog";
-import DeleteDialog from "@/components/Panel/rew-matrials-warehouse/input/DeleteDialog";
+import AddDataDialog from "@/components/Panel/primary-store/input/AddDataDialog";
+import FilterDialog from "@/components/Panel/primary-store/input/FilterDialog";
+import MoreInfoDialog from "@/components/Panel/primary-store/input/MoreInfoDialog";
+import DeleteDialog from "@/components/Panel/primary-store/input/DeleteDialog";
 import Link from "next/link";
-import {useGetAllQuery} from "@/redux/features/rew-matrials-warehouse/input/RMWIapiSlice";
-import EditInfoDialog from "@/components/Panel/rew-matrials-warehouse/input/EditInfoDialog";
+import {useGetAllQuery} from "@/redux/features/primary-store/input/RMWIapiSlice";
+import EditInfoDialog from "@/components/Panel/primary-store/input/EditInfoDialog";
 
 function Dashboard() {
 
     const [page, setPage] = useState(1)
     const [sort,setSort] = useState("desc")
     const [openAddData, setOpenAddData] = useState(false)
-    const [deleteTargetId, setDeleteTargetId] = useState("")
-    const [filterItem,setFilterItem] = useState({body:[
-            {
-                key:"producer",
-                operation:"~",
-                value:"محمد"
-            }
-        ]})
 
+
+    const [openDelete, setOpenDelete] = useState(false)
+    const [deleteTargetId, setDeleteTargetId] = useState("")
+
+    const [openMoreInfo, setOpenMoreInfo] = useState(false)
     const [moreInfoTarget, setMoreInfoTarget] = useState({
         productId: "",
         productName:"",
@@ -39,6 +36,7 @@ function Dashboard() {
         producer: "",
     })
 
+    const [openEditInfo, setOpenEditInfo] = useState(false)
     const [editInfoTarget,setEditInfoTarget] = useState(
         {
             productId: "",
@@ -53,36 +51,19 @@ function Dashboard() {
             producer: "",
         }
     )
-    const [openFilter, setOpenFilter] = useState(false)
-    const [openMoreInfo, setOpenMoreInfo] = useState(false)
-    const [openDelete, setOpenDelete] = useState(false)
-    const [openEditInfo, setOpenEditInfo] = useState(false)
-    const [anchorElSort, setAnchorElSort] = React.useState(null);
-    const openSort = Boolean(anchorElSort);
 
+    const [openFilter, setOpenFilter] = useState(false)
+    const [filterItem,setFilterItem] = useState("")
+
+
+    const [anchorElSort, setAnchorElSort] = useState(null);
+    const openSort = Boolean(anchorElSort);
     const handleOpenSortMenu = (event) => {
         setAnchorElSort(event.currentTarget);
     };
     const handleCloseSortMenu = () => {
         setAnchorElSort(null);
     };
-
-    // const token = useSelector(state =>(state.auth.accessToken))
-    // const handleGet = async ()=>{
-    //     await axios.get("http://localhost:9191/api/v1/inventory/primary-store-input",{
-    //         headers:{
-    //             Authorization: "Bearer " + token
-    //         }
-    //     }).then((res)=>{
-    //         console.log(res)
-    //     }).catch((err)=>{
-    //         console.log(err)
-    //     })
-    // }
-    const {data: inventoryData = [], isLoading: isDataLoading, isError: isDataError} = useGetAllQuery({page,sort,filterItem})
-
-    // const token = useSelector(state =>(state.auth))
-    // console.log(token)
 
     const handleOpenAddData = () => {
         setOpenAddData(true)
@@ -97,11 +78,11 @@ function Dashboard() {
     const handleCloseFilter = () => {
         setOpenFilter(false)
     }
-
     const handleOpenMoreInfo = (info) => {
         setMoreInfoTarget(info)
         setOpenMoreInfo(true)
     }
+
     const handleCloseMoreInfo = () => {
         setMoreInfoTarget(
             {
@@ -119,20 +100,20 @@ function Dashboard() {
         )
         setOpenMoreInfo(false)
     }
-
     const handleOpenDelete = (id) => {
         setDeleteTargetId(id)
         setOpenDelete(true)
     }
+
     const handleCloseDelete = () => {
         setDeleteTargetId("")
         setOpenDelete(false)
     }
+
     const handleOpenEditInfo = (info) =>{
         setEditInfoTarget(info)
         setOpenEditInfo(true)
     }
-
     const handleCloseEditInfo = () =>{
         setEditInfoTarget({
             productId: "",
@@ -148,9 +129,20 @@ function Dashboard() {
         })
         setOpenEditInfo(false)
     }
+
+    const handleOpenMoreInfoRow = (info)=>{
+        if(window.innerWidth <= 768){
+            handleOpenMoreInfo(info)
+        }
+    }
+
     const handlePagination = (event, value) => {
         setPage(value)
     }
+
+
+    const {data: inventoryData = [], isLoading: isDataLoading, isError: isDataError} = useGetAllQuery({page,sort,filterItem})
+
     return (
         <>
             <div>
@@ -174,27 +166,27 @@ function Dashboard() {
                     </div>
                 </header>
                 <section className="py-4 md:px-8 mt-5 bg-white h-[50rem]">
-                    <div className="px-4 flex justify-between">
-                        <div className="w-[50%] md:w-[37%]">
-                            <FormControl fullWidth>
-                                <OutlinedInput
-                                    size="small"
-                                    sx={{py: "0.2rem"}}
-                                    placeholder="جستوجو..."
-                                    id="outlined-adornment-amount"
-                                    inputProps={{style: {fontFamily: "IRANYekan", fontSize: "0.9rem"}}}
-                                    startAdornment={<InputAdornment position="start">
-                                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"
-                                             viewBox="0 0 24 24" fill="none">
-                                            <path
-                                                d="M21 21L16.65 16.65M11 6C13.7614 6 16 8.23858 16 11M19 11C19 15.4183 15.4183 19 11 19C6.58172 19 3 15.4183 3 11C3 6.58172 6.58172 3 11 3C15.4183 3 19 6.58172 19 11Z"
-                                                stroke="#9F9F9F" stroke-width="1.5" stroke-linecap="round"
-                                                stroke-linejoin="round"/>
-                                        </svg>
-                                    </InputAdornment>}
-                                />
-                            </FormControl>
-                        </div>
+                    <div className="px-4 flex justify-end">
+                        {/*<div className="w-[50%] md:w-[37%]">*/}
+                        {/*    <FormControl fullWidth>*/}
+                        {/*        <OutlinedInput*/}
+                        {/*            size="small"*/}
+                        {/*            sx={{py: "0.2rem"}}*/}
+                        {/*            placeholder="جستوجو..."*/}
+                        {/*            id="outlined-adornment-amount"*/}
+                        {/*            inputProps={{style: {fontFamily: "IRANYekan", fontSize: "0.9rem"}}}*/}
+                        {/*            startAdornment={<InputAdornment position="start">*/}
+                        {/*                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"*/}
+                        {/*                     viewBox="0 0 24 24" fill="none">*/}
+                        {/*                    <path*/}
+                        {/*                        d="M21 21L16.65 16.65M11 6C13.7614 6 16 8.23858 16 11M19 11C19 15.4183 15.4183 19 11 19C6.58172 19 3 15.4183 3 11C3 6.58172 6.58172 3 11 3C15.4183 3 19 6.58172 19 11Z"*/}
+                        {/*                        stroke="#9F9F9F" stroke-width="1.5" stroke-linecap="round"*/}
+                        {/*                        stroke-linejoin="round"/>*/}
+                        {/*                </svg>*/}
+                        {/*            </InputAdornment>}*/}
+                        {/*        />*/}
+                        {/*    </FormControl>*/}
+                        {/*</div>*/}
                         <div className="flex gap-3">
                             <button onClick={handleOpenFilter}
                                     className="flex items-center gap-2 text-[0.9rem] text-gray9F border border-1 border-solid border-borderGray rounded px-2 md:px-4 py-2">
@@ -248,7 +240,7 @@ function Dashboard() {
                                             <button onClick={()=>{setSort("desc")}} className="w-full flex gap-2 py-3 px-2 hover:bg-neutral-100">
                                                 <span className="text-gray70 text-[0.8rem] tracking-tighter">بر اساس جدید ترین</span>
                                             </button>
-                                            <button onClick={()=>{setSort("asc")}}
+                                            <button onClick={()=>setSort("asc")}
                                                   className="w-full flex gap-2 py-3 px-2 hover:bg-neutral-100 border-t border-t-[#D9D9D9]">
                                                 <span className="text-gray70 text-[0.8rem] tracking-tighter">بر اساس قدیمی ترین</span>
                                             </button>
@@ -330,7 +322,7 @@ function Dashboard() {
                                         ))
                                     ):(
                                         inventoryData?.content?.map((data, index) => (
-                                            <tr className="border-b">
+                                            <tr onClick={()=>{handleOpenMoreInfoRow(data)}} className="table-row border-b">
                                                 <td className="hidden md:table-cell px-6 py-4  text-gray70 whitespace-nowrap ">
                                                     {index + 1}
                                                 </td>
@@ -395,9 +387,7 @@ function Dashboard() {
                                                             </defs>
                                                         </svg>
                                                     </button>
-                                                    <button onClick={() => {
-                                                        handleOpenDelete(data.id)
-                                                    }}
+                                                    <button onClick={() => {handleOpenDelete(data.id)}}
                                                             className="border border-1 border-solid border-[#FE4949] rounded p-[0.4rem] hover:bg-red-100">
                                                         <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"
                                                              viewBox="0 0 16 16" fill="none">
@@ -416,15 +406,13 @@ function Dashboard() {
                         </div>
                     </div>
                     <div className="flex justify-center mb-5 mt-7" style={{direction: "rtl"}}>
-                        <Pagination page={page} count={inventoryData.totalPages} onChange={handlePagination}
-                                    shape="rounded"/>
+                        <Pagination page={page} count={inventoryData.totalPages} onChange={handlePagination} shape="rounded"/>
                     </div>
                 </section>
                 <AddDataDialog handleCloseAddData={handleCloseAddData} openAddData={openAddData}/>
-                <FilterDialog openFilter={openFilter} handleCloseFilter={handleCloseFilter}/>
-                <MoreInfoDialog moreInfoTarget={moreInfoTarget} openMoreInfo={openMoreInfo} handleCloseMoreInfo={handleCloseMoreInfo}/>
-                <DeleteDialog deleteTargetId={deleteTargetId} openDelete={openDelete}
-                              handleCloseDelete={handleCloseDelete}/>
+                <FilterDialog filterItem={filterItem} setFilterItem={setFilterItem} openFilter={openFilter} handleCloseFilter={handleCloseFilter}/>
+                <MoreInfoDialog handleOpenDelete={handleOpenDelete} handleOpenEditInfo={handleOpenEditInfo} moreInfoTarget={moreInfoTarget} openMoreInfo={openMoreInfo} handleCloseMoreInfo={handleCloseMoreInfo}/>
+                <DeleteDialog deleteTargetId={deleteTargetId} openDelete={openDelete} handleCloseDelete={handleCloseDelete}/>
                 <EditInfoDialog editInfoTarget={editInfoTarget} handleCloseEditInfo={handleCloseEditInfo} openEditInfo={openEditInfo}/>
             </div>
         </>
