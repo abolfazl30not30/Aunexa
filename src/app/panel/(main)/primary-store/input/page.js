@@ -11,8 +11,11 @@ import DeleteDialog from "@/components/Panel/primary-store/input/DeleteDialog";
 import Link from "next/link";
 import {useGetAllQuery} from "@/redux/features/primary-store/input/RMWIapiSlice";
 import EditInfoDialog from "@/components/Panel/primary-store/input/EditInfoDialog";
+import {useSelector} from "react-redux";
 
 function Dashboard() {
+    let permission =  useSelector((state)=> state.access.pages)
+    console.log(permission)
 
     const [page, setPage] = useState(1)
     const [sort,setSort] = useState("desc")
