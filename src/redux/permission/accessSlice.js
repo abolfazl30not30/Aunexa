@@ -5,6 +5,7 @@ const accessSlice = createSlice({
     name: 'access',
     initialState: {
         pages:[]
+
     },
     reducers: {
         setAccess: (state, action) => {
