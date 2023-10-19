@@ -15,7 +15,5 @@ const accessSlice = createSlice({
 })
 
 export const { setAccess } = accessSlice.actions
-
 export default accessSlice.reducer
 
-export const selectCurrentAccessToken = (state) => state.auth.accessToken

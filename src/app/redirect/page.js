@@ -41,7 +41,8 @@ export default function redirect() {
             const userData = await login(formData)
             dispatch(setAccessToken(userData?.data?.access_token))
             const accessData = await getAccess({Token:userData?.data?.access_token})
-            dispatch(setAccess(accessData?.data?.pages))
+            dispatch(setAccess(accessData?.data))
+            console.log(accessData?.data)
             let tokenContent = jwt_decode(userData?.data?.access_token);
             window.sessionStorage.setItem("name",tokenContent.name)
             window.sessionStorage.setItem("role",tokenContent.role)
@@ -53,9 +54,9 @@ export default function redirect() {
             router.push("/panel")
         }catch (err){
             console.log(err)
-            // if(err){
-            //     router.push("/")
-            // }
+            if(err){
+                router.push("/")
+            }
         }
     }
     useEffect(()=>{

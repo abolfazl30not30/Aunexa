@@ -52,6 +52,7 @@ export default function EditInfoDialog(props) {
         {value: "D"},
         {value: "S"},
     ]
+
     const [date,setDate] = useState("")
 
     const [product,setProduct] = useState(null)
@@ -169,25 +170,27 @@ export default function EditInfoDialog(props) {
         setDate(newDate)
     }
     useEffect(()=>{
-        getProductList()
-        getUnitList()
-        formik.setValues({
-            id:props.editInfoTarget?.id,
-            productId: props.editInfoTarget?.productId,
-            productName:props.editInfoTarget?.productName,
-            value: props.editInfoTarget?.value,
-            unit: props.editInfoTarget?.unit,
-            expirationDate: props.editInfoTarget?.expirationDate,
-            machineTag: props.editInfoTarget?.machineTag,
-            machineCode: props.editInfoTarget?.machineCode,
-            vehicleType:props.editInfoTarget?.vehicleType,
-            driverName: props.editInfoTarget?.driverName,
-            producer: props.editInfoTarget?.producer,
-        })
-        handleSetProductInput(props.editInfoTarget?.productId)
-        handleSetUnitInput(props.editInfoTarget?.unit)
-        handleSetMachineTagInput(props.editInfoTarget?.machineTag)
-        handleSetExpirationDate(props.editInfoTarget?.expirationDate)
+        if(props.openEditInfo){
+            getProductList()
+            getUnitList()
+            formik.setValues({
+                id:props.editInfoTarget?.id,
+                productId: props.editInfoTarget?.productId,
+                productName:props.editInfoTarget?.productName,
+                value: props.editInfoTarget?.value,
+                unit: props.editInfoTarget?.unit,
+                expirationDate: props.editInfoTarget?.expirationDate,
+                machineTag: props.editInfoTarget?.machineTag,
+                machineCode: props.editInfoTarget?.machineCode,
+                vehicleType:props.editInfoTarget?.vehicleType,
+                driverName: props.editInfoTarget?.driverName,
+                producer: props.editInfoTarget?.producer,
+            })
+            handleSetProductInput(props.editInfoTarget?.productId)
+            handleSetUnitInput(props.editInfoTarget?.unit)
+            handleSetMachineTagInput(props.editInfoTarget?.machineTag)
+            handleSetExpirationDate(props.editInfoTarget?.expirationDate)
+        }
     },[props.openEditInfo])
 
     useEffect(()=>{

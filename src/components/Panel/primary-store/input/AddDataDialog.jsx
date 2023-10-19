@@ -59,6 +59,7 @@ export default function AddDataDialog(props) {
             getProductList()
         }
     },[openProductList])
+
     //unit input
     const [unit,setUnit] = useState(null)
     const [openUnitList,setOpenUnitList] = useState(false)
