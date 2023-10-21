@@ -41,7 +41,6 @@ const baseQueryWithReauth = async (args, api, extraOptions) => {
             result = await baseQuery(args, api, extraOptions)
         } else {
             api.dispatch(logOut())
-            window.location.href = "/"
         }
     }
 

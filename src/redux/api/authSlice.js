@@ -15,6 +15,8 @@ const authSlice = createSlice({
         },
         logOut: (state, action) => {
             state.accessToken = ""
+            window.sessionStorage.clear()
+            window.location.href = "/"
         }
     },
 })
