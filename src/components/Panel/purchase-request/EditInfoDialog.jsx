@@ -14,7 +14,7 @@ import "react-multi-date-picker/styles/colors/red.css"
 import {
     useLazyGetAllProductQuery,
     useLazyGetAllUnitQuery
-} from "@/redux/features/product/ProductSlice";
+} from "@/redux/features/category/CategorySlice";
 import { useUpdateMutation} from "@/redux/features/primary-store/input/RMWIapiSlice";
 
 

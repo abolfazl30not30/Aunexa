@@ -68,7 +68,7 @@ export default function EditInfoDialog(props) {
     const validate = (values, props) => {
         const errors = {};
 
-        if (!values.machineTag && !values.machineCode) {
+        if (!values.tag && !values.machineCode) {
             errors.machineTag = "لطفا پلاک یا کد وسیله نقلیه را وارد کنید";
         } else if (!values.machineCode && values.machineTag) {
             if (!/[0-9]{7}./.test(values.machineTag)) {
