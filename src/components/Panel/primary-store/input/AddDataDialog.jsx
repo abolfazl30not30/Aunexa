@@ -1,7 +1,15 @@
 'use client'
 import TextField from "@mui/material/TextField";
 import React, {useEffect, useState} from "react";
-import {Autocomplete, DialogContent, DialogContentText, FormControl, MenuItem, Select,} from "@mui/material";
+import {
+    Autocomplete,
+    DialogContent,
+    DialogContentText,
+    FormControl,
+    InputLabel,
+    MenuItem, OutlinedInput,
+    Select,
+} from "@mui/material";
 import Dialog from "@mui/material/Dialog";
 import {TailSpin} from "react-loader-spinner";
 import * as yup from "yup";
@@ -16,10 +24,10 @@ import {
     useLazyGetAllUnitQuery,
     useLazyGetAllVehicleQuery
 } from "@/redux/features/category/CategorySlice";
-import {useSaveMutation} from "@/redux/features/primary-store/input/RMWIapiSlice";
+import {useSavePSIMutation} from "@/redux/features/primary-store/input/PSIapiSlice";
 import {
-    useLazyGetOneByCodeQuery,
-    useLazyGetOneByTagQuery
+    useLazyGetOneVehiclesByCodeQuery,
+    useLazyGetOneVehiclesByTagQuery
 } from "@/redux/features/vehicles-and-equipment/VehiclesAndEquipmentSlice";
 
 
@@ -154,10 +162,10 @@ export default function AddDataDialog(props) {
     }
 
     //submit data
-    const [submitData, { isLoading:isSubmitLoading ,error}] = useSaveMutation()
-    const [getVehicleByTag,{ data : vehicleByTag  = {} , isLoading : isVehicleByTagLoading, isError: isVehicleByTagError }] = useLazyGetOneByTagQuery()
+    const [submitData, { isLoading:isSubmitLoading ,error}] = useSavePSIMutation()
+    const [getVehicleByTag,{ data : vehicleByTag  = {} , isLoading : isVehicleByTagLoading, isError: isVehicleByTagError }] = useLazyGetOneVehiclesByTagQuery()
 
-    const [getVehicleByCode,{ data : vehicleByCode  = {} , isLoading : isVehicleByCodeLoading, isError: isVehicleByCodeError }] = useLazyGetOneByCodeQuery()
+    const [getVehicleByCode,{ data : vehicleByCode  = {} , isLoading : isVehicleByCodeLoading, isError: isVehicleByCodeError }] = useLazyGetOneVehiclesByCodeQuery()
 
     const schema = yup.object().shape({
         productId: yup.string().required("لطفا نام محصول را وارد کنید"),
@@ -173,6 +181,7 @@ export default function AddDataDialog(props) {
             productName:"",
             value: "",
             unit: "",
+            status:"UNKNOWN",
             expirationDate: "",
             machineTag: "",
             machineCode: "",
@@ -375,7 +384,8 @@ export default function AddDataDialog(props) {
 
                                         calendar={persian}
                                         locale={persian_fa}>
-                                        <button className="px-2 pb-4" onClick={() => {
+                                        <button className="px-2 pb-4" onClick={(e) => {
+                                            e.preventDefault()
                                             setDate("")
                                             formik.setFieldValue("expirationDate", "")
                                         }}>
@@ -457,30 +467,49 @@ export default function AddDataDialog(props) {
                                     </div>
                                 </div>
                                 <div>
-                                    <TextField
-                                        fullWidth
-                                        placeholder="نام راننده (اجباری)"
-                                        type="text"
-                                        name="driverName"
-                                        value={formik.values.driverName}
-                                        onChange={formik.handleChange}
-                                        error={formik.touched.driverName && Boolean(formik.errors.driverName)}
-                                        helperText={formik.touched.driverName && formik.errors.driverName}
-                                        inputProps={{style: {fontFamily: "IRANYekan", fontSize: "0.8rem"}}}
-                                        InputLabelProps={{style: {fontFamily: "IRANYekan"}}}/>
+                                    <FormControl fullWidth>
+                                        <InputLabel id="demo-simple-select-label" sx={{fontFamily: "IRANYekan", fontSize: "0.8rem",color:"#9F9F9F"}}>وضعیت</InputLabel>
+                                        <Select
+                                            labelId="demo-simple-select-label"
+                                            id="demo-simple-select"
+                                            value={formik.values.status}
+                                            name="status"
+                                            input={<OutlinedInput sx={{fontFamily: "IRANYekan", fontSize: "0.8rem"}} label="وضعیت" />}
+                                            sx={{fontFamily: "IRANYekan", fontSize: "0.8rem"}}
+                                            onChange={formik.handleChange}>
+                                            <MenuItem value="UNKNOWN" sx={{fontFamily: "IRANYekan", fontSize: "0.8rem"}}>نامعلوم</MenuItem>
+                                            <MenuItem value="CONFIRMED" sx={{fontFamily: "IRANYekan", fontSize: "0.8rem"}}>تاييد شده</MenuItem>
+                                            <MenuItem value="TROUBLED" sx={{fontFamily: "IRANYekan", fontSize: "0.8rem"}}>مشکل دار</MenuItem>
+                                        </Select>
+                                    </FormControl>
                                 </div>
-                                <div>
-                                    <TextField
-                                        fullWidth
-                                        placeholder="تامین کننده (اجباری)"
-                                        type="text"
-                                        name="producer"
-                                        value={formik.values.producer}
-                                        onChange={formik.handleChange}
-                                        error={formik.touched.producer && Boolean(formik.errors.producer)}
-                                        helperText={formik.touched.producer && formik.errors.producer}
-                                        inputProps={{style: {fontFamily: "IRANYekan", fontSize: "0.8rem"}}}
-                                        InputLabelProps={{style: {fontFamily: "IRANYekan"}}}/>
+                                <div className="flex flex-col md:flex-row gap-1 justify-between">
+                                    <div className="w-full md:w-1/2">
+                                        <TextField
+                                            fullWidth
+                                            placeholder="نام راننده (اجباری)"
+                                            type="text"
+                                            name="driverName"
+                                            value={formik.values.driverName}
+                                            onChange={formik.handleChange}
+                                            error={formik.touched.driverName && Boolean(formik.errors.driverName)}
+                                            helperText={formik.touched.driverName && formik.errors.driverName}
+                                            inputProps={{style: {fontFamily: "IRANYekan", fontSize: "0.8rem"}}}
+                                            InputLabelProps={{style: {fontFamily: "IRANYekan"}}}/>
+                                    </div>
+                                    <div className="w-full md:w-1/2">
+                                        <TextField
+                                            fullWidth
+                                            placeholder="تامین کننده (اجباری)"
+                                            type="text"
+                                            name="producer"
+                                            value={formik.values.producer}
+                                            onChange={formik.handleChange}
+                                            error={formik.touched.producer && Boolean(formik.errors.producer)}
+                                            helperText={formik.touched.producer && formik.errors.producer}
+                                            inputProps={{style: {fontFamily: "IRANYekan", fontSize: "0.8rem"}}}
+                                            InputLabelProps={{style: {fontFamily: "IRANYekan"}}}/>
+                                    </div>
                                 </div>
                                 <div>
                                     <TextField

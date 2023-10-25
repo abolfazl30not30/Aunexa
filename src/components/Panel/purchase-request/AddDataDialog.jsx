@@ -12,7 +12,7 @@ import DatePicker from "react-multi-date-picker";
 import CircularProgress from '@mui/material/CircularProgress';
 import "react-multi-date-picker/styles/colors/red.css"
 import {useLazyGetAllProductQuery, useLazyGetAllUnitQuery} from "@/redux/features/category/CategorySlice";
-import {useSaveMutation} from "@/redux/features/primary-store/input/RMWIapiSlice";
+import {useSavePSIMutation} from "@/redux/features/primary-store/input/PSIapiSlice";
 
 
 export default function AddDataDialog(props) {
@@ -35,7 +35,7 @@ export default function AddDataDialog(props) {
         }
     },[openUnitList])
 
-    const [submitData, { isLoading:isSubmitLoading ,error}] = useSaveMutation()
+    const [submitData, { isLoading:isSubmitLoading ,error}] = useSavePSIMutation()
     const validate = (values, props) => {
         const errors = {};
 

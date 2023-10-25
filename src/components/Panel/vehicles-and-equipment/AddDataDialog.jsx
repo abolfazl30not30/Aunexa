@@ -5,7 +5,7 @@ import {
     Autocomplete,
     DialogContent,
     DialogContentText,
-    FormControl,
+    FormControl, FormHelperText,
     InputLabel,
     MenuItem, OutlinedInput,
     Select,
@@ -20,12 +20,13 @@ import DatePicker from "react-multi-date-picker";
 import CircularProgress from '@mui/material/CircularProgress';
 import "react-multi-date-picker/styles/colors/red.css"
 import {
+     useLazyGetAllSubOrganizationQuery,
     useLazyGetAllVehicleCategoryQuery
 } from "@/redux/features/category/CategorySlice";
 
 import { styled } from '@mui/material/styles';
 import Switch from '@mui/material/Switch';
-import {useSaveMutation} from "@/redux/features/vehicles-and-equipment/VehiclesAndEquipmentSlice";
+import {useSaveVehiclesMutation} from "@/redux/features/vehicles-and-equipment/VehiclesAndEquipmentSlice";
 
 const AntSwitch = styled(Switch)(({ theme }) => ({
     width: 35,
@@ -114,6 +115,16 @@ export default function AddDataDialog(props) {
         }
     },[openVehicleCategoryList])
 
+    //product input
+    const [subOrganization,setSubOrganization] = useState(null)
+    const [openSubOrganizationList,setOpenSubOrganizationList] = useState(false)
+    const [getSubOrganizationList,{ data : subOrganizationList  = [] , isLoading : isSubOrganizationLoading, isError: isSubOrganizationError }] = useLazyGetAllSubOrganizationQuery()
+    useEffect(()=>{
+        if(openSubOrganizationList){
+            getSubOrganizationList()
+        }
+    },[openSubOrganizationList])
+
     //date input
     const [date,setDate] = useState("")
     const handleDateInput = (value) => {
@@ -163,7 +174,6 @@ export default function AddDataDialog(props) {
                 errors.tag = 'لطفا پلاک  وسیله نقلیه را کامل وارد کنید';
             }
         }
-
         return errors;
     };
 
@@ -171,6 +181,7 @@ export default function AddDataDialog(props) {
         formik.resetForm()
         setDate("")
         setVehicleCategory(null)
+        setSubOrganization(null)
         setTag({
             part1: "",
             part2: "",
@@ -179,10 +190,10 @@ export default function AddDataDialog(props) {
     }
 
     //submit data
-    const [submitData, { isLoading:isSubmitLoading ,error}] = useSaveMutation()
+    const [submitData, { isLoading:isSubmitLoading ,error}] = useSaveVehiclesMutation()
     const schema = yup.object().shape({
         type: yup.string().required("لطفا نوع وسیله را وارد کنید"),
-        // subOrganizationId: yup.string().required("لطفا دپارتمان مورد نظر را انتخاب کنید"),
+        subOrganizationId: yup.string().required("لطفا دپارتمان مورد نظر را انتخاب کنید"),
         status: yup.string().required("لطفا وضعیت را انتخاب کنید"),
     });
 
@@ -195,6 +206,7 @@ export default function AddDataDialog(props) {
             gpsURL: "",
             status:"",
             subOrganizationId:"",
+            subOrganizationName:"",
             purchaseDate:""
         },
       
@@ -356,14 +368,12 @@ export default function AddDataDialog(props) {
                                 </div>
                                 <div>
                                     <div className="flex flex-col">
-                                        <div className="border border-[#D9D9D9] flex px-4">
-                                            <div className="pl-32 pr-2 py-3">
+                                        <div className="flex w-full">
+                                            <div className="border border-[#D9D9D9] py-4 w-1/2 px-3">
                                                 <span className="text-[#9F9F9F] text-[0.8rem]">آیا داری GPS می باشد؟</span>
                                             </div>
-                                            <div className="border border-[#D9D9D9]">
-                                            </div>
-                                            <div className="flex justify-center items-center px-16 py-3">
-                                                <div className="flex justify-center gap-1">
+                                            <div className="border border-[#D9D9D9] py-4 w-1/2">
+                                                <div className="flex justify-center gap-2">
                                                     <span className="text-[#9F9F9F] text-[0.8rem]">خیر</span>
                                                     <AntSwitch checked={formik.values.hasGps} onChange={(e)=>{formik.setFieldValue("hasGps", e.target.checked)}}  inputProps={{ 'aria-label': 'ant design' }} />
                                                     <span className="text-[#9F9F9F] text-[0.8rem]">بله</span>
@@ -386,21 +396,66 @@ export default function AddDataDialog(props) {
                                         inputProps={{style: {fontFamily: "IRANYekan", fontSize: "0.8rem"}}}
                                         InputLabelProps={{style: {fontFamily: "IRANYekan"}}}/>
                                 </div>
-                                <FormControl fullWidth>
+                                <div className=" flex flex-col">
+                                    <Autocomplete
+                                        open={openSubOrganizationList}
+                                        onOpen={() => {
+                                            setOpenSubOrganizationList(true);
+                                        }}
+                                        onClose={() => {
+                                            setOpenSubOrganizationList(false);
+                                        }}
+                                        fullWidth
+                                        clearOnEscape
+                                        disablePortal
+                                        id="combo-box-demo"
+                                        ListboxProps={{
+                                            sx: {fontFamily: "IRANYekan", fontSize: "0.8rem"},
+                                        }}
+                                        options={subOrganizationList}
+                                        getOptionLabel={(option) => option.name}
+                                        value={subOrganization}
+                                        onChange={(event, newValue) => {
+                                            setSubOrganization(newValue)
+                                            formik.setFieldValue("subOrganizationId", newValue?.id)
+                                            formik.setFieldValue("subOrganizationName", newValue?.name)
+                                        }}
+                                        renderInput={(params) =>
+                                            <TextField
+                                                error={formik.touched.subOrganizationId && Boolean(formik.errors.subOrganizationId)}
+                                                helperText={formik.touched.subOrganizationId && formik.errors.subOrganizationId}
+                                                {...params}
+                                                InputProps={{
+                                                    ...params.InputProps,
+                                                    style: {fontFamily: "IRANYekan", fontSize: "0.8rem"},
+                                                    endAdornment:(
+                                                        <React.Fragment>
+                                                            {isSubOrganizationLoading ? <CircularProgress color="inherit" size={20} /> : null}
+                                                            {params.InputProps.endAdornment}
+                                                        </React.Fragment>
+                                                    )
+                                                }}
+                                                placeholder="دپارتمان"
+                                            />}
+                                    />
+                                </div>
+                                <FormControl fullWidth error={formik.touched.status && Boolean(formik.errors.status)}>
                                     <InputLabel id="demo-simple-select-label" sx={{fontFamily: "IRANYekan", fontSize: "0.8rem",color:"#9F9F9F"}}>وضعیت</InputLabel>
                                     <Select
                                         labelId="demo-simple-select-label"
                                         id="demo-simple-select"
+                                        defaultValue={formik.values.status}
                                         value={formik.values.status}
                                         name="status"
                                         input={<OutlinedInput sx={{fontFamily: "IRANYekan", fontSize: "0.8rem"}} label="وضعیت" />}
                                         sx={{fontFamily: "IRANYekan", fontSize: "0.8rem"}}
-                                        onChange={formik.handleChange}
-                                    >
+                                        onChange={formik.handleChange}>
+
                                         <MenuItem value="AVAILABLE" sx={{fontFamily: "IRANYekan", fontSize: "0.8rem"}}>در دسترس</MenuItem>
                                         <MenuItem value="IN_USE" sx={{fontFamily: "IRANYekan", fontSize: "0.8rem"}}>درحال استفاده</MenuItem>
                                         <MenuItem value="DESTROYED" sx={{fontFamily: "IRANYekan", fontSize: "0.8rem"}}>مشکل دار</MenuItem>
                                     </Select>
+                                    <FormHelperText>{formik.touched.status && formik.errors.status}</FormHelperText>
                                 </FormControl>
                                 <div>
                                     <DatePicker
@@ -441,7 +496,8 @@ export default function AddDataDialog(props) {
 
                                         calendar={persian}
                                         locale={persian_fa}>
-                                        <button className="px-2 pb-4" onClick={() => {
+                                        <button className="px-2 pb-4" onClick={(e) => {
+                                            e.preventDefault()
                                             setDate("")
                                             formik.setFieldValue("purchaseDate", "")
                                         }}>

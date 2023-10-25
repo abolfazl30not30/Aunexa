@@ -1,7 +1,7 @@
 
 import { apiSlice } from "../../../api/apiSlice";
 
-export const RMWIapiSlice  = apiSlice.injectEndpoints({
+export const PSIapiSlice  = apiSlice.injectEndpoints({
     endpoints: builder => ({
         getAllPSI: builder.query({
             query: ({page, sort ,filterItem}) => ({
@@ -9,23 +9,7 @@ export const RMWIapiSlice  = apiSlice.injectEndpoints({
             }),
             providesTags: ['primary-store-input']
         }),
-        // getAll: builder.query({
-        //     query: ({page = 1, sort = "desc",body}) => ({
-        //         url: `inventory/primary-store-input/filter?page=${page - 1}&size=10&sort=date,${sort}&sort=time,${sort}`,
-        //         method: 'GET',
-        //         body: body
-        //     }),
-        //     invalidatesTags: ['primary-store-input']
-        // }),
-        // filter: builder.mutation({
-        //     query: (body) => ({
-        //         url: 'inventory/primary-store-input',
-        //         method: 'POST',
-        //         body: body
-        //     }),
-        //     invalidatesTags: ['primary-store-input']
-        // }),
-        save: builder.mutation({
+        savePSI: builder.mutation({
             query: (body) => ({
                 url: 'inventory/primary-store-input',
                 method: 'POST',
@@ -33,7 +17,7 @@ export const RMWIapiSlice  = apiSlice.injectEndpoints({
             }),
             invalidatesTags: ['primary-store-input']
         }),
-        update: builder.mutation({
+        updatePSI: builder.mutation({
             query: (body) => ({
                 url: `inventory/primary-store-input`,
                 method: 'PUT',
@@ -41,7 +25,7 @@ export const RMWIapiSlice  = apiSlice.injectEndpoints({
             }),
             invalidatesTags: ['primary-store-input']
         }),
-        delete: builder.mutation({
+        deletePSI: builder.mutation({
             query: ( id ) => ({
                 url: `inventory/primary-store-input/${id}`,
                 method: 'DELETE',
@@ -54,7 +38,7 @@ export const RMWIapiSlice  = apiSlice.injectEndpoints({
 
 export const {
     useGetAllPSIQuery,
-    useSaveMutation,
-    useUpdateMutation,
-    useDeleteMutation
-} = RMWIapiSlice
+    useSavePSIMutation,
+    useUpdatePSIMutation,
+    useDeletePSIMutation
+} = PSIapiSlice

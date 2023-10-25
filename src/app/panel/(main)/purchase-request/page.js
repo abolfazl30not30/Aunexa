@@ -8,7 +8,7 @@ import FilterDialog from "@/components/Panel/primary-store/input/FilterDialog";
 import MoreInfoDialog from "@/components/Panel/primary-store/input/MoreInfoDialog";
 import DeleteDialog from "@/components/Panel/primary-store/input/DeleteDialog";
 import Link from "next/link";
-import {useGetAllQuery} from "@/redux/features/primary-store/input/RMWIapiSlice";
+import {useGetAllQuery} from "@/redux/features/primary-store/input/PSIapiSlice";
 import EditInfoDialog from "@/components/Panel/primary-store/input/EditInfoDialog";
 
 function PurchaseRequest() {

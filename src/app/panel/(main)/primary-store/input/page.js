@@ -9,7 +9,7 @@ import FilterDialog from "@/components/Panel/primary-store/input/FilterDialog";
 import MoreInfoDialog from "@/components/Panel/primary-store/input/MoreInfoDialog";
 import DeleteDialog from "@/components/Panel/primary-store/input/DeleteDialog";
 import Link from "next/link";
-import {useGetAllPSIQuery} from "@/redux/features/primary-store/input/RMWIapiSlice";
+import {useGetAllPSIQuery} from "@/redux/features/primary-store/input/PSIapiSlice";
 import EditInfoDialog from "@/components/Panel/primary-store/input/EditInfoDialog";
 import {useSelector} from "react-redux";
 
@@ -29,6 +29,7 @@ function primaryStoreInput() {
         productName:"",
         value: "",
         unit: "",
+        status:"",
         expirationDate: "",
         machineTag: "",
         machineCode: "",
@@ -44,6 +45,7 @@ function primaryStoreInput() {
             productName:"",
             value: "",
             unit: "",
+            status:"",
             expirationDate: "",
             machineTag: "",
             machineCode: "",
@@ -91,6 +93,7 @@ function primaryStoreInput() {
                 productName:"",
                 value: "",
                 unit: "",
+                status:"",
                 expirationDate: "",
                 machineTag: "",
                 machineCode: "",
@@ -121,6 +124,7 @@ function primaryStoreInput() {
             productName:"",
             value: "",
             unit: "",
+            status:"",
             expirationDate: "",
             machineTag: "",
             machineCode: "",

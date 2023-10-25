@@ -19,6 +19,11 @@ export const CategorySlice  = apiSlice.injectEndpoints({
             query: () => 'vehicle/machine/find-all',
             providesTags: ['category']
         }),
+        getAllSubOrganization:builder.query({
+            query: () => 'party/sub-organization/find-all',
+            providesTags: ['category']
+        }),
+
     })
 })
 
@@ -26,5 +31,6 @@ export const {
     useLazyGetAllProductQuery,
     useLazyGetAllUnitQuery,
     useLazyGetAllVehicleCategoryQuery,
-    useLazyGetAllVehicleQuery
+    useLazyGetAllVehicleQuery,
+    useLazyGetAllSubOrganizationQuery
 } = CategorySlice

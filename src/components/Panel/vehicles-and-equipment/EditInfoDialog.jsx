@@ -1,7 +1,15 @@
 'use client'
 import TextField from "@mui/material/TextField";
 import React, {useEffect, useState} from "react";
-import {Autocomplete, DialogContent, DialogContentText, FormControl, MenuItem, Select,} from "@mui/material";
+import {
+    Autocomplete,
+    DialogContent,
+    DialogContentText,
+    FormControl, FormHelperText,
+    InputLabel,
+    MenuItem, OutlinedInput,
+    Select,
+} from "@mui/material";
 import Dialog from "@mui/material/Dialog";
 import {TailSpin} from "react-loader-spinner";
 import * as yup from "yup";
@@ -12,11 +20,58 @@ import DatePicker, {DateObject} from "react-multi-date-picker";
 import CircularProgress from '@mui/material/CircularProgress';
 import "react-multi-date-picker/styles/colors/red.css"
 import {
-    useLazyGetAllProductQuery,
-    useLazyGetAllUnitQuery
+    useLazyGetAllSubOrganizationQuery,
+    useLazyGetAllVehicleCategoryQuery
 } from "@/redux/features/category/CategorySlice";
-import { useUpdateMutation} from "@/redux/features/primary-store/input/RMWIapiSlice";
 
+import { styled } from '@mui/material/styles';
+import Switch from '@mui/material/Switch';
+import {
+    useSaveVehiclesMutation,
+    useUpdateVehiclesMutation
+} from "@/redux/features/vehicles-and-equipment/VehiclesAndEquipmentSlice";
+
+const AntSwitch = styled(Switch)(({ theme }) => ({
+    width: 35,
+    height: 18,
+    padding: 0,
+    display: 'flex',
+    '&:active': {
+        '& .MuiSwitch-thumb': {
+            width: 12,
+        },
+        '& .MuiSwitch-switchBase.Mui-checked': {
+            transform: 'translateX(10px)',
+        },
+    },
+    '& .MuiSwitch-switchBase': {
+        padding: 2,
+        '&.Mui-checked': {
+            transform: 'translateX(17px)',
+            color: '#fff',
+            '& + .MuiSwitch-track': {
+                opacity: 1,
+                backgroundColor: theme.palette.mode === 'dark' ? '#DB3746' : '#DB3746',
+            },
+        },
+    },
+    '& .MuiSwitch-thumb': {
+        boxShadow: '0 2px 4px 0 rgb(0 35 11 / 20%)',
+        width: 12,
+        height: 13,
+        borderRadius: 4,
+        transition: theme.transitions.create(['width'], {
+            duration: 200,
+        }),
+    },
+    '& .MuiSwitch-track': {
+        borderRadius: 16 / 2,
+        opacity: 1,
+        backgroundColor:
+            theme.palette.mode === 'dark' ? 'rgba(255,255,255,.35)' : 'rgba(0,0,0,.25)',
+        boxSizing: 'border-box',
+    },
+}));
 
 export default function EditInfoDialog(props) {
     const alphabeticalList = [
@@ -52,181 +107,179 @@ export default function EditInfoDialog(props) {
         {value: "D"},
         {value: "S"},
     ]
+
+    //product input
+    const [vehicleCategory,setVehicleCategory] = useState(null)
+    const [openVehicleCategoryList,setOpenVehicleCategoryList] = useState(false)
+    const [getVehicleCategoryList,{ data : vehicleCategoryList  = [] , isLoading : isVehicleCategoryLoading, isError: isVehicleCategoryError }] = useLazyGetAllVehicleCategoryQuery()
+    useEffect(()=>{
+        if(openVehicleCategoryList){
+            getVehicleCategoryList()
+        }
+    },[openVehicleCategoryList])
+
+    //product input
+    const [subOrganization,setSubOrganization] = useState(null)
+    const [openSubOrganizationList,setOpenSubOrganizationList] = useState(false)
+    const [getSubOrganizationList,{ data : subOrganizationList  = [] , isLoading : isSubOrganizationLoading, isError: isSubOrganizationError }] = useLazyGetAllSubOrganizationQuery()
+    useEffect(()=>{
+        if(openSubOrganizationList){
+            getSubOrganizationList()
+        }
+    },[openSubOrganizationList])
+
+    //date input
     const [date,setDate] = useState("")
+    const handleDateInput = (value) => {
+        if(value){
+            setDate(value)
+            let month = value?.month < 10 ? ('0' + value?.month) : value?.month;
+            let day = value?.day < 10 ? ('0' + value?.day) : value?.day;
+            let convertDate = value?.year + '/' + month + '/' + day;
+            formik.setFieldValue("purchaseDate", convertDate)
+        }else {
+            formik.setFieldValue("purchaseDate", "")
+        }
+    }
 
-    const [product,setProduct] = useState(null)
-    const [openProductList,setOpenProductList] = useState(false)
-    const [getProductList,{ data : productList  = [] , isLoading : isProductLoading, isError: productIsError }] = useLazyGetAllProductQuery()
+    //tag input
+    const [tag, setTag] = useState({
+        part1: "",
+        part2: "",
+        part3: "",
+        part4: "",
+    })
+    useEffect(()=>{
+        const tagString = tag.part4 + tag.part2  + tag.part1  + tag.part3
+        console.log(tagString)
+        formik.setFieldValue("tag", tagString)
+    },[tag])
 
-    const [unit,setUnit] = useState(null)
-    const [openUnitList,setOpenUnitList] = useState(false)
-    const [getUnitList,{ data : unitList  = [] , isLoading : isUnitLoading, isError: unitIsError }] = useLazyGetAllUnitQuery()
-
-
-    const [submitData, { isLoading:isSubmitLoading ,error}] = useUpdateMutation()
+    const handleTag = (e) => {
+        if (e.target.name === "part1") {
+            setTag((co) => ({...co, part1: e.target.value}))
+        } else if (e.target.name === "part2") {
+            setTag((co) => ({...co, part2: e.target.value}))
+        } else if (e.target.name === "part3") {
+            setTag((co) => ({...co, part3: e.target.value}))
+        } else if (e.target.name === "part4") {
+            setTag((co) => ({...co, part4: e.target.value}))
+        }
+    }
 
     const validate = (values, props) => {
         const errors = {};
 
-        if (!values.tag && !values.machineCode) {
-            errors.machineTag = "لطفا پلاک یا کد وسیله نقلیه را وارد کنید";
-        } else if (!values.machineCode && values.machineTag) {
-            if (!/[0-9]{7}./.test(values.machineTag)) {
-                errors.machineTag = 'لطفا پلاک  وسیله نقلیه را کامل وارد کنید';
+        if (!values.tag && !values.code) {
+            errors.tag = "لطفا پلاک یا کد وسیله نقلیه را وارد کنید";
+        } else if (!values.code && values.tag) {
+            if (!/[0-9]{7}./.test(values.tag)) {
+                errors.tag = 'لطفا پلاک  وسیله نقلیه را کامل وارد کنید';
             }
         }
 
         return errors;
     };
 
-    const [machineTag, setmachineTag] = useState({
-        part1: "",
-        part2: "",
-        part3: "",
-        part4: "",
-    })
+    const handleReset = () =>{
+        formik.resetForm()
+        setDate("")
+        setVehicleCategory(null)
+        setSubOrganization(null)
+        setTag({
+            part1: "",
+            part2: "",
+            part3: "",
+            part4: ""})
+    }
 
-
+    //submit data
+    const [submitData, { isLoading:isSubmitLoading ,error}] = useUpdateVehiclesMutation()
     const schema = yup.object().shape({
-        productId: yup.string().required("لطفا نام محصول را وارد کنید"),
-        value: yup.string().required("لطفا مقدار محصول را وارد کنید"),
-        unit: yup.string().required("لطفا واحد محصول را وارد کنید"),
-        driverName: yup.string().required("لطفا نام راننده را وارد کنید"),
-        producer: yup.string().required("لطفا تامین کننده را وارد کنید"),
+        type: yup.string().required("لطفا نوع وسیله را وارد کنید"),
+        subOrganizationId: yup.string().required("لطفا دپارتمان مورد نظر را انتخاب کنید"),
+        status: yup.string().required("لطفا وضعیت را انتخاب کنید"),
     });
 
     const formik = useFormik({
-
         initialValues: {
-            id:"",
-            productId: "",
-            productName:"",
-            value: "",
-            unit: "",
-            expirationDate: "",
-            machineTag: "",
-            machineCode: "",
-            vehicleType:"",
-            driverName: "",
-            producer: "",
+            type: "",
+            tag: "",
+            code: "",
+            hasGps:false,
+            gpsURL: "",
+            status:"",
+            subOrganizationId:"",
+            subOrganizationName:"",
+            purchaseDate:""
         },
 
         validate: validate,
 
         validationSchema: schema,
 
-        onSubmit: async (product,helpers) => {
-            const body = {...product,
-                organizationId:window.sessionStorage.getItem("organizationId"),
-                subOrganizationId:window.sessionStorage.getItem("subOrganizationId"),
-                vehicleType:"نامعلوم"
-            }
-            const userData = await submitData(body)
-            console.log(error)
-            console.log(userData)
-            helpers.resetForm({
-                product
-            });
-            setDate("")
-            setProduct(null)
-            setmachineTag({
-                part1: "",
-                part2: "",
-                part3: "",
-                part4: ""})
-
+        onSubmit: async (vehicle) => {
+            console.log(vehicle)
+            const userData = await submitData(vehicle)
+            handleReset()
             props.handleCloseEditInfo()
         },
     });
 
-    const handleSetProductInput = (id) =>{
-        const product = productList.filter((product)=> product.id === id)
-        setProduct(product[0])
+    //setData
+    const handleSetTypeInput = (name) =>{
+        const veh = vehicleCategoryList.filter((veh)=> veh.name === name)
+        setVehicleCategory(veh[0])
     }
-    const handleSetUnitInput = (ab) =>{
-        const units= unitList.filter((unit)=> unit.abbreviation === ab)
-        setUnit(units[0])
+
+    const handleSetSubOrganizationInput = (id) =>{
+        const subOrg = subOrganizationList.filter((org)=> org.id === id)
+        setSubOrganization(subOrg[0])
     }
 
     const handleSetMachineTagInput = (machineTag) =>{
         if(machineTag !== "") {
             const tag = {
-                part1: machineTag.slice(5, 7),
-                part2: machineTag.slice(2, 5),
-                part3: machineTag.slice(7, 8),
-                part4: machineTag.slice(0, 2)
+                part1: machineTag?.slice(5, 7),
+                part2: machineTag?.slice(2, 5),
+                part3: machineTag?.slice(7, 8),
+                part4: machineTag?.slice(0, 2)
             }
-            setmachineTag(tag)
+            setTag(tag)
         }
     }
-    const handleSetExpirationDate = (date)=>{
-        const newDate = new DateObject({
-            date: date,
-            format: "YYYY/MM/DD",
-            calendar: persian,
-            locale: persian_fa
-        })
-        console.log(newDate)
-        setDate(newDate)
+    const handleSetPurchaseDate = (date)=>{
+        if(date !== ""){
+            const newDate = new DateObject({
+                date: date,
+                format: "YYYY/MM/DD",
+                calendar: persian,
+                locale: persian_fa
+            })
+            setDate(newDate)
+        }
     }
+
     useEffect(()=>{
-        getProductList()
-        getUnitList()
+        getVehicleCategoryList()
+        getSubOrganizationList()
         formik.setValues({
             id:props.editInfoTarget?.id,
-            productId: props.editInfoTarget?.productId,
-            productName:props.editInfoTarget?.productName,
-            value: props.editInfoTarget?.value,
-            unit: props.editInfoTarget?.unit,
-            expirationDate: props.editInfoTarget?.expirationDate,
-            machineTag: props.editInfoTarget?.machineTag,
-            machineCode: props.editInfoTarget?.machineCode,
-            vehicleType:props.editInfoTarget?.vehicleType,
-            driverName: props.editInfoTarget?.driverName,
-            producer: props.editInfoTarget?.producer,
+            type: props.editInfoTarget?.type,
+            tag: props.editInfoTarget?.tag,
+            code: props.editInfoTarget?.code,
+            hasGps:props.editInfoTarget?.hasGps,
+            gpsURL: props.editInfoTarget?.gpsURL,
+            status:props.editInfoTarget?.status,
+            subOrganizationId:props.editInfoTarget?.subOrganizationId,
+            subOrganizationName:props.editInfoTarget?.subOrganizationName,
+            purchaseDate:props.editInfoTarget?.purchaseDate
         })
-        handleSetProductInput(props.editInfoTarget?.productId)
-        handleSetUnitInput(props.editInfoTarget?.unit)
-        handleSetMachineTagInput(props.editInfoTarget?.machineTag)
-        handleSetExpirationDate(props.editInfoTarget?.expirationDate)
+        handleSetTypeInput(props.editInfoTarget?.type)
+        handleSetSubOrganizationInput(props.editInfoTarget?.subOrganizationId)
+        handleSetMachineTagInput(props.editInfoTarget?.tag)
+        handleSetPurchaseDate(props.editInfoTarget?.purchaseDate)
     },[props.openEditInfo])
-
-    useEffect(()=>{
-        const machineTagString = machineTag.part4 + machineTag.part2  + machineTag.part1  + machineTag.part3
-        console.log(machineTagString)
-        formik.setFieldValue("machineTag", machineTagString)
-    },[machineTag])
-
-
-    const handlemachineTag = (e) => {
-        if (e.target.name === "part1") {
-            setmachineTag((co) => ({...co, part1: e.target.value}))
-        } else if (e.target.name === "part2") {
-            setmachineTag((co) => ({...co, part2: e.target.value}))
-        } else if (e.target.name === "part3") {
-            setmachineTag((co) => ({...co, part3: e.target.value}))
-        } else if (e.target.name === "part4") {
-            setmachineTag((co) => ({...co, part4: e.target.value}))
-        }
-    }
-    const handleDateInput = (value) => {
-        setDate(value)
-        let month = value?.month < 10 ? ('0' + value?.month) : value?.month;
-        let day = value?.day < 10 ? ('0' + value?.day) : value?.day;
-        let convertDate = value?.year + '/' + month + '/' + day;
-        formik.setFieldValue("expirationDate", convertDate)
-    }
-
-    const handleReset = () =>{
-        formik.resetForm()
-        setDate("")
-        setProduct(null)
-        setmachineTag({
-            part1: "",
-            part2: "",
-            part3: "",
-            part4: ""})
-    }
 
     return (
         <>
@@ -253,18 +306,18 @@ export default function EditInfoDialog(props) {
                             </button>
                         </div>
                         <div className="flex justify-center mb-7">
-                            <h3 className="text-[1.1rem]">ویرایش مواداولیه ورودی</h3>
+                            <h3 className="text-[1.1rem]">ویرایش وسایل و تجهیزات</h3>
                         </div>
                         <form className="flex justify-center " onSubmit={formik.handleSubmit} method="POST">
                             <div className="flex flex-col justify-center w-[90%] gap-5">
                                 <div className=" flex flex-col">
                                     <Autocomplete
-                                        open={openProductList}
+                                        open={openVehicleCategoryList}
                                         onOpen={() => {
-                                            setOpenProductList(true);
+                                            setOpenVehicleCategoryList(true);
                                         }}
                                         onClose={() => {
-                                            setOpenProductList(false);
+                                            setOpenVehicleCategoryList(false);
                                         }}
                                         fullWidth
                                         clearOnEscape
@@ -273,82 +326,198 @@ export default function EditInfoDialog(props) {
                                         ListboxProps={{
                                             sx: {fontFamily: "IRANYekan", fontSize: "0.8rem"},
                                         }}
-                                        options={productList}
-                                        getOptionLabel={(option) => option.persianName}
-                                        value={product}
+                                        options={vehicleCategoryList}
+                                        getOptionLabel={(option) => option.name}
+                                        value={vehicleCategory}
                                         onChange={(event, newValue) => {
-                                            setProduct(newValue)
-                                            formik.setFieldValue("productId", newValue?.id)
-                                            formik.setFieldValue("productName", newValue?.persianName)
+                                            setVehicleCategory(newValue)
+                                            formik.setFieldValue("type", newValue?.name)
                                         }}
                                         renderInput={(params) =>
                                             <TextField
-                                                error={formik.touched.productId && Boolean(formik.errors.productId)}
-                                                helperText={formik.touched.productId && formik.errors.productId}
+                                                error={formik.touched.type && Boolean(formik.errors.type)}
+                                                helperText={formik.touched.type && formik.errors.type}
                                                 {...params}
                                                 InputProps={{
                                                     ...params.InputProps,
                                                     style: {fontFamily: "IRANYekan", fontSize: "0.8rem"},
                                                     endAdornment:(
                                                         <React.Fragment>
-                                                            {isProductLoading ? <CircularProgress color="inherit" size={20} /> : null}
+                                                            {isVehicleCategoryLoading ? <CircularProgress color="inherit" size={20} /> : null}
                                                             {params.InputProps.endAdornment}
                                                         </React.Fragment>
                                                     )
                                                 }}
-                                                placeholder="نوع محصول (اجباری)"
+                                                placeholder="نوع وسیله"
                                             />}
                                     />
                                 </div>
-                                <div className="flex">
-                                    <div className="w-[70%]">
-                                        <TextField
-                                            fullWidth
-                                            placeholder="مقدار (اجباری)"
-                                            type="text"
-                                            name="value"
-                                            value={formik.values.value}
-                                            onChange={formik.handleChange}
-                                            error={formik.touched.value && Boolean(formik.errors.value)}
-                                            helperText={formik.touched.value && formik.errors.value}
-                                            inputProps={{style: {fontFamily: "IRANYekan", fontSize: "0.8rem"}}}
-                                            InputLabelProps={{style: {fontFamily: "IRANYekan"}}}/>
+                                <div>
+                                    <div className="flex flex-col md:flex-row">
+                                        <div className="plate w-full md:w-[47%] flex items-center pl-4">
+                                            <div>
+                                                <div className="w-[55px] h-full pt-3  pl-1 pr-3">
+                                                    <input disabled={formik.values.code !== ""} name="part1"
+                                                           onChange={handleTag} value={tag.part1}
+                                                           type="text" placeholder="55" maxLength="2"
+                                                           className="w-full h-full placeholder-neutral-300 text-center rounded"/>
+                                                </div>
+                                            </div>
+                                            <div className="flex">
+                                                <div className="w-[60px] h-full py-1 pl-1 pr-3 h-full">
+                                                    <input disabled={formik.values.code !== ""} name="part2"
+                                                           onChange={handleTag} value={tag.part2}
+                                                           type="text" placeholder="555" maxLength="3"
+                                                           className="w-full h-full placeholder-neutral-300 text-center rounded"/>
+                                                </div>
+                                                <div>
+                                                    <FormControl sx={{width: "58px", bgcolor: "#fff"}} size="small">
+                                                        <Select
+                                                            disabled={formik.values.code !== ""}
+                                                            name="part3"
+                                                            value={tag.part3}
+                                                            onChange={handleTag}
+                                                            labelId="demo-select-small-label"
+                                                            id="demo-select-small">
+                                                            {
+                                                                alphabeticalList.map((alpha)=>(
+                                                                    <MenuItem value={alpha.value}>{alpha.value}</MenuItem>
+                                                                ))
+                                                            }
+                                                        </Select>
+                                                    </FormControl>
+                                                </div>
+                                                <div className="w-[50px] h-full py-1 pl-2 pr-1 h-full">
+                                                    <input disabled={formik.values.code !== ""} name="part4"
+                                                           onChange={handleTag} value={tag.part4}
+                                                           type="text" placeholder="55" maxLength="2"
+                                                           className="w-full h-full placeholder-neutral-300 text-center rounded"/>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div className="w-full md:w-[6%] flex justify-center items-center">
+                                            <span className="text-[1rem]">
+                                                یا
+                                            </span>
+                                        </div>
+                                        <div className="w-full md:w-[47%]">
+                                            <TextField
+                                                disabled={formik.values.tag !== ""}
+                                                fullWidth
+                                                placeholder="کد وسیله نقلیه(اجباری)"
+                                                type="text"
+                                                name="code"
+
+                                                value={formik.values.code}
+                                                onChange={formik.handleChange}
+                                                error={formik.touched.code && Boolean(formik.errors.code)}
+                                                // helperText={formik.touched.tag && formik.errors.tag}
+                                                inputProps={{style: {fontFamily: "IRANYekan", fontSize: "0.8rem"}}}
+                                                InputLabelProps={{style: {fontFamily: "IRANYekan"}}}/>
+                                        </div>
                                     </div>
-                                    <div className="w-[30%]">
-                                        <Autocomplete
-                                            open={openUnitList}
-                                            onOpen={() => {
-                                                setOpenUnitList(true);
-                                            }}
-                                            onClose={() => {
-                                                setOpenUnitList(false);
-                                            }}
-                                            fullWidth
-                                            disablePortal
-                                            id="combo-box-demo"
-                                            ListboxProps={{
-                                                sx: {fontFamily: "IRANYekan", fontSize: "0.8rem"},
-                                            }}
-                                            options={unitList}
-                                            getOptionLabel={(option) => option.abbreviation}
-                                            value={unit}
-                                            onChange={(event, newValue) => {
-                                                setUnit(newValue)
-                                                formik.setFieldValue("unit", newValue?.abbreviation)
-                                            }}
-                                            renderInput={(params) =>
-                                                <TextField
-                                                    {...params}
-                                                    error={formik.touched.unit && Boolean(formik.errors.unit)}
-                                                    helperText={formik.touched.unit && formik.errors.unit}
-                                                    InputProps={{
-                                                        ...params.InputProps,
-                                                        style: {fontFamily: "IRANYekan", fontSize: "0.8rem"}
-                                                    }}
-                                                    placeholder="واحد"
-                                                />}/>
+                                    <div>
+                                        {
+                                            Boolean(formik.errors.tag) && (
+                                                <span className="mx-3 text-[0.6rem] text-red-600 ">
+                                                    {formik.errors.tag}
+                                                </span>
+                                            )
+                                        }
                                     </div>
                                 </div>
+                                <div>
+                                    <div className="flex flex-col">
+                                        <div className="flex w-full">
+                                            <div className="border border-[#D9D9D9] py-4 w-1/2 px-3">
+                                                <span className="text-[#9F9F9F] text-[0.8rem]">آیا داری GPS می باشد؟</span>
+                                            </div>
+                                            <div className="border border-[#D9D9D9] py-4 w-1/2">
+                                                <div className="flex justify-center gap-2">
+                                                    <span className="text-[#9F9F9F] text-[0.8rem]">خیر</span>
+                                                    <AntSwitch checked={formik.values.hasGps} onChange={(e)=>{formik.setFieldValue("hasGps", e.target.checked)}}  inputProps={{ 'aria-label': 'ant design' }} />
+                                                    <span className="text-[#9F9F9F] text-[0.8rem]">بله</span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div>
+                                    <TextField
+                                        disabled={!formik.values.hasGps}
+                                        fullWidth
+                                        placeholder="API جی پی اس"
+                                        type="text"
+                                        name="gpsURL"
+                                        value={formik.values.gpsURL}
+                                        onChange={formik.handleChange}
+                                        error={formik.touched.gpsURL && Boolean(formik.errors.gpsURL)}
+                                        helperText={formik.touched.gpsURL && formik.errors.gpsURL}
+                                        inputProps={{style: {fontFamily: "IRANYekan", fontSize: "0.8rem"}}}
+                                        InputLabelProps={{style: {fontFamily: "IRANYekan"}}}/>
+                                </div>
+                                <div className=" flex flex-col">
+                                    <Autocomplete
+                                        open={openSubOrganizationList}
+                                        onOpen={() => {
+                                            setOpenSubOrganizationList(true);
+                                        }}
+                                        onClose={() => {
+                                            setOpenSubOrganizationList(false);
+                                        }}
+                                        fullWidth
+                                        clearOnEscape
+                                        disablePortal
+                                        id="combo-box-demo"
+                                        ListboxProps={{
+                                            sx: {fontFamily: "IRANYekan", fontSize: "0.8rem"},
+                                        }}
+                                        options={subOrganizationList}
+                                        getOptionLabel={(option) => option.name}
+                                        value={subOrganization}
+                                        onChange={(event, newValue) => {
+                                            setSubOrganization(newValue)
+                                            formik.setFieldValue("subOrganizationId", newValue?.id)
+                                            formik.setFieldValue("subOrganizationName", newValue?.name)
+                                        }}
+                                        renderInput={(params) =>
+                                            <TextField
+                                                error={formik.touched.subOrganizationId && Boolean(formik.errors.subOrganizationId)}
+                                                helperText={formik.touched.subOrganizationId && formik.errors.subOrganizationId}
+                                                {...params}
+                                                InputProps={{
+                                                    ...params.InputProps,
+                                                    style: {fontFamily: "IRANYekan", fontSize: "0.8rem"},
+                                                    endAdornment:(
+                                                        <React.Fragment>
+                                                            {isSubOrganizationLoading ? <CircularProgress color="inherit" size={20} /> : null}
+                                                            {params.InputProps.endAdornment}
+                                                        </React.Fragment>
+                                                    )
+                                                }}
+                                                placeholder="دپارتمان"
+                                            />}
+                                    />
+                                </div>
+                                <FormControl fullWidth error={formik.touched.status && Boolean(formik.errors.status)}>
+                                    <InputLabel id="demo-simple-select-label" sx={{fontFamily: "IRANYekan", fontSize: "0.8rem",color:"#9F9F9F"}}>وضعیت</InputLabel>
+                                    <Select
+                                        labelId="demo-simple-select-label"
+                                        id="demo-simple-select"
+                                        defaultValue={formik.values.status}
+                                        value={formik.values.status}
+                                        name="status"
+                                        input={<OutlinedInput sx={{fontFamily: "IRANYekan", fontSize: "0.8rem"}} label="وضعیت" />}
+                                        sx={{fontFamily: "IRANYekan", fontSize: "0.8rem"}}
+
+                                        onChange={formik.handleChange}>
+
+                                        <MenuItem value="AVAILABLE" sx={{fontFamily: "IRANYekan", fontSize: "0.8rem"}}>در دسترس</MenuItem>
+                                        <MenuItem value="IN_USE" sx={{fontFamily: "IRANYekan", fontSize: "0.8rem"}}>درحال استفاده</MenuItem>
+                                        <MenuItem value="DESTROYED" sx={{fontFamily: "IRANYekan", fontSize: "0.8rem"}}>مشکل دار</MenuItem>
+                                    </Select>
+                                    <FormHelperText>{formik.touched.status && formik.errors.status}</FormHelperText>
+                                </FormControl>
                                 <div>
                                     <DatePicker
                                         calendarPosition={`bottom`}
@@ -358,7 +527,7 @@ export default function EditInfoDialog(props) {
                                         containerStyle={{
                                             width: "100%"
                                         }}
-                                        placeholder="تاریخ انقضا (اختیاری)"
+                                        placeholder="تاریخ خرید (اختیاری)"
                                         inputClass={`border border-[#D9D9D9] placeholder-neutral-300 text-gray-900 text-[0.8rem] rounded focus:ring-[#3B82F67F] focus:border-[#3B82F67F] block w-full px-3 py-4`}
                                         value={date}
                                         onChange={(value) => {
@@ -388,112 +557,13 @@ export default function EditInfoDialog(props) {
 
                                         calendar={persian}
                                         locale={persian_fa}>
-                                        <button className="px-2 pb-4" onClick={() => {
+                                        <button className="px-2 pb-4" onClick={(e) => {
+                                            e.preventDefault()
                                             setDate("")
-                                            formik.setFieldValue("expirationDate", "")
-                                        }}>
+                                            formik.setFieldValue("purchaseDate", "")}}>
                                             ریست
                                         </button>
                                     </DatePicker>
-                                </div>
-                                <div>
-                                    <div className="flex flex-col md:flex-row">
-                                        <div className="plate w-full md:w-[47%] flex items-center pl-4">
-                                            <div>
-                                                <div className="w-[55px] h-full pt-3  pl-1 pr-3">
-                                                    <input disabled={formik.values.machineCode !== ""} name="part1"
-                                                           onChange={handlemachineTag} value={machineTag.part1}
-                                                           type="text" placeholder="55" maxLength="2"
-                                                           className="w-full h-full placeholder-neutral-300 text-center rounded"/>
-                                                </div>
-                                            </div>
-                                            <div className="flex">
-                                                <div className="w-[60px] h-full py-1 pl-1 pr-3 h-full">
-                                                    <input disabled={formik.values.machineCode !== ""} name="part2"
-                                                           onChange={handlemachineTag} value={machineTag.part2}
-                                                           type="text" placeholder="555" maxLength="3"
-                                                           className="w-full h-full placeholder-neutral-300 text-center rounded"/>
-                                                </div>
-                                                <div>
-                                                    <FormControl sx={{width: "58px", bgcolor: "#fff"}} size="small">
-                                                        <Select
-                                                            disabled={formik.values.machineCode !== ""}
-                                                            name="part3"
-                                                            value={machineTag.part3}
-                                                            onChange={handlemachineTag}
-                                                            labelId="demo-select-small-label"
-                                                            id="demo-select-small">
-                                                            {
-                                                                alphabeticalList.map((alpha)=>(
-                                                                    <MenuItem value={alpha.value}>{alpha.value}</MenuItem>
-                                                                ))
-                                                            }
-                                                        </Select>
-                                                    </FormControl>
-                                                </div>
-                                                <div className="w-[50px] h-full py-1 pl-2 pr-1 h-full">
-                                                    <input disabled={formik.values.machineCode !== ""} name="part4"
-                                                           onChange={handlemachineTag} value={machineTag.part4}
-                                                           type="text" placeholder="55" maxLength="2"
-                                                           className="w-full h-full placeholder-neutral-300 text-center rounded"/>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div className="w-full md:w-[6%] flex justify-center items-center">
-                                            <span className="text-[1rem]">
-                                                یا
-                                            </span>
-                                        </div>
-                                        <div className="w-full md:w-[47%]">
-                                            <TextField
-                                                disabled={formik.values.machineTag !== ""}
-                                                fullWidth
-                                                placeholder="کد وسیله نقلیه(اجباری)"
-                                                type="text"
-                                                name="machineCode"
-                                                value={formik.values.machineCode}
-                                                onChange={formik.handleChange}
-                                                error={formik.touched.machineCode && Boolean(formik.errors.machineCode)}
-                                                // helperText={formik.touched.machineTag && formik.errors.machineTag}
-                                                inputProps={{style: {fontFamily: "IRANYekan", fontSize: "0.8rem"}}}
-                                                InputLabelProps={{style: {fontFamily: "IRANYekan"}}}/>
-                                        </div>
-                                    </div>
-                                    <div>
-                                        {
-                                            Boolean(formik.errors.machineTag) && (
-                                                <span className="mx-3 text-[0.6rem] text-red-600 ">
-                                                    {formik.errors.machineTag}
-                                                </span>
-                                            )
-                                        }
-                                    </div>
-                                </div>
-                                <div>
-                                    <TextField
-                                        fullWidth
-                                        placeholder="نام راننده (اجباری)"
-                                        type="text"
-                                        name="driverName"
-                                        value={formik.values.driverName}
-                                        onChange={formik.handleChange}
-                                        error={formik.touched.driverName && Boolean(formik.errors.driverName)}
-                                        helperText={formik.touched.driverName && formik.errors.driverName}
-                                        inputProps={{style: {fontFamily: "IRANYekan", fontSize: "0.8rem"}}}
-                                        InputLabelProps={{style: {fontFamily: "IRANYekan"}}}/>
-                                </div>
-                                <div>
-                                    <TextField
-                                        fullWidth
-                                        placeholder="تامین کننده (اجباری)"
-                                        type="text"
-                                        name="producer"
-                                        value={formik.values.producer}
-                                        onChange={formik.handleChange}
-                                        error={formik.touched.producer && Boolean(formik.errors.producer)}
-                                        helperText={formik.touched.producer && formik.errors.producer}
-                                        inputProps={{style: {fontFamily: "IRANYekan", fontSize: "0.8rem"}}}
-                                        InputLabelProps={{style: {fontFamily: "IRANYekan"}}}/>
                                 </div>
                                 <div>
                                     {
@@ -508,7 +578,7 @@ export default function EditInfoDialog(props) {
                                                 wrapperStyle={{}}
                                                 wrapperClass=""
                                                 visible={true}/>
-                                            ثبت
+                                            ویرایش
                                         </button>) : (
                                             <button type="submit"
                                                     className="w-full rounded-[0.5rem] py-3 hover:border hover:opacity-80 font-bold  bg-mainRed text-white">ثبت

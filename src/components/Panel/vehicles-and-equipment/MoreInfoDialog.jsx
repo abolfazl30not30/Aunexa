@@ -89,21 +89,24 @@ export default function MoreInfoDialog(props) {
                                     </div>
                                     <div className="border border-[#D9D9D9]  flex justify-start px-4">
                                         <div className="p-2">
-                                            <span className="text-[#29262A] text-[0.9rem]">{props.moreInfoTarget?.subOrganizationId}</span>
+                                            <span className="text-[#29262A] text-[0.9rem]">{props.moreInfoTarget?.subOrganizationName}</span>
                                         </div>
                                     </div>
                                 </div>
-                                <div className="flex flex-col">
-                                    <div className="mb-2">
-                                        <span className="text-[0.9rem] text-gray70 ">تاریخ خرید</span>
-                                    </div>
-                                    <div className="border border-[#D9D9D9]  flex justify-start px-4">
-                                        <div className="p-2">
-                                            <span className="text-[#29262A] text-[0.9rem]">{props.moreInfoTarget?.purchaseDate}</span>
+                                {
+                                    props.moreInfoTarget.purchaseDate && (
+                                        <div className="flex flex-col">
+                                            <div className="mb-2">
+                                                <span className="text-[0.9rem] text-gray70 ">تاریخ خرید</span>
+                                            </div>
+                                            <div className="border border-[#D9D9D9]  flex justify-start px-4">
+                                                <div className="p-2">
+                                                    <span className="text-[#29262A] text-[0.9rem]">{props.moreInfoTarget?.purchaseDate}</span>
+                                                </div>
+                                            </div>
                                         </div>
-                                    </div>
-                                </div>
-
+                                    )
+                                }
                             </div>
                         </div>
                         <div className="md:hidden flex justify-center">
@@ -153,7 +156,7 @@ export default function MoreInfoDialog(props) {
                                         دپارتمان :
                                     </span>
                                     <span className="text-[#29262A] text-[0.8rem]">
-                                        {props.moreInfoTarget.subOrganizationId}
+                                        {props.moreInfoTarget.subOrganizationName}
                                     </span>
                                 </div>
                                 <div>

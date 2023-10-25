@@ -5,11 +5,11 @@ export const VehiclesAndEquipmentSlice  = apiSlice.injectEndpoints({
     endpoints: builder => ({
         getAllVehicles: builder.query({
             query: ({page, sort ,filterItem}) => ({
-                url:`vehicle/machine/filter?page=${page - 1}&size=10&sort=date,${sort}&sort=time,${sort}&${filterItem}`,
+                url:`vehicle/machine/filter?page=${page - 1}&size=10&sort=purchaseDate,${sort}&${filterItem}`,
             }),
             providesTags: ['vehicle-machine']
         }),
-        save: builder.mutation({
+        saveVehicles: builder.mutation({
             query: (body) => ({
                 url: 'vehicle/machine',
                 method: 'POST',
@@ -17,7 +17,7 @@ export const VehiclesAndEquipmentSlice  = apiSlice.injectEndpoints({
             }),
             invalidatesTags: ['vehicle-machine']
         }),
-        update: builder.mutation({
+        updateVehicles: builder.mutation({
             query: (body) => ({
                 url: `vehicle/machine`,
                 method: 'PUT',
@@ -25,7 +25,7 @@ export const VehiclesAndEquipmentSlice  = apiSlice.injectEndpoints({
             }),
             invalidatesTags: ['vehicle-machine']
         }),
-        delete: builder.mutation({
+        deleteVehicles: builder.mutation({
             query: ( id ) => ({
                 url: `vehicle/machine/${id}`,
                 method: 'DELETE',
@@ -33,13 +33,13 @@ export const VehiclesAndEquipmentSlice  = apiSlice.injectEndpoints({
             }),
             invalidatesTags: ['vehicle-machine']
         }),
-        getOneByTag: builder.query({
+        getOneVehiclesByTag: builder.query({
             query: (tag) => ({
                 url:`vehicle/machine/tag/${tag}`,
             }),
             providesTags: ['vehicle-machine']
         }),
-        getOneByCode: builder.query({
+        getOneVehiclesByCode: builder.query({
             query: (code) => ({
                 url:`vehicle/machine/code/${code}`,
             }),
@@ -50,9 +50,9 @@ export const VehiclesAndEquipmentSlice  = apiSlice.injectEndpoints({
 
 export const {
     useGetAllVehiclesQuery,
-    useSaveMutation,
-    useUpdateMutation,
-    useDeleteMutation,
-    useLazyGetOneByTagQuery,
-    useLazyGetOneByCodeQuery
+    useSaveVehiclesMutation,
+    useUpdateVehiclesMutation,
+    useDeleteVehiclesMutation,
+    useLazyGetOneVehiclesByTagQuery,
+    useLazyGetOneVehiclesByCodeQuery
 } = VehiclesAndEquipmentSlice

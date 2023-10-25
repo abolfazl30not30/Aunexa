@@ -37,22 +37,22 @@ function vehiclesAndEquipment() {
         gpsURL: "",
         status:"",
         subOrganizationId:"",
+        subOrganizationName:"",
         purchaseDate:""
     })
 
     const [openEditInfo, setOpenEditInfo] = useState(false)
     const [editInfoTarget,setEditInfoTarget] = useState(
         {
-            productId: "",
-            productName:"",
-            value: "",
-            unit: "",
-            expirationDate: "",
-            machineTag: "",
-            machineCode: "",
-            vehicleType:"",
-            driverName: "",
-            producer: "",
+            type: "",
+            tag: "",
+            code: "",
+            hasGps:false,
+            gpsURL: "",
+            status:"",
+            subOrganizationId:"",
+            subOrganizationName:"",
+            purchaseDate:""
         }
     )
 
@@ -97,6 +97,7 @@ function vehiclesAndEquipment() {
                 gpsURL: "",
                 status:"",
                 subOrganizationId:"",
+                subOrganizationName:"",
                 purchaseDate:""
             }
         )
@@ -118,16 +119,15 @@ function vehiclesAndEquipment() {
     }
     const handleCloseEditInfo = () =>{
         setEditInfoTarget({
-            productId: "",
-            productName:"",
-            value: "",
-            unit: "",
-            expirationDate: "",
-            machineTag: "",
-            machineCode: "",
-            vehicleType:"",
-            driverName: "",
-            producer: "",
+            type: "",
+            tag: "",
+            code: "",
+            hasGps:false,
+            gpsURL: "",
+            status:"",
+            subOrganizationId:"",
+            subOrganizationName:"",
+            purchaseDate:""
         })
         setOpenEditInfo(false)
     }
@@ -348,7 +348,7 @@ function vehiclesAndEquipment() {
                                                     )}
                                                 </td>
                                                 <td className="px-2 md:px-6 py-2  text-gray70 whitespace-nowrap ">
-                                                    {data?.purchaseDate}
+                                                    {data?.purchaseDate ? (data?.purchaseDate) : ("---")}
                                                 </td>
                                                 <td className="hidden md:table-cell px-6 py-4  text-gray70 whitespace-nowrap ">
                                                     17

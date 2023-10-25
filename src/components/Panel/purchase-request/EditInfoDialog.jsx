@@ -15,7 +15,7 @@ import {
     useLazyGetAllProductQuery,
     useLazyGetAllUnitQuery
 } from "@/redux/features/category/CategorySlice";
-import { useUpdateMutation} from "@/redux/features/primary-store/input/RMWIapiSlice";
+import { useUpdatePSIMutation} from "@/redux/features/primary-store/input/PSIapiSlice";
 
 
 export default function EditInfoDialog(props) {
@@ -64,7 +64,7 @@ export default function EditInfoDialog(props) {
     const [getUnitList,{ data : unitList  = [] , isLoading : isUnitLoading, isError: unitIsError }] = useLazyGetAllUnitQuery()
 
 
-    const [submitData, { isLoading:isSubmitLoading ,error}] = useUpdateMutation()
+    const [submitData, { isLoading:isSubmitLoading ,error}] = useUpdatePSIMutation()
 
     const validate = (values, props) => {
         const errors = {};
