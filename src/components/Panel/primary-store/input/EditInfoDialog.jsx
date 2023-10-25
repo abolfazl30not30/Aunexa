@@ -106,7 +106,7 @@ export default function EditInfoDialog(props) {
             expirationDate: "",
             machineTag: "",
             machineCode: "",
-            vehicleType:"",
+            machineType:"",
             driverName: "",
             producer: "",
         },
@@ -119,7 +119,7 @@ export default function EditInfoDialog(props) {
             const body = {...product,
                 organizationId:window.sessionStorage.getItem("organizationId"),
                 subOrganizationId:window.sessionStorage.getItem("subOrganizationId"),
-                vehicleType:"نامعلوم"
+                machineType:"نامعلوم"
             }
             const userData = await submitData(body)
             console.log(error)
@@ -180,7 +180,7 @@ export default function EditInfoDialog(props) {
             expirationDate: props.editInfoTarget?.expirationDate,
             machineTag: props.editInfoTarget?.machineTag,
             machineCode: props.editInfoTarget?.machineCode,
-            vehicleType:props.editInfoTarget?.vehicleType,
+            machineType:props.editInfoTarget?.machineType,
             driverName: props.editInfoTarget?.driverName,
             producer: props.editInfoTarget?.producer,
         })

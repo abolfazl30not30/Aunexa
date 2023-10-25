@@ -188,7 +188,7 @@ export default function AddDataDialog(props) {
 
     const formik = useFormik({
         initialValues: {
-            type: "",
+            type: "",   
             tag: "",
             code: "",
             hasGps:false,

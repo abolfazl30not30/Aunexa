@@ -3,7 +3,7 @@ import { apiSlice } from "../../../api/apiSlice";
 
 export const RMWIapiSlice  = apiSlice.injectEndpoints({
     endpoints: builder => ({
-        getAll: builder.query({
+        getAllPSI: builder.query({
             query: ({page, sort ,filterItem}) => ({
                 url:`inventory/primary-store-input/filter?page=${page - 1}&size=10&sort=date,${sort}&sort=time,${sort}&${filterItem}`,
             }),
@@ -53,7 +53,7 @@ export const RMWIapiSlice  = apiSlice.injectEndpoints({
 })
 
 export const {
-    useGetAllQuery,
+    useGetAllPSIQuery,
     useSaveMutation,
     useUpdateMutation,
     useDeleteMutation

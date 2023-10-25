@@ -6,7 +6,6 @@ import {
 } from "@mui/material";
 import Dialog from "@mui/material/Dialog";
 
-
 export default function MoreInfoDialog(props) {
     return(
         <>
@@ -66,7 +65,7 @@ export default function MoreInfoDialog(props) {
                                     </div>
                                     <div className="border border-[#D9D9D9]  flex justify-between px-4">
                                         <div className="p-2">
-                                            <span className="text-[#29262A] text-[0.9rem]">{props.moreInfoTarget?.vehicleType}</span>
+                                            <span className="text-[#29262A] text-[0.9rem]">{props.moreInfoTarget?.machineType}</span>
                                         </div>
                                         <div className="border border-[#D9D9D9]">
                                         </div>
@@ -127,6 +126,16 @@ export default function MoreInfoDialog(props) {
                                         </div>
                                     </div>
                                 </div>
+                                <div className="flex flex-col">
+                                    <div className="mb-2">
+                                        <span className="text-[0.9rem] text-gray70 ">توضیحات</span>
+                                    </div>
+                                    <div className="border border-[#D9D9D9]  flex justify-start px-4">
+                                        <div className="p-2">
+                                            <span className="text-[#29262A] text-[0.9rem]">{props.moreInfoTarget.description}</span>
+                                        </div>
+                                    </div>
+                                </div>
                             </div>
                         </div>
                         <div className="md:hidden flex justify-center">
@@ -160,7 +169,7 @@ export default function MoreInfoDialog(props) {
                                         نوع وسیله نقلیه :
                                     </span>
                                     <span className="text-[#29262A] text-[0.8rem]">
-                                        {props.moreInfoTarget?.vehicleType}
+                                        {props.moreInfoTarget?.machineType}
                                     </span>
                                 </div>
                                 <div>
@@ -209,6 +218,14 @@ export default function MoreInfoDialog(props) {
                                                 <span className="text-[0.8rem] bg-orangeBg text-orangeText py-1 px-2 rounded-xl">مشکل دار</span>
                                             )
                                         )}
+                                    </span>
+                                </div>
+                                <div>
+                                    <span className="ml-1 text-gray9F text-[0.8rem]">
+                                        توضیحات :
+                                    </span>
+                                    <span className="text-[#29262A] text-[0.8rem]">
+                                        {props.moreInfoTarget.description}
                                     </span>
                                 </div>
                             </div>

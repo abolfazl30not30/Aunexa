@@ -9,13 +9,12 @@ import FilterDialog from "@/components/Panel/primary-store/input/FilterDialog";
 import MoreInfoDialog from "@/components/Panel/primary-store/input/MoreInfoDialog";
 import DeleteDialog from "@/components/Panel/primary-store/input/DeleteDialog";
 import Link from "next/link";
-import {useGetAllQuery} from "@/redux/features/primary-store/input/RMWIapiSlice";
+import {useGetAllPSIQuery} from "@/redux/features/primary-store/input/RMWIapiSlice";
 import EditInfoDialog from "@/components/Panel/primary-store/input/EditInfoDialog";
 import {useSelector} from "react-redux";
 
-function Dashboard() {
+function primaryStoreInput() {
     let permission =  useSelector((state)=> state.access?.pages?.primaryStoreInput)
-
     const [page, setPage] = useState(1)
     const [sort,setSort] = useState("desc")
     const [openAddData, setOpenAddData] = useState(false)
@@ -33,9 +32,9 @@ function Dashboard() {
         expirationDate: "",
         machineTag: "",
         machineCode: "",
-        vehicleType:"",
         driverName: "",
         producer: "",
+        description:"",
     })
 
     const [openEditInfo, setOpenEditInfo] = useState(false)
@@ -48,9 +47,9 @@ function Dashboard() {
             expirationDate: "",
             machineTag: "",
             machineCode: "",
-            vehicleType:"",
             driverName: "",
             producer: "",
+            description:"",
         }
     )
 
@@ -95,9 +94,9 @@ function Dashboard() {
                 expirationDate: "",
                 machineTag: "",
                 machineCode: "",
-                vehicleType:"",
                 driverName: "",
                 producer: "",
+                description:"",
             }
         )
         setOpenMoreInfo(false)
@@ -125,9 +124,9 @@ function Dashboard() {
             expirationDate: "",
             machineTag: "",
             machineCode: "",
-            vehicleType:"",
             driverName: "",
             producer: "",
+            description:"",
         })
         setOpenEditInfo(false)
     }
@@ -142,11 +141,9 @@ function Dashboard() {
         setPage(value)
     }
 
+    const {data: inventoryData = [], isLoading: isDataLoading, isError: isDataError} = useGetAllPSIQuery({page,sort,filterItem},{ refetchOnMountOrArgChange: true })
 
-    const {data: inventoryData = [], isLoading: isDataLoading, isError: isDataError} = useGetAllQuery({page,sort,filterItem})
-    // isPrimaryStoreInputReadAll
-    //     :
-    //     true
+
     return (
         <>
             <div>
@@ -156,7 +153,6 @@ function Dashboard() {
                     </div>
                     <div className="">
                         {
-                            permission?.isPrimaryStoreInputCreate && (
                                 <button
                                     className="flex bg-mainRed text-white items-center text- px-3 py-2 rounded-full md:rounded"
                                     onClick={handleOpenAddData}>
@@ -169,7 +165,7 @@ function Dashboard() {
                                               stroke-linejoin="round"/>
                                     </svg>
                                 </button>
-                            )
+
                         }
                     </div>
                 </header>
@@ -341,10 +337,10 @@ function Dashboard() {
                                                     {data.value} {data.unit}
                                                 </td>
                                                 <td className="px-2 md:px-6 py-2  text-gray70 whitespace-nowrap ">
-                                                    <div>{data.vehicleType}</div>
+                                                    <div>{data.machineType}</div>
                                                     <div className="mt-1 text-gray9F text-[0.75rem]">{
-                                                        data.machineTag === "" ? (data.machineCode) : (
-                                                            data.machineTag.slice(2, 5) + "-" + data.machineTag.slice(5, 7) + " " + data.machineTag.slice(7, 8) + " " + data.machineTag.slice(0, 2)
+                                                        data?.machineTag === "" ? (data?.machineCode) : (
+                                                            data?.machineTag?.slice(2, 5) + "-" + data?.machineTag?.slice(5, 7) + " " + data?.machineTag?.slice(7, 8) + " " + data?.machineTag?.slice(0, 2)
                                                         )
                                                     }</div>
                                                 </td>
@@ -378,7 +374,7 @@ function Dashboard() {
                                                         </svg>
                                                     </button>
                                                     {
-                                                        permission?.isPrimaryStoreInputUpdate && (
+
                                                             <button
                                                                 onClick={()=>{handleOpenEditInfo(data)}}
                                                                 className="border border-1 border-solid border-[#2492FF] rounded p-[0.4rem] hover:bg-blue-100">
@@ -397,10 +393,10 @@ function Dashboard() {
                                                                     </defs>
                                                                 </svg>
                                                             </button>
-                                                        )
+
                                                     }
                                                     {
-                                                        permission?.isPrimaryStoreInputDelete && (
+
                                                             <button onClick={() => {handleOpenDelete(data.id)}}
                                                                     className="border border-1 border-solid border-[#FE4949] rounded p-[0.4rem] hover:bg-red-100">
                                                                 <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"
@@ -411,7 +407,7 @@ function Dashboard() {
                                                                         stroke-linejoin="round"/>
                                                                 </svg>
                                                             </button>
-                                                        )
+
                                                     }
                                                 </td>
                                             </tr>
@@ -435,4 +431,4 @@ function Dashboard() {
     )
 }
 
-export default Dashboard;
+export default primaryStoreInput;

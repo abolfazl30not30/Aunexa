@@ -13,9 +13,11 @@ import Link from "next/link";
 import EditInfoDialog from "@/components/Panel/vehicles-and-equipment/EditInfoDialog";
 import {useSelector} from "react-redux";
 import {boolean} from "yup";
-import {useGetAllQuery} from "@/redux/features/vehicles-and-equipment/VehiclesAndEquipmentSlice";
+import {
+    useGetAllVehiclesQuery
+} from "@/redux/features/vehicles-and-equipment/VehiclesAndEquipmentSlice";
 
-function Dashboard() {
+function vehiclesAndEquipment() {
     let permission =  useSelector((state)=> state.access?.pages?.primaryStoreInput)
 
     const [page, setPage] = useState(1)
@@ -28,16 +30,14 @@ function Dashboard() {
 
     const [openMoreInfo, setOpenMoreInfo] = useState(false)
     const [moreInfoTarget, setMoreInfoTarget] = useState({
-        productId: "",
-        productName:"",
-        value: "",
-        unit: "",
-        expirationDate: "",
-        machineTag: "",
-        machineCode: "",
-        vehicleType:"",
-        driverName: "",
-        producer: "",
+        type: "",
+        tag: "",
+        code: "",
+        hasGps:false,
+        gpsURL: "",
+        status:"",
+        subOrganizationId:"",
+        purchaseDate:""
     })
 
     const [openEditInfo, setOpenEditInfo] = useState(false)
@@ -90,16 +90,14 @@ function Dashboard() {
     const handleCloseMoreInfo = () => {
         setMoreInfoTarget(
             {
-                productId: "",
-                productName:"",
-                value: "",
-                unit: "",
-                expirationDate: "",
-                machineTag: "",
-                machineCode: "",
-                vehicleType:"",
-                driverName: "",
-                producer: "",
+                type: "",
+                tag: "",
+                code: "",
+                hasGps:false,
+                gpsURL: "",
+                status:"",
+                subOrganizationId:"",
+                purchaseDate:""
             }
         )
         setOpenMoreInfo(false)
@@ -145,7 +143,7 @@ function Dashboard() {
     }
 
 
-    const {data: inventoryData = [], isLoading: isDataLoading, isError: isDataError} = useGetAllQuery({page,sort,filterItem})
+    const {data: inventoryData = [], isLoading: isDataLoading, isError: isDataError} = useGetAllVehiclesQuery({page,sort,filterItem},{ refetchOnMountOrArgChange: true })
     // isPrimaryStoreInputReadAll
     //     :
     //     true
@@ -332,8 +330,8 @@ function Dashboard() {
                                                 <td className="px-2 md:px-6 py-4  text-gray70 whitespace-nowrap ">
                                                     <div>{data.type}</div>
                                                     <div className="mt-1 text-gray9F text-[0.75rem]">{
-                                                        data.tag === "" ? (data.code) : (
-                                                            data.tag.slice(2, 5) + "-" + data.tag.slice(5, 7) + " " + data.tag.slice(7, 8) + " " + data.tag.slice(0, 2)
+                                                        data?.tag === "" ? (data?.code) : (
+                                                            data?.tag?.slice(2, 5) + "-" + data?.tag?.slice(5, 7) + " " + data?.tag?.slice(7, 8) + " " + data?.tag?.slice(0, 2)
                                                         )
                                                     }</div>
                                                 </td>
@@ -398,7 +396,6 @@ function Dashboard() {
                                                                     </defs>
                                                                 </svg>
                                                             </button>
-
                                                     }
                                                     {
 
@@ -436,4 +433,4 @@ function Dashboard() {
     )
 }
 
-export default Dashboard;
+export default vehiclesAndEquipment;

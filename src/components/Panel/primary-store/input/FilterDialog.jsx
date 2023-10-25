@@ -2,7 +2,7 @@
 import TextField from "@mui/material/TextField";
 import React, {useState} from "react";
 import {
-    Autocomplete, FormControl, InputLabel, MenuItem, OutlinedInput, Select,
+    Autocomplete, Box, FormControl, InputLabel, MenuItem, OutlinedInput, Select,
 } from "@mui/material";
 import {
     DialogContent,
@@ -17,7 +17,7 @@ import persian_fa from "react-date-object/locales/persian_fa";
 import DatePicker from "react-multi-date-picker";
 import "react-multi-date-picker/styles/colors/red.css"
 import CircularProgress from "@mui/material/CircularProgress";
-import { useLazyGetAllProductQuery} from "@/redux/features/category/CategorySlice";
+import {useLazyGetAllProductQuery, useLazyGetAllVehicleQuery} from "@/redux/features/category/CategorySlice";
 import {useEffect} from "react";
 
 
@@ -33,6 +33,15 @@ export default function FilterDialog(props) {
             getProductList()
         }
     },[openProductList])
+
+    const [vehicle,setVehicle] = useState(null)
+    const [openVehicleList,setOpenVehicleList] = useState(false)
+    const [getVehicleList,{ data : vehicleList  = [] , isLoading : isVehicleLoading, isError: IsVehicleError }] = useLazyGetAllVehicleQuery()
+    useEffect(()=>{
+        if(openVehicleList){
+            getVehicleList()
+        }
+    },[openVehicleList])
 
     const handleDateFromInput = (value) => {
         if(value){
@@ -69,8 +78,8 @@ export default function FilterDialog(props) {
         if(values.productId){
             params.set("productId",values.productId)
         }
-        if(values.vehicleId){
-            params.set("vehicleId",values.vehicleId)
+        if(values.machineId){
+            params.set("machineId",values.machineId)
         }
         if(values.status){
             params.set("status",values.status)
@@ -93,7 +102,7 @@ export default function FilterDialog(props) {
             dateFrom: "",
             dateTo: "",
             productId:"",
-            vehicleId:"",
+            machineId:"",
             status:"",
             producer: "",
         },
@@ -274,7 +283,13 @@ export default function FilterDialog(props) {
                                 </div>
                                 <div className=" flex flex-col">
                                     <Autocomplete
-                                        disabled
+                                        open={openVehicleList}
+                                        onOpen={() => {
+                                            setOpenVehicleList(true);
+                                        }}
+                                        onClose={() => {
+                                            setOpenVehicleList(false);
+                                        }}
                                         fullWidth
                                         clearOnEscape
                                         disablePortal
@@ -282,11 +297,19 @@ export default function FilterDialog(props) {
                                         ListboxProps={{
                                             sx: {fontFamily: "IRANYekan", fontSize: "0.8rem"},
                                         }}
-                                        options={productList}
-                                        getOptionLabel={(option) => option.persianName}
+                                        value={vehicle}
+                                        options={vehicleList}
+                                        getOptionLabel={(option) => option.type}
+                                        renderOption={(props, option) => (
+                                            <Box component="li"  {...props}>
+                                                {option.type} ({option.code} {option.tag.slice(2, 5) + "-" + option.tag.slice(5, 7) + " " + option.tag.slice(7, 8) + " " + option.tag.slice(0, 2)} )
+                                            </Box>
+                                        )}
                                         onChange={(event, newValue) => {
-
+                                            setVehicle(newValue)
+                                            formik.setFieldValue("machineId", newValue?.id)
                                         }}
+
                                         renderInput={(params) =>
                                             <TextField
                                                 {...params}
@@ -295,7 +318,7 @@ export default function FilterDialog(props) {
                                                     style: {fontFamily: "IRANYekan", fontSize: "0.8rem"},
                                                     endAdornment:(
                                                         <React.Fragment>
-                                                            {isProductLoading ? <CircularProgress color="inherit" size={20} /> : null}
+                                                            {isVehicleLoading ? <CircularProgress color="inherit" size={20} /> : null}
                                                             {params.InputProps.endAdornment}
                                                         </React.Fragment>
                                                     )

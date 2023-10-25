@@ -6,7 +6,8 @@ import {
 } from "@mui/material";
 import Dialog from "@mui/material/Dialog";
 import {TailSpin} from "react-loader-spinner";
-import {useDeleteMutation} from "@/redux/features/primary-store/input/RMWIapiSlice";
+import {useDeleteMutation} from "@/redux/features/vehicles-and-equipment/VehiclesAndEquipmentSlice";
+
 
 
 export default function DeleteDialog(props) {

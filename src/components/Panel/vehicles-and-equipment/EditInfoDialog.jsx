@@ -138,6 +138,7 @@ export default function EditInfoDialog(props) {
             props.handleCloseEditInfo()
         },
     });
+
     const handleSetProductInput = (id) =>{
         const product = productList.filter((product)=> product.id === id)
         setProduct(product[0])

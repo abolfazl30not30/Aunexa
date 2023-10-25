@@ -11,8 +11,16 @@ import persian_fa from "react-date-object/locales/persian_fa";
 import DatePicker from "react-multi-date-picker";
 import CircularProgress from '@mui/material/CircularProgress';
 import "react-multi-date-picker/styles/colors/red.css"
-import {useLazyGetAllProductQuery, useLazyGetAllUnitQuery} from "@/redux/features/category/CategorySlice";
+import {
+    useLazyGetAllProductQuery,
+    useLazyGetAllUnitQuery,
+    useLazyGetAllVehicleQuery
+} from "@/redux/features/category/CategorySlice";
 import {useSaveMutation} from "@/redux/features/primary-store/input/RMWIapiSlice";
+import {
+    useLazyGetOneByCodeQuery,
+    useLazyGetOneByTagQuery
+} from "@/redux/features/vehicles-and-equipment/VehiclesAndEquipmentSlice";
 
 
 export default function AddDataDialog(props) {
@@ -69,6 +77,17 @@ export default function AddDataDialog(props) {
             getUnitList()
         }
     },[openUnitList])
+
+
+    // //vehicle input
+    // const [vehicle,setVehicle] = useState(null)
+    // const [openVehicleList,setOpenVehicleList] = useState(false)
+    // const [getVehicleList,{ data : vehicleList  = [] , isLoading : isVehicleLoading, isError: VehicleIsError }] = useLazyGetAllVehicleQueryGet()
+    // useEffect(()=>{
+    //     if(openVehicleList){
+    //         getVehicleList()
+    //     }
+    // },[openVehicleList])
 
     //date input
     const [date,setDate] = useState("")
@@ -136,6 +155,10 @@ export default function AddDataDialog(props) {
 
     //submit data
     const [submitData, { isLoading:isSubmitLoading ,error}] = useSaveMutation()
+    const [getVehicleByTag,{ data : vehicleByTag  = {} , isLoading : isVehicleByTagLoading, isError: isVehicleByTagError }] = useLazyGetOneByTagQuery()
+
+    const [getVehicleByCode,{ data : vehicleByCode  = {} , isLoading : isVehicleByCodeLoading, isError: isVehicleByCodeError }] = useLazyGetOneByCodeQuery()
+
     const schema = yup.object().shape({
         productId: yup.string().required("لطفا نام محصول را وارد کنید"),
         value: yup.string().required("لطفا مقدار محصول را وارد کنید"),
@@ -153,9 +176,9 @@ export default function AddDataDialog(props) {
             expirationDate: "",
             machineTag: "",
             machineCode: "",
-            vehicleType:"",
             driverName: "",
             producer: "",
+            description:"",
         },
       
         validate: validate,
@@ -163,12 +186,30 @@ export default function AddDataDialog(props) {
         validationSchema: schema,
 
         onSubmit: async (product,helpers) => {
-            const body = {...product,
+            let updateProduct = {...product}
+
+            if(product.machineTag !== ""){
+                const res = await getVehicleByTag(product.machineTag)
+                if(res?.status !== "rejected"){
+                    updateProduct = {...updateProduct,machineType:res.data.type,machineId:res.data.id}
+                    console.log(updateProduct)
+                }else {
+                    updateProduct = {...updateProduct,machineType:"نا معلوم",machineId:""}
+                }
+            }else if(product.machineCode !== ""){
+                const res = await getVehicleByCode(product.machineCode)
+                if(res?.status !== "rejected"){
+                    updateProduct = {...updateProduct,machineType:res.data.type,machineId:res.data.id}
+                    console.log(updateProduct)
+                }else {
+                    updateProduct = {...updateProduct,machineType:"نا معلوم",machineId:""}
+                }
+            }
+            updateProduct = {...updateProduct,
                 organizationId:window.sessionStorage.getItem("organizationId"),
                 subOrganizationId:window.sessionStorage.getItem("subOrganizationId"),
-                vehicleType:"نامعلوم"
             }
-            const userData = await submitData(body)
+            const userData = await submitData(updateProduct)
             handleReset()
             props.handleCloseAddData()
         },
@@ -438,6 +479,22 @@ export default function AddDataDialog(props) {
                                         onChange={formik.handleChange}
                                         error={formik.touched.producer && Boolean(formik.errors.producer)}
                                         helperText={formik.touched.producer && formik.errors.producer}
+                                        inputProps={{style: {fontFamily: "IRANYekan", fontSize: "0.8rem"}}}
+                                        InputLabelProps={{style: {fontFamily: "IRANYekan"}}}/>
+                                </div>
+                                <div>
+                                    <TextField
+                                        multiline
+                                        rows={1}
+                                        maxRows={4}
+                                        fullWidth
+                                        placeholder="توضيحات (اختياری)"
+                                        type="text"
+                                        name="description"
+                                        value={formik.values.description}
+                                        onChange={formik.handleChange}
+                                        error={formik.touched.description && Boolean(formik.errors.description)}
+                                        helperText={formik.touched.description && formik.errors.description}
                                         inputProps={{style: {fontFamily: "IRANYekan", fontSize: "0.8rem"}}}
                                         InputLabelProps={{style: {fontFamily: "IRANYekan"}}}/>
                                 </div>
