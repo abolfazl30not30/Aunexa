@@ -7,7 +7,8 @@ import {
     DialogContentText,
     FormControl,
     InputLabel,
-    MenuItem, OutlinedInput,
+    MenuItem,
+    OutlinedInput,
     Select,
 } from "@mui/material";
 import Dialog from "@mui/material/Dialog";
@@ -21,15 +22,16 @@ import CircularProgress from '@mui/material/CircularProgress';
 import "react-multi-date-picker/styles/colors/red.css"
 import {
     useLazyGetAllProductQuery,
-    useLazyGetAllUnitQuery,
-    useLazyGetAllVehicleQuery
+    useLazyGetAllSubOrganizationQuery,
+    useLazyGetAllUnitQuery
 } from "@/redux/features/category/CategorySlice";
 
 import {
     useLazyGetOneVehiclesByCodeQuery,
     useLazyGetOneVehiclesByTagQuery
 } from "@/redux/features/vehicles-and-equipment/VehiclesAndEquipmentSlice";
-import {useSaveESIMutation} from "@/redux/features/equipment-store/input/ESIapiSlice";
+import {useSaveESOMutation} from "@/redux/features/equipment-store/output/ESOapiSlice";
+import {useSavePOSIMutation} from "@/redux/features/product-store/input/POSIapiSlice";
 
 
 export default function AddDataDialog(props) {
@@ -68,24 +70,42 @@ export default function AddDataDialog(props) {
     ]
 
     //product input
-    const [product,setProduct] = useState(null)
-    const [openProductList,setOpenProductList] = useState(false)
-    const [getProductList,{ data : productList  = [] , isLoading : isProductLoading, isError: productIsError }] = useLazyGetAllProductQuery()
-    useEffect(()=>{
-        if(openProductList){
+    const [product, setProduct] = useState(null)
+    const [openProductList, setOpenProductList] = useState(false)
+    const [getProductList, {
+        data: productList = [],
+        isLoading: isProductLoading,
+        isError: productIsError
+    }] = useLazyGetAllProductQuery()
+    useEffect(() => {
+        if (openProductList) {
             getProductList()
         }
-    },[openProductList])
+    }, [openProductList])
+
+    //subOrganization input
+    const [subOrganization,setSubOrganization] = useState(null)
+    const [openSubOrganizationList,setOpenSubOrganizationList] = useState(false)
+    const [getSubOrganizationList,{ data : subOrganizationList  = [] , isLoading : isSubOrganizationLoading, isError: isSubOrganizationError }] = useLazyGetAllSubOrganizationQuery()
+    useEffect(()=>{
+        if(openSubOrganizationList){
+            getSubOrganizationList()
+        }
+    },[openSubOrganizationList])
 
     //unit input
-    const [unit,setUnit] = useState(null)
-    const [openUnitList,setOpenUnitList] = useState(false)
-    const [getUnitList,{ data : unitList  = [] , isLoading : isUnitLoading, isError: unitIsError }] = useLazyGetAllUnitQuery()
-    useEffect(()=>{
-        if(openUnitList){
+    const [unit, setUnit] = useState(null)
+    const [openUnitList, setOpenUnitList] = useState(false)
+    const [getUnitList, {
+        data: unitList = [],
+        isLoading: isUnitLoading,
+        isError: unitIsError
+    }] = useLazyGetAllUnitQuery()
+    useEffect(() => {
+        if (openUnitList) {
             getUnitList()
         }
-    },[openUnitList])
+    }, [openUnitList])
 
 
     // //vehicle input
@@ -99,15 +119,15 @@ export default function AddDataDialog(props) {
     // },[openVehicleList])
 
     //date input
-    const [date,setDate] = useState("")
+    const [date, setDate] = useState("")
     const handleDateInput = (value) => {
-        if(value){
+        if (value) {
             setDate(value)
             let month = value?.month < 10 ? ('0' + value?.month) : value?.month;
             let day = value?.day < 10 ? ('0' + value?.day) : value?.day;
             let convertDate = value?.year + '/' + month + '/' + day;
             formik.setFieldValue("expirationDate", convertDate)
-        }else {
+        } else {
             formik.setFieldValue("expirationDate", "")
         }
     }
@@ -119,11 +139,11 @@ export default function AddDataDialog(props) {
         part3: "",
         part4: "",
     })
-    useEffect(()=>{
-        const machineTagString = machineTag.part4 + machineTag.part2  + machineTag.part1  + machineTag.part3
+    useEffect(() => {
+        const machineTagString = machineTag.part4 + machineTag.part2 + machineTag.part1 + machineTag.part3
         console.log(machineTagString)
         formik.setFieldValue("machineTag", machineTagString)
-    },[machineTag])
+    }, [machineTag])
 
     const handlemachineTag = (e) => {
         if (e.target.name === "part1") {
@@ -150,75 +170,83 @@ export default function AddDataDialog(props) {
         return errors;
     };
 
-    const handleReset = () =>{
+    const handleReset = () => {
         formik.resetForm()
         setDate("")
         setProduct(null)
         setUnit(null)
+        setSubOrganization(null)
         setmachineTag({
             part1: "",
             part2: "",
             part3: "",
-            part4: ""})
+            part4: ""
+        })
     }
 
     //submit data
-    const [submitData, { isLoading:isSubmitLoading ,error}] = useSaveESIMutation()
-    const [getVehicleByTag,{ data : vehicleByTag  = {} , isLoading : isVehicleByTagLoading, isError: isVehicleByTagError }] = useLazyGetOneVehiclesByTagQuery()
-    const [getVehicleByCode,{ data : vehicleByCode  = {} , isLoading : isVehicleByCodeLoading, isError: isVehicleByCodeError }] = useLazyGetOneVehiclesByCodeQuery()
+    const [submitData, {isLoading: isSubmitLoading, error}] = useSavePOSIMutation()
+    const [getVehicleByTag, {
+        data: vehicleByTag = {},
+        isLoading: isVehicleByTagLoading,
+        isError: isVehicleByTagError
+    }] = useLazyGetOneVehiclesByTagQuery()
+
+    const [getVehicleByCode, {
+        data: vehicleByCode = {},
+        isLoading: isVehicleByCodeLoading,
+        isError: isVehicleByCodeError
+    }] = useLazyGetOneVehiclesByCodeQuery()
 
     const schema = yup.object().shape({
         productId: yup.string().required("لطفا نام محصول را وارد کنید"),
         value: yup.string().required("لطفا مقدار محصول را وارد کنید"),
         unit: yup.string().required("لطفا واحد محصول را وارد کنید"),
         driverName: yup.string().required("لطفا نام راننده را وارد کنید"),
-        producer: yup.string().required("لطفا تامین کننده را وارد کنید"),
+        sourceSubOrganizationId: yup.string().required("لطفا دپارتمان مورد نظر را انتخاب کنید"),
     });
-
 
     const formik = useFormik({
         initialValues: {
             productId: "",
-            productName:"",
+            productName: "",
             value: "",
             unit: "",
-            status:"UNKNOWN",
             expirationDate: "",
+            status:"UNKNOWN",
             machineTag: "",
             machineCode: "",
             driverName: "",
-            producer: "",
-            description:"",
+            sourceSubOrganizationId: "",
+            sourceSubOrganizationName: "",
+            description: "",
         },
-      
+
         validate: validate,
 
         validationSchema: schema,
 
-        onSubmit: async (product,helpers) => {
+        onSubmit: async (product, helpers) => {
             let updateProduct = {...product}
 
-            if(product.machineTag !== ""){
+            if (product.machineTag !== "") {
                 const res = await getVehicleByTag(product.machineTag)
-                if(res?.status !== "rejected"){
-                    updateProduct = {...updateProduct,machineType:res.data.type,machineId:res.data.id}
+                if (res?.status !== "rejected") {
+                    updateProduct = {...updateProduct, machineType: res.data.type, machineId: res.data.id}
                     console.log(updateProduct)
-                }else {
-                    updateProduct = {...updateProduct,machineType:"نا معلوم",machineId:""}
+                } else {
+                    updateProduct = {...updateProduct, machineType: "نا معلوم", machineId: ""}
                 }
-            }else if(product.machineCode !== ""){
+            } else if (product.machineCode !== "") {
                 const res = await getVehicleByCode(product.machineCode)
-                if(res?.status !== "rejected"){
-                    updateProduct = {...updateProduct,machineType:res.data.type,machineId:res.data.id}
+                if (res?.status !== "rejected") {
+                    updateProduct = {...updateProduct, machineType: res.data.type, machineId: res.data.id}
                     console.log(updateProduct)
-                }else {
-                    updateProduct = {...updateProduct,machineType:"نا معلوم",machineId:""}
+                } else {
+                    updateProduct = {...updateProduct, machineType: "نا معلوم", machineId: ""}
                 }
             }
-            updateProduct = {...updateProduct,
-                organizationId:window.sessionStorage.getItem("organizationId"),
-                subOrganizationId:window.sessionStorage.getItem("subOrganizationId"),
-            }
+
             const userData = await submitData(updateProduct)
             handleReset()
             props.handleCloseAddData()
@@ -231,16 +259,23 @@ export default function AddDataDialog(props) {
                 fullWidth={true}
                 open={props.openAddData}
                 keepMounted
-                onClose={()=>{props.handleCloseAddData();handleReset()}}
+                onClose={() => {
+                    props.handleCloseAddData();
+                    handleReset()
+                }}
                 aria-describedby="alert-dialog-slide-description"
                 PaperProps={{
                     style: {
                         fontFamily: "IRANYekan",
-                    },}}>
+                    },
+                }}>
                 <DialogContent>
                     <DialogContentText style={{fontFamily: "IRANYekan"}}>
                         <div className="flex justify-end">
-                            <button onClick={()=>{props.handleCloseAddData();handleReset()}}>
+                            <button onClick={() => {
+                                props.handleCloseAddData();
+                                handleReset()
+                            }}>
                                 <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 14 14"
                                      fill="none">
                                     <path d="M13 1L1 13M1 1L13 13" stroke="black" stroke-width="2"
@@ -249,7 +284,7 @@ export default function AddDataDialog(props) {
                             </button>
                         </div>
                         <div className="flex justify-center mb-7">
-                            <h3 className="text-[1.1rem]">ثبت درخواست خرید</h3>
+                            <h3 className="text-[1.1rem]">ثبت محصولات ورودی </h3>
                         </div>
                         <form className="flex justify-center " onSubmit={formik.handleSubmit} method="POST">
                             <div className="flex flex-col justify-center w-[90%] gap-5">
@@ -285,13 +320,14 @@ export default function AddDataDialog(props) {
                                                 InputProps={{
                                                     ...params.InputProps,
                                                     style: {fontFamily: "IRANYekan", fontSize: "0.8rem"},
-                                                    endAdornment:(
+                                                    endAdornment: (
                                                         <React.Fragment>
-                                                            {isProductLoading ? <CircularProgress color="inherit" size={20} /> : null}
+                                                            {isProductLoading ?
+                                                                <CircularProgress color="inherit" size={20}/> : null}
                                                             {params.InputProps.endAdornment}
                                                         </React.Fragment>
                                                     )
-                                            }}
+                                                }}
                                                 placeholder="نوع محصول (اجباری)"
                                             />}
                                     />
@@ -421,8 +457,9 @@ export default function AddDataDialog(props) {
                                                             labelId="demo-select-small-label"
                                                             id="demo-select-small">
                                                             {
-                                                                alphabeticalList.map((alpha)=>(
-                                                                    <MenuItem value={alpha.value}>{alpha.value}</MenuItem>
+                                                                alphabeticalList.map((alpha) => (
+                                                                    <MenuItem
+                                                                        value={alpha.value}>{alpha.value}</MenuItem>
                                                                 ))
                                                             }
                                                         </Select>
@@ -498,17 +535,49 @@ export default function AddDataDialog(props) {
                                             InputLabelProps={{style: {fontFamily: "IRANYekan"}}}/>
                                     </div>
                                     <div className="w-full md:w-1/2">
-                                        <TextField
+                                        <Autocomplete
+                                            open={openSubOrganizationList}
+                                            onOpen={() => {
+                                                setOpenSubOrganizationList(true);
+                                            }}
+                                            onClose={() => {
+                                                setOpenSubOrganizationList(false);
+                                            }}
                                             fullWidth
-                                            placeholder="تامین کننده (اجباری)"
-                                            type="text"
-                                            name="producer"
-                                            value={formik.values.producer}
-                                            onChange={formik.handleChange}
-                                            error={formik.touched.producer && Boolean(formik.errors.producer)}
-                                            helperText={formik.touched.producer && formik.errors.producer}
-                                            inputProps={{style: {fontFamily: "IRANYekan", fontSize: "0.8rem"}}}
-                                            InputLabelProps={{style: {fontFamily: "IRANYekan"}}}/>
+                                            clearOnEscape
+                                            disablePortal
+                                            id="combo-box-demo"
+                                            ListboxProps={{
+                                                sx: {fontFamily: "IRANYekan", fontSize: "0.8rem"},
+                                            }}
+                                            options={subOrganizationList}
+                                            getOptionLabel={(option) => option.name}
+                                            value={subOrganization}
+                                            onChange={(event, newValue) => {
+                                                setSubOrganization(newValue)
+                                                formik.setFieldValue("sourceSubOrganizationId", newValue?.id)
+                                                formik.setFieldValue("sourceSubOrganizationName", newValue?.name)
+                                            }}
+                                            renderInput={(params) =>
+                                                <TextField
+                                                    error={formik.touched.sourceSubOrganizationId && Boolean(formik.errors.sourceSubOrganizationId)}
+                                                    helperText={formik.touched.sourceSubOrganizationId && formik.errors.sourceSubOrganizationId}
+                                                    {...params}
+                                                    InputProps={{
+                                                        ...params.InputProps,
+                                                        style: {fontFamily: "IRANYekan", fontSize: "0.8rem"},
+                                                        endAdornment: (
+                                                            <React.Fragment>
+                                                                {isSubOrganizationLoading ?
+                                                                    <CircularProgress color="inherit"
+                                                                                      size={20}/> : null}
+                                                                {params.InputProps.endAdornment}
+                                                            </React.Fragment>
+                                                        )
+                                                    }}
+                                                    placeholder="از دپارتمان"
+                                                />}
+                                        />
                                     </div>
                                 </div>
                                 <div>

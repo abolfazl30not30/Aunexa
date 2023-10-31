@@ -17,7 +17,11 @@ import persian_fa from "react-date-object/locales/persian_fa";
 import DatePicker from "react-multi-date-picker";
 import "react-multi-date-picker/styles/colors/red.css"
 import CircularProgress from "@mui/material/CircularProgress";
-import {useLazyGetAllProductQuery, useLazyGetAllVehicleQuery} from "@/redux/features/category/CategorySlice";
+import {
+    useLazyGetAllProductQuery,
+    useLazyGetAllSubOrganizationQuery,
+    useLazyGetAllVehicleQuery
+} from "@/redux/features/category/CategorySlice";
 import {useEffect} from "react";
 
 
@@ -42,6 +46,16 @@ export default function FilterDialog(props) {
             getVehicleList()
         }
     },[openVehicleList])
+
+    //subOrganization input
+    const [subOrganization,setSubOrganization] = useState(null)
+    const [openSubOrganizationList,setOpenSubOrganizationList] = useState(false)
+    const [getSubOrganizationList,{ data : subOrganizationList  = [] , isLoading : isSubOrganizationLoading, isError: isSubOrganizationError }] = useLazyGetAllSubOrganizationQuery()
+    useEffect(()=>{
+        if(openSubOrganizationList){
+            getSubOrganizationList()
+        }
+    },[openSubOrganizationList])
 
     const handleDateFromInput = (value) => {
         if(value){
@@ -95,6 +109,7 @@ export default function FilterDialog(props) {
         setDateTo("")
         setDateFrom("")
         setProduct(null)
+        setSubOrganization(null)
     }
     const formik = useFormik({
 
@@ -104,7 +119,7 @@ export default function FilterDialog(props) {
             productId:"",
             machineId:"",
             status:"",
-            producer: "",
+            destinationSubOrganizationId: "",
         },
 
         onSubmit: (values) => {
@@ -346,21 +361,48 @@ export default function FilterDialog(props) {
                                     </FormControl>
                                 </div>
                                 <div className=" flex flex-col">
-                                    <div className="mb-2">
-                                        <TextField
-                                            fullWidth
-                                            type="text"
-                                            name="producer"
-                                            value={formik.values.producer}
-                                            onChange={formik.handleChange}
-                                            error={formik.touched.producer && Boolean(formik.errors.producer)}
-                                            helperText={formik.touched.producer && formik.errors.producer}
-                                            inputProps={{style: {fontFamily: "IRANYekan", fontSize: "0.8rem"}}}
-                                            InputLabelProps={{style: {fontFamily: "IRANYekan"}}}
-                                            placeholder="تامین کننده"
-                                        />
-                                    </div>
-
+                                    <Autocomplete
+                                        open={openSubOrganizationList}
+                                        onOpen={() => {
+                                            setOpenSubOrganizationList(true);
+                                        }}
+                                        onClose={() => {
+                                            setOpenSubOrganizationList(false);
+                                        }}
+                                        fullWidth
+                                        clearOnEscape
+                                        disablePortal
+                                        id="combo-box-demo"
+                                        ListboxProps={{
+                                            sx: {fontFamily: "IRANYekan", fontSize: "0.8rem"},
+                                        }}
+                                        options={subOrganizationList}
+                                        getOptionLabel={(option) => option.name}
+                                        value={subOrganization}
+                                        onChange={(event, newValue) => {
+                                            setSubOrganization(newValue)
+                                            formik.setFieldValue("destinationSubOrganizationId", newValue?.id)
+                                        }}
+                                        renderInput={(params) =>
+                                            <TextField
+                                                error={formik.touched.destinationSubOrganizationId && Boolean(formik.errors.destinationSubOrganizationId)}
+                                                helperText={formik.touched.destinationSubOrganizationId && formik.errors.destinationSubOrganizationId}
+                                                {...params}
+                                                InputProps={{
+                                                    ...params.InputProps,
+                                                    style: {fontFamily: "IRANYekan", fontSize: "0.8rem"},
+                                                    endAdornment: (
+                                                        <React.Fragment>
+                                                            {isSubOrganizationLoading ?
+                                                                <CircularProgress color="inherit"
+                                                                                  size={20}/> : null}
+                                                            {params.InputProps.endAdornment}
+                                                        </React.Fragment>
+                                                    )
+                                                }}
+                                                placeholder="دپارتمان"
+                                            />}
+                                    />
                                 </div>
                                 <div className="mt-4">
                                     <button type="submit"

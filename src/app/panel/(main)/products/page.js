@@ -4,54 +4,53 @@ import React, {useEffect, useState} from "react";
 
 import {FormControl, InputAdornment, Menu, OutlinedInput, Pagination, Skeleton,} from "@mui/material";
 
-import AddDataDialog from "@/components/Panel/purchase-request/AddDataDialog";
-import FilterDialog from "@/components/Panel/purchase-request/FilterDialog";
-import MoreInfoDialog from "@/components/Panel/purchase-request/MoreInfoDialog";
-import DeleteDialog from "@/components/Panel/purchase-request/DeleteDialog";
+import AddDataDialog from "@/components/Panel/vehicles-and-equipment/AddDataDialog";
+import FilterDialog from "@/components/Panel/vehicles-and-equipment/FilterDialog";
+import MoreInfoDialog from "@/components/Panel/vehicles-and-equipment/MoreInfoDialog";
+import DeleteDialog from "@/components/Panel/vehicles-and-equipment/DeleteDialog";
 import Link from "next/link";
-import EditInfoDialog from "@/components/Panel/purchase-request/EditInfoDialog";
+import EditInfoDialog from "@/components/Panel/vehicles-and-equipment/EditInfoDialog";
 import {useSelector} from "react-redux";
-import {useGetAllESIQuery} from "@/redux/features/equipment-store/input/ESIapiSlice";
+import {boolean} from "yup";
+import {
+    useGetAllVehiclesQuery
+} from "@/redux/features/vehicles-and-equipment/VehiclesAndEquipmentSlice";
 
-function primaryStoreInput() {
+function vehiclesAndEquipment() {
     let permission =  useSelector((state)=> state.access?.pages?.primaryStoreInput)
+
     const [page, setPage] = useState(1)
     const [sort,setSort] = useState("desc")
     const [openAddData, setOpenAddData] = useState(false)
-
 
     const [openDelete, setOpenDelete] = useState(false)
     const [deleteTargetId, setDeleteTargetId] = useState("")
 
     const [openMoreInfo, setOpenMoreInfo] = useState(false)
     const [moreInfoTarget, setMoreInfoTarget] = useState({
-        productId: "",
-        productName:"",
-        value: "",
-        unit: "",
+        type: "",
+        tag: "",
+        code: "",
+        hasGps:false,
+        gpsURL: "",
         status:"",
-        expirationDate: "",
-        machineTag: "",
-        machineCode: "",
-        driverName: "",
-        producer: "",
-        description:"",
+        subOrganizationId:"",
+        subOrganizationName:"",
+        purchaseDate:""
     })
 
     const [openEditInfo, setOpenEditInfo] = useState(false)
     const [editInfoTarget,setEditInfoTarget] = useState(
         {
-            productId: "",
-            productName:"",
-            value: "",
-            unit: "",
+            type: "",
+            tag: "",
+            code: "",
+            hasGps:false,
+            gpsURL: "",
             status:"",
-            expirationDate: "",
-            machineTag: "",
-            machineCode: "",
-            driverName: "",
-            producer: "",
-            description:"",
+            subOrganizationId:"",
+            subOrganizationName:"",
+            purchaseDate:""
         }
     )
 
@@ -89,17 +88,15 @@ function primaryStoreInput() {
     const handleCloseMoreInfo = () => {
         setMoreInfoTarget(
             {
-                productId: "",
-                productName:"",
-                value: "",
-                unit: "",
+                type: "",
+                tag: "",
+                code: "",
+                hasGps:false,
+                gpsURL: "",
                 status:"",
-                expirationDate: "",
-                machineTag: "",
-                machineCode: "",
-                driverName: "",
-                producer: "",
-                description:"",
+                subOrganizationId:"",
+                subOrganizationName:"",
+                purchaseDate:""
             }
         )
         setOpenMoreInfo(false)
@@ -120,17 +117,15 @@ function primaryStoreInput() {
     }
     const handleCloseEditInfo = () =>{
         setEditInfoTarget({
-            productId: "",
-            productName:"",
-            value: "",
-            unit: "",
+            type: "",
+            tag: "",
+            code: "",
+            hasGps:false,
+            gpsURL: "",
             status:"",
-            expirationDate: "",
-            machineTag: "",
-            machineCode: "",
-            driverName: "",
-            producer: "",
-            description:"",
+            subOrganizationId:"",
+            subOrganizationName:"",
+            purchaseDate:""
         })
         setOpenEditInfo(false)
     }
@@ -145,21 +140,25 @@ function primaryStoreInput() {
         setPage(value)
     }
 
-    const {data: inventoryData = [], isLoading: isDataLoading, isError: isDataError} = useGetAllESIQuery({page,sort,filterItem},{ refetchOnMountOrArgChange: true })
 
+    const {data: inventoryData = [], isLoading: isDataLoading, isError: isDataError} = useGetAllVehiclesQuery({page,sort,filterItem},{ refetchOnMountOrArgChange: true })
+    // isPrimaryStoreInputReadAll
+    //     :
+    //     true
     return (
         <>
             <div>
                 <header className="flex justify-between items-center text-[0.9rem] bg-white py-6 px-10">
                     <div className="">
-                        <h2 className="font-[800] text-[0.9rem] md:text-[1.1rem]">درخواست خرید</h2>
+                        <h2 className="font-[800] text-[0.9rem] md:text-[1.1rem]">کالا و محصولات</h2>
                     </div>
                     <div className="">
-                        {
+
+
                                 <button
                                     className="flex bg-mainRed text-white items-center text- px-3 py-2 rounded-full md:rounded"
                                     onClick={handleOpenAddData}>
-                                    <span className="hidden md:inline">ثبت درخواست خرید</span>
+                                    <span className="hidden md:inline">ثبت کالا</span>
                                     <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
                                          fill="none">
                                         <path d="M7 12H17" stroke="white" stroke-width="2" stroke-linecap="round"
@@ -169,7 +168,6 @@ function primaryStoreInput() {
                                     </svg>
                                 </button>
 
-                        }
                     </div>
                 </header>
                 <section className="py-4 md:px-8 mt-5 bg-white h-[50rem]">
@@ -269,19 +267,16 @@ function primaryStoreInput() {
                                         #
                                     </th>
                                     <th className="px-2 md:px-6 py-4">
-                                        محصول
-                                    </th>
-                                    <th className="px-2 md:px-6 px-6 py-4">
-                                        مقدار
-                                    </th>
-                                    <th className="px-2 md:px-6 px-6 py-4">
                                         نوع وسیله
                                     </th>
-                                    <th className="hidden md:table-cell px-6 py-4">
-                                        تامین کننده
+                                    <th className="px-2 md:px-6 px-6 py-4">
+                                        وضعیت GPS
+                                    </th>
+                                    <th className="px-2 md:px-6 px-6 py-4">
+                                        تاریخ خرید
                                     </th>
                                     <th className="hidden md:table-cell px-6 py-4">
-                                        تاریخ
+                                        شاخص عملکردی
                                     </th>
                                     <th className="px-2 md:px-6 px-6 py-4">
                                         <span className="hidden md:inline">وضعیت</span>
@@ -311,9 +306,6 @@ function primaryStoreInput() {
                                                 <td className="hidden md:table-cell px-6 py-4  text-gray70 whitespace-nowrap ">
                                                     <Skeleton variant="text" sx={{ fontSize: '1rem' }} />
                                                 </td>
-                                                <td className="hidden md:table-cell px-6 py-4  text-gray70 whitespace-nowrap ">
-                                                    <Skeleton variant="text" sx={{ fontSize: '1rem' }} />
-                                                </td>
                                                 <td className="px-2 md:px-6 py-4  text-gray70 whitespace-nowrap ">
                                                     <div className="flex justify-center">
                                                         <Skeleton variant="rounded" width={50} height={20} />
@@ -334,28 +326,34 @@ function primaryStoreInput() {
                                                     {index + 1}
                                                 </td>
                                                 <td className="px-2 md:px-6 py-4  text-gray70 whitespace-nowrap ">
-                                                    {data.productName}
-                                                </td>
-                                                <td className="px-2 md:px-6 py-4  text-gray70 whitespace-nowrap ">
-                                                    {data.value} {data.unit}
-                                                </td>
-                                                <td className="px-2 md:px-6 py-2  text-gray70 whitespace-nowrap ">
-                                                    <div>{data.machineType}</div>
+                                                    <div>{data.type}</div>
                                                     <div className="mt-1 text-gray9F text-[0.75rem]">{
-                                                        data?.machineTag === "" ? (data?.machineCode) : (
-                                                            data?.machineTag?.slice(2, 5) + "-" + data?.machineTag?.slice(5, 7) + " " + data?.machineTag?.slice(7, 8) + " " + data?.machineTag?.slice(0, 2)
+                                                        data?.tag === "" ? (data?.code) : (
+                                                            data?.tag?.slice(2, 5) + "-" + data?.tag?.slice(5, 7) + " " + data?.tag?.slice(7, 8) + " " + data?.tag?.slice(0, 2)
                                                         )
                                                     }</div>
                                                 </td>
-                                                <td className="hidden md:table-cell px-6 py-4  text-gray70 whitespace-nowrap ">
-                                                    {data.producer}
+                                                <td className="px-2 md:px-6 py-4 flex justify-center  text-gray70 whitespace-nowrap ">
+                                                    {data?.hasGps ? (
+                                                        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 20 20" fill="none">
+                                                            <path d="M5.5 10L8.5 13L14.5 7M5.8 19H14.2C15.8802 19 16.7202 19 17.362 18.673C17.9265 18.3854 18.3854 17.9265 18.673 17.362C19 16.7202 19 15.8802 19 14.2V5.8C19 4.11984 19 3.27976 18.673 2.63803C18.3854 2.07354 17.9265 1.6146 17.362 1.32698C16.7202 1 15.8802 1 14.2 1H5.8C4.11984 1 3.27976 1 2.63803 1.32698C2.07354 1.6146 1.6146 2.07354 1.32698 2.63803C1 3.27976 1 4.11984 1 5.8V14.2C1 15.8802 1 16.7202 1.32698 17.362C1.6146 17.9265 2.07354 18.3854 2.63803 18.673C3.27976 19 4.11984 19 5.8 19Z" stroke="#12D377" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                                                        </svg>
+                                                    ):(
+                                                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none">
+                                                            <rect width="24" height="24" fill="white"/>
+                                                            <path d="M9 9L15 15M15 9L9 15M7.8 21H16.2C17.8802 21 18.7202 21 19.362 20.673C19.9265 20.3854 20.3854 19.9265 20.673 19.362C21 18.7202 21 17.8802 21 16.2V7.8C21 6.11984 21 5.27976 20.673 4.63803C20.3854 4.07354 19.9265 3.6146 19.362 3.32698C18.7202 3 17.8802 3 16.2 3H7.8C6.11984 3 5.27976 3 4.63803 3.32698C4.07354 3.6146 3.6146 4.07354 3.32698 4.63803C3 5.27976 3 6.11984 3 7.8V16.2C3 17.8802 3 18.7202 3.32698 19.362C3.6146 19.9265 4.07354 20.3854 4.63803 20.673C5.27976 21 6.11984 21 7.8 21Z" stroke="#DB3746" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                                                        </svg>
+                                                    )}
+                                                </td>
+                                                <td className="px-2 md:px-6 py-2  text-gray70 whitespace-nowrap ">
+                                                    {data?.purchaseDate ? (data?.purchaseDate) : ("---")}
                                                 </td>
                                                 <td className="hidden md:table-cell px-6 py-4  text-gray70 whitespace-nowrap ">
-                                                    {data.time} {data.date}
+                                                    17
                                                 </td>
                                                 <td className="px-2 md:px-6 py-4  text-gray70 whitespace-nowrap ">
-                                                    {data.status === "CONFIRMED" ? (<span className="text-[0.8rem] bg-greenBg text-greenText py-1 px-2 rounded-xl">تاييد شده</span>) : (
-                                                        data.status === "UNKNOWN" ? (<span className="text-[0.8rem] bg-[#EBEBEB] text-gray70 py-1 px-2 rounded-xl">نامعلوم</span>) : (
+                                                    {data.status === "IN_USE" ? (<span className="text-[0.8rem] bg-[#D5EAFF] text-[#2492FF] py-1 px-2 rounded-xl">در حال استفاده</span>) : (
+                                                        data.status === "AVAILABLE" ? (<span className="text-[0.8rem] bg-greenBg text-greenText py-1 px-2 rounded-xl">دردسترس</span>) : (
                                                             <span className="text-[0.8rem] bg-orangeBg text-orangeText py-1 px-2 rounded-xl">مشکل دار</span>
                                                         )
                                                     )}
@@ -396,7 +394,6 @@ function primaryStoreInput() {
                                                                     </defs>
                                                                 </svg>
                                                             </button>
-
                                                     }
                                                     {
 
@@ -434,4 +431,4 @@ function primaryStoreInput() {
     )
 }
 
-export default primaryStoreInput;
+export default vehiclesAndEquipment;

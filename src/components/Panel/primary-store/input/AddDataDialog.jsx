@@ -34,7 +34,7 @@ import {
 export default function AddDataDialog(props) {
     const alphabeticalList = [
         {value: ""},
-        {value: "الف"},
+        {value: "ا"},
         {value: "ب"},
         {value: "پ"},
         {value: "ت"},
@@ -326,11 +326,11 @@ export default function AddDataDialog(props) {
                                                 sx: {fontFamily: "IRANYekan", fontSize: "0.8rem"},
                                             }}
                                             options={unitList}
-                                            getOptionLabel={(option) => option.abbreviation}
+                                            getOptionLabel={(option) => option.persianName}
                                             value={unit}
                                             onChange={(event, newValue) => {
                                                 setUnit(newValue)
-                                                formik.setFieldValue("unit", newValue.abbreviation)
+                                                formik.setFieldValue("unit", newValue?.persianName)
                                             }}
                                             renderInput={(params) =>
                                                 <TextField

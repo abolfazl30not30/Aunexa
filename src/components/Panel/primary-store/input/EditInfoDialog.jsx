@@ -34,7 +34,7 @@ import {
 export default function EditInfoDialog(props) {
     const alphabeticalList = [
         {value: ""},
-        {value: "الف"},
+        {value: "ا"},
         {value: "ب"},
         {value: "پ"},
         {value: "ت"},
@@ -231,7 +231,7 @@ export default function EditInfoDialog(props) {
         setProduct(product[0])
     }
     const handleSetUnitInput = (ab) =>{
-        const units= unitList.filter((unit)=> unit.abbreviation === ab)
+        const units= unitList.filter((unit)=> unit.persianName === ab)
         setUnit(units[0])
     }
 
@@ -384,11 +384,11 @@ export default function EditInfoDialog(props) {
                                                 sx: {fontFamily: "IRANYekan", fontSize: "0.8rem"},
                                             }}
                                             options={unitList}
-                                            getOptionLabel={(option) => option.abbreviation}
+                                            getOptionLabel={(option) => option.persianName}
                                             value={unit}
                                             onChange={(event, newValue) => {
                                                 setUnit(newValue)
-                                                formik.setFieldValue("unit", newValue.abbreviation)
+                                                formik.setFieldValue("unit", newValue?.persianName)
                                             }}
                                             renderInput={(params) =>
                                                 <TextField

@@ -73,7 +73,7 @@ const AntSwitch = styled(Switch)(({ theme }) => ({
 export default function AddDataDialog(props) {
     const alphabeticalList = [
         {value: ""},
-        {value: "الف"},
+        {value: "ا"},
         {value: "ب"},
         {value: "پ"},
         {value: "ت"},

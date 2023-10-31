@@ -4,12 +4,12 @@ import React, {useEffect, useState} from "react";
 
 import {FormControl, InputAdornment, Menu, OutlinedInput, Pagination, Skeleton,} from "@mui/material";
 
-import AddDataDialog from "@/components/Panel/purchase-request/AddDataDialog";
-import FilterDialog from "@/components/Panel/purchase-request/FilterDialog";
-import MoreInfoDialog from "@/components/Panel/purchase-request/MoreInfoDialog";
-import DeleteDialog from "@/components/Panel/purchase-request/DeleteDialog";
+import AddDataDialog from "@/components/Panel/equipment-store/input/AddDataDialog";
+import FilterDialog from "@/components/Panel/equipment-store/input/FilterDialog";
+import MoreInfoDialog from "@/components/Panel/equipment-store/input/MoreInfoDialog";
+import DeleteDialog from "@/components/Panel/equipment-store/input/DeleteDialog";
 import Link from "next/link";
-import EditInfoDialog from "@/components/Panel/purchase-request/EditInfoDialog";
+import EditInfoDialog from "@/components/Panel/equipment-store/input/EditInfoDialog";
 import {useSelector} from "react-redux";
 import {useGetAllESIQuery} from "@/redux/features/equipment-store/input/ESIapiSlice";
 
@@ -147,19 +147,20 @@ function primaryStoreInput() {
 
     const {data: inventoryData = [], isLoading: isDataLoading, isError: isDataError} = useGetAllESIQuery({page,sort,filterItem},{ refetchOnMountOrArgChange: true })
 
+
     return (
         <>
             <div>
                 <header className="flex justify-between items-center text-[0.9rem] bg-white py-6 px-10">
                     <div className="">
-                        <h2 className="font-[800] text-[0.9rem] md:text-[1.1rem]">درخواست خرید</h2>
+                        <h2 className="font-[800] text-[0.9rem] md:text-[1.1rem]">انبار تجهیزات / بخش ورودی</h2>
                     </div>
                     <div className="">
                         {
                                 <button
                                     className="flex bg-mainRed text-white items-center text- px-3 py-2 rounded-full md:rounded"
                                     onClick={handleOpenAddData}>
-                                    <span className="hidden md:inline">ثبت درخواست خرید</span>
+                                    <span className="hidden md:inline">ثبت تجهیزات ورودی</span>
                                     <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
                                          fill="none">
                                         <path d="M7 12H17" stroke="white" stroke-width="2" stroke-linecap="round"

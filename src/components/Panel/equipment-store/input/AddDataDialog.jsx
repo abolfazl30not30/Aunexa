@@ -165,6 +165,7 @@ export default function AddDataDialog(props) {
     //submit data
     const [submitData, { isLoading:isSubmitLoading ,error}] = useSaveESIMutation()
     const [getVehicleByTag,{ data : vehicleByTag  = {} , isLoading : isVehicleByTagLoading, isError: isVehicleByTagError }] = useLazyGetOneVehiclesByTagQuery()
+
     const [getVehicleByCode,{ data : vehicleByCode  = {} , isLoading : isVehicleByCodeLoading, isError: isVehicleByCodeError }] = useLazyGetOneVehiclesByCodeQuery()
 
     const schema = yup.object().shape({
@@ -174,7 +175,6 @@ export default function AddDataDialog(props) {
         driverName: yup.string().required("لطفا نام راننده را وارد کنید"),
         producer: yup.string().required("لطفا تامین کننده را وارد کنید"),
     });
-
 
     const formik = useFormik({
         initialValues: {
@@ -236,7 +236,8 @@ export default function AddDataDialog(props) {
                 PaperProps={{
                     style: {
                         fontFamily: "IRANYekan",
-                    },}}>
+                    },
+                }}>
                 <DialogContent>
                     <DialogContentText style={{fontFamily: "IRANYekan"}}>
                         <div className="flex justify-end">
@@ -249,7 +250,7 @@ export default function AddDataDialog(props) {
                             </button>
                         </div>
                         <div className="flex justify-center mb-7">
-                            <h3 className="text-[1.1rem]">ثبت درخواست خرید</h3>
+                            <h3 className="text-[1.1rem]">ثبت تجهیزات ورودی</h3>
                         </div>
                         <form className="flex justify-center " onSubmit={formik.handleSubmit} method="POST">
                             <div className="flex flex-col justify-center w-[90%] gap-5">

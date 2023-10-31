@@ -76,7 +76,7 @@ const AntSwitch = styled(Switch)(({ theme }) => ({
 export default function EditInfoDialog(props) {
     const alphabeticalList = [
         {value: ""},
-        {value: "الف"},
+        {value: "ا"},
         {value: "ب"},
         {value: "پ"},
         {value: "ت"},

@@ -4,14 +4,15 @@ import React, {useEffect, useState} from "react";
 
 import {FormControl, InputAdornment, Menu, OutlinedInput, Pagination, Skeleton,} from "@mui/material";
 
-import AddDataDialog from "@/components/Panel/purchase-request/AddDataDialog";
-import FilterDialog from "@/components/Panel/purchase-request/FilterDialog";
-import MoreInfoDialog from "@/components/Panel/purchase-request/MoreInfoDialog";
-import DeleteDialog from "@/components/Panel/purchase-request/DeleteDialog";
+import AddDataDialog from "@/components/Panel/product-store/output/AddDataDialog";
+import FilterDialog from "@/components/Panel/product-store/output/FilterDialog";
+import MoreInfoDialog from "@/components/Panel/product-store/output/MoreInfoDialog";
+import DeleteDialog from "@/components/Panel/product-store/output/DeleteDialog";
 import Link from "next/link";
-import EditInfoDialog from "@/components/Panel/purchase-request/EditInfoDialog";
+import EditInfoDialog from "@/components/Panel/product-store/output/EditInfoDialog";
 import {useSelector} from "react-redux";
-import {useGetAllESIQuery} from "@/redux/features/equipment-store/input/ESIapiSlice";
+import {useGetAllPOSOQuery} from "@/redux/features/product-store/output/POSOapiSlice";
+
 
 function primaryStoreInput() {
     let permission =  useSelector((state)=> state.access?.pages?.primaryStoreInput)
@@ -19,10 +20,8 @@ function primaryStoreInput() {
     const [sort,setSort] = useState("desc")
     const [openAddData, setOpenAddData] = useState(false)
 
-
     const [openDelete, setOpenDelete] = useState(false)
     const [deleteTargetId, setDeleteTargetId] = useState("")
-
     const [openMoreInfo, setOpenMoreInfo] = useState(false)
     const [moreInfoTarget, setMoreInfoTarget] = useState({
         productId: "",
@@ -34,7 +33,7 @@ function primaryStoreInput() {
         machineTag: "",
         machineCode: "",
         driverName: "",
-        producer: "",
+        buyer: "",
         description:"",
     })
 
@@ -50,7 +49,7 @@ function primaryStoreInput() {
             machineTag: "",
             machineCode: "",
             driverName: "",
-            producer: "",
+            buyer: "",
             description:"",
         }
     )
@@ -98,7 +97,7 @@ function primaryStoreInput() {
                 machineTag: "",
                 machineCode: "",
                 driverName: "",
-                producer: "",
+                buyer: "",
                 description:"",
             }
         )
@@ -129,7 +128,7 @@ function primaryStoreInput() {
             machineTag: "",
             machineCode: "",
             driverName: "",
-            producer: "",
+            buyer: "",
             description:"",
         })
         setOpenEditInfo(false)
@@ -145,21 +144,22 @@ function primaryStoreInput() {
         setPage(value)
     }
 
-    const {data: inventoryData = [], isLoading: isDataLoading, isError: isDataError} = useGetAllESIQuery({page,sort,filterItem},{ refetchOnMountOrArgChange: true })
+    const {data: inventoryData = [], isLoading: isDataLoading, isError: isDataError} = useGetAllPOSOQuery({page,sort,filterItem},{ refetchOnMountOrArgChange: true })
+
 
     return (
         <>
             <div>
                 <header className="flex justify-between items-center text-[0.9rem] bg-white py-6 px-10">
                     <div className="">
-                        <h2 className="font-[800] text-[0.9rem] md:text-[1.1rem]">درخواست خرید</h2>
+                        <h2 className="font-[800] text-[0.9rem] md:text-[1.1rem]">انبار محصولات / بخش خروجی</h2>
                     </div>
                     <div className="">
                         {
                                 <button
                                     className="flex bg-mainRed text-white items-center text- px-3 py-2 rounded-full md:rounded"
                                     onClick={handleOpenAddData}>
-                                    <span className="hidden md:inline">ثبت درخواست خرید</span>
+                                    <span className="hidden md:inline">ثبت محصولات خروجی</span>
                                     <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
                                          fill="none">
                                         <path d="M7 12H17" stroke="white" stroke-width="2" stroke-linecap="round"
@@ -278,7 +278,7 @@ function primaryStoreInput() {
                                         نوع وسیله
                                     </th>
                                     <th className="hidden md:table-cell px-6 py-4">
-                                        تامین کننده
+                                        خریدار
                                     </th>
                                     <th className="hidden md:table-cell px-6 py-4">
                                         تاریخ
@@ -348,7 +348,7 @@ function primaryStoreInput() {
                                                     }</div>
                                                 </td>
                                                 <td className="hidden md:table-cell px-6 py-4  text-gray70 whitespace-nowrap ">
-                                                    {data.producer}
+                                                    {data.buyer}
                                                 </td>
                                                 <td className="hidden md:table-cell px-6 py-4  text-gray70 whitespace-nowrap ">
                                                     {data.time} {data.date}

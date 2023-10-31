@@ -411,6 +411,11 @@ export default function RootLayout({children}) {
                                     className={pathname === "/panel/purchase-request" ? "text-mainRed text-[0.9rem]" : "text-gray9F hover:text-textGray text-[0.9rem]"}>درخواست خرید</span></Link>
                             </div>
                             <div>
+                                <Link href="/panel/products"
+                                      className="block py-4 px-2 border-b border-b-1 border-b-solid  border-b-borderGray"><span
+                                    className={pathname === "/panel/products" ? "text-mainRed text-[0.9rem]" : "text-gray9F hover:text-textGray text-[0.9rem]"}>کالا و محصولات</span></Link>
+                            </div>
+                            <div>
                                 <Link href="/panel/ticket"
                                       className="block py-4 px-2 border-b border-b-1 border-b-solid  border-b-borderGray"><span
                                     className={pathname === "/panel/ticket" ? "text-mainRed text-[0.9rem]" : "text-gray9F hover:text-textGray text-[0.9rem]"}>تیکت</span></Link>

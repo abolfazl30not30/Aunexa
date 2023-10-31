@@ -1,3 +1,4 @@
+
 'use client'
 import TextField from "@mui/material/TextField";
 import React, {useEffect, useState} from "react";
@@ -16,23 +17,22 @@ import * as yup from "yup";
 import {useFormik} from "formik";
 import persian from "react-date-object/calendars/persian";
 import persian_fa from "react-date-object/locales/persian_fa";
-import DatePicker from "react-multi-date-picker";
+import DatePicker, {DateObject} from "react-multi-date-picker";
 import CircularProgress from '@mui/material/CircularProgress';
 import "react-multi-date-picker/styles/colors/red.css"
 import {
-    useLazyGetAllProductQuery,
+    useLazyGetAllProductQuery, useLazyGetAllSubOrganizationQuery,
     useLazyGetAllUnitQuery,
     useLazyGetAllVehicleQuery
 } from "@/redux/features/category/CategorySlice";
-
 import {
     useLazyGetOneVehiclesByCodeQuery,
     useLazyGetOneVehiclesByTagQuery
 } from "@/redux/features/vehicles-and-equipment/VehiclesAndEquipmentSlice";
-import {useSaveESIMutation} from "@/redux/features/equipment-store/input/ESIapiSlice";
+import {useUpdatePSOMutation} from "@/redux/features/primary-store/output/PSOapiSlice";
+import {useUpdateESOMutation} from "@/redux/features/equipment-store/output/ESOapiSlice";
 
-
-export default function AddDataDialog(props) {
+export default function EditInfoDialog(props) {
     const alphabeticalList = [
         {value: ""},
         {value: "ا"},
@@ -87,6 +87,15 @@ export default function AddDataDialog(props) {
         }
     },[openUnitList])
 
+    //subOrganization input
+    const [subOrganization,setSubOrganization] = useState(null)
+    const [openSubOrganizationList,setOpenSubOrganizationList] = useState(false)
+    const [getSubOrganizationList,{ data : subOrganizationList  = [] , isLoading : isSubOrganizationLoading, isError: isSubOrganizationError }] = useLazyGetAllSubOrganizationQuery()
+    useEffect(()=>{
+        if(openSubOrganizationList){
+            getSubOrganizationList()
+        }
+    },[openSubOrganizationList])
 
     // //vehicle input
     // const [vehicle,setVehicle] = useState(null)
@@ -150,11 +159,13 @@ export default function AddDataDialog(props) {
         return errors;
     };
 
+
     const handleReset = () =>{
         formik.resetForm()
         setDate("")
         setProduct(null)
         setUnit(null)
+        setSubOrganization(null)
         setmachineTag({
             part1: "",
             part2: "",
@@ -163,8 +174,10 @@ export default function AddDataDialog(props) {
     }
 
     //submit data
-    const [submitData, { isLoading:isSubmitLoading ,error}] = useSaveESIMutation()
+    const [submitData, { isLoading:isSubmitLoading ,error}] = useUpdateESOMutation()
+
     const [getVehicleByTag,{ data : vehicleByTag  = {} , isLoading : isVehicleByTagLoading, isError: isVehicleByTagError }] = useLazyGetOneVehiclesByTagQuery()
+
     const [getVehicleByCode,{ data : vehicleByCode  = {} , isLoading : isVehicleByCodeLoading, isError: isVehicleByCodeError }] = useLazyGetOneVehiclesByCodeQuery()
 
     const schema = yup.object().shape({
@@ -172,25 +185,24 @@ export default function AddDataDialog(props) {
         value: yup.string().required("لطفا مقدار محصول را وارد کنید"),
         unit: yup.string().required("لطفا واحد محصول را وارد کنید"),
         driverName: yup.string().required("لطفا نام راننده را وارد کنید"),
-        producer: yup.string().required("لطفا تامین کننده را وارد کنید"),
+        destinationSubOrganizationId: yup.string().required("لطفا دپارتمان مورد نظر را انتخاب کنید"),
     });
-
 
     const formik = useFormik({
         initialValues: {
             productId: "",
-            productName:"",
+            productName: "",
             value: "",
             unit: "",
-            status:"UNKNOWN",
             expirationDate: "",
             machineTag: "",
             machineCode: "",
             driverName: "",
-            producer: "",
-            description:"",
+            destinationSubOrganizationId: "",
+            destinationSubOrganizationName: "",
+            description: "",
         },
-      
+
         validate: validate,
 
         validationSchema: schema,
@@ -215,32 +227,92 @@ export default function AddDataDialog(props) {
                     updateProduct = {...updateProduct,machineType:"نا معلوم",machineId:""}
                 }
             }
-            updateProduct = {...updateProduct,
-                organizationId:window.sessionStorage.getItem("organizationId"),
-                subOrganizationId:window.sessionStorage.getItem("subOrganizationId"),
-            }
+
             const userData = await submitData(updateProduct)
             handleReset()
-            props.handleCloseAddData()
+            props.handleCloseEditInfo()
         },
     });
+//setData
+    const handleSetProductInput = (id) =>{
+        const product = productList.filter((product)=> product.id === id)
+        setProduct(product[0])
+    }
+    const handleSetSubOrganizationInput = (id) =>{
+        const subOrg = subOrganizationList.filter((org)=> org.id === id)
+        setSubOrganization(subOrg[0])
+    }
+
+    const handleSetUnitInput = (ab) =>{
+        const units= unitList.filter((unit)=> unit.persianName === ab)
+        setUnit(units[0])
+    }
+
+    const handleSetMachineTagInput = (machineTag) =>{
+        if(machineTag !== "") {
+            const tag = {
+                part1: machineTag.slice(5, 7),
+                part2: machineTag.slice(2, 5),
+                part3: machineTag.slice(7, 8),
+                part4: machineTag.slice(0, 2)
+            }
+            setmachineTag(tag)
+        }
+    }
+    const handleSetExpirationDate = (date)=>{
+        if(date !== ""){
+            const newDate = new DateObject({
+                date: date,
+                format: "YYYY/MM/DD",
+                calendar: persian,
+                locale: persian_fa
+            })
+            setDate(newDate)
+        }
+    }
+
+    useEffect(()=>{
+        getProductList()
+        getUnitList()
+        getSubOrganizationList()
+        formik.setValues({
+            id:props.editInfoTarget?.id,
+            productId: props.editInfoTarget?.productId,
+            productName:props.editInfoTarget?.productName,
+            value: props.editInfoTarget?.value,
+            unit: props.editInfoTarget?.unit,
+            expirationDate: props.editInfoTarget?.expirationDate,
+            machineTag: props.editInfoTarget?.machineTag,
+            machineCode: props.editInfoTarget?.machineCode,
+            machineType:props.editInfoTarget?.machineType,
+            driverName: props.editInfoTarget?.driverName,
+            destinationSubOrganizationId: props.editInfoTarget?.destinationSubOrganizationId,
+            description:props.editInfoTarget?.description
+        })
+        handleSetProductInput(props.editInfoTarget?.productId)
+        handleSetSubOrganizationInput(props.editInfoTarget?.destinationSubOrganizationId)
+        handleSetUnitInput(props.editInfoTarget?.unit)
+        handleSetMachineTagInput(props.editInfoTarget?.machineTag)
+        handleSetExpirationDate(props.editInfoTarget?.expirationDate)
+    },[props.openEditInfo])
 
     return (
         <>
             <Dialog
                 fullWidth={true}
-                open={props.openAddData}
+                open={props.openEditInfo}
                 keepMounted
-                onClose={()=>{props.handleCloseAddData();handleReset()}}
+                onClose={()=>{props.handleCloseEditInfo();handleReset()}}
                 aria-describedby="alert-dialog-slide-description"
                 PaperProps={{
                     style: {
                         fontFamily: "IRANYekan",
-                    },}}>
+                    },
+                }}>
                 <DialogContent>
                     <DialogContentText style={{fontFamily: "IRANYekan"}}>
                         <div className="flex justify-end">
-                            <button onClick={()=>{props.handleCloseAddData();handleReset()}}>
+                            <button onClick={()=>{props.handleCloseEditInfo();handleReset()}}>
                                 <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 14 14"
                                      fill="none">
                                     <path d="M13 1L1 13M1 1L13 13" stroke="black" stroke-width="2"
@@ -249,7 +321,7 @@ export default function AddDataDialog(props) {
                             </button>
                         </div>
                         <div className="flex justify-center mb-7">
-                            <h3 className="text-[1.1rem]">ثبت درخواست خرید</h3>
+                            <h3 className="text-[1.1rem]">ویرایش مواداولیه ورودی</h3>
                         </div>
                         <form className="flex justify-center " onSubmit={formik.handleSubmit} method="POST">
                             <div className="flex flex-col justify-center w-[90%] gap-5">
@@ -291,7 +363,7 @@ export default function AddDataDialog(props) {
                                                             {params.InputProps.endAdornment}
                                                         </React.Fragment>
                                                     )
-                                            }}
+                                                }}
                                                 placeholder="نوع محصول (اجباری)"
                                             />}
                                     />
@@ -466,23 +538,6 @@ export default function AddDataDialog(props) {
                                         }
                                     </div>
                                 </div>
-                                <div>
-                                    <FormControl fullWidth>
-                                        <InputLabel id="demo-simple-select-label" sx={{fontFamily: "IRANYekan", fontSize: "0.8rem",color:"#9F9F9F"}}>وضعیت</InputLabel>
-                                        <Select
-                                            labelId="demo-simple-select-label"
-                                            id="demo-simple-select"
-                                            value={formik.values.status}
-                                            name="status"
-                                            input={<OutlinedInput sx={{fontFamily: "IRANYekan", fontSize: "0.8rem"}} label="وضعیت" />}
-                                            sx={{fontFamily: "IRANYekan", fontSize: "0.8rem"}}
-                                            onChange={formik.handleChange}>
-                                            <MenuItem value="UNKNOWN" sx={{fontFamily: "IRANYekan", fontSize: "0.8rem"}}>نامعلوم</MenuItem>
-                                            <MenuItem value="CONFIRMED" sx={{fontFamily: "IRANYekan", fontSize: "0.8rem"}}>تاييد شده</MenuItem>
-                                            <MenuItem value="TROUBLED" sx={{fontFamily: "IRANYekan", fontSize: "0.8rem"}}>مشکل دار</MenuItem>
-                                        </Select>
-                                    </FormControl>
-                                </div>
                                 <div className="flex flex-col md:flex-row gap-1 justify-between">
                                     <div className="w-full md:w-1/2">
                                         <TextField
@@ -498,17 +553,49 @@ export default function AddDataDialog(props) {
                                             InputLabelProps={{style: {fontFamily: "IRANYekan"}}}/>
                                     </div>
                                     <div className="w-full md:w-1/2">
-                                        <TextField
+                                        <Autocomplete
+                                            open={openSubOrganizationList}
+                                            onOpen={() => {
+                                                setOpenSubOrganizationList(true);
+                                            }}
+                                            onClose={() => {
+                                                setOpenSubOrganizationList(false);
+                                            }}
                                             fullWidth
-                                            placeholder="تامین کننده (اجباری)"
-                                            type="text"
-                                            name="producer"
-                                            value={formik.values.producer}
-                                            onChange={formik.handleChange}
-                                            error={formik.touched.producer && Boolean(formik.errors.producer)}
-                                            helperText={formik.touched.producer && formik.errors.producer}
-                                            inputProps={{style: {fontFamily: "IRANYekan", fontSize: "0.8rem"}}}
-                                            InputLabelProps={{style: {fontFamily: "IRANYekan"}}}/>
+                                            clearOnEscape
+                                            disablePortal
+                                            id="combo-box-demo"
+                                            ListboxProps={{
+                                                sx: {fontFamily: "IRANYekan", fontSize: "0.8rem"},
+                                            }}
+                                            options={subOrganizationList}
+                                            getOptionLabel={(option) => option.name}
+                                            value={subOrganization}
+                                            onChange={(event, newValue) => {
+                                                setSubOrganization(newValue)
+                                                formik.setFieldValue("destinationSubOrganizationId", newValue?.id)
+                                                formik.setFieldValue("destinationSubOrganizationName", newValue?.name)
+                                            }}
+                                            renderInput={(params) =>
+                                                <TextField
+                                                    error={formik.touched.destinationSubOrganizationId && Boolean(formik.errors.destinationSubOrganizationId)}
+                                                    helperText={formik.touched.destinationSubOrganizationId && formik.errors.destinationSubOrganizationId}
+                                                    {...params}
+                                                    InputProps={{
+                                                        ...params.InputProps,
+                                                        style: {fontFamily: "IRANYekan", fontSize: "0.8rem"},
+                                                        endAdornment: (
+                                                            <React.Fragment>
+                                                                {isSubOrganizationLoading ?
+                                                                    <CircularProgress color="inherit"
+                                                                                      size={20}/> : null}
+                                                                {params.InputProps.endAdornment}
+                                                            </React.Fragment>
+                                                        )
+                                                    }}
+                                                    placeholder="انتقال به دپارتمان"
+                                                />}
+                                        />
                                     </div>
                                 </div>
                                 <div>
@@ -540,7 +627,7 @@ export default function AddDataDialog(props) {
                                                 wrapperStyle={{}}
                                                 wrapperClass=""
                                                 visible={true}/>
-                                            ثبت
+                                            ویرایش
                                         </button>) : (
                                             <button type="submit"
                                                     className="w-full rounded-[0.5rem] py-3 hover:border hover:opacity-80 font-bold  bg-mainRed text-white">ثبت

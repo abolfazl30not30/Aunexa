@@ -1,3 +1,4 @@
+
 'use client'
 import TextField from "@mui/material/TextField";
 import React, {useEffect, useState} from "react";
@@ -16,7 +17,7 @@ import * as yup from "yup";
 import {useFormik} from "formik";
 import persian from "react-date-object/calendars/persian";
 import persian_fa from "react-date-object/locales/persian_fa";
-import DatePicker from "react-multi-date-picker";
+import DatePicker, {DateObject} from "react-multi-date-picker";
 import CircularProgress from '@mui/material/CircularProgress';
 import "react-multi-date-picker/styles/colors/red.css"
 import {
@@ -24,15 +25,14 @@ import {
     useLazyGetAllUnitQuery,
     useLazyGetAllVehicleQuery
 } from "@/redux/features/category/CategorySlice";
-
+import {useUpdatePSIMutation} from "@/redux/features/primary-store/input/PSIapiSlice";
 import {
     useLazyGetOneVehiclesByCodeQuery,
     useLazyGetOneVehiclesByTagQuery
 } from "@/redux/features/vehicles-and-equipment/VehiclesAndEquipmentSlice";
-import {useSaveESIMutation} from "@/redux/features/equipment-store/input/ESIapiSlice";
+import {useUpdateESIMutation} from "@/redux/features/equipment-store/input/ESIapiSlice";
 
-
-export default function AddDataDialog(props) {
+export default function EditInfoDialog(props) {
     const alphabeticalList = [
         {value: ""},
         {value: "ا"},
@@ -150,6 +150,7 @@ export default function AddDataDialog(props) {
         return errors;
     };
 
+
     const handleReset = () =>{
         formik.resetForm()
         setDate("")
@@ -163,8 +164,10 @@ export default function AddDataDialog(props) {
     }
 
     //submit data
-    const [submitData, { isLoading:isSubmitLoading ,error}] = useSaveESIMutation()
+    const [submitData, { isLoading:isSubmitLoading ,error}] = useUpdateESIMutation()
+
     const [getVehicleByTag,{ data : vehicleByTag  = {} , isLoading : isVehicleByTagLoading, isError: isVehicleByTagError }] = useLazyGetOneVehiclesByTagQuery()
+
     const [getVehicleByCode,{ data : vehicleByCode  = {} , isLoading : isVehicleByCodeLoading, isError: isVehicleByCodeError }] = useLazyGetOneVehiclesByCodeQuery()
 
     const schema = yup.object().shape({
@@ -174,7 +177,6 @@ export default function AddDataDialog(props) {
         driverName: yup.string().required("لطفا نام راننده را وارد کنید"),
         producer: yup.string().required("لطفا تامین کننده را وارد کنید"),
     });
-
 
     const formik = useFormik({
         initialValues: {
@@ -190,7 +192,7 @@ export default function AddDataDialog(props) {
             producer: "",
             description:"",
         },
-      
+
         validate: validate,
 
         validationSchema: schema,
@@ -221,26 +223,83 @@ export default function AddDataDialog(props) {
             }
             const userData = await submitData(updateProduct)
             handleReset()
-            props.handleCloseAddData()
+            props.handleCloseEditInfo()
         },
     });
+//setData
+    const handleSetProductInput = (id) =>{
+        const product = productList.filter((product)=> product.id === id)
+        setProduct(product[0])
+    }
+    const handleSetUnitInput = (ab) =>{
+        const units= unitList.filter((unit)=> unit.persianName === ab)
+        setUnit(units[0])
+    }
+
+    const handleSetMachineTagInput = (machineTag) =>{
+        if(machineTag !== "") {
+            const tag = {
+                part1: machineTag.slice(5, 7),
+                part2: machineTag.slice(2, 5),
+                part3: machineTag.slice(7, 8),
+                part4: machineTag.slice(0, 2)
+            }
+            setmachineTag(tag)
+        }
+    }
+    const handleSetExpirationDate = (date)=>{
+        if(date !== ""){
+            const newDate = new DateObject({
+                date: date,
+                format: "YYYY/MM/DD",
+                calendar: persian,
+                locale: persian_fa
+            })
+            setDate(newDate)
+        }
+    }
+
+    useEffect(()=>{
+        getProductList()
+        getUnitList()
+        formik.setValues({
+            id:props.editInfoTarget?.id,
+            productId: props.editInfoTarget?.productId,
+            productName:props.editInfoTarget?.productName,
+            value: props.editInfoTarget?.value,
+            unit: props.editInfoTarget?.unit,
+            expirationDate: props.editInfoTarget?.expirationDate,
+            machineTag: props.editInfoTarget?.machineTag,
+            machineCode: props.editInfoTarget?.machineCode,
+            machineType:props.editInfoTarget?.machineType,
+            driverName: props.editInfoTarget?.driverName,
+            status:props.editInfoTarget?.status,
+            producer: props.editInfoTarget?.producer,
+            description:props.editInfoTarget?.description
+        })
+        handleSetProductInput(props.editInfoTarget?.productId)
+        handleSetUnitInput(props.editInfoTarget?.unit)
+        handleSetMachineTagInput(props.editInfoTarget?.machineTag)
+        handleSetExpirationDate(props.editInfoTarget?.expirationDate)
+    },[props.openEditInfo])
 
     return (
         <>
             <Dialog
                 fullWidth={true}
-                open={props.openAddData}
+                open={props.openEditInfo}
                 keepMounted
-                onClose={()=>{props.handleCloseAddData();handleReset()}}
+                onClose={()=>{props.handleCloseEditInfo();handleReset()}}
                 aria-describedby="alert-dialog-slide-description"
                 PaperProps={{
                     style: {
                         fontFamily: "IRANYekan",
-                    },}}>
+                    },
+                }}>
                 <DialogContent>
                     <DialogContentText style={{fontFamily: "IRANYekan"}}>
                         <div className="flex justify-end">
-                            <button onClick={()=>{props.handleCloseAddData();handleReset()}}>
+                            <button onClick={()=>{props.handleCloseEditInfo();handleReset()}}>
                                 <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 14 14"
                                      fill="none">
                                     <path d="M13 1L1 13M1 1L13 13" stroke="black" stroke-width="2"
@@ -249,7 +308,7 @@ export default function AddDataDialog(props) {
                             </button>
                         </div>
                         <div className="flex justify-center mb-7">
-                            <h3 className="text-[1.1rem]">ثبت درخواست خرید</h3>
+                            <h3 className="text-[1.1rem]">ویرایش مواداولیه ورودی</h3>
                         </div>
                         <form className="flex justify-center " onSubmit={formik.handleSubmit} method="POST">
                             <div className="flex flex-col justify-center w-[90%] gap-5">
@@ -291,7 +350,7 @@ export default function AddDataDialog(props) {
                                                             {params.InputProps.endAdornment}
                                                         </React.Fragment>
                                                     )
-                                            }}
+                                                }}
                                                 placeholder="نوع محصول (اجباری)"
                                             />}
                                     />
@@ -540,7 +599,7 @@ export default function AddDataDialog(props) {
                                                 wrapperStyle={{}}
                                                 wrapperClass=""
                                                 visible={true}/>
-                                            ثبت
+                                            ویرایش
                                         </button>) : (
                                             <button type="submit"
                                                     className="w-full rounded-[0.5rem] py-3 hover:border hover:opacity-80 font-bold  bg-mainRed text-white">ثبت
