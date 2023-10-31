@@ -8,16 +8,20 @@ import axios from "axios";
 import Image from "next/image";
 import React from "react";
 import "../../styles/loader.css"
-import { useDispatch } from 'react-redux'
-import { setCredentials } from '../../redux/api/authSlice'
+import {useDispatch, useSelector} from 'react-redux'
+import {setAccessToken, setCredentials} from '../../redux/api/authSlice'
 import {generateCodeVerifier} from "@/helper/pkce";
+import jwt_decode from "jwt-decode";
+import {useGetAccessMutation} from "@/redux/api/getAccessSlice";
+import {setAccess} from "@/redux/permission/accessSlice";
 
 export default function redirect() {
     const searchParams = useSearchParams()
     const router = useRouter()
     const dispatch = useDispatch()
 
-    const [login, { isLoading,error }] = useLoginMutation()
+    const [login, { isLoading:isLoadingLogin,error:errorLogin }] = useLoginMutation()
+    const [getAccess, { isLoading:isLoadingAccess ,error:errorAccess }] = useGetAccessMutation()
 
     const code = searchParams.get('code')
 
@@ -29,35 +33,35 @@ export default function redirect() {
         code_verifier:window.sessionStorage.getItem("codeVerifier")
     }
 
-    // let base64encodedData = Buffer.from( "client1"+ ':' +"myClientSecretValue" ).toString('base64');
+
+
     const handleLogin = async ()=>{
-        // try{
-        //     const {data} = await axios.post('http://localhost:8000/oauth2/token', formData, {
-        //         headers: {
-        //             'Content-Type': 'application/x-www-form-urlencoded',
-        //             // "Authorization":"Basic " + base64encodedData,
-        //         },
-        //         auth: {
-        //             username: "client1",
-        //             password: "myClientSecretValue"
-        //         }
-        //     })
-        //     console.log(data)
-        // }catch (err){
-        //     console.log(err)
-        // }
+
         try {
-            const userData = await login(formData).unwrap()
-            dispatch(setCredentials({access_token:userData.access_token}))
-            localStorage.setItem("refresh_token",userData.refresh_token)
+            const userData = await login(formData)
+            dispatch(setAccessToken(userData?.data?.access_token))
+            const accessData = await getAccess({Token:userData?.data?.access_token})
+            dispatch(setAccess(accessData?.data))
+            console.log(accessData?.data)
+            let tokenContent = jwt_decode(userData?.data?.access_token);
+            window.sessionStorage.setItem("name",tokenContent.name)
+            window.sessionStorage.setItem("role",tokenContent.role)
+            window.sessionStorage.setItem("profile",tokenContent.profile)
+            window.sessionStorage.setItem("subOrganizationName",tokenContent.subOrganizationName)
+            window.sessionStorage.setItem("organizationId",tokenContent.organizationId)
+            window.sessionStorage.setItem("subOrganizationId",tokenContent.subOrganizationId)
+            window.sessionStorage.setItem("refresh_token",userData.data.refresh_token)
             router.push("/panel")
         }catch (err){
+            console.log(err)
             if(err){
-                 router.push("/")
+                router.push("/")
             }
         }
     }
-    useEffect(()=>{handleLogin()},[])
+    useEffect(()=>{
+        handleLogin()
+    },[])
 
     return (
         <>
