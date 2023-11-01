@@ -5,7 +5,7 @@ import queryString from 'query-string'
 let base64encodedData = Buffer.from( "client1"+ ':' +"myClientSecretValue" ).toString('base64');
 
 const baseQuery = fetchBaseQuery({
-    baseUrl: 'http://localhost:8080',
+    baseUrl: 'http://authorization-server:8080',
 })
 
 export const getAccessSlice = createApi({
