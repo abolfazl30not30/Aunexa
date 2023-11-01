@@ -2,6 +2,7 @@
 
 import {generateCodeChallenge, generateCodeVerifier} from '../../helper/pkce';
 import {useEffect} from "react";
+import Image from "next/image";
 
 export default function Entrance() {
 
