@@ -7,6 +7,7 @@ import Image from "next/image";
 export default function Entrance() {
     let codeChallenge;
 
+
     useEffect(()=>{
         const verifier = generateCodeVerifier();
         window.sessionStorage.setItem('codeVerifier', verifier);
