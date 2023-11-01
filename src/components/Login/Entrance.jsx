@@ -5,11 +5,12 @@ import {useEffect} from "react";
 import Image from "next/image";
 
 export default function Entrance() {
+    let codeChallenge;
 
     useEffect(()=>{
         const verifier = generateCodeVerifier();
         window.sessionStorage.setItem('codeVerifier', verifier);
-        const codeChallenge = generateCodeChallenge();
+        codeChallenge = generateCodeChallenge();
     },[])
 
     return (
