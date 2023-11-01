@@ -1,15 +1,9 @@
 'use client'
 import React from "react"
-import ReactDOM  from "react-dom"
 import "../styles/globals.css";
 import "../styles/main.css";
 import {store} from '../redux/store'
 import {Provider} from 'react-redux'
-
-export const metadata = {
-    title: "Monaco Smart City",
-    description: "Monaco Smart City",
-};
 
 export default function RootLayout({children}) {
     return (
