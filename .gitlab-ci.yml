@@ -19,10 +19,11 @@ build-image:
       - "ingress.yml"
       - "config-map.yml"
       - "docker-compose.yml"
-  variables:
-    TAG: v1.0
+  before_script:
+    - sh get-version.sh
+    - VERSION=$(cat app-version)
   script:
-    - docker build --tag $DOCKERHUB_IMAGE:$TAG .
+    - docker build --tag $DOCKERHUB_IMAGE:$VERSION .
 
 push-image:
   stage: build
@@ -38,9 +39,9 @@ push-image:
       - "ingress.yml"
       - "config-map.yml"
       - "docker-compose.yml"
-  variables:
-    TAG: v1.0
   before_script:
+    - sh get-version.sh
+    - VERSION=$(cat app-version)
     - docker login -u $DOCKERHUB_USER -p $DOCKERHUB_PASSWORD $DOCKERHUB_REGISTRY
   script:
-    - docker push $DOCKERHUB_IMAGE:$TAG
+    - docker push $DOCKERHUB_IMAGE:$VERSION
