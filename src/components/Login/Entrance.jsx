@@ -5,8 +5,6 @@ import Image from "next/image";
 import {generateCodeChallenge, generateCodeVerifier} from '../../helper/pkce';
 
 export default function Entrance() {
-
-
     const verifier = generateCodeVerifier();
     window.sessionStorage.setItem('codeVerifier', verifier);
     const codeChallenge = generateCodeChallenge();
