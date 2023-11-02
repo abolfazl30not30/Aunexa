@@ -2,7 +2,6 @@
 @import url("IranSans.css");
 
 body {
-    font-family: "IRANYekan", sans-serif;
     direction: rtl !important;
     background-color:#F2EDED;
     word-spacing: -3px !important; ;

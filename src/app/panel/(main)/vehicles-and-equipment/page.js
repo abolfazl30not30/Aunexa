@@ -181,7 +181,7 @@ function vehiclesAndEquipment() {
                         {/*            sx={{py: "0.2rem"}}*/}
                         {/*            placeholder="جستوجو..."*/}
                         {/*            id="outlined-adornment-amount"*/}
-                        {/*            inputProps={{style: {fontFamily: "IRANYekan", fontSize: "0.9rem"}}}*/}
+                        {/*            inputProps={{style: {fontFamily: "__fonts_2f4189,__fonts_Fallback_2f4189", fontSize: "0.9rem"}}}*/}
                         {/*            startAdornment={<InputAdornment position="start">*/}
                         {/*                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"*/}
                         {/*                     viewBox="0 0 24 24" fill="none">*/}
@@ -231,7 +231,7 @@ function vehiclesAndEquipment() {
                                             overflow: 'visible',
                                             filter: 'drop-shadow(0px 2px 3px rgba(0,0,0,0.1))',
                                             mt: 1.5,
-                                            fontFamily: "IRANYekan",
+                                            fontFamily: "__fonts_2f4189,__fonts_Fallback_2f4189",
                                             '& .MuiAvatar-root': {
                                                 width: 32,
                                                 height: 32,
