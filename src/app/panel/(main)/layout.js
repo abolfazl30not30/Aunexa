@@ -143,9 +143,10 @@ export default function RootLayout({children}) {
                         </div>
                         <div className="hidden md:flex items-center gap-2">
                             <div className="w-12 h-12 md:w-10 md:h-10 border border-solid border-1 border-borderGray rounded">
-                                <img className="w-full cover"
-                                     src="https://cdn-icons-png.flaticon.com/512/149/149071.png"
-                                     alt="profile"/>
+                                <Image src="/user.png" alt="costumer" width={0}
+                                       height={0}
+                                       sizes="100vw"
+                                       style={{width: '100%', height: 'auto'}}/>
                             </div>
                             <div>
                                 <button className="flex items-center text-textGray text-[0.8rem] tracking-tighter" onClick={handleOpenProfileMenu}>
