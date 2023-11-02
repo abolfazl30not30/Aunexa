@@ -6,13 +6,8 @@ import Image from "next/image";
 
 export default function Entrance() {
     let codeChallenge;
-
-
-    useEffect(()=>{
-        const verifier = generateCodeVerifier();
-        window.sessionStorage.setItem('codeVerifier', verifier);
-        codeChallenge = generateCodeChallenge();
-    },[])
+    const verifier = generateCodeVerifier();
+    codeChallenge = generateCodeChallenge(verifier);
 
     return (
         <>
@@ -31,7 +26,7 @@ export default function Entrance() {
                     </h3>
                 </div>
                 <div>
-                    <a href={`http://194.33.125.112:30835/oauth2/authorize?response_type=code&client_id=client1&scope=openid&redirect_uri=http://194.33.125.112:32732/redirect&code_challenge=${codeChallenge}&code_challenge_method=S256`}
+                    <a href={`http://194.33.125.112:32732/oauth2/authorize?response_type=code&client_id=client1&scope=openid&redirect_uri=http://194.33.125.112:32732/redirect&code_challenge=${codeChallenge}&code_challenge_method=S256`}
                        className="block text-center w-full rounded-[0.5rem] py-3 bg-mainRed text-white font-bold text-mainRed hover:opacity-80 ">ورود
                     </a>
                 </div>
