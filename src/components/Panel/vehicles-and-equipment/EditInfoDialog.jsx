@@ -291,11 +291,11 @@ export default function EditInfoDialog(props) {
                 aria-describedby="alert-dialog-slide-description"
                 PaperProps={{
                     style: {
-                        fontFamily: "IRANYekan",
+                        fontFamily: "__fonts_2f4189,__fonts_Fallback_2f4189",
                     },
                 }}>
                 <DialogContent>
-                    <DialogContentText style={{fontFamily: "IRANYekan"}}>
+                    <DialogContentText style={{fontFamily: "__fonts_2f4189,__fonts_Fallback_2f4189"}}>
                         <div className="flex justify-end">
                             <button onClick={()=>{props.handleCloseEditInfo();handleReset()}}>
                                 <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 14 14"
@@ -324,7 +324,7 @@ export default function EditInfoDialog(props) {
                                         disablePortal
                                         id="combo-box-demo"
                                         ListboxProps={{
-                                            sx: {fontFamily: "IRANYekan", fontSize: "0.8rem"},
+                                            sx: {fontFamily: "__fonts_2f4189,__fonts_Fallback_2f4189", fontSize: "0.8rem"},
                                         }}
                                         options={vehicleCategoryList}
                                         getOptionLabel={(option) => option.name}
@@ -340,7 +340,7 @@ export default function EditInfoDialog(props) {
                                                 {...params}
                                                 InputProps={{
                                                     ...params.InputProps,
-                                                    style: {fontFamily: "IRANYekan", fontSize: "0.8rem"},
+                                                    style: {fontFamily: "__fonts_2f4189,__fonts_Fallback_2f4189", fontSize: "0.8rem"},
                                                     endAdornment:(
                                                         <React.Fragment>
                                                             {isVehicleCategoryLoading ? <CircularProgress color="inherit" size={20} /> : null}
@@ -412,8 +412,8 @@ export default function EditInfoDialog(props) {
                                                 onChange={formik.handleChange}
                                                 error={formik.touched.code && Boolean(formik.errors.code)}
                                                 // helperText={formik.touched.tag && formik.errors.tag}
-                                                inputProps={{style: {fontFamily: "IRANYekan", fontSize: "0.8rem"}}}
-                                                InputLabelProps={{style: {fontFamily: "IRANYekan"}}}/>
+                                                inputProps={{style: {fontFamily: "__fonts_2f4189,__fonts_Fallback_2f4189", fontSize: "0.8rem"}}}
+                                                InputLabelProps={{style: {fontFamily: "__fonts_2f4189,__fonts_Fallback_2f4189"}}}/>
                                         </div>
                                     </div>
                                     <div>
@@ -453,8 +453,8 @@ export default function EditInfoDialog(props) {
                                         onChange={formik.handleChange}
                                         error={formik.touched.gpsURL && Boolean(formik.errors.gpsURL)}
                                         helperText={formik.touched.gpsURL && formik.errors.gpsURL}
-                                        inputProps={{style: {fontFamily: "IRANYekan", fontSize: "0.8rem"}}}
-                                        InputLabelProps={{style: {fontFamily: "IRANYekan"}}}/>
+                                        inputProps={{style: {fontFamily: "__fonts_2f4189,__fonts_Fallback_2f4189", fontSize: "0.8rem"}}}
+                                        InputLabelProps={{style: {fontFamily: "__fonts_2f4189,__fonts_Fallback_2f4189"}}}/>
                                 </div>
                                 <div className=" flex flex-col">
                                     <Autocomplete
@@ -470,7 +470,7 @@ export default function EditInfoDialog(props) {
                                         disablePortal
                                         id="combo-box-demo"
                                         ListboxProps={{
-                                            sx: {fontFamily: "IRANYekan", fontSize: "0.8rem"},
+                                            sx: {fontFamily: "__fonts_2f4189,__fonts_Fallback_2f4189", fontSize: "0.8rem"},
                                         }}
                                         options={subOrganizationList}
                                         getOptionLabel={(option) => option.name}
@@ -487,7 +487,7 @@ export default function EditInfoDialog(props) {
                                                 {...params}
                                                 InputProps={{
                                                     ...params.InputProps,
-                                                    style: {fontFamily: "IRANYekan", fontSize: "0.8rem"},
+                                                    style: {fontFamily: "__fonts_2f4189,__fonts_Fallback_2f4189", fontSize: "0.8rem"},
                                                     endAdornment:(
                                                         <React.Fragment>
                                                             {isSubOrganizationLoading ? <CircularProgress color="inherit" size={20} /> : null}
@@ -500,21 +500,21 @@ export default function EditInfoDialog(props) {
                                     />
                                 </div>
                                 <FormControl fullWidth error={formik.touched.status && Boolean(formik.errors.status)}>
-                                    <InputLabel id="demo-simple-select-label" sx={{fontFamily: "IRANYekan", fontSize: "0.8rem",color:"#9F9F9F"}}>وضعیت</InputLabel>
+                                    <InputLabel id="demo-simple-select-label" sx={{fontFamily: "__fonts_2f4189,__fonts_Fallback_2f4189", fontSize: "0.8rem",color:"#9F9F9F"}}>وضعیت</InputLabel>
                                     <Select
                                         labelId="demo-simple-select-label"
                                         id="demo-simple-select"
                                         defaultValue={formik.values.status}
                                         value={formik.values.status}
                                         name="status"
-                                        input={<OutlinedInput sx={{fontFamily: "IRANYekan", fontSize: "0.8rem"}} label="وضعیت" />}
-                                        sx={{fontFamily: "IRANYekan", fontSize: "0.8rem"}}
+                                        input={<OutlinedInput sx={{fontFamily: "__fonts_2f4189,__fonts_Fallback_2f4189", fontSize: "0.8rem"}} label="وضعیت" />}
+                                        sx={{fontFamily: "__fonts_2f4189,__fonts_Fallback_2f4189", fontSize: "0.8rem"}}
 
                                         onChange={formik.handleChange}>
 
-                                        <MenuItem value="AVAILABLE" sx={{fontFamily: "IRANYekan", fontSize: "0.8rem"}}>در دسترس</MenuItem>
-                                        <MenuItem value="IN_USE" sx={{fontFamily: "IRANYekan", fontSize: "0.8rem"}}>درحال استفاده</MenuItem>
-                                        <MenuItem value="DESTROYED" sx={{fontFamily: "IRANYekan", fontSize: "0.8rem"}}>مشکل دار</MenuItem>
+                                        <MenuItem value="AVAILABLE" sx={{fontFamily: "__fonts_2f4189,__fonts_Fallback_2f4189", fontSize: "0.8rem"}}>در دسترس</MenuItem>
+                                        <MenuItem value="IN_USE" sx={{fontFamily: "__fonts_2f4189,__fonts_Fallback_2f4189", fontSize: "0.8rem"}}>درحال استفاده</MenuItem>
+                                        <MenuItem value="DESTROYED" sx={{fontFamily: "__fonts_2f4189,__fonts_Fallback_2f4189", fontSize: "0.8rem"}}>مشکل دار</MenuItem>
                                     </Select>
                                     <FormHelperText>{formik.touched.status && formik.errors.status}</FormHelperText>
                                 </FormControl>

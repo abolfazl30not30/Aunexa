@@ -306,11 +306,11 @@ export default function EditInfoDialog(props) {
                 aria-describedby="alert-dialog-slide-description"
                 PaperProps={{
                     style: {
-                        fontFamily: "IRANYekan",
+                        fontFamily: "__fonts_2f4189,__fonts_Fallback_2f4189",
                     },
                 }}>
                 <DialogContent>
-                    <DialogContentText style={{fontFamily: "IRANYekan"}}>
+                    <DialogContentText style={{fontFamily: "__fonts_2f4189,__fonts_Fallback_2f4189"}}>
                         <div className="flex justify-end">
                             <button onClick={()=>{props.handleCloseEditInfo();handleReset()}}>
                                 <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 14 14"
@@ -339,7 +339,7 @@ export default function EditInfoDialog(props) {
                                         disablePortal
                                         id="combo-box-demo"
                                         ListboxProps={{
-                                            sx: {fontFamily: "IRANYekan", fontSize: "0.8rem"},
+                                            sx: {fontFamily: "__fonts_2f4189,__fonts_Fallback_2f4189", fontSize: "0.8rem"},
                                         }}
                                         options={productList}
                                         getOptionLabel={(option) => option.persianName}
@@ -356,7 +356,7 @@ export default function EditInfoDialog(props) {
                                                 {...params}
                                                 InputProps={{
                                                     ...params.InputProps,
-                                                    style: {fontFamily: "IRANYekan", fontSize: "0.8rem"},
+                                                    style: {fontFamily: "__fonts_2f4189,__fonts_Fallback_2f4189", fontSize: "0.8rem"},
                                                     endAdornment:(
                                                         <React.Fragment>
                                                             {isProductLoading ? <CircularProgress color="inherit" size={20} /> : null}
@@ -379,8 +379,8 @@ export default function EditInfoDialog(props) {
                                             onChange={formik.handleChange}
                                             error={formik.touched.value && Boolean(formik.errors.value)}
                                             helperText={formik.touched.value && formik.errors.value}
-                                            inputProps={{style: {fontFamily: "IRANYekan", fontSize: "0.8rem"}}}
-                                            InputLabelProps={{style: {fontFamily: "IRANYekan"}}}/>
+                                            inputProps={{style: {fontFamily: "__fonts_2f4189,__fonts_Fallback_2f4189", fontSize: "0.8rem"}}}
+                                            InputLabelProps={{style: {fontFamily: "__fonts_2f4189,__fonts_Fallback_2f4189"}}}/>
                                     </div>
                                     <div className="w-[30%]">
                                         <Autocomplete
@@ -395,7 +395,7 @@ export default function EditInfoDialog(props) {
                                             disablePortal
                                             id="combo-box-demo"
                                             ListboxProps={{
-                                                sx: {fontFamily: "IRANYekan", fontSize: "0.8rem"},
+                                                sx: {fontFamily: "__fonts_2f4189,__fonts_Fallback_2f4189", fontSize: "0.8rem"},
                                             }}
                                             options={unitList}
                                             getOptionLabel={(option) => option.persianName}
@@ -411,7 +411,7 @@ export default function EditInfoDialog(props) {
                                                     helperText={formik.touched.unit && formik.errors.unit}
                                                     InputProps={{
                                                         ...params.InputProps,
-                                                        style: {fontFamily: "IRANYekan", fontSize: "0.8rem"}
+                                                        style: {fontFamily: "__fonts_2f4189,__fonts_Fallback_2f4189", fontSize: "0.8rem"}
                                                     }}
                                                     placeholder="واحد"
                                                 />}/>
@@ -524,8 +524,8 @@ export default function EditInfoDialog(props) {
                                                 onChange={formik.handleChange}
                                                 error={formik.touched.machineCode && Boolean(formik.errors.machineCode)}
                                                 // helperText={formik.touched.machineTag && formik.errors.machineTag}
-                                                inputProps={{style: {fontFamily: "IRANYekan", fontSize: "0.8rem"}}}
-                                                InputLabelProps={{style: {fontFamily: "IRANYekan"}}}/>
+                                                inputProps={{style: {fontFamily: "__fonts_2f4189,__fonts_Fallback_2f4189", fontSize: "0.8rem"}}}
+                                                InputLabelProps={{style: {fontFamily: "__fonts_2f4189,__fonts_Fallback_2f4189"}}}/>
                                         </div>
                                     </div>
                                     <div>
@@ -549,8 +549,8 @@ export default function EditInfoDialog(props) {
                                             onChange={formik.handleChange}
                                             error={formik.touched.driverName && Boolean(formik.errors.driverName)}
                                             helperText={formik.touched.driverName && formik.errors.driverName}
-                                            inputProps={{style: {fontFamily: "IRANYekan", fontSize: "0.8rem"}}}
-                                            InputLabelProps={{style: {fontFamily: "IRANYekan"}}}/>
+                                            inputProps={{style: {fontFamily: "__fonts_2f4189,__fonts_Fallback_2f4189", fontSize: "0.8rem"}}}
+                                            InputLabelProps={{style: {fontFamily: "__fonts_2f4189,__fonts_Fallback_2f4189"}}}/>
                                     </div>
                                     <div className="w-full md:w-1/2">
                                         <Autocomplete
@@ -566,7 +566,7 @@ export default function EditInfoDialog(props) {
                                             disablePortal
                                             id="combo-box-demo"
                                             ListboxProps={{
-                                                sx: {fontFamily: "IRANYekan", fontSize: "0.8rem"},
+                                                sx: {fontFamily: "__fonts_2f4189,__fonts_Fallback_2f4189", fontSize: "0.8rem"},
                                             }}
                                             options={subOrganizationList}
                                             getOptionLabel={(option) => option.name}
@@ -583,7 +583,7 @@ export default function EditInfoDialog(props) {
                                                     {...params}
                                                     InputProps={{
                                                         ...params.InputProps,
-                                                        style: {fontFamily: "IRANYekan", fontSize: "0.8rem"},
+                                                        style: {fontFamily: "__fonts_2f4189,__fonts_Fallback_2f4189", fontSize: "0.8rem"},
                                                         endAdornment: (
                                                             <React.Fragment>
                                                                 {isSubOrganizationLoading ?
@@ -611,8 +611,8 @@ export default function EditInfoDialog(props) {
                                         onChange={formik.handleChange}
                                         error={formik.touched.description && Boolean(formik.errors.description)}
                                         helperText={formik.touched.description && formik.errors.description}
-                                        inputProps={{style: {fontFamily: "IRANYekan", fontSize: "0.8rem"}}}
-                                        InputLabelProps={{style: {fontFamily: "IRANYekan"}}}/>
+                                        inputProps={{style: {fontFamily: "__fonts_2f4189,__fonts_Fallback_2f4189", fontSize: "0.8rem"}}}
+                                        InputLabelProps={{style: {fontFamily: "__fonts_2f4189,__fonts_Fallback_2f4189"}}}/>
                                 </div>
                                 <div>
                                     {
