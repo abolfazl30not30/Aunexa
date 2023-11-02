@@ -5,13 +5,13 @@ import {useEffect, useState} from "react";
 import Image from "next/image";
 
 export default function Entrance() {
+    const [codeChallenge,setCodeChallenge] = useState()
 
     useEffect(()=>{
-        const [codeChallenge,setCodeChallenge] = useState()
         const verifier = generateCodeVerifier();
         const code = generateCodeChallenge(verifier);
         setCodeChallenge(code)
-    })
+    },[])
 
     return (
         <>
