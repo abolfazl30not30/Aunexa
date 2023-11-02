@@ -4,7 +4,7 @@ import {logOut,setAccessToken} from './authSlice'
 import axios from "axios";
 
 const baseQuery = fetchBaseQuery({
-    baseUrl: 'http://gateway:9191/api/v1/',
+    baseUrl: 'http://194.33.125.112:30664/api/v1/',
     prepareHeaders: (headers, { getState }) => {
         const token = getState().auth.accessToken
         if (token) {
