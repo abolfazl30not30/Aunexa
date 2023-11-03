@@ -1,0 +1,47 @@
+workflow:
+  rules:
+    - if: $CI_COMMIT_BRANCH != "main" && $CI_PIPELINE_SOURCE != "merge_request_event"
+      when: never
+    - when: always
+
+stages:
+  - build
+
+build-image:
+  stage: build
+  only:
+    - main
+  except:
+    changes:
+      - ".gitlab-ci.yml"
+      - "deployment.yml"
+      - "service.yml"
+      - "ingress.yml"
+      - "config-map.yml"
+      - "docker-compose.yml"
+  before_script:
+    - sh get-version.sh
+    - VERSION=$(cat app-version)
+  script:
+    - docker build --tag $DOCKERHUB_IMAGE:$VERSION .
+
+push-image:
+  stage: build
+  only:
+    - main
+  needs:
+    - build-image
+  except:
+    changes:
+      - ".gitlab-ci.yml"
+      - "deployment.yml"
+      - "service.yml"
+      - "ingress.yml"
+      - "config-map.yml"
+      - "docker-compose.yml"
+  before_script:
+    - sh get-version.sh
+    - VERSION=$(cat app-version)
+    - docker login -u $DOCKERHUB_USER -p $DOCKERHUB_PASSWORD $DOCKERHUB_REGISTRY
+  script:
+    - docker push $DOCKERHUB_IMAGE:$VERSION

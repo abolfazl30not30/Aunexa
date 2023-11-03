@@ -140,11 +140,11 @@ export default function FilterDialog(props) {
                 aria-describedby="alert-dialog-slide-description"
                 PaperProps={{
                     style: {
-                        fontFamily: "IRANYekan",
+                        fontFamily: "__fonts_2f4189,__fonts_Fallback_2f4189",
                     },
                 }}>
                 <DialogContent>
-                    <DialogContentText style={{ fontFamily: "IRANYekan" }}>
+                    <DialogContentText style={{ fontFamily: "__fonts_2f4189,__fonts_Fallback_2f4189" }}>
                         <div className="flex justify-end">
                             <button onClick={()=>{props.handleCloseFilter();}}>
                                 <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 14 14" fill="none">
@@ -268,7 +268,7 @@ export default function FilterDialog(props) {
                                         disablePortal
                                         id="combo-box-demo"
                                         ListboxProps={{
-                                            sx: {fontFamily: "IRANYekan", fontSize: "0.8rem"},
+                                            sx: {fontFamily: "__fonts_2f4189,__fonts_Fallback_2f4189", fontSize: "0.8rem"},
                                         }}
                                         options={productList}
                                         getOptionLabel={(option) => option.persianName}
@@ -284,7 +284,7 @@ export default function FilterDialog(props) {
                                                 {...params}
                                                 InputProps={{
                                                     ...params.InputProps,
-                                                    style: {fontFamily: "IRANYekan", fontSize: "0.8rem"},
+                                                    style: {fontFamily: "__fonts_2f4189,__fonts_Fallback_2f4189", fontSize: "0.8rem"},
                                                     endAdornment:(
                                                         <React.Fragment>
                                                             {isProductLoading ? <CircularProgress color="inherit" size={20} /> : null}
@@ -310,7 +310,7 @@ export default function FilterDialog(props) {
                                         disablePortal
                                         id="combo-box-demo"
                                         ListboxProps={{
-                                            sx: {fontFamily: "IRANYekan", fontSize: "0.8rem"},
+                                            sx: {fontFamily: "__fonts_2f4189,__fonts_Fallback_2f4189", fontSize: "0.8rem"},
                                         }}
                                         value={vehicle}
                                         options={vehicleList}
@@ -330,7 +330,7 @@ export default function FilterDialog(props) {
                                                 {...params}
                                                 InputProps={{
                                                     ...params.InputProps,
-                                                    style: {fontFamily: "IRANYekan", fontSize: "0.8rem"},
+                                                    style: {fontFamily: "__fonts_2f4189,__fonts_Fallback_2f4189", fontSize: "0.8rem"},
                                                     endAdornment:(
                                                         <React.Fragment>
                                                             {isVehicleLoading ? <CircularProgress color="inherit" size={20} /> : null}
@@ -343,20 +343,20 @@ export default function FilterDialog(props) {
                                 </div>
                                 <div className=" flex flex-col">
                                     <FormControl fullWidth>
-                                        <InputLabel id="demo-simple-select-label" sx={{fontFamily: "IRANYekan", fontSize: "0.8rem",color:"#9F9F9F"}}>وضعیت</InputLabel>
+                                        <InputLabel id="demo-simple-select-label" sx={{fontFamily: "__fonts_2f4189,__fonts_Fallback_2f4189", fontSize: "0.8rem",color:"#9F9F9F"}}>وضعیت</InputLabel>
                                         <Select
                                             labelId="demo-simple-select-label"
                                             id="demo-simple-select"
                                             value={formik.values.status}
                                             name="status"
-                                            input={<OutlinedInput sx={{fontFamily: "IRANYekan", fontSize: "0.8rem"}} label="وضعیت" />}
-                                            sx={{fontFamily: "IRANYekan", fontSize: "0.8rem"}}
+                                            input={<OutlinedInput sx={{fontFamily: "__fonts_2f4189,__fonts_Fallback_2f4189", fontSize: "0.8rem"}} label="وضعیت" />}
+                                            sx={{fontFamily: "__fonts_2f4189,__fonts_Fallback_2f4189", fontSize: "0.8rem"}}
                                             onChange={formik.handleChange}
                                         >
-                                            <MenuItem value="" sx={{fontFamily: "IRANYekan", fontSize: "0.8rem"}}></MenuItem>
-                                            <MenuItem value="UNKNOWN" sx={{fontFamily: "IRANYekan", fontSize: "0.8rem"}}>نامعلوم</MenuItem>
-                                            <MenuItem value="CONFIRMED" sx={{fontFamily: "IRANYekan", fontSize: "0.8rem"}}>تایید شده</MenuItem>
-                                            <MenuItem value="TROUBLED" sx={{fontFamily: "IRANYekan", fontSize: "0.8rem"}}>مشکل دار</MenuItem>
+                                            <MenuItem value="" sx={{fontFamily: "__fonts_2f4189,__fonts_Fallback_2f4189", fontSize: "0.8rem"}}></MenuItem>
+                                            <MenuItem value="UNKNOWN" sx={{fontFamily: "__fonts_2f4189,__fonts_Fallback_2f4189", fontSize: "0.8rem"}}>نامعلوم</MenuItem>
+                                            <MenuItem value="CONFIRMED" sx={{fontFamily: "__fonts_2f4189,__fonts_Fallback_2f4189", fontSize: "0.8rem"}}>تایید شده</MenuItem>
+                                            <MenuItem value="TROUBLED" sx={{fontFamily: "__fonts_2f4189,__fonts_Fallback_2f4189", fontSize: "0.8rem"}}>مشکل دار</MenuItem>
                                         </Select>
                                     </FormControl>
                                 </div>
@@ -374,7 +374,7 @@ export default function FilterDialog(props) {
                                         disablePortal
                                         id="combo-box-demo"
                                         ListboxProps={{
-                                            sx: {fontFamily: "IRANYekan", fontSize: "0.8rem"},
+                                            sx: {fontFamily: "__fonts_2f4189,__fonts_Fallback_2f4189", fontSize: "0.8rem"},
                                         }}
                                         options={subOrganizationList}
                                         getOptionLabel={(option) => option.name}
@@ -390,7 +390,7 @@ export default function FilterDialog(props) {
                                                 {...params}
                                                 InputProps={{
                                                     ...params.InputProps,
-                                                    style: {fontFamily: "IRANYekan", fontSize: "0.8rem"},
+                                                    style: {fontFamily: "__fonts_2f4189,__fonts_Fallback_2f4189", fontSize: "0.8rem"},
                                                     endAdornment: (
                                                         <React.Fragment>
                                                             {isSubOrganizationLoading ?

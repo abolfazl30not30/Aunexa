@@ -10,9 +10,9 @@ const generateCodeVerifier = () => {
     return base64Url(crypto.enc.Base64.stringify(crypto.lib.WordArray.random(32)));
 }
 
-const generateCodeChallenge = () => {
-    const codeVerifier = window.sessionStorage.getItem('codeVerifier');
-    return base64Url(sha256(codeVerifier));
+const generateCodeChallenge = (code) => {
+    window.sessionStorage.setItem('codeVerifier',code);
+    return base64Url(sha256(code));
 }
 
 export {

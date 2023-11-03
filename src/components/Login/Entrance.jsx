@@ -1,15 +1,17 @@
 "use client"
 
-import React from 'react';
-import Image from "next/image";
 import {generateCodeChallenge, generateCodeVerifier} from '../../helper/pkce';
+import {useEffect, useState} from "react";
+import Image from "next/image";
 
 export default function Entrance() {
+    const [codeChallenge,setCodeChallenge] = useState()
 
-
-    const verifier = generateCodeVerifier();
-    window.sessionStorage.setItem('codeVerifier', verifier);
-    const codeChallenge = generateCodeChallenge();
+    useEffect(()=>{
+        const verifier = generateCodeVerifier();
+        const code = generateCodeChallenge(verifier);
+        setCodeChallenge(code)
+    },[])
 
     return (
         <>
