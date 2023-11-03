@@ -5,13 +5,13 @@ export const ESIapiSlice  = apiSlice.injectEndpoints({
     endpoints: builder => ({
         getAllESI: builder.query({
             query: ({page, sort ,filterItem}) => ({
-                url:`inventory/equipment-store-input/filter?page=${page - 1}&size=10&sort=date,${sort}&sort=time,${sort}&${filterItem}`,
+                url:`inventory/store-input/filter?page=${page - 1}&type=EQUIPMENT&size=10&sort=date,${sort}&sort=time,${sort}&${filterItem}`,
             }),
             providesTags: ['equipment-store-input']
         }),
         saveESI: builder.mutation({
             query: (body) => ({
-                url: 'inventory/equipment-store-input',
+                url: 'inventory/store-input',
                 method: 'POST',
                 body: body
             }),
@@ -19,7 +19,7 @@ export const ESIapiSlice  = apiSlice.injectEndpoints({
         }),
         updateESI: builder.mutation({
             query: (body) => ({
-                url: `inventory/equipment-store-input`,
+                url: `inventory/store-input`,
                 method: 'PUT',
                 body: body
             }),
@@ -27,7 +27,7 @@ export const ESIapiSlice  = apiSlice.injectEndpoints({
         }),
         deleteESI: builder.mutation({
             query: ( id ) => ({
-                url: `inventory/equipment-store-input/${id}`,
+                url: `inventory/store-input/${id}`,
                 method: 'DELETE',
                 body: id
             }),

@@ -5,13 +5,13 @@ export const POSOapiSlice  = apiSlice.injectEndpoints({
     endpoints: builder => ({
         getAllPOSO: builder.query({
             query: ({page, sort ,filterItem}) => ({
-                url:`inventory/product-store-output/filter?page=${page - 1}&size=10&sort=date,${sort}&sort=time,${sort}&${filterItem}`,
+                url:`inventory/store-output/filter?page=${page - 1}&type=PRODUCT&size=10&sort=date,${sort}&sort=time,${sort}&${filterItem}`,
             }),
             providesTags: ['product-store-output']
         }),
         savePOSO: builder.mutation({
             query: (body) => ({
-                url: 'inventory/product-store-output',
+                url: 'inventory/store-output',
                 method: 'POST',
                 body: body
             }),
@@ -19,7 +19,7 @@ export const POSOapiSlice  = apiSlice.injectEndpoints({
         }),
         updatePOSO: builder.mutation({
             query: (body) => ({
-                url: `inventory/product-store-output`,
+                url: `inventory/store-output`,
                 method: 'PUT',
                 body: body
             }),
@@ -27,7 +27,7 @@ export const POSOapiSlice  = apiSlice.injectEndpoints({
         }),
         deletePOSO: builder.mutation({
             query: ( id ) => ({
-                url: `inventory/product-store-output/${id}`,
+                url: `inventory/store-output/${id}`,
                 method: 'DELETE',
                 body: id
             }),

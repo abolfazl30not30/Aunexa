@@ -5,13 +5,13 @@ export const PSIapiSlice  = apiSlice.injectEndpoints({
     endpoints: builder => ({
         getAllPSI: builder.query({
             query: ({page, sort ,filterItem}) => ({
-                url:`inventory/primary-store-input/filter?page=${page - 1}&size=10&sort=date,${sort}&sort=time,${sort}&${filterItem}`,
+                url:`inventory/store-input/filter?page=${page - 1}&type=PRIMARY&size=10&sort=date,${sort}&sort=time,${sort}&${filterItem}`,
             }),
             providesTags: ['primary-store-input']
         }),
         savePSI: builder.mutation({
             query: (body) => ({
-                url: 'inventory/primary-store-input',
+                url: 'inventory/store-input',
                 method: 'POST',
                 body: body
             }),
@@ -19,7 +19,7 @@ export const PSIapiSlice  = apiSlice.injectEndpoints({
         }),
         updatePSI: builder.mutation({
             query: (body) => ({
-                url: `inventory/primary-store-input`,
+                url: `inventory/store-input`,
                 method: 'PUT',
                 body: body
             }),
@@ -27,7 +27,7 @@ export const PSIapiSlice  = apiSlice.injectEndpoints({
         }),
         deletePSI: builder.mutation({
             query: ( id ) => ({
-                url: `inventory/primary-store-input/${id}`,
+                url: `inventory/store-input/${id}`,
                 method: 'DELETE',
                 body: id
             }),

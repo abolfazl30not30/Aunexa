@@ -5,13 +5,13 @@ export const POSIapiSlice  = apiSlice.injectEndpoints({
     endpoints: builder => ({
         getAllPOSI: builder.query({
             query: ({page, sort ,filterItem}) => ({
-                url:`inventory/product-store-input/filter?page=${page - 1}&size=10&sort=date,${sort}&sort=time,${sort}&${filterItem}`,
+                url:`inventory/store-input/filter?page=${page - 1}&type=PRODUCT&size=10&sort=date,${sort}&sort=time,${sort}&${filterItem}`,
             }),
             providesTags: ['product-store-input']
         }),
         savePOSI: builder.mutation({
             query: (body) => ({
-                url: 'inventory/product-store-input',
+                url: 'inventory/store-input',
                 method: 'POST',
                 body: body
             }),
@@ -19,7 +19,7 @@ export const POSIapiSlice  = apiSlice.injectEndpoints({
         }),
         updatePOSI: builder.mutation({
             query: (body) => ({
-                url: `inventory/product-store-input`,
+                url: `inventory/store-input`,
                 method: 'PUT',
                 body: body
             }),
@@ -27,7 +27,7 @@ export const POSIapiSlice  = apiSlice.injectEndpoints({
         }),
         deletePOSI: builder.mutation({
             query: ( id ) => ({
-                url: `inventory/product-store-input/${id}`,
+                url: `inventory/store-input/${id}`,
                 method: 'DELETE',
                 body: id
             }),

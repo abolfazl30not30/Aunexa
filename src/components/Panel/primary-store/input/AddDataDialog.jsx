@@ -177,6 +177,7 @@ export default function AddDataDialog(props) {
 
     const formik = useFormik({
         initialValues: {
+            type:"PRIMARY",
             productId: "",
             productName:"",
             value: "",
@@ -213,10 +214,6 @@ export default function AddDataDialog(props) {
                 }else {
                     updateProduct = {...updateProduct,machineType:"نا معلوم",machineId:""}
                 }
-            }
-            updateProduct = {...updateProduct,
-                organizationId:window.sessionStorage.getItem("organizationId"),
-                subOrganizationId:window.sessionStorage.getItem("subOrganizationId"),
             }
             const userData = await submitData(updateProduct)
             handleReset()
