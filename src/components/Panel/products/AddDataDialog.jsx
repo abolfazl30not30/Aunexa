@@ -207,7 +207,7 @@ export default function AddDataDialog(props) {
                                             id="demo-simple-select"
                                             value={formik.values.type}
                                             name="type"
-                                            input={<OutlinedInput sx={{fontFamily: "IRANYekan", fontSize: "0.8rem"}} label="وضعیت" />}
+                                            input={<OutlinedInput sx={{fontFamily: "IRANYekan", fontSize: "0.8rem"}} label="نوع محصول" />}
                                             sx={{fontFamily: "IRANYekan", fontSize: "0.8rem"}}
                                             onChange={formik.handleChange}>
                                             <MenuItem value="PRIMARY" sx={{fontFamily: "IRANYekan", fontSize: "0.8rem"}}>ماده اولیه</MenuItem>
@@ -255,7 +255,7 @@ export default function AddDataDialog(props) {
                                     <div className="flex flex-col">
                                         <div className="flex w-full">
                                             <div className="border border-[#D9D9D9] py-4 w-1/2 px-3">
-                                                <span className="text-[#9F9F9F] text-[0.8rem]">آیا داری تاريخ انتقضا است؟</span>
+                                                <span className="text-[#9F9F9F] text-[0.8rem]">آیا داری تاريخ انقضا است؟</span>
                                             </div>
                                             <div className="border border-[#D9D9D9] py-4 w-1/2">
                                                 <div className="flex justify-center gap-2">

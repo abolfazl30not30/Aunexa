@@ -28,7 +28,7 @@ export default function Entrance() {
                     </h3>
                 </div>
                 <div>
-                    <a href={`http://194.33.125.112:30003/oauth2/authorize?response_type=code&client_id=client1&scope=openid&redirect_uri=http://localhost:3000/redirect&code_challenge=${codeChallenge}&code_challenge_method=S256`}
+                    <a href={`http://localhost:8080/oauth2/authorize?response_type=code&client_id=client1&scope=openid&redirect_uri=http://localhost:3000/redirect&code_challenge=${codeChallenge}&code_challenge_method=S256`}
                        className="block text-center w-full rounded-[0.5rem] py-3 bg-mainRed text-white font-bold text-mainRed hover:opacity-80 ">ورود
                     </a>
                 </div>
