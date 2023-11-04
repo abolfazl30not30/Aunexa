@@ -158,7 +158,7 @@ export default function FilterDialog(props) {
                         <form className="flex justify-center " onSubmit={formik.handleSubmit} method="POST">
                             <div className="flex flex-col justify-center w-[80%] gap-3">
                                 <div className="flex flex-col md:flex-row justify-between gap-3">
-                                    <div>
+                                    <div className="w-full md:w-1/2">
                                         <DatePicker
                                             placeholder="از تاریخ"
                                             calendarPosition={`bottom`}
@@ -206,7 +206,7 @@ export default function FilterDialog(props) {
                                             </button>
                                         </DatePicker>
                                     </div>
-                                    <div>
+                                    <div className="w-full md:w-1/2">
                                         <DatePicker
                                             placeholder="تا تاریخ"
                                             calendarPosition={`bottom`}

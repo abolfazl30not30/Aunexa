@@ -10,7 +10,8 @@ import MoreInfoDialog from "@/components/Panel/products/MoreInfoDialog";
 import DeleteDialog from "@/components/Panel/products/DeleteDialog";
 import EditInfoDialog from "@/components/Panel/products/EditInfoDialog";
 import {useSelector} from "react-redux";
-import {useGetAllVehiclesQuery} from "@/redux/features/vehicles-and-equipment/VehiclesAndEquipmentSlice";
+import {useGetAllProductListQuery} from "@/redux/features/product/ProductSlice";
+
 
 function vehiclesAndEquipment() {
     let permission = useSelector((state) => state.access?.pages?.primaryStoreInput)
@@ -144,7 +145,7 @@ function vehiclesAndEquipment() {
     }
 
 
-    const {data: inventoryData = [], isLoading: isDataLoading, isError: isDataError} = useGetAllVehiclesQuery({
+    const {data: productData = [], isLoading: isDataLoading, isError: isDataError} = useGetAllProductListQuery({
         page,
         sort,
         filterItem
@@ -155,7 +156,7 @@ function vehiclesAndEquipment() {
     return (
         <>
             <div>
-                <header className="flex justify-between items-center text-[0.9rem] bg-white py-6 px-10">
+                <header className="flex justify-between items-center text-[0.9rem] bg-white py-6 px-5 md:px-10">
                     <div className="">
                         <h2 className="font-[800] text-[0.9rem] md:text-[1.1rem]">کالا و محصولات</h2>
                     </div>
@@ -176,7 +177,7 @@ function vehiclesAndEquipment() {
                     </div>
                 </header>
                 <section className="py-4 md:px-8 mt-5 bg-white h-[50rem]">
-                    <div className="px-4 flex justify-end">
+                    <div className="px-4 flex justify-between">
                         <div className="w-[70%] md:w-[50%] flex ">
                             <div className="grow">
                                 <FormControl fullWidth>
@@ -395,11 +396,11 @@ function vehiclesAndEquipment() {
                                     <th className="px-2 md:px-6 px-6 py-4">
                                         کد
                                     </th>
-                                    <th className="hidden md:table-cell px-6 py-4">
-                                        نوع محصول
-                                    </th>
                                     <th className="px-2 md:px-6 px-6 py-4">
                                         <span className="hidden md:inline">منقضی شونده</span>
+                                    </th>
+                                    <th className="hidden md:table-cell px-6 py-4">
+                                        نوع محصول
                                     </th>
                                     <th className="hidden md:table-cell px-6 py-4">
                                         عملیات
@@ -440,7 +441,7 @@ function vehiclesAndEquipment() {
                                             </tr>
                                         ))
                                     ) : (
-                                        inventoryData?.content?.map((data, index) => (
+                                        productData?.content?.map((data, index) => (
                                             <tr onClick={() => {
                                                 handleOpenMoreInfoRow(data)
                                             }} className="table-row border-b">
@@ -456,15 +457,7 @@ function vehiclesAndEquipment() {
                                                 <td className="hidden md:table-cell px-6 py-4  text-gray70 whitespace-nowrap ">
                                                     {data?.code}
                                                 </td>
-                                                <td className="px-2 md:px-6 py-4  text-gray70 whitespace-nowrap ">
-                                                    {data?.type}
-                                                    {/*{data.status === "IN_USE" ? (<span className="text-[0.8rem] bg-[#D5EAFF] text-[#2492FF] py-1 px-2 rounded-xl">در حال استفاده</span>) : (*/}
-                                                    {/*    data.status === "AVAILABLE" ? (<span className="text-[0.8rem] bg-greenBg text-greenText py-1 px-2 rounded-xl">دردسترس</span>) : (*/}
-                                                    {/*        <span className="text-[0.8rem] bg-orangeBg text-orangeText py-1 px-2 rounded-xl">مشکل دار</span>*/}
-                                                    {/*    )*/}
-                                                    {/*)}*/}
-                                                </td>
-                                                <td className="px-2 md:px-6 py-4 flex justify-center  text-gray70 whitespace-nowrap ">
+                                                <td scope="row" className="px-2 md:px-6 py-4 flex justify-center  text-gray70 whitespace-nowrap ">
                                                     {data?.isExpirable ? (
                                                         <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20"
                                                              viewBox="0 0 20 20" fill="none">
@@ -484,6 +477,16 @@ function vehiclesAndEquipment() {
                                                         </svg>
                                                     )}
                                                 </td>
+                                                <td className="px-2 md:px-6 py-4  text-gray70 whitespace-nowrap ">
+                                                    {data.type === "PRIMARY" ? (<span>ماده اولیه</span>) : (
+                                                        data.type === "EQUIPMENT" ? (<span>تجهیزات</span>) : (
+                                                            data.type === "PRODUCED" ? (<span>تولیدی</span>) : (
+                                                                <span>سایر</span>
+                                                            )
+                                                        )
+                                                    )}
+                                                </td>
+
                                                 <td scope="row"
                                                     className="hidden md:flex gap-2 px-6 py-4 justify-center text-gray70 whitespace-nowrap ">
                                                     <button onClick={() => {
@@ -552,7 +555,7 @@ function vehiclesAndEquipment() {
                         </div>
                     </div>
                     <div className="flex justify-center mb-5 mt-7" style={{direction: "rtl"}}>
-                        <Pagination page={page} count={inventoryData.totalPages} onChange={handlePagination}
+                        <Pagination page={page} count={productData.totalPages} onChange={handlePagination}
                                     shape="rounded"/>
                     </div>
                 </section>

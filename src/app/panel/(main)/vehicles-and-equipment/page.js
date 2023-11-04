@@ -150,7 +150,7 @@ function vehiclesAndEquipment() {
     return (
         <>
             <div>
-                <header className="flex justify-between items-center text-[0.9rem] bg-white py-6 px-10">
+                <header className="flex justify-between items-center text-[0.9rem] bg-white py-6 px-5 md:px-10">
                     <div className="">
                         <h2 className="font-[800] text-[0.9rem] md:text-[1.1rem]">وسایل و تجهیزات</h2>
                     </div>

@@ -152,7 +152,7 @@ function primaryStoreInput() {
     return (
         <>
             <div>
-                <header className="flex justify-between items-center text-[0.9rem] bg-white py-6 px-10">
+                <header className="flex justify-between items-center text-[0.9rem] bg-white py-6 px-5 md:px-10">
                     <div className="">
                         <h2 className="font-[800] text-[0.9rem] md:text-[1.1rem]">انبار محصولات / بخش ورودی</h2>
                     </div>
@@ -353,7 +353,10 @@ function primaryStoreInput() {
                                                     {data.sourceSubOrganizationName}
                                                 </td>
                                                 <td className="hidden md:table-cell px-6 py-4  text-gray70 whitespace-nowrap ">
-                                                    {data.time} {data.date}
+                                                    <div>{data?.date}</div>
+                                                    <div className="mt-1 text-gray9F text-[0.75rem]">
+                                                        {data?.time.slice(0,5)}
+                                                    </div>
                                                 </td>
                                                 <td className="px-2 md:px-6 py-4  text-gray70 whitespace-nowrap ">
                                                     {data.status === "CONFIRMED" ? (<span className="text-[0.8rem] bg-greenBg text-greenText py-1 px-2 rounded-xl">تاييد شده</span>) : (

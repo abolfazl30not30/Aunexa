@@ -6,12 +6,12 @@ import {
 } from "@mui/material";
 import Dialog from "@mui/material/Dialog";
 import {TailSpin} from "react-loader-spinner";
-import {useDeleteVehiclesMutation} from "@/redux/features/vehicles-and-equipment/VehiclesAndEquipmentSlice";
+import {useDeleteProductMutation} from "@/redux/features/product/ProductSlice";
 
 
 
 export default function DeleteDialog(props) {
-    const [handleDelete ,{isLoading}] = useDeleteVehiclesMutation()
+    const [handleDelete ,{isLoading}] = useDeleteProductMutation()
     const deleteData = async () =>{
         const res = await handleDelete(props.deleteTargetId)
         props.handleCloseDelete()

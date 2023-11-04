@@ -16,5 +16,4 @@ export default function RootLayout({children}) {
         );
         // router.push("/panel")
     }
-
 }

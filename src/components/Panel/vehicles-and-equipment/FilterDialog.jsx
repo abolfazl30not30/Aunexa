@@ -258,7 +258,6 @@ export default function FilterDialog(props) {
                                     </Select>
                                     <FormHelperText>{formik.touched.status && formik.errors.status}</FormHelperText>
                                 </FormControl>
-
                                 <div>
                                     <div className="flex flex-col">
                                         <div className="flex w-full">

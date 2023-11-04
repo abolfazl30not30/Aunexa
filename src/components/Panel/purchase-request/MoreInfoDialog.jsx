@@ -36,7 +36,7 @@ export default function MoreInfoDialog(props) {
                             <div className="w-full md:w-[70%] flex flex-col gap-2">
                                 <div className="flex flex-col">
                                     <div className="mb-2">
-                                        <span className="text-[0.9rem] text-gray70 ">نام ماده</span>
+                                        <span className="text-[0.9rem] text-gray70 ">نام محصول</span>
                                     </div>
                                     <div className="border border-[#D9D9D9]  flex justify-between px-4">
                                         <div className="p-2">
@@ -49,58 +49,19 @@ export default function MoreInfoDialog(props) {
                                         </div>
                                     </div>
                                 </div>
-                                {
-                                    props.moreInfoTarget.expirationDate && (
-                                        <div className="flex flex-col">
-                                            <div className="mb-2">
-                                                <span className="text-[0.9rem] text-gray70 ">تاریخ انقضا</span>
-                                            </div>
-                                            <div className="border border-[#D9D9D9]  flex justify-start px-4">
-                                                <div className="p-2">
-                                                    <span className="text-[#29262A] text-[0.9rem]">{props.moreInfoTarget?.expirationDate}</span>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    )
-                                }
                                 <div className="flex flex-col">
                                     <div className="mb-2">
-                                        <span className="text-[0.9rem] text-gray70 ">نوع وسیله</span>
+                                        <span className="text-[0.9rem] text-gray70 ">آيا فوری است؟</span>
                                     </div>
-                                    <div className="border border-[#D9D9D9]  flex justify-between px-4">
+                                    <div className="border border-[#D9D9D9]  flex justify-start px-4">
                                         <div className="p-2">
-                                            <span className="text-[#29262A] text-[0.9rem]">{props.moreInfoTarget?.machineType}</span>
-                                        </div>
-                                        <div className="border border-[#D9D9D9]">
-                                        </div>
-                                        <div className="p-2 ">
                                             <span className="text-[#29262A] text-[0.9rem]">
-                                                {
-                                                    props.moreInfoTarget?.machineTag === "" ? (props.moreInfoTarget?.machineCode) : (
-                                                        props.moreInfoTarget?.machineTag.slice(2, 5) + "-" + props.moreInfoTarget?.machineTag.slice(5, 7) + " " + props.moreInfoTarget?.machineTag.slice(7, 8) + " " + props.moreInfoTarget?.machineTag.slice(0, 2)
-                                                    )
-                                                }
+                                                {props.moreInfoTarget?.priority ? (
+                                                    <span>بله</span>
+                                                ):(
+                                                    <span>خیر</span>
+                                                )}
                                             </span>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div className="flex flex-col">
-                                    <div className="mb-2">
-                                        <span className="text-[0.9rem] text-gray70 ">نام راننده</span>
-                                    </div>
-                                    <div className="border border-[#D9D9D9]  flex justify-start px-4">
-                                        <div className="p-2">
-                                            <span className="text-[#29262A] text-[0.9rem]">{props.moreInfoTarget?.driverName}</span>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div className="flex flex-col">
-                                    <div className="mb-2">
-                                        <span className="text-[0.9rem] text-gray70 ">تامین کننده</span>
-                                    </div>
-                                    <div className="border border-[#D9D9D9]  flex justify-start px-4">
-                                        <div className="p-2">
-                                            <span className="text-[#29262A] text-[0.9rem]">{props.moreInfoTarget?.producer}</span>
                                         </div>
                                     </div>
                                 </div>
@@ -121,9 +82,9 @@ export default function MoreInfoDialog(props) {
                                     <div className="border border-[#D9D9D9]  flex justify-start px-4">
                                         <div className="p-2">
                                             <span className="text-[#29262A] text-[0.9rem]">
-                                                {props.moreInfoTarget?.status === "CONFIRMED" ? (<span className="text-[0.8rem] bg-greenBg text-greenText py-1 px-2 rounded-xl">تاييد شده</span>) : (
-                                                    props.moreInfoTarget?.status === "UNKNOWN" ? (<span className="text-[0.8rem] bg-[#EBEBEB] text-gray70 py-1 px-2 rounded-xl">نامعلوم</span>) : (
-                                                        <span className="text-[0.8rem] bg-orangeBg text-orangeText py-1 px-2 rounded-xl">مشکل دار</span>
+                                                {props.moreInfoTarget.status === "DONE" ? (<span className="text-[0.8rem] bg-greenBg text-greenText py-1 px-2 rounded-xl">انجام شده</span>) : (
+                                                    props.moreInfoTarget.status === "IN_PROGRESS" ? (<span className="text-[0.8rem] bg-[#EBEBEB] text-gray70 py-1 px-2 rounded-xl">درحال بررسی</span>) : (
+                                                        <span className="text-[0.8rem] bg-orangeBg text-orangeText py-1 px-2 rounded-xl">رد شده</span>
                                                     )
                                                 )}
                                             </span>
@@ -166,46 +127,14 @@ export default function MoreInfoDialog(props) {
                                 </div>
                                 <div>
                                     <span className="ml-1 text-gray9F text-[0.8rem]">
-                                        تاریخ انقضا :
+                                        آيا فوری است :
                                     </span>
                                     <span className="text-[#29262A] text-[0.8rem]">
-                                        {props.moreInfoTarget.expirationDate}
-                                    </span>
-                                </div>
-                                <div>
-                                    <span className="ml-1 text-gray9F text-[0.8rem]">
-                                        نوع وسیله نقلیه :
-                                    </span>
-                                    <span className="text-[#29262A] text-[0.8rem]">
-                                        {props.moreInfoTarget?.machineType}
-                                    </span>
-                                </div>
-                                <div>
-                                    <span className="ml-1 text-gray9F text-[0.8rem]">
-                                        پلاک وسیله نقلیه :
-                                    </span>
-                                    <span className="text-[#29262A] text-[0.8rem]">
-                                        {
-                                            props.moreInfoTarget?.machineTag === "" ? (props.moreInfoTarget?.machineCode) : (
-                                                props.moreInfoTarget?.machineTag.slice(2, 5) + "-" + props.moreInfoTarget?.machineTag.slice(5, 7) + " " + props.moreInfoTarget?.machineTag.slice(7, 8) + " " + props.moreInfoTarget?.machineTag.slice(0, 2)
-                                            )
-                                        }
-                                    </span>
-                                </div>
-                                <div>
-                                    <span className="ml-1 text-gray9F text-[0.8rem]">
-                                        راننده :
-                                    </span>
-                                    <span className="text-[#29262A] text-[0.8rem]">
-                                        {props.moreInfoTarget?.driverName}
-                                    </span>
-                                </div>
-                                <div>
-                                    <span className="ml-1 text-gray9F text-[0.8rem]">
-                                        تامین کننده :
-                                    </span>
-                                    <span className="text-[#29262A] text-[0.8rem]">
-                                        {props.moreInfoTarget?.producer}
+                                        {props.moreInfoTarget?.priority ? (
+                                            <span>بله</span>
+                                        ):(
+                                            <span>خیر</span>
+                                        )}
                                     </span>
                                 </div>
                                 <div>
@@ -213,7 +142,7 @@ export default function MoreInfoDialog(props) {
                                         تاریخ :
                                     </span>
                                     <span className="text-[#29262A] text-[0.8rem]">
-                                        {props.moreInfoTarget?.time} {props.moreInfoTarget?.date}
+                                          {props.moreInfoTarget?.time}   {props.moreInfoTarget?.date}
                                     </span>
                                 </div>
                                 <div>
@@ -221,9 +150,9 @@ export default function MoreInfoDialog(props) {
                                         وضعیت :
                                     </span>
                                     <span className="text-[#29262A] text-[0.8rem]">
-                                        {props.moreInfoTarget?.status === "CONFIRMED" ? (<span className="text-[0.8rem] bg-greenBg text-greenText py-1 px-2 rounded-xl">تاييد شده</span>) : (
-                                            props.moreInfoTarget?.status === "UNKNOWN" ? (<span className="text-[0.8rem] bg-[#EBEBEB] text-gray70 py-1 px-2 rounded-xl">نامعلوم</span>) : (
-                                                <span className="text-[0.8rem] bg-orangeBg text-orangeText py-1 px-2 rounded-xl">مشکل دار</span>
+                                        {props.moreInfoTarget.status === "DONE" ? (<span className="text-[0.8rem] bg-greenBg text-greenText py-1 px-2 rounded-xl">انجام شده</span>) : (
+                                            props.moreInfoTarget.status === "IN_PROGRESS" ? (<span className="text-[0.8rem] bg-[#EBEBEB] text-gray70 py-1 px-2 rounded-xl">درحال بررسی</span>) : (
+                                                <span className="text-[0.8rem] bg-orangeBg text-orangeText py-1 px-2 rounded-xl">رد شده</span>
                                             )
                                         )}
                                     </span>

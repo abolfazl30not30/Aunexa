@@ -37,37 +37,68 @@ export default function MoreInfoDialog(props) {
                             <div className="w-full md:w-[70%] flex flex-col gap-2">
                                 <div className="flex flex-col">
                                     <div className="mb-2">
-                                        <span className="text-[0.9rem] text-gray70 ">نوع وسیله</span>
+                                        <span className="text-[0.9rem] text-gray70 ">نام فارسی</span>
                                     </div>
                                     <div className="border border-[#D9D9D9]  flex justify-between px-4">
                                         <div className="p-2">
-                                            <span className="text-[#29262A] text-[0.9rem]">{props.moreInfoTarget?.type}</span>
-                                        </div>
-                                        <div className="border border-[#D9D9D9]">
+                                            <span className="text-[#29262A] text-[0.9rem]">{props.moreInfoTarget?.persianName}</span>
                                         </div>
                                     </div>
                                 </div>
-                                <div className="flex flex-col">
-                                    <div className="mb-2">
-                                        <span className="text-[0.9rem] text-gray70 ">API جی پی اس</span>
-                                    </div>
-                                    <div className="border border-[#D9D9D9]  flex justify-start px-4">
-                                        <div className="p-2">
-                                            <span className="text-[#29262A] text-[0.9rem]">{props.moreInfoTarget.hasGps ? (props.moreInfoTarget.gpsURL) : ("وسیله داری جی پی اس نمی باشد")}</span>
+                                {
+                                    props.moreInfoTarget.englishName && (
+                                        <div className="flex flex-col">
+                                            <div className="mb-2">
+                                                <span className="text-[0.9rem] text-gray70 ">نام انگلیسی</span>
+                                            </div>
+                                            <div className="border border-[#D9D9D9]  flex justify-between px-4">
+                                                <div className="p-2">
+                                                    <span className="text-[#29262A] text-[0.9rem]">{props.moreInfoTarget?.englishName}</span>
+                                                </div>
+                                            </div>
                                         </div>
-                                    </div>
-                                </div>
-
+                                    )
+                                }
+                                {
+                                    props.moreInfoTarget.abbreviation && (
+                                        <div className="flex flex-col">
+                                            <div className="mb-2">
+                                                <span className="text-[0.9rem] text-gray70 ">مخفف</span>
+                                            </div>
+                                            <div className="border border-[#D9D9D9]  flex justify-between px-4">
+                                                <div className="p-2">
+                                                    <span className="text-[#29262A] text-[0.9rem]">{props.moreInfoTarget?.abbreviation}</span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    )
+                                }
+                                {
+                                    props.moreInfoTarget.code && (
+                                        <div className="flex flex-col">
+                                            <div className="mb-2">
+                                                <span className="text-[0.9rem] text-gray70 ">کد محصول</span>
+                                            </div>
+                                            <div className="border border-[#D9D9D9]  flex justify-between px-4">
+                                                <div className="p-2">
+                                                    <span className="text-[#29262A] text-[0.9rem]">{props.moreInfoTarget?.code}</span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    )
+                                }
                                 <div className="flex flex-col">
                                     <div className="mb-2">
-                                        <span className="text-[0.9rem] text-gray70 ">وضیعت</span>
+                                        <span className="text-[0.9rem] text-gray70 ">نوع محصول</span>
                                     </div>
-                                    <div className="border border-[#D9D9D9]  flex justify-start px-4">
+                                    <div className="border border-[#D9D9D9]  flex justify-between px-4">
                                         <div className="p-2">
                                             <span className="text-[#29262A] text-[0.9rem]">
-                                                {props.moreInfoTarget.status === "IN_USE" ? (<span className="text-[0.8rem] bg-[#D5EAFF] text-[#2492FF] py-1 px-2 rounded-xl">در حال استفاده</span>) : (
-                                                    props.moreInfoTarget.status === "AVAILABLE" ? (<span className="text-[0.8rem] bg-greenBg text-greenText py-1 px-2 rounded-xl">دردسترس</span>) : (
-                                                        <span className="text-[0.8rem] bg-orangeBg text-orangeText py-1 px-2 rounded-xl">مشکل دار</span>
+                                                {props.moreInfoTarget?.type === "PRIMARY" ? (<span>ماده اولیه</span>) : (
+                                                    props.moreInfoTarget?.type === "EQUIPMENT" ? (<span>تجهیزات</span>) : (
+                                                        props.moreInfoTarget?.type === "PRODUCED" ? (<span>تولیدی</span>) : (
+                                                            <span>سایر</span>
+                                                        )
                                                     )
                                                 )}
                                             </span>
@@ -76,74 +107,94 @@ export default function MoreInfoDialog(props) {
                                 </div>
                                 <div className="flex flex-col">
                                     <div className="mb-2">
-                                        <span className="text-[0.9rem] text-gray70 ">دپارتمان</span>
+                                        <span className="text-[0.9rem] text-gray70 ">واحد پیش فرض</span>
                                     </div>
-                                    <div className="border border-[#D9D9D9]  flex justify-start px-4">
+                                    <div className="border border-[#D9D9D9]  flex justify-between px-4">
                                         <div className="p-2">
-                                            <span className="text-[#29262A] text-[0.9rem]">{props.moreInfoTarget?.subOrganizationName}</span>
+                                            <span className="text-[#29262A] text-[0.9rem]">{props.moreInfoTarget?.defaultUnit}</span>
                                         </div>
                                     </div>
                                 </div>
-                                {
-                                    props.moreInfoTarget.purchaseDate && (
-                                        <div className="flex flex-col">
-                                            <div className="mb-2">
-                                                <span className="text-[0.9rem] text-gray70 ">تاریخ خرید</span>
-                                            </div>
-                                            <div className="border border-[#D9D9D9]  flex justify-start px-4">
-                                                <div className="p-2">
-                                                    <span className="text-[#29262A] text-[0.9rem]">{props.moreInfoTarget?.purchaseDate}</span>
-                                                </div>
-                                            </div>
+                                <div className="flex flex-col">
+                                    <div className="mb-2">
+                                        <span className="text-[0.9rem] text-gray70 ">منقضی شونده</span>
+                                    </div>
+                                    <div className="border border-[#D9D9D9]  flex justify-between px-4">
+                                        <div className="p-2">
+                                            <span className="text-[#29262A] text-[0.9rem]">
+                                                {props.moreInfoTarget?.isExpirable ? (
+                                                    <span>بله</span>
+                                                ):(<span>خیر</span>)}
+                                            </span>
                                         </div>
-                                    )
-                                }
+                                    </div>
+                                </div>
                             </div>
                         </div>
                         <div className="md:hidden flex justify-center">
                             <div className="w-full md:w-[70%] flex flex-col gap-3">
                                 <div>
                                     <span className="ml-1 text-gray9F text-[0.8rem]">
-                                        نوع وسیله نقلیه :
+                                        نام فارسی :
                                     </span>
                                     <span className="text-[#29262A] text-[0.8rem]">
-                                        {props.moreInfoTarget?.type}
+                                        {props.moreInfoTarget?.persianName}
                                     </span>
                                 </div>
                                 <div>
                                     <span className="ml-1 text-gray9F text-[0.8rem]">
-                                        : API جی پی اس
+                                        نام انگلیسی :
                                     </span>
                                     <span className="text-[#29262A] text-[0.8rem]">
-                                        {props.moreInfoTarget.hasGps ? (props.moreInfoTarget.gpsURL) : ("وسیله داری جی پی اس نمی باشد")}
+                                        {props.moreInfoTarget?.englishName}
                                     </span>
                                 </div>
                                 <div>
                                     <span className="ml-1 text-gray9F text-[0.8rem]">
-                                        وضعیت :
+                                        مخفف :
                                     </span>
                                     <span className="text-[#29262A] text-[0.8rem]">
-                                        {props.moreInfoTarget.status === "IN_USE" ? (<span className="text-[0.8rem] bg-[#D5EAFF] text-[#2492FF] py-1 px-2 rounded-xl">در حال استفاده</span>) : (
-                                            props.moreInfoTarget.status === "AVAILABLE" ? (<span className="text-[0.8rem] bg-greenBg text-greenText py-1 px-2 rounded-xl">دردسترس</span>) : (
-                                                <span className="text-[0.8rem] bg-orangeBg text-orangeText py-1 px-2 rounded-xl">مشکل دار</span>
+                                        {props.moreInfoTarget?.abbreviation}
+                                    </span>
+                                </div>
+                                <div>
+                                    <span className="ml-1 text-gray9F text-[0.8rem]">
+                                        کدمحصول :
+                                    </span>
+                                    <span className="text-[#29262A] text-[0.8rem]">
+                                        {props.moreInfoTarget?.code}
+                                    </span>
+                                </div>
+                                <div>
+                                    <span className="ml-1 text-gray9F text-[0.8rem]">
+                                        نوع محصول :
+                                    </span>
+                                    <span className="text-[#29262A] text-[0.8rem]">
+                                        {props.moreInfoTarget?.type === "PRIMARY" ? (<span>ماده اولیه</span>) : (
+                                            props.moreInfoTarget?.type === "EQUIPMENT" ? (<span>تجهیزات</span>) : (
+                                                props.moreInfoTarget?.type === "PRODUCED" ? (<span>تولیدی</span>) : (
+                                                    <span>سایر</span>
+                                                )
                                             )
                                         )}
                                     </span>
                                 </div>
                                 <div>
                                     <span className="ml-1 text-gray9F text-[0.8rem]">
-                                        دپارتمان :
+                                        واحد پیش فرض :
                                     </span>
                                     <span className="text-[#29262A] text-[0.8rem]">
-                                        {props.moreInfoTarget.subOrganizationName}
+                                        {props.moreInfoTarget?.defaultUnit}
                                     </span>
                                 </div>
                                 <div>
                                     <span className="ml-1 text-gray9F text-[0.8rem]">
-                                        تاریخ خرید :
+                                        منقضی شونده :
                                     </span>
                                     <span className="text-[#29262A] text-[0.8rem]">
-                                        {props.moreInfoTarget.purchaseDate}
+                                        {props.moreInfoTarget?.isExpirable ? (
+                                            <span>بله</span>
+                                        ):(<span>خیر</span>)}
                                     </span>
                                 </div>
                             </div>
