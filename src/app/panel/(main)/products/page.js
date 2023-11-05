@@ -2,7 +2,16 @@
 
 import React, {useState} from "react";
 
-import {FormControl, InputAdornment, Menu, OutlinedInput, Pagination, Skeleton,} from "@mui/material";
+import {
+    FormControl,
+    InputAdornment,
+    InputLabel,
+    Menu, MenuItem,
+    OutlinedInput,
+    Pagination,
+    Select,
+    Skeleton,
+} from "@mui/material";
 
 import AddDataDialog from "@/components/Panel/products/AddDataDialog";
 import FilterDialog from "@/components/Panel/products/FilterDialog";
@@ -54,7 +63,7 @@ function vehiclesAndEquipment() {
     )
 
 
-    const [filter, setFilter] = useState("organization");
+    const [filter, setFilter] = useState("persianName");
     const [anchorElFilter, setAnchorElFilter] = useState(null);
     const openFilter = Boolean(anchorElFilter);
     const handleOpenFilterSearchBarMenu = (event) => {
@@ -218,76 +227,24 @@ function vehiclesAndEquipment() {
                                     />
                                 </FormControl>
                             </div>
-                            <div className="grow">
+                            <div className={"w-[20%]"} >
                                 <div>
-                                    <button
-                                        onClick={handleOpenFilterSearchBarMenu}
-                                        className="flex items-center gap-2 text-[0.9rem] text-gray9F border border-1 border-solid border-borderGray  border-r-0 px-2 md:px-4 py-[0.8rem] md:py-[0.63rem]">
-                                        <span className="hidden md:inline">براساس</span>
-                                        <svg
-                                            xmlns="http://www.w3.org/2000/svg"
-                                            width="16"
-                                            height="16"
-                                            viewBox="0 0 16 16"
-                                            fill="none">
-                                            <path
-                                                d="M4 6L8 10L12 6"
-                                                stroke="#9F9F9F"
-                                                stroke-linecap="round"
-                                                stroke-linejoin="round"
-                                            />
-                                        </svg>
-                                    </button>
-                                    <Menu
-                                        anchorEl={anchorElFilter}
-                                        id="account-menu"
-                                        open={openFilter}
-                                        onClose={handleCloseFilterMenu}
-                                        onClick={handleCloseFilterMenu}
-                                        PaperProps={{
-                                            elevation: 0,
-                                            sx: {
-                                                width: "10rem",
-                                                bgcolor: "#fff",
-                                                borderRadius: "0.5rem",
-                                                overflow: "visible",
-                                                filter: "drop-shadow(0px 2px 3px rgba(0,0,0,0.1))",
-                                                mt: 1.5,
-                                                fontFamily: "IRANYekan",
-                                                "& .MuiAvatar-root": {
-                                                    width: 32,
-                                                    height: 32,
-                                                    ml: -0.5,
-                                                    mr: 1,
-                                                },
-                                            },
-                                        }}
-                                        transformOrigin={{horizontal: "left", vertical: "top"}}
-                                        anchorOrigin={{horizontal: "left", vertical: "bottom"}}>
-                                        <div className="px-2 py-2">
-                                            <div className="">
-                                                <button
-                                                    onClick={() => {
-                                                        setFilter("organization");
-                                                    }}
-                                                    className="w-full flex justify-center gap-2 py-3 px-2 hover:bg-neutral-100"><span className="text-gray70 text-[0.8rem]  tracking-tighter">سازمان</span>
-                                                </button>
-                                                <button
-                                                    onClick={() => {
-                                                        setFilter("subOrganization");
-                                                    }}
-                                                    className="w-full flex justify-center gap-2 py-3 px-2 hover:bg-neutral-100 border-t border-t-[#D9D9D9]">
-                                                    <span className="text-gray70 text-[0.8rem]  tracking-tighter">دپارتمان</span>
-                                                </button>
-                                                <button
-                                                    onClick={() => setFilter("individual")}
-                                                    className="w-full flex justify-center gap-2 py-3 px-2 hover:bg-neutral-100 border-t border-t-[#D9D9D9]"
-                                                >
-                                                    <span className="text-gray70 text-[0.8rem]  tracking-tighter">افراد</span>
-                                                </button>
-                                            </div>
-                                        </div>
-                                    </Menu>
+                                    <FormControl fullWidth size="small">
+                                        <InputLabel id="demo-simple-select-label" sx={{fontFamily: "IRANYekan", fontSize: "0.8rem",color:"#9F9F9F"}}>براساس</InputLabel>
+                                        <Select
+                                            style={{ height:"2.8rem" }}
+                                            labelId="demo-simple-select-label"
+                                            id="demo-simple-select"
+                                            value={filter}
+                                            name="type"
+                                            input={<OutlinedInput sx={{fontFamily: "IRANYekan", fontSize: "0.8rem"}} label="براساس" />}
+                                            sx={{fontFamily: "IRANYekan", fontSize: "0.8rem"}}
+                                            onChange={(e)=>{setFilter(e.target.value)}}>
+                                            <MenuItem value="persianName" sx={{fontFamily: "IRANYekan", fontSize: "0.8rem"}}>نام محصول</MenuItem>
+                                            <MenuItem value="abbreviation" sx={{fontFamily: "IRANYekan", fontSize: "0.8rem"}}>مخفف</MenuItem>
+                                            <MenuItem value="code" sx={{fontFamily: "IRANYekan", fontSize: "0.8rem"}}>كد</MenuItem>
+                                        </Select>
+                                    </FormControl>
                                 </div>
                             </div>
                         </div>
