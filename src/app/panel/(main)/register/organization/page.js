@@ -14,7 +14,7 @@ import AccordionSummary from "@mui/material/AccordionSummary";
 import Typography from "@mui/material/Typography";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import AddOrganizationDialog from "@/components/Panel/register-organization/AddOrganizationDialog";
-import AddSubOrganizationDialog from "@/components/Panel/register-organization/AddSubOrganizationtDialog";
+import AddSubOrganizationDialog from "@/components/Panel/register-organization/AddSubOrganizationDialog";
 import EditSubOrganizationInfoDialog from "@/components/Panel/register-organization/EditSubOrganizationInfoDialog";
 import DeleteSubOrganizationDialog from "@/components/Panel/register-organization/DeleteSubOrganizationDialog";
 import AddIndividualDialog from "@/components/Panel/register-organization/AddIndividualDialog";
@@ -31,6 +31,7 @@ export default function registerOrganization() {
   /* search bar */
 
   const [expanded, setExpanded] = React.useState(false);
+  const [organizationIdTarget,setOrganizationIdTarget] = useState("");
 
   const handleChangeIndividualList = (panel) => (event, isExpanded) => {
     setExpanded(isExpanded ? panel : false);
@@ -45,7 +46,8 @@ export default function registerOrganization() {
   };
 
   const [openAddSubOrganization, setOpenAddSubOrganization] = useState(false);
-  const handleOpenAddSubOrganization = () => {
+  const handleOpenAddSubOrganization = (id) => {
+    setOrganizationIdTarget(id)
     setOpenAddSubOrganization(true);
   };
   const handleCloseAddSubOrganization = () => {
@@ -54,25 +56,25 @@ export default function registerOrganization() {
 
   const [openDeleteSubOrganization, setOpenDeleteSubOrganization] =
     useState(false);
-  const [deleteTargetSubOrganizationId, setDeleteTargetSubOrganizationId] =
+  const [deleteTargetSubOrganizationId, sediveleteTargetSubOrganizationId] =
     useState("");
   const handleOpenDeleteSubOrganization = (id) => {
-    setDeleteTargetSubOrganizationId(id);
+    sediveleteTargetSubOrganizationId(id);
     setOpenDeleteSubOrganization(true);
   };
   const handleCloseDeleteSubOrganization = () => {
-    setDeleteTargetSubOrganizationId("");
+    sediveleteTargetSubOrganizationId("");
     openDeleteSubOrganization(false);
   };
 
   const [openDeleteIndividual, setOpenDeleteIndividual] = useState(false);
-  const [deleteTargetIndividualId, setDeleteTargetIndividualId] = useState("");
+  const [deleteTargetIndividualId, sediveleteTargetIndividualId] = useState("");
   const handleOpenDeleteIndividual = (id) => {
-    setDeleteTargetIndividualId(id);
+    sediveleteTargetIndividualId(id);
     setOpenDeleteIndividual(true);
   };
   const handleCloseDeleteIndividual = () => {
-    setDeleteTargetIndividualId("");
+    sediveleteTargetIndividualId("");
     openDeleteIndividual(false);
   };
 
@@ -153,7 +155,7 @@ export default function registerOrganization() {
 
   const [openEditIndividualInfo, setOpenEditIndividualInfo] = useState(false);
   const [editIndividualInfoTarget, setEditIndividualInfoTarget] = useState({
-    fullname: "",
+    fullName: "",
     nationalCode: "",
     personalCode: "",
     birthDate: "",
@@ -420,8 +422,7 @@ export default function registerOrganization() {
       </header>
       {organizationList?.map((organization) => (
         <div>
-          <div className="flex justify-between items-center text-[0.9rem] bg-white py-6 px-10">
-            <div className="flex ">
+          <div className="flex justify-between items-center text-[0.9rem] bg-white py-6 mt-8 px-10">
               <div className="">
                 <h2 className="font-[800] text-[0.9rem] md:text-[1.1rem]">
                   {organization.name}
@@ -431,74 +432,55 @@ export default function registerOrganization() {
                 {
                   <button
                     className="flex text-mainRed bg-white border border-mainRed items-center text- px-3 py-2 rounded-full md:rounded"
-                    onClick={handleOpenAddSubOrganization}
+                    onClick={()=>{handleOpenAddSubOrganization(organization.id)}}
                   >
                     <span className="hidden md:inline">ثبت دپارتمان</span>
-                    <svg
-                      xmlns="http://www.w3.org/2000/svg"
-                      width="24"
-                      height="24"
-                      viewBox="0 0 24 24"
-                      fill="none"
-                    >
-                      <path
-                        d="M7 12H17"
-                        stroke="white"
-                        stroke-width="2"
-                        stroke-linecap="round"
-                        stroke-linejoin="round"
-                      />
-                      <path
-                        d="M12 7V17"
-                        stroke="white"
-                        stroke-width="2"
-                        stroke-linecap="round"
-                        stroke-linejoin="round"
-                      />
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none">
+                      <path d="M7 12H17" stroke="#DB3746" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                      <path d="M12 7V17" stroke="#DB3746" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
                     </svg>
                   </button>
                 }
               </div>
-            </div>
           </div>
-          <div className="mt-10">
+          <div className="">
             <div className="overflow-x-auto">
               <table className=" w-full table-auto overflow-scroll border-collapse border-spacing-0 text-sm text-center text-gray70  ">
                 <tbody className="table-body">
                   {isDataLoading
                     ? [...Array(6)].map(() => (
                         <tr className="border-b">
-                          <td className="hidden md:table-cell px-6 py-4  text-gray70 whitespace-nowrap ">
+                          <div className="hidden md:table-cell px-6 py-4  text-gray70 whitespace-nowrap ">
                             <Skeleton
                               variant="text"
                               sx={{ fontSize: "1rem" }}
                             />
-                          </td>
-                          <td className="px-2 md:px-6 py-4  text-gray70 whitespace-nowrap ">
+                          </div>
+                          <div className="px-2 md:px-6 py-4  text-gray70 whitespace-nowrap ">
                             <Skeleton
                               variant="text"
                               sx={{ fontSize: "1rem" }}
                             />
-                          </td>
-                          <td className="px-2 md:px-6 py-4  text-gray70 whitespace-nowrap ">
+                          </div>
+                          <div className="px-2 md:px-6 py-4  text-gray70 whitespace-nowrap ">
                             <Skeleton
                               variant="text"
                               sx={{ fontSize: "1rem" }}
                             />
-                          </td>
-                          <td className="px-2 md:px-6 py-2  text-gray70 whitespace-nowrap ">
+                          </div>
+                          <div className="px-2 md:px-6 py-2  text-gray70 whitespace-nowrap ">
                             <Skeleton
                               variant="text"
                               sx={{ fontSize: "1rem" }}
                             />
-                          </td>
-                          <td className="hidden md:table-cell px-6 py-4  text-gray70 whitespace-nowrap ">
+                          </div>
+                          <div className="hidden md:table-cell px-6 py-4  text-gray70 whitespace-nowrap ">
                             <Skeleton
                               variant="text"
                               sx={{ fontSize: "1rem" }}
                             />
-                          </td>
-                          <td
+                          </div>
+                          <div
                             scope="row"
                             className="hidden md:flex gap-2 px-6 py-4 justify-center text-gray70 whitespace-nowrap "
                           >
@@ -517,88 +499,55 @@ export default function registerOrganization() {
                               width={23}
                               height={23}
                             />
-                          </td>
+                          </div>
                         </tr>
                       ))
                     : organization.subOrganizations?.map(
                         (subOrganization, index) => (
                           <Accordion
                             expanded={expanded === "panel"}
-                            onChange={handleChangeIndividualList("panel")}
-                          >
+                            onChange={handleChangeIndividualList("panel")}>
                             <AccordionSummary
-                              expandIcon={<ExpandMoreIcon />}
                               aria-controls="panelbh-content"
-                              id="panelbh-header"
-                            >
-                              <tr className="table-row border-b">
-                                <td className="hidden md:table-cell px-6 py-4  text-gray70 whitespace-nowrap ">
-                                  <Typography sx={{ flexShrink: 0 }}>
+                              id="panelbh-header">
+                              <div className="flex justify-between items-center border-b">
+                                <div className="hidden md:table-cell px-6 py-4  text-gray70 whitespace-nowrap ">
                                     {index + 1}
-                                  </Typography>
-                                </td>
-                                <td className="px-2 md:px-6 py-4 flex gap-2 text-gray70 whitespace-nowrap ">
-                                  <Typography sx={{ flexShrink: 0 }}>
+                                </div>
+                                <div className="px-2 md:px-6 py-4 flex gap-2 text-gray70 whitespace-nowrap ">
                                     <span>: اسم دپارتمان</span>
-                                    {subOrganization.name}
-                                  </Typography>
-                                </td>
-                                <td className="px-2 md:px-6 py-4  text-gray70 whitespace-nowrap ">
-                                  <Typography sx={{ flexShrink: 0 }}>
+                                    s<span>{subOrganization.name}</span>
+                                </div>
+                                <div className="px-2 md:px-6 py-4  text-gray70 whitespace-nowrap ">
                                     <span>:ظرفیت</span>
-                                    {subOrganization.capacity}
-                                  </Typography>
-                                </td>
+                                    <span>{subOrganization.capacity}</span>
+                                </div>
 
-                                <td className="hidden md:table-cell px-6 py-4  text-gray70 whitespace-nowrap ">
-                                  <Typography sx={{ flexShrink: 0 }}>
+                                <div className="hidden md:table-cell px-6 py-4  text-gray70 whitespace-nowrap ">
                                     <span>:واحد</span>
-                                    {subOrganization.unit}
-                                  </Typography>
-                                </td>
-                                <td className="hidden md:table-cell px-6 py-4  text-gray70 whitespace-nowrap ">
-                                  <Typography sx={{ flexShrink: 0 }}>
+                                    <span>{subOrganization.unit}</span>
+                                </div>
+                                <div className="hidden md:table-cell px-6 py-4  text-gray70 whitespace-nowrap ">
                                     <span>:نوع</span>
-                                    {subOrganization.type}
-                                  </Typography>
-                                </td>
-                                <td className="hidden md:table-cell px-6 py-4   whitespace-nowrap ">
-                                  <Typography sx={{ flexShrink: 0 }}>
+                                    <span>{subOrganization.type}</span>
+                                </div>
+                                <div className="hidden md:table-cell px-6 py-4   whitespace-nowrap ">
                                     <div>
                                       <button
                                         className="flex text-gray60 bg-white border border-gray60 items-center text- px-3 py-2 rounded-full md:rounded"
                                         onClick={handleOpenAddIndividual}
                                       >
-                                        <span className="hidden md:inline">
+                                        <span className="hidden md:inline text-gray9F">
                                           ثبت افراد
                                         </span>
-                                        <svg
-                                          xmlns="http://www.w3.org/2000/svg"
-                                          width="24"
-                                          height="24"
-                                          viewBox="0 0 24 24"
-                                          fill="none"
-                                        >
-                                          <path
-                                            d="M7 12H17"
-                                            stroke="white"
-                                            stroke-width="2"
-                                            stroke-linecap="round"
-                                            stroke-linejoin="round"
-                                          />
-                                          <path
-                                            d="M12 7V17"
-                                            stroke="white"
-                                            stroke-width="2"
-                                            stroke-linecap="round"
-                                            stroke-linejoin="round"
-                                          />
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none">
+                                          <path d="M7 12H17" stroke="#9F9F9F" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                                          <path d="M12 7V17" stroke="#9F9F9F" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
                                         </svg>
                                       </button>
                                     </div>
-                                  </Typography>
-                                </td>
-                                <td
+                                </div>
+                                <div
                                   scope="row"
                                   className="hidden md:flex gap-2 px-6 py-4 justify-center text-gray70 whitespace-nowrap "
                                 >
@@ -668,7 +617,7 @@ export default function registerOrganization() {
                                   >
                                     <svg
                                       className={
-                                        expanded === panel
+                                        expanded === "panel"
                                           ? "rotate-180 transition-all duration-300"
                                           : " transition-all duration-300"
                                       }
@@ -686,8 +635,8 @@ export default function registerOrganization() {
                                       />
                                     </svg>
                                   </button>
-                                </td>
-                              </tr>
+                                </div>
+                              </div>
                             </AccordionSummary>
                             <AccordionDetails>
                               {subOrganization.individual?.map((individual) => (
@@ -715,11 +664,8 @@ export default function registerOrganization() {
                                             <span>نقش:</span>
                                             {individual.role}
                                           </Typography>
-                                          <Typography className="flex gap-2 items-center">
-                                            <td
-                                              scope="row"
-                                              className="hidden md:flex gap-2 px-6 py-4 justify-center text-gray70 whitespace-nowrap "
-                                            >
+                                            <div
+                                              className="hidden md:flex gap-2 px-6 py-4 justify-center text-gray70 whitespace-nowrap ">
                                               <button
                                                 onClick={() => {
                                                   handleOpenMoreInfoIndividual(
@@ -816,8 +762,7 @@ export default function registerOrganization() {
                                                   </svg>
                                                 </button>
                                               }
-                                            </td>
-                                          </Typography>
+                                            </div>
                                         </tr>
                                       </tbody>
                                     </table>
@@ -839,6 +784,7 @@ export default function registerOrganization() {
         openAddOrganization={openAddOrganization}
       />
       <AddSubOrganizationDialog
+          organizationIdTarget={organizationIdTarget}
         handleCloseAddSubOrganization={handleCloseAddSubOrganization}
         openAddSubOrganization={openAddSubOrganization}
       />

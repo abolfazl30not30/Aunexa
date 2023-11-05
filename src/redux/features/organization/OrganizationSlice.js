@@ -8,7 +8,7 @@ export const OrganizationSlice = apiSlice.injectEndpoints({
       }),
       providesTags: ["organization"],
     }),
-    save: builder.mutation({
+    saveOrganization: builder.mutation({
       query: (body) => ({
         url: "party/organization",
         method: "POST",
@@ -19,5 +19,5 @@ export const OrganizationSlice = apiSlice.injectEndpoints({
   }),
 });
 
-export const { useGetAllOrganizationQuery, useSaveMutation } =
+export const { useGetAllOrganizationQuery, useSaveOrganizationMutation } =
   OrganizationSlice;

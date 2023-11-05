@@ -1,0 +1,46 @@
+'use client'
+import {createApi, fetchBaseQuery} from '@reduxjs/toolkit/query/react'
+import {logOut,setAccessToken} from './authSlice'
+import axios from "axios";
+
+const baseQuery = fetchBaseQuery({
+    baseUrl: 'http://localhost:8080/',
+})
+
+const login =  async () =>{
+    let base64encodedData = Buffer.from( "client1"+ ':' +"myClientSecretValue" ).toString('base64');
+    const formData = {
+        client_id:"client1",
+        refresh_token:window.sessionStorage.getItem("refresh_token"),
+        grant_type:"refresh_token",
+    }
+
+    return await axios.post("http://localhost:8080/oauth2/token", formData, {
+        headers: {
+            "Content-Type": "application/x-www-form-urlencoded",
+            "Authorization": "Basic " + base64encodedData
+        }
+    })
+}
+
+const baseQueryWithReauth = async (args, api, extraOptions) => {
+    let result = await baseQuery(args, api, extraOptions)
+
+    if (result?.error?.status === 401 || result?.error?.status === 500 ) {
+        const refreshResult = await login()
+        api.dispatch(setAccessToken(refreshResult?.data?.access_token))
+        if (refreshResult?.data) {
+            result = await baseQuery(args, api, extraOptions)
+        } else {
+            api.dispatch(logOut())
+        }
+    }
+    return result
+}
+
+export const apiAuthServerSlice = createApi({
+    reducerPath:"apiAuth",
+    baseQuery: baseQuery,
+    tagTypes: ['role'],
+    endpoints: builder => ({})
+})

@@ -2,32 +2,32 @@ import { apiSlice } from "../../../api/apiSlice";
 
 export const SubOrganizationSlice = apiSlice.injectEndpoints({
   endpoints: (builder) => ({
-    save: builder.mutation({
+    saveSubOrganization: builder.mutation({
       query: (body) => ({
-        url: "party/sub-organiztion",
+        url: "party/sub-organization",
         method: "POST",
         body: body,
       }),
-      invalidatesTags: ["sub-organization"],
+      invalidatesTags: ["organization"],
     }),
-    update: builder.mutation({
+    updateSubOrganization: builder.mutation({
       query: (body) => ({
         url: `party/sub-organization`,
         method: "PUT",
         body: body,
       }),
-      invalidatesTags: ["sub-organization"],
+      invalidatesTags: ["organization"],
     }),
-    delete: builder.mutation({
+    deleteSubOrganization: builder.mutation({
       query: (id) => ({
         url: `party/sub-organization/${id}`,
         method: "DELETE",
         body: id,
       }),
-      invalidatesTags: ["sub-organization"],
+      invalidatesTags: ["organization"],
     }),
   }),
 });
 
-export const { useSaveMutation, useUpdateMutation, useDeleteMutation } =
+export const { useSaveSubOrganizationMutation, useUpdateSubOrganizationMutation, useDeleteSubOrganizationMutation } =
   SubOrganizationSlice;

@@ -33,3 +33,8 @@ body {
         cursor: pointer;
     }
 }
+.MuiAccordionSummary-contentGutters{
+   display: block !important;
+}
+.muirtl-1elwnq4-MuiPaper-root-MuiAccordion-root.Mui-expanded {
+margin:0px !important;}

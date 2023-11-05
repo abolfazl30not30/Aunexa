@@ -593,7 +593,7 @@ export default function RootLayout({ children }) {
                   </div>
                   <div>
                     <Link
-                      href="/panel/register/role/register/organization"
+                      href="/panel/register/role"
                       className="block py-4 px-2 border-b border-b-1 border-b-solid  border-b-borderGray"
                     >
                       <span

@@ -4,6 +4,7 @@ import {loginSlice} from "@/redux/api/loginSlice";
 import authReducer from "@/redux/api/authSlice";
 import accessReducer from "@/redux/permission/accessSlice";
 import { apiSlice } from '../redux/api/apiSlice';
+import { apiAuthServerSlice} from "@/redux/api/apiAuthServerSlice";
 import {getAccessSlice} from "@/redux/api/getAccessSlice";
 
 export const store = configureStore({
@@ -11,9 +12,10 @@ export const store = configureStore({
         [loginSlice.reducerPath]: loginSlice.reducer,
         [getAccessSlice.reducerPath] : getAccessSlice.reducer,
         [apiSlice.reducerPath]: apiSlice.reducer,
+        [apiAuthServerSlice.reducerPath]: apiAuthServerSlice.reducer,
         auth:authReducer,
         access:accessReducer
     },
     middleware: getDefaultMiddleware =>
-        getDefaultMiddleware().concat(apiSlice.middleware,loginSlice.middleware,getAccessSlice.middleware)
+        getDefaultMiddleware().concat(apiSlice.middleware,loginSlice.middleware,getAccessSlice.middleware,apiAuthServerSlice.middleware)
 })

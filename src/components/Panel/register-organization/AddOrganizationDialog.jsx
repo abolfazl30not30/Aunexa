@@ -7,7 +7,7 @@ import {TailSpin} from "react-loader-spinner";
 import * as yup from "yup";
 import {useFormik} from "formik";
 import CircularProgress from '@mui/material/CircularProgress';
-import { useSaveMutation } from "@/redux/features/organization/OrganizationSlice";
+import { useSaveOrganizationMutation } from "@/redux/features/organization/OrganizationSlice";
 
 export default function AddOrganizationDialog(props) {
   
@@ -19,7 +19,7 @@ export default function AddOrganizationDialog(props) {
         setOrganization(null)
     }
 
-    const [submitData, { isLoading:isSubmitLoading ,error}] = useSaveMutation()
+    const [submitData, { isLoading:isSubmitLoading ,error}] = useSaveOrganizationMutation()
     const schema = yup.object().shape({
         name: yup.string().required("لطفا نام سازمان را وارد کنید"),
         

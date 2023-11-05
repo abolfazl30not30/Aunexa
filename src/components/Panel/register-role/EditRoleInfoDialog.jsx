@@ -6,7 +6,7 @@ import Dialog from "@mui/material/Dialog";
 import {TailSpin} from "react-loader-spinner";
 import * as yup from "yup";
 import {useFormik} from "formik";
-import { useUpdateMutation } from "@/redux/features/role/RoleSlice";
+import { useUpdateRoleMutation } from "@/redux/features/role/RoleSlice";
 
 
 export default function EditRoleInfoDialog(props) {
@@ -16,7 +16,7 @@ export default function EditRoleInfoDialog(props) {
  
 
 
-    const [submitData, { isLoading:isSubmitLoading ,error}] = useUpdateMutation()
+    const [submitData, { isLoading:isSubmitLoading ,error}] = useUpdateRoleMutation()
 
     
 

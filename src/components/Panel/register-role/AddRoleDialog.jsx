@@ -7,7 +7,7 @@ import { TailSpin } from "react-loader-spinner";
 import * as yup from "yup";
 import { useFormik } from "formik";
 import CircularProgress from '@mui/material/CircularProgress';
-import { useSaveMutation } from "@/redux/features/role/RoleSlice";
+import { useSaveRoleMutation } from "@/redux/features/role/RoleSlice";
 import ExpandLess from '@mui/icons-material/ExpandLess';
 import ExpandMore from '@mui/icons-material/ExpandMore';
 import ListItemText from '@mui/material/ListItemText';
@@ -43,7 +43,7 @@ export default function AddRoleDialog(props) {
         setRole(null)
     }
 
-    const [submitData, { isLoading: isSubmitLoading, error }] = useSaveMutation()
+    const [submitData, { isLoading: isSubmitLoading, error }] = useSaveRoleMutation()
     const schema = yup.object().shape({
         role: yup.string().required("لطفا نام نقش را وارد کنید"),
 
@@ -52,8 +52,6 @@ export default function AddRoleDialog(props) {
     const formik = useFormik({
         initialValues: {
             role: "",
-            
-
         },
 
 

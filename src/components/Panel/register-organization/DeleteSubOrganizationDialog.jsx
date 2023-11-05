@@ -6,11 +6,11 @@ import {
 } from "@mui/material";
 import Dialog from "@mui/material/Dialog";
 import {TailSpin} from "react-loader-spinner";
-import { useDeleteMutation } from "@/redux/features/organization/sub-organization/SubOrganizationSlice";
+import { useDeleteSubOrganizationMutation } from "@/redux/features/organization/sub-organization/SubOrganizationSlice";
 
 
 export default function DeleteSubOrganizationDialog(props) {
-    const [handleDelete ,{isLoading}] = useDeleteMutation()
+    const [handleDelete ,{isLoading}] = useDeleteSubOrganizationMutation()
     const deleteData = async () =>{
         const res = await handleDelete(props.deleteTargetSubOrganizationId)
         props.handleCloseDeleteSubOrganization()

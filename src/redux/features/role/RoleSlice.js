@@ -1,14 +1,14 @@
-import { apiSlice } from "@/redux/api/apiSlice";
+import {apiAuthServerSlice} from "@/redux/api/apiAuthServerSlice";
 
-export const RoleSlice = apiSlice.injectEndpoints({
+export const RoleSlice = apiAuthServerSlice.injectEndpoints({
   endpoints: (builder) => ({
     getAllRoles: builder.query({
-      query: ({ page, searchRole }) => ({
-        url: `roles/find-all/?page=${page - 1}&size=20`,
+      query: ({ page,token }) => ({
+        url: `roles/find-all/page?page=${page - 1}&size=20&Token=${token}`,
       }),
       providesTags: ["role"],
     }),
-    save: builder.mutation({
+    saveRole: builder.mutation({
       query: (body) => ({
         url: "roles/create",
         method: "POST",
@@ -16,7 +16,7 @@ export const RoleSlice = apiSlice.injectEndpoints({
       }),
       invalidatesTags: ["role"],
     }),
-    update: builder.mutation({
+    updateRole: builder.mutation({
       query: (body) => ({
         url: `roles/`,
         method: "PUT",
@@ -24,7 +24,7 @@ export const RoleSlice = apiSlice.injectEndpoints({
       }),
       invalidatesTags: ["role"],
     }),
-    delete: builder.mutation({
+    deleteRole: builder.mutation({
       query: (id) => ({
         url: `roles/${id}`,
         method: "DELETE",
@@ -37,7 +37,7 @@ export const RoleSlice = apiSlice.injectEndpoints({
 
 export const {
   useGetAllRolesQuery,
-  useSaveMutation,
-  useUpdateMutation,
-  useDeleteMutation,
+  useSaveRoleMutation,
+  useUpdateRoleMutation,
+  useDeleteRoleMutation,
 } = RoleSlice;
