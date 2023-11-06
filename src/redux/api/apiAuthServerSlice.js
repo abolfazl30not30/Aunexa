@@ -4,7 +4,7 @@ import { logOut, setAccessToken } from "./authSlice";
 import axios from "axios";
 
 const baseQuery = fetchBaseQuery({
-  baseUrl: "http://auth.vipsoftware1.com/",
+  baseUrl: "http://gateway.vipsoftware1.com/api/v1/",
 });
 
 const login = async () => {
@@ -17,16 +17,12 @@ const login = async () => {
     grant_type: "refresh_token",
   };
 
-  return await axios.post(
-    "http://auth.vipsoftware1.com/oauth2/token",
-    formData,
-    {
-      headers: {
-        "Content-Type": "application/x-www-form-urlencoded",
-        Authorization: "Basic " + base64encodedData,
-      },
-    }
-  );
+  return await axios.post("http://auth.vipsoftware1.com", formData, {
+    headers: {
+      "Content-Type": "application/x-www-form-urlencoded",
+      Authorization: "Basic " + base64encodedData,
+    },
+  });
 };
 
 const baseQueryWithReauth = async (args, api, extraOptions) => {

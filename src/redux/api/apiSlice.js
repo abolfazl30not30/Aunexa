@@ -25,16 +25,12 @@ const login = async () => {
     grant_type: "refresh_token",
   };
 
-  return await axios.post(
-    "http://auth.vipsoftware1.com/oauth2/token",
-    formData,
-    {
-      headers: {
-        "Content-Type": "application/x-www-form-urlencoded",
-        Authorization: "Basic " + base64encodedData,
-      },
-    }
-  );
+  return await axios.post("http://auth.vipsoftware1.com", formData, {
+    headers: {
+      "Content-Type": "application/x-www-form-urlencoded",
+      Authorization: "Basic " + base64encodedData,
+    },
+  });
 };
 
 const baseQueryWithReauth = async (args, api, extraOptions) => {
