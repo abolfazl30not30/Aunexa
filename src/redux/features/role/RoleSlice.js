@@ -8,6 +8,12 @@ export const RoleSlice = apiAuthServerSlice.injectEndpoints({
       }),
       providesTags: ["role"],
     }),
+    getPageAccess: builder.query({
+      query: (token) => ({
+        url: `roles/pages?Token=${token}`,
+      }),
+      providesTags: ["role"],
+    }),
     saveRole: builder.mutation({
       query: (body) => ({
         url: "roles/create",
@@ -37,6 +43,7 @@ export const RoleSlice = apiAuthServerSlice.injectEndpoints({
 
 export const {
   useGetAllRolesQuery,
+  useGetPageAccessQuery,
   useSaveRoleMutation,
   useUpdateRoleMutation,
   useDeleteRoleMutation,

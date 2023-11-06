@@ -1,16 +1,14 @@
 'use client'
 import TextField from "@mui/material/TextField";
-import React, { useEffect, useState } from "react";
-import { Autocomplete, DialogContent, DialogContentText } from "@mui/material";
+import React, {useState} from "react";
+import {DialogContent, DialogContentText} from "@mui/material";
 import Dialog from "@mui/material/Dialog";
-import { TailSpin } from "react-loader-spinner";
+import {TailSpin} from "react-loader-spinner";
 import * as yup from "yup";
-import { useFormik } from "formik";
-import CircularProgress from '@mui/material/CircularProgress';
-import { useSaveRoleMutation } from "@/redux/features/role/RoleSlice";
+import {useFormik} from "formik";
+import {useGetPageAccessQuery, useSaveRoleMutation} from "@/redux/features/role/RoleSlice";
 import ExpandLess from '@mui/icons-material/ExpandLess';
 import ExpandMore from '@mui/icons-material/ExpandMore';
-import ListItemText from '@mui/material/ListItemText';
 import Collapse from '@mui/material/Collapse';
 import ListSubheader from '@mui/material/ListSubheader';
 import List from '@mui/material/List';
@@ -18,22 +16,22 @@ import ListItemButton from '@mui/material/ListItemButton';
 import Box from '@mui/material/Box';
 import Checkbox from '@mui/material/Checkbox';
 import FormControlLabel from '@mui/material/FormControlLabel';
+import {useSelector} from "react-redux";
 
 export default function AddRoleDialog(props) {
     const [checked, setChecked] = React.useState([true, false]);
-    
 
-  const handleChangeAllCheckBox = (event) => {
-    setChecked([event.target.checked, event.target.checked]);
-  };
+    const handleChangeAllCheckBox = (event) => {
+        setChecked([event.target.checked, event.target.checked]);
+    };
 
-  const handleChangeCheckBoxFirst = (event) => {
-    setChecked([event.target.checked, checked[1]]);
-  };
+    const handleChangeCheckBoxFirst = (event) => {
+        setChecked([event.target.checked, checked[1]]);
+    };
 
-  const handleChangeCheckBoxSecond = (event) => {
-    setChecked([checked[0], event.target.checked]);
-  };
+    const handleChangeCheckBoxSecond = (event) => {
+        setChecked([checked[0], event.target.checked]);
+    };
 
     const [role, setRole] = useState(null)
 
@@ -43,7 +41,7 @@ export default function AddRoleDialog(props) {
         setRole(null)
     }
 
-    const [submitData, { isLoading: isSubmitLoading, error }] = useSaveRoleMutation()
+    const [submitData, {isLoading: isSubmitLoading, error}] = useSaveRoleMutation()
     const schema = yup.object().shape({
         role: yup.string().required("لطفا نام نقش را وارد کنید"),
 
@@ -54,12 +52,10 @@ export default function AddRoleDialog(props) {
             role: "",
         },
 
-
-
         validationSchema: schema,
 
         onSubmit: async (role, helpers) => {
-            let updateRole = { ...role }
+            let updateRole = {...role}
 
             const userData = await submitData(updateRole)
             handleReset()
@@ -71,15 +67,26 @@ export default function AddRoleDialog(props) {
     const [openAccess, setOpenAccess] = React.useState(true);
     const handleClick = () => {
         setOpenAccess(!openAccess);
+    };
 
-      };
+    const token = useSelector((state) => state.auth.accessToken)
+    const {
+        data: pages = [],
+        isLoading: isPagesLoading,
+        isError: isPagesError,
+        error: pagesError,
+    } = useGetPageAccessQuery(token);
+
     return (
         <>
             <Dialog
                 fullWidth={true}
                 open={props.openAddRole}
                 keepMounted
-                onClose={() => { props.handleCloseAddRole(); handleReset() }}
+                onClose={() => {
+                    props.handleCloseAddRole();
+                    handleReset()
+                }}
                 aria-describedby="alert-dialog-slide-description"
                 PaperProps={{
                     style: {
@@ -87,13 +94,16 @@ export default function AddRoleDialog(props) {
                     },
                 }}>
                 <DialogContent>
-                    <DialogContentText style={{ fontFamily: "IRANYekan" }}>
+                    <DialogContentText style={{fontFamily: "IRANYekan"}}>
                         <div className="flex justify-end">
-                            <button onClick={() => { props.handleCloseAddRole(); handleReset() }}>
+                            <button onClick={() => {
+                                props.handleCloseAddRole();
+                                handleReset()
+                            }}>
                                 <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 14 14"
-                                    fill="none">
+                                     fill="none">
                                     <path d="M13 1L1 13M1 1L13 13" stroke="black" stroke-width="2"
-                                        stroke-linecap="round" stroke-linejoin="round" />
+                                          stroke-linecap="round" stroke-linejoin="round"/>
                                 </svg>
                             </button>
                         </div>
@@ -112,60 +122,88 @@ export default function AddRoleDialog(props) {
                                         onChange={formik.handleChange}
                                         error={formik.touched.role && Boolean(formik.errors.role)}
                                         helperText={formik.touched.role && formik.errors.role}
-                                        inputProps={{ style: { fontFamily: "IRANYekan", fontSize: "0.8rem" } }}
-                                        InputLabelProps={{ style: { fontFamily: "IRANYekan" } }} />
+                                        inputProps={{style: {fontFamily: "IRANYekan", fontSize: "0.8rem"}}}
+                                        InputLabelProps={{style: {fontFamily: "IRANYekan"}}}/>
                                 </div>
-                                
+
                                 <div className="w-full  flex flex-col gap-2">
-                                
-                                <List
-                                  sx={{ bgcolor: 'background.paper',border:"1px solid #D9D9D9",color:"#29262A" }}
-                                  component="nav"
-                                  aria-labelledby="nested-list-subheader"
-                                  subheader={
-                                    <ListSubheader component="div" id="nested-list-subheader" >
-                                       دسترسی ها
-                                    </ListSubheader>
-                                  }
-                                >
-                                  <ListItemButton onClick={handleClick}>
-                                  <FormControlLabel
-                                         label="صفحه"
-                                        control={
-                                          <Checkbox
-                                            checked={checked[0] && checked[1]}
-                                            indeterminate={checked[0] !== checked[1]}
-                                            onChange={handleChangeAllCheckBox}
-                                          />
+
+                                    <List
+                                        sx={{
+                                            bgcolor: 'background.paper',
+                                            border: "1px solid #D9D9D9",
+                                            color: "#29262A"
+                                        }}
+                                        component="nav"
+                                        aria-labelledby="nested-list-subheader"
+                                        subheader={
+                                            <ListSubheader component="div" id="nested-list-subheader">
+                                                دسترسی ها
+                                            </ListSubheader>}>
+                                        {
+                                            pages?.map((page)=>(
+                                                <div>
+                                                    <ListItemButton onClick={handleClick}>
+                                                        <FormControlLabel
+                                                            label={page.title}
+                                                            control={
+                                                                <Checkbox
+                                                                    checked={checked[0] && checked[1]}
+                                                                    indeterminate={checked[0] !== checked[1]}
+                                                                    onChange={handleChangeAllCheckBox}/>}/>
+                                                        {openAccess ? <ExpandLess/> : <ExpandMore/>}
+                                                    </ListItemButton>
+                                                    <Collapse in={openAccess} timeout="auto" unmountOnExit>
+                                                        <List component="div" disablePadding>
+                                                            {
+                                                                page.authorities[`${page.title}::Create`]  && (
+                                                                    <ListItemButton sx={{pr: 4}}>
+                                                                        <Box sx={{display: 'flex', flexDirection: 'column', ml: 3}}>
+                                                                            <FormControlLabel
+                                                                                label={page.authorities[`${page.title}::Create`]}
+                                                                                control={<Checkbox checked={checked[0]}
+                                                                                                   onChange={handleChangeCheckBoxFirst}/>}/>
+                                                                        </Box>
+                                                                    </ListItemButton>
+                                                                )
+
+                                                            }
+                                                            {
+                                                                page.authorities[`${page.title}::Update`]  && (
+                                                                    <ListItemButton sx={{pr: 4}}>
+                                                                        <Box sx={{display: 'flex', flexDirection: 'column', ml: 3}}>
+                                                                            <FormControlLabel
+                                                                                label={page.authorities[`${page.title}::Update`]}
+                                                                                control={<Checkbox checked={checked[0]}
+                                                                                                   onChange={handleChangeCheckBoxFirst}/>}/>
+                                                                        </Box>
+                                                                    </ListItemButton>
+                                                                )
+
+                                                            }
+                                                            {
+                                                                page.authorities[`${page.title}::Delete`]  && (
+                                                                    <ListItemButton sx={{pr: 4}}>
+                                                                        <Box sx={{display: 'flex', flexDirection: 'column', ml: 3}}>
+                                                                            <FormControlLabel
+                                                                                label={page.authorities[`${page.title}::Delete`]}
+                                                                                control={<Checkbox checked={checked[0]}
+                                                                                                   onChange={handleChangeCheckBoxFirst}/>}/>
+                                                                        </Box>
+                                                                    </ListItemButton>
+                                                                )
+                                                            }
+                                                        </List>
+                                                    </Collapse>
+                                                </div>
+                                            ))
                                         }
-                                      />
-                                    {openAccess ? <ExpandLess /> : <ExpandMore />}
-                                  </ListItemButton>
-                                  <Collapse in={openAccess} timeout="auto" unmountOnExit>
-                                    <List component="div" disablePadding>
-                                      <ListItemButton sx={{ pr: 4 }}>
-                                      <Box sx={{ display: 'flex', flexDirection: 'column', ml: 3 }}>
-                                            <FormControlLabel
-                                            label="API1"
-                                            control={<Checkbox checked={checked[0]} onChange={handleChangeCheckBoxFirst} />}
-                                            />
-                                            
-                                            <FormControlLabel
-                                            label="API2"
-                                            control={<Checkbox checked={checked[1]} onChange={handleChangeCheckBoxSecond} />}
-                                            />
-     
-                                       </Box>
-                                      </ListItemButton>
                                     </List>
-                                  </Collapse>
-                                  
-                                </List>
-                            </div>
+                                </div>
                                 <div>
                                     {
                                         isSubmitLoading ? (<button disabled type="submit"
-                                            className="hidden flex gap-3 items-center justify-center w-full rounded-[0.5rem] py-3  border border-solid border-1 border-neutral-400 font-bold text-textGray bg-neutral-200">
+                                                                   className="hidden flex gap-3 items-center justify-center w-full rounded-[0.5rem] py-3  border border-solid border-1 border-neutral-400 font-bold text-textGray bg-neutral-200">
                                             <TailSpin
                                                 height="20"
                                                 width="20"
@@ -174,11 +212,11 @@ export default function AddRoleDialog(props) {
                                                 radius="1"
                                                 wrapperStyle={{}}
                                                 wrapperClass=""
-                                                visible={true} />
+                                                visible={true}/>
                                             ثبت
                                         </button>) : (
                                             <button type="submit"
-                                                className="w-full rounded-[0.5rem] py-3 hover:border hover:opacity-80 font-bold  bg-mainRed text-white">ثبت
+                                                    className="w-full rounded-[0.5rem] py-3 hover:border hover:opacity-80 font-bold  bg-mainRed text-white">ثبت
                                             </button>
                                         )
                                     }

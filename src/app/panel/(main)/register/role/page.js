@@ -18,6 +18,7 @@ function registerRole() {
     const token = useSelector((state) => state.auth.accessToken)
 
     let permission = useSelector((state) => state.access?.pages?.registerRole);
+
     const [page, setPage] = useState(1);
     const [openAddRole, setOpenAddRole] = useState(false);
 
