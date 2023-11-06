@@ -244,7 +244,7 @@ export default function RootLayout({ children }) {
                   </div>
                   <div>
                     <Link
-                      href="/"
+                      href="/panel/user-account"
                       className="flex gap-2 py-3 px-4 hover:bg-neutral-100 border-t border-t-[#D9D9D9]"
                     >
                       <div>
