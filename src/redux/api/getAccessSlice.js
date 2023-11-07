@@ -7,7 +7,7 @@ let base64encodedData = Buffer.from(
 ).toString("base64");
 
 const baseQuery = fetchBaseQuery({
-  baseUrl: "https://auth.vipsoftware1.com",
+  baseUrl: "http://localhost:8080",
 });
 
 export const getAccessSlice = createApi({

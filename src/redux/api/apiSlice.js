@@ -2,10 +2,10 @@
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 import { logOut, setAccessToken } from "./authSlice";
 import axios from "axios";
-//https://gateway.vipsoftware1.com
+//http://localhost:9191
 
 const baseQuery = fetchBaseQuery({
-  baseUrl: "https://gateway.vipsoftware1.com/api/v1/",
+  baseUrl: "http://localhost:9191/api/v1/",
   prepareHeaders: (headers, { getState }) => {
     const token = getState().auth.accessToken;
     if (token) {
@@ -26,7 +26,7 @@ const login = async () => {
     grant_type: "refresh_token",
   };
 
-  return await axios.post("https://auth.vipsoftware1.com/oauth2/token", formData, {
+  return await axios.post("http://localhost:8080/oauth2/token", formData, {
     headers: {
       "Content-Type": "application/x-www-form-urlencoded",
       Authorization: "Basic " + base64encodedData,

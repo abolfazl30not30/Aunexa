@@ -1,12 +1,12 @@
 'use client'
 import TextField from "@mui/material/TextField";
-import React, {useState} from "react";
+import React, {useEffect, useState} from "react";
 import {DialogContent, DialogContentText} from "@mui/material";
 import Dialog from "@mui/material/Dialog";
 import {TailSpin} from "react-loader-spinner";
 import * as yup from "yup";
 import {useFormik} from "formik";
-import {useGetPageAccessQuery, useSaveRoleMutation} from "@/redux/features/role/RoleSlice";
+import { useLazyGetPageAccessQuery, useSaveRoleMutation} from "@/redux/features/role/RoleSlice";
 import ExpandLess from '@mui/icons-material/ExpandLess';
 import ExpandMore from '@mui/icons-material/ExpandMore';
 import Collapse from '@mui/material/Collapse';
@@ -17,34 +17,20 @@ import Box from '@mui/material/Box';
 import Checkbox from '@mui/material/Checkbox';
 import FormControlLabel from '@mui/material/FormControlLabel';
 import {useSelector} from "react-redux";
+import Link from "next/link";
 
 export default function AddRoleDialog(props) {
-    const [checked, setChecked] = React.useState([true, false]);
-
-    const handleChangeAllCheckBox = (event) => {
-        setChecked([event.target.checked, event.target.checked]);
-    };
-
-    const handleChangeCheckBoxFirst = (event) => {
-        setChecked([event.target.checked, checked[1]]);
-    };
-
-    const handleChangeCheckBoxSecond = (event) => {
-        setChecked([checked[0], event.target.checked]);
-    };
-
-    const [role, setRole] = useState(null)
-
-
+    const [authorities,setAuthorities] = useState([])
+    const [pages,setPages] = useState([])
+    const [listOfChecked,setListOfChecked] = useState({})
     const handleReset = () => {
         formik.resetForm()
-        setRole(null)
+        setListOfChecked({})
     }
 
     const [submitData, {isLoading: isSubmitLoading, error}] = useSaveRoleMutation()
     const schema = yup.object().shape({
         role: yup.string().required("لطفا نام نقش را وارد کنید"),
-
     });
 
     const formik = useFormik({
@@ -56,26 +42,50 @@ export default function AddRoleDialog(props) {
 
         onSubmit: async (role, helpers) => {
             let updateRole = {...role}
-
-            const userData = await submitData(updateRole)
+            // const userData = await submitData(updateRole)
+            console.log(listOfChecked)
             handleReset()
             props.handleCloseAddRole()
-            console.log(defaultChecked)
         },
     });
 
     const [openAccess, setOpenAccess] = React.useState(true);
+
     const handleClick = () => {
         setOpenAccess(!openAccess);
     };
 
     const token = useSelector((state) => state.auth.accessToken)
-    const {
-        data: pages = [],
+
+    const [getPages,{
+        data: pagesList = [],
         isLoading: isPagesLoading,
         isError: isPagesError,
         error: pagesError,
-    } = useGetPageAccessQuery(token);
+    }] = useLazyGetPageAccessQuery();
+
+    const setBooleanList =  () =>{
+        let booleanListAuthorities = {}
+        for(const page of pagesList){
+            for(const auth in page['authorities']){
+                booleanListAuthorities[`${auth}`] = false
+            }
+        }
+        setListOfChecked(booleanListAuthorities)
+        console.log(listOfChecked)
+    }
+
+    const handleChangeChecked = (e) =>{
+        console.log(e.target.id,e.target.checked)
+        let updateCheckedList = {...listOfChecked}
+        updateCheckedList[e.target.id] = e.target.checked
+        setListOfChecked(updateCheckedList)
+    }
+
+    useEffect(()=>{
+        getPages(token)
+        setBooleanList()
+    },[props.openAddRole])
 
     return (
         <>
@@ -132,8 +142,7 @@ export default function AddRoleDialog(props) {
                                         sx={{
                                             bgcolor: 'background.paper',
                                             border: "1px solid #D9D9D9",
-                                            color: "#29262A"
-                                        }}
+                                            color: "#29262A"}}
                                         component="nav"
                                         aria-labelledby="nested-list-subheader"
                                         subheader={
@@ -141,60 +150,76 @@ export default function AddRoleDialog(props) {
                                                 دسترسی ها
                                             </ListSubheader>}>
                                         {
-                                            pages?.map((page)=>(
+                                            pagesList?.map((page)=>(
                                                 <div>
-                                                    <ListItemButton onClick={handleClick}>
-                                                        <FormControlLabel
-                                                            label={page.title}
-                                                            control={
-                                                                <Checkbox
-                                                                    checked={checked[0] && checked[1]}
-                                                                    indeterminate={checked[0] !== checked[1]}
-                                                                    onChange={handleChangeAllCheckBox}/>}/>
-                                                        {openAccess ? <ExpandLess/> : <ExpandMore/>}
-                                                    </ListItemButton>
-                                                    <Collapse in={openAccess} timeout="auto" unmountOnExit>
-                                                        <List component="div" disablePadding>
-                                                            {
-                                                                page.authorities[`${page.title}::Create`]  && (
-                                                                    <ListItemButton sx={{pr: 4}}>
-                                                                        <Box sx={{display: 'flex', flexDirection: 'column', ml: 3}}>
-                                                                            <FormControlLabel
-                                                                                label={page.authorities[`${page.title}::Create`]}
-                                                                                control={<Checkbox checked={checked[0]}
-                                                                                                   onChange={handleChangeCheckBoxFirst}/>}/>
-                                                                        </Box>
-                                                                    </ListItemButton>
-                                                                )
-
-                                                            }
-                                                            {
-                                                                page.authorities[`${page.title}::Update`]  && (
-                                                                    <ListItemButton sx={{pr: 4}}>
-                                                                        <Box sx={{display: 'flex', flexDirection: 'column', ml: 3}}>
-                                                                            <FormControlLabel
-                                                                                label={page.authorities[`${page.title}::Update`]}
-                                                                                control={<Checkbox checked={checked[0]}
-                                                                                                   onChange={handleChangeCheckBoxFirst}/>}/>
-                                                                        </Box>
-                                                                    </ListItemButton>
-                                                                )
-
-                                                            }
-                                                            {
-                                                                page.authorities[`${page.title}::Delete`]  && (
-                                                                    <ListItemButton sx={{pr: 4}}>
-                                                                        <Box sx={{display: 'flex', flexDirection: 'column', ml: 3}}>
-                                                                            <FormControlLabel
-                                                                                label={page.authorities[`${page.title}::Delete`]}
-                                                                                control={<Checkbox checked={checked[0]}
-                                                                                                   onChange={handleChangeCheckBoxFirst}/>}/>
-                                                                        </Box>
-                                                                    </ListItemButton>
-                                                                )
-                                                            }
-                                                        </List>
-                                                    </Collapse>
+                                                    <details className="group py-3 border-b border-b-1 border-b-solid  border-b-borderGray">
+                                                        <summary className="flex items-center justify-between gap-2 p-2 font-medium marker:content-none hover:cursor-pointer">
+                                                            <span className="text-gray9F group-open:text-textGray text-[0.9rem]">{page.title}</span>
+                                                            <svg
+                                                                className="transition group-open:rotate-90"
+                                                                xmlns="http://www.w3.org/2000/svg"
+                                                                width="16"
+                                                                height="16"
+                                                                viewBox="0 0 16 16"
+                                                                fill="none">
+                                                                <path
+                                                                    d="M10 4L6 8L10 12"
+                                                                    stroke="#9F9F9F"
+                                                                    stroke-linecap="round"
+                                                                    stroke-linejoin="round"
+                                                                />
+                                                            </svg>
+                                                        </summary>
+                                                        <ul className="flex flex-col gap-1 pr-2">
+                                                            <li>
+                                                                <Box sx={{display: 'flex', flexDirection: 'column', ml: 3}}>
+                                                                    <FormControlLabel
+                                                                        label={page.authorities[`${page.title}::ReadOne`]}
+                                                                        control={<Checkbox checked={listOfChecked[`${page.title}::ReadOne`]}
+                                                                                           id={`${page.title}::ReadOne`}
+                                                                                           onChange={handleChangeChecked}/>}/>
+                                                                </Box>
+                                                            </li>
+                                                            <li>
+                                                                <Box sx={{display: 'flex', flexDirection: 'column',fontFamily: "__fonts_2f4189,__fonts_Fallback_2f4189", ml: 3}}>
+                                                                    <FormControlLabel
+                                                                        sx={{fontFamily: "__fonts_2f4189,__fonts_Fallback_2f4189", fontSize: "0.8rem"}}
+                                                                        label={page.authorities[`${page.title}::ReadAll`]}
+                                                                        control={<Checkbox checked={listOfChecked[`${page.title}::ReadAll`]}
+                                                                                           id={`${page.title}::ReadAll`}
+                                                                                           onChange={handleChangeChecked}/>}/>
+                                                                </Box>
+                                                            </li>
+                                                            <li>
+                                                                <Box sx={{display: 'flex', flexDirection: 'column', ml: 3}}>
+                                                                    <FormControlLabel
+                                                                        sx={{fontFamily: "__fonts_2f4189,__fonts_Fallback_2f4189", fontSize: "0.8rem"}}
+                                                                        label={page.authorities[`${page.title}::Create`]}
+                                                                        control={<Checkbox checked={listOfChecked[`${page.title}::Create`]}
+                                                                                           id={`${page.title}::Create`}
+                                                                                           onChange={handleChangeChecked}/>}/>
+                                                                </Box>
+                                                            </li>
+                                                            <li>
+                                                                <Box sx={{display: 'flex', flexDirection: 'column', ml: 3}}>
+                                                                    <FormControlLabel
+                                                                        label={page.authorities[`${page.title}::Update`]}
+                                                                        control={<Checkbox checked={listOfChecked[`${page.title}::Update`]}
+                                                                                           id={`${page.title}::Update`}
+                                                                                           onChange={handleChangeChecked}/>}/>
+                                                                </Box>
+                                                            </li>
+                                                            <li>
+                                                                <Box sx={{display: 'flex', flexDirection: 'column', ml: 3}}>
+                                                                    <FormControlLabel
+                                                                        label={page.authorities[`${page.title}::Delete`]}
+                                                                        control={<Checkbox checked={listOfChecked[`${page.title}::Delete`]}
+                                                                                           id={`${page.title}::Delete`}
+                                                                                           onChange={handleChangeChecked}/>}/>
+                                                                </Box>
+                                                            </li>
+                                                        </ul>
+                                                    </details>
                                                 </div>
                                             ))
                                         }

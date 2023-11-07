@@ -43,7 +43,7 @@ export const RoleSlice = apiAuthServerSlice.injectEndpoints({
 
 export const {
   useGetAllRolesQuery,
-  useGetPageAccessQuery,
+  useLazyGetPageAccessQuery,
   useSaveRoleMutation,
   useUpdateRoleMutation,
   useDeleteRoleMutation,

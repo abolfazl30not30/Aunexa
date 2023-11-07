@@ -55,3 +55,7 @@ margin:0px !important;}
 .boxUserAccount{
     margin-top: 36px !important;
 }
+.MuiFormControlLabel-label {
+    font-family: "__fonts_2f4189,__fonts_Fallback_2f4189","IRANYekan" !important;
+    font-size: 0.8rem !important;
+}
