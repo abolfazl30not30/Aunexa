@@ -2,9 +2,9 @@
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 import { logOut, setAccessToken } from "./authSlice";
 import axios from "axios";
-//http://localhost:8080
+//https://auth.vipsoftware1.com
 const baseQuery = fetchBaseQuery({
-  baseUrl: "http://localhost:8080/",
+  baseUrl: "https://auth.vipsoftware1.com/",
 });
 
 const login = async () => {
@@ -17,7 +17,7 @@ const login = async () => {
     grant_type: "refresh_token",
   };
 
-  return await axios.post("http://localhost:8080/oauth2/token", formData, {
+  return await axios.post("https://auth.vipsoftware1.com/oauth2/token", formData, {
     headers: {
       "Content-Type": "application/x-www-form-urlencoded",
       Authorization: "Basic " + base64encodedData,
