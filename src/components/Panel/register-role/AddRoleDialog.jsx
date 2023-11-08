@@ -27,7 +27,6 @@ export default function AddRoleDialog(props) {
         formik.resetForm()
         setListOfChecked({})
     }
-
     const [submitData, {isLoading: isSubmitLoading, error}] = useSaveRoleMutation()
     const schema = yup.object().shape({
         role: yup.string().required("لطفا نام نقش را وارد کنید"),
@@ -58,7 +57,7 @@ export default function AddRoleDialog(props) {
     const token = useSelector((state) => state.auth.accessToken)
 
     const [getPages,{
-        data: pagesList = [],
+        data : pagesList = [],
         isLoading: isPagesLoading,
         isError: isPagesError,
         error: pagesError,
@@ -68,11 +67,10 @@ export default function AddRoleDialog(props) {
         let booleanListAuthorities = {}
         for(const page of pagesList){
             for(const auth in page['authorities']){
-                booleanListAuthorities[`${auth}`] = false
+                booleanListAuthorities[`${auth}`] = true
             }
         }
         setListOfChecked(booleanListAuthorities)
-        console.log(listOfChecked)
     }
 
     const handleChangeChecked = (e) =>{
@@ -82,9 +80,11 @@ export default function AddRoleDialog(props) {
         setListOfChecked(updateCheckedList)
     }
 
+
     useEffect(()=>{
         getPages(token)
         setBooleanList()
+        console.log(listOfChecked)
     },[props.openAddRole])
 
     return (
