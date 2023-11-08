@@ -45,7 +45,8 @@ export default function page() {
   const [openChangePassword, setOpenChangePassword] = useState(false);
   const handleOpenChangePassword = () => {
     setOpenChangePassword(true);
-    resendOTP();
+    setSeconds(0);
+    setMinutes(0);
   };
   const handleCloseChangePassword = () => {
     setOpenChangePassword(false);

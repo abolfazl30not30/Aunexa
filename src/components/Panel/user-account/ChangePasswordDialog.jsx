@@ -9,19 +9,67 @@ import {useFormik} from "formik";
 
 
 export default function ChangePasswordDialog(props) {
-    
-    
-  
+
+
+  const [clickForSubmit,setClickForSubmit]=useState(false)
+  const [otp, setOtp] = useState({
+    part1: "",
+    part2: "",
+    part3: "",
+    part4: "",
+    part5: "",
+    part6: "",
+})
+useEffect(() => {
+    const otpString = otp.part6 + otp.part5 + otp.part4 + otp.part3 + otp.part2 + otp.part1
+    formik.setFieldValue("otp", otpString)
+}, [otp])
+
+const handleOtp = (e) => {
+    if (e.target.name === "part1") {
+        setOtp((co) => ({...co, part1: e.target.value}))
+    } else if (e.target.name === "part2") {
+        setOtp((co) => ({...co, part2: e.target.value}))
+    } else if (e.target.name === "part3") {
+        setOtp((co) => ({...co, part3: e.target.value}))
+    } else if (e.target.name === "part4") {
+        setOtp((co) => ({...co, part4: e.target.value}))
+    } else if (e.target.name === "part5") {
+      setOtp((co) => ({...co, part5: e.target.value}))
+    } else if (e.target.name === "part6") {
+    setOtp((co) => ({...co, part6: e.target.value}))
+   }
+}
+const validate = (values, props) => {
+    const errors = {};
+
+    if (clickForSubmit && !values.otp ) {
+        errors.otp = 'لطفا کد ارسالی را وارد کنید';
+    } 
+      if ( values.otp) {
+        if (otp.part1===""||otp.part2===""||otp.part3===""||otp.part4===""||otp.part5===""||otp.part6==="") {
+            errors.otp = "کد ارسالی دارای 6 رقم است";
+        }
+    }
+
+    return errors;
+};
 
     const schema = yup.object().shape({
-        otp: yup.string().matches(/^[0-9]+$/, "کد ارسال شده فقط شامل عدد میتواند باشد").required("لطفا کد ارسال شده را وارد کنید").min(6,"کد وارد شده باید 6 رقم باشد").max(6,"کد وارد شده باید 6 رقم باشد"),
-        password:yup.string().matches(/^[0-9]+$/, "رمز فقط شامل عدد میتواند باشد").required("لطفا رمز عبور جدید را وارد کنید").min(8,"رمز عبور شما باید حداقل 8 رقم باشد").max(16,"رمز عبور شما باید حداکثر 16 رقم باشد"),
-        repeatPassword:yup.string().matches(/^[0-9]+$/, "رمز فقط شامل عدد میتواند باشد").required("لطفا تکرار رمز عبور جدید را وارد کنید").oneOf([yup.ref('password'), null], "رمز وارد شده با تکرار آن یکسان نمی باشد."),
-        
+        password:yup.string().matches(/^[0-9]+$/, "رمز فقط شامل عدد میتواند باشد").required("این بخش الزامی است").min(8,"رمز عبور شما باید حداقل 8 رقم باشد").max(16,"رمز عبور شما باید حداکثر 16 رقم باشد"),
+        repeatPassword:yup.string().matches(/^[0-9]+$/, "رمز فقط شامل عدد میتواند باشد").required("این بخش الزامی است").oneOf([yup.ref('password'), null], "رمز وارد شده با تکرار آن یکسان نمی باشد."),
     });
 
     const handleReset = () => {
         formik.resetForm()
+        setOtp({
+          part1: "",
+          part2: "",
+          part3: "",
+          part4: "",
+          part5: "",
+          part6: "",
+      })
         
     }
     const formik = useFormik({
@@ -32,27 +80,18 @@ export default function ChangePasswordDialog(props) {
             
         },
 
+        validate: validate,
         validationSchema: schema,
 
         onSubmit: async (password, helpers) => {
             let updatePassword = {...password}
             // const userData = await submitData(updatePassword)
-            
+            setClickForSubmit(false)
            handleReset()
            props.handleCloseChangePassword()
             
         },
     });
-
-    
-
-  
-
-   
-
-    
-
-
     return (
         <>
             <Dialog
@@ -60,6 +99,7 @@ export default function ChangePasswordDialog(props) {
                 open={props.openChangePassword}
                 keepMounted
                 onClose={() => {
+                    setClickForSubmit(false)
                     props.handleCloseChangePassword();
                     handleReset()
                 }}
@@ -75,7 +115,7 @@ export default function ChangePasswordDialog(props) {
                             <button onClick={() => {
                                 
                                 props.handleCloseChangePassword();
-                                
+                                setClickForSubmit(false)
                                 handleReset()
                             }}>
                                 <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 14 14"
@@ -92,43 +132,52 @@ export default function ChangePasswordDialog(props) {
                             
                             <form className="flex justify-center " onSubmit={formik.handleSubmit} method="POST">
                               <div className="flex flex-col justify-center w-[90%] gap-5">
-                                <div className="text-center text-[#9F9F9F]">
-                                  <p>یک کد 6 رقمی به zi**********@gmail.com ارسال شد. لطفا کد را وارد کنید.</p>
-                                </div>
-                                <div>
-                                    <TextField
-                                        fullWidth
-                                        placeholder="کد ارسال شده "
-                                        type="text"
-                                        name="otp"
-                                        value={formik.values.otp}
-                                        onChange={formik.handleChange}
-                                        error={formik.touched.otp && Boolean(formik.errors.otp)}
-                                        helperText={formik.touched.otp && formik.errors.otp}
-                                       inputProps={{style: {fontFamily: "__fonts_2f4189,__fonts_Fallback_2f4189", fontSize: "0.8rem"}}}
-                                            InputLabelProps={{style: {fontFamily: "__fonts_2f4189,__fonts_Fallback_2f4189"}}}/>
-                                </div>
-                                <div  className="text-center text-[#4E4E4E]">
-                                  {props.seconds > 0 || props.minutes > 0 ? (
+                                {props.seconds !== 0 || props.minutes!== 0 ? <div className="text-center text-[#9F9F9F]">
+                                  <p>یک کد 6 رقمی به *********091 ارسال شد. لطفا کد را وارد کنید.</p>
+                                </div>:null}
+                                
+                                    <div className={"flex  justify-center items-center"}>
+
+                                        <input  name="part6"  onChange={handleOtp} value={otp.part6} maxLength={1} className={"w-[2rem] h-[2rem] text-[1.3rem] mx-1 rounded text-center   border border-[#D9D9D9]"}/>
+
+                                        <input name="part5"  onChange={handleOtp} value={otp.part5} maxLength={1} className={"w-[2rem] h-[2rem] text-[1.3rem] mx-1 rounded text-center  border border-[#D9D9D9]t"}/>
+
+                                        <input  name="part4"  onChange={handleOtp} value={otp.part4} maxLength={1} className={"w-[2rem] h-[2rem] text-[1.3rem] mx-1 rounded text-center  border border-[#D9D9D9]"}/>
+
+                                        <input name="part3"  onChange={handleOtp} value={otp.part3} maxLength={1} className={"w-[2rem] h-[2rem] text-[1.3rem] mx-1 rounded text-center  border border-[#D9D9D9]"}/>
+
+                                        <input name="part2"  onChange={handleOtp} value={otp.part2} maxLength={1} className={"w-[2rem] h-[2rem] text-[1.3rem] mx-1 rounded text-center  border border-[#D9D9D9]"}/>
+
+                                        <input name="part1"  onChange={handleOtp} value={otp.part1} maxLength={1} className={"w-[2rem] h-[2rem] text-[1.3rem] mx-1 rounded text-center  border border-[#D9D9D9]"}/>
+                                     
+                                    </div>
+                                    <div className="flex justify-center">
+                                        {
+                                            Boolean(formik.errors.otp) && (
+                                                <span className="mx-3 text-[0.6rem]  text-red-600 ">
+                                                    {formik.errors.otp}
+                                                </span>
+                                            )
+                                        }
+                                    </div>
+                                
+                                <div  className="flex justify-center text-[#4E4E4E] ">
+                                  {props.seconds === 0 && props.minutes=== 0 ? (
+                                    <button 
+                                    className="flex gap-2 items-center border text-[#DB3746] border-[#DB3746] px-4 py-2 rounded hover:bg-[#DB3746] hover:text-white"
+                                   
+                                    onClick={props.resendOTP}
+                                  >
+                                    <span>
+                                       دریافت کد از طریق پیامک
+                                    </span>
+                                  </button>
+                                    
+                                  ) : (
                                     <p>
                                       زمان با قی مانده: {props.minutes < 10 ? `0${props.minutes}` : props.minutes}:
                                       {props.seconds < 10 ? `0${props.seconds}` : props.seconds}
                                     </p>
-                                  ) : (
-                                    <button 
-                                    className={props.seconds > 0 || props.minutes > 0?"hidden":"flex items-center gap-2"}
-                                    style={{
-                                      color: props.seconds > 0 || props.minutes > 0 ? "#DFE3E8" : "#FF5630"
-                                    }}
-                                    onClick={props.resendOTP}
-                                  >
-                                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none">
-                                        <path d="M2 10C2 10 4.00498 7.26822 5.63384 5.63824C7.26269 4.00827 9.5136 3 12 3C16.9706 3 21 7.02944 21 12C21 16.9706 16.9706 21 12 21C7.89691 21 4.43511 18.2543 3.35177 14.5M2 10V4M2 10H8" stroke="#DB3746" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
-                                    </svg>
-                                    <span>
-                                       دریافت مجدد کد از طریق پیام
-                                    </span>
-                                  </button>
                                   )}
                                 </div>
                                 <div>
@@ -160,7 +209,7 @@ export default function ChangePasswordDialog(props) {
 
                                
                                 <div>
-                                            <button type="submit" 
+                                            <button type="submit" onClick={()=>setClickForSubmit(true)}  
                                                     className="w-full rounded-[0.5rem] py-3 hover:border hover:opacity-80 font-bold  bg-mainRed text-white">ثبت
                                             </button>
                                 </div>
