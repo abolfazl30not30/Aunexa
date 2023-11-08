@@ -9,7 +9,7 @@ import FormControl from "@mui/material/FormControl";
 import * as yup from "yup";
 import { useFormik } from "formik";
 import { TailSpin } from "react-loader-spinner";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import ChangePasswordDialog from "@/components/Panel/user-account/ChangePasswordDialog";
 
 export default function page() {
@@ -45,11 +45,39 @@ export default function page() {
   const [openChangePassword, setOpenChangePassword] = useState(false);
   const handleOpenChangePassword = () => {
     setOpenChangePassword(true);
+    resendOTP();
   };
   const handleCloseChangePassword = () => {
     setOpenChangePassword(false);
   };
 
+  const [minutes, setMinutes] = useState(0);
+  const [seconds, setSeconds] = useState(0);
+
+  useEffect(() => {
+    const interval = setInterval(() => {
+      if (seconds > 0) {
+        setSeconds(seconds - 1);
+      }
+
+      if (seconds === 0) {
+        if (minutes === 0) {
+          clearInterval(interval);
+        } else {
+          setSeconds(59);
+          setMinutes(minutes - 1);
+        }
+      }
+    }, 1000);
+
+    return () => {
+      clearInterval(interval);
+    };
+  });
+  const resendOTP = () => {
+    setMinutes(2);
+    setSeconds(59);
+  };
   return (
     <div>
       <header className="flex justify-start items-center text-[0.9rem] bg-white py-6 md:px-8 px-2 ">
@@ -478,6 +506,9 @@ export default function page() {
       <ChangePasswordDialog
         handleCloseChangePassword={handleCloseChangePassword}
         openChangePassword={openChangePassword}
+        resendOTP={resendOTP}
+        seconds={seconds}
+        minutes={minutes}
       />
     </div>
   );

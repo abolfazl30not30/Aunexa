@@ -4,13 +4,13 @@ export const ticketSlice = apiSlice.injectEndpoints({
   endpoints: (builder) => ({
     getAllTickets: builder.query({
       query: ({ page }) => ({
-        url: `tickets/find-all/?page=${page - 1}&size=20`,
+        url: `party/ticket/find-all/?page=${page - 1}&size=20`,
       }),
       providesTags: ["ticket"],
     }),
     save: builder.mutation({
       query: (body) => ({
-        url: "tickets/create",
+        url: "party/ticket/create",
         method: "POST",
         body: body,
       }),
