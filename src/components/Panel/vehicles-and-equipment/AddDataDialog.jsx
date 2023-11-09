@@ -268,12 +268,12 @@ export default function AddDataDialog(props) {
                                             sx: {fontFamily: "__fonts_2f4189,__fonts_Fallback_2f4189", fontSize: "0.8rem"},
                                         }}
                                         options={vehicleCategoryList}
-                                        getOptionLabel={(option) => option}
+                                        getOptionLabel={(option) => option.name}
                                         value={vehicleCategory}
                                         onChange={(event, newValue) => {
                                             
                                             setVehicleCategory(newValue)
-                                            formik.setFieldValue("type", newValue)
+                                            formik.setFieldValue("type", newValue?.name)
                                         }}
                                         renderInput={(params) =>
                                             <TextField

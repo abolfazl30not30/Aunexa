@@ -11,7 +11,6 @@ import { useFormik } from "formik";
 import { TailSpin } from "react-loader-spinner";
 import { useState, useEffect } from "react";
 import ChangePasswordDialog from "@/components/Panel/user-account/ChangePasswordDialog";
-
 export default function page() {
   {
     /*const [submitData, { isLoading:isSubmitLoading ,error}] = useSavePurchaseRequestMutation()*/
@@ -79,6 +78,7 @@ export default function page() {
     setMinutes(2);
     setSeconds(59);
   };
+
   return (
     <div>
       <header className="flex justify-start items-center text-[0.9rem] bg-white py-6 md:px-8 px-2 ">

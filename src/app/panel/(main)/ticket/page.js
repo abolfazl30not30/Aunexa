@@ -80,8 +80,8 @@ function Ticket() {
             }
           </div>
         </header>
-        <section className="py-4 md:px-8 mt-5 bg-white h-[50rem] ">
-          <div className="mt-10 flex justify-evenly gap-8 ">
+        <section className="py-4 md:px-8 mt-5 bg-white h-[55rem] ">
+          <div className="mt-10  gap-8 ">
             <div className="overflow-x-auto ">
               <table className=" w-full table-auto overflow-scroll border-collapse border-spacing-0 text-sm text-center text-gray70  ">
                 <thead className="text-[0.9rem] text-gray80  bg-[#F8F8F8] md:bg-[#F2EDED] ">
@@ -149,14 +149,12 @@ function Ticket() {
                             className="hidden md:flex gap-2 md:px-10 px-2  py-4 justify-center text-gray70 whitespace-nowrap "
                           >
                             <Skeleton
-                              variant="rounded"
-                              width={23}
-                              height={23}
+                              variant="text"
+                              sx={{ fontSize: "1rem" }}
                             />
                             <Skeleton
-                              variant="rounded"
-                              width={23}
-                              height={23}
+                              variant="text"
+                              sx={{ fontSize: "1rem" }}
                             />
                           </td>
                           <td className="hidden md:table-cell md:px-10 px-2  py-4  text-gray70 whitespace-nowrap ">
@@ -177,47 +175,51 @@ function Ticket() {
                           </td>
                         </tr>
                       ))
-                    : ticketData?.content?.map((data, index) => {
+                    : ticketData?.content?.map((data, index) => (
                         <tr className="table-row border-b">
                           <td className="hidden md:table-cell md:px-10 px-2  py-4  text-gray70 whitespace-nowrap ">
                             {index + 1}
                           </td>
                           <td className="px-2 md:px-10   py-4  text-gray70 whitespace-nowrap ">
-                            {data.شمارهتیکت}
+                            {data.ticketNumber}
                           </td>
                           <td className="px-2 md:px-10   py-4  text-gray70 whitespace-nowrap ">
-                            {data.موضوعتیکت}
+                            {data?.title}
                           </td>
                           <td className="px-2 md:px-10   py-4  text-gray70 whitespace-nowrap ">
-                            {data.دپارتمان}
+                            {data?.targetDepartmentName}
                           </td>
                           <td className="px-2 md:px-10   py-4  text-gray70 whitespace-nowrap ">
-                            {data.نامفرستنده}
+                            {data.sourceDepartmentName}
                           </td>
                           <td className="px-2 md:px-10   py-4 flex gap-2 justify-center items-center text-gray70 whitespace-nowrap ">
-                            <span>{data.تاریخآخرینپیام}</span>
-                            <span>{data.ساعتآخرینپیام}</span>
+                            <span>{data.updateAt}</span>
                           </td>
                           <td className="px-2 md:px-6 py-4  text-gray70 whitespace-nowrap ">
-                            {data.status === "CONFIRMED" ? (
+                            {data.status === "answered" ? (
                               <span className="text-[0.8rem] bg-greenBg text-greenText py-1 px-2 rounded-xl">
                                 پاسخ داده شده
                               </span>
-                            ) : (
-                              data.status ===
-                              "UNKNOWN"(
-                                <span className="text-[0.8rem] bg-[#EBEBEB] text-gray70 py-1 px-2 rounded-xl">
-                                  در انتظار پاسخ
-                                </span>
-                              )
-                            )}
+                            ) : data.status === "Initialize" ? (
+                              <span className="text-[0.8rem] text-gray70 bg-[#EBEBEB]  py-1 px-2 rounded-xl">
+                                در انتظار پاسخ
+                              </span>
+                            ) : data.status === "inProgress" ? (
+                              <span className="bg-[#ffe9d4] text-[#e95a18]">
+                                در حال بررسی
+                              </span>
+                            ) : data.status === "closed" ? (
+                              <span className="bg-[#fdd5d2] text-[#f31c1c]">
+                                بسته شده
+                              </span>
+                            ) : null}
                           </td>
                           <td
                             scope="row"
                             className="hidden md:flex gap-2 md:px-10 px-2  py-4 justify-center text-gray70 whitespace-nowrap "
                           >
                             <Link
-                              href={""}
+                              href={"/"}
                               className="border border-1 border-solid border-gray70 rounded p-[0.4rem] hover:bg-neutral-100"
                             >
                               <svg
@@ -248,8 +250,8 @@ function Ticket() {
                               </svg>
                             </Link>
                           </td>
-                        </tr>;
-                      })}
+                        </tr>
+                      ))}
                 </tbody>
               </table>
             </div>

@@ -6,11 +6,20 @@ import Dialog from "@mui/material/Dialog";
 import {TailSpin} from "react-loader-spinner";
 import * as yup from "yup";
 import {useFormik} from "formik";
-
+import SuccessChangingPasswordDialog from "./SuccessChangingPasswordDialog";
+import OTPInput from "react-otp-input";
 
 export default function ChangePasswordDialog(props) {
 
-
+    const [openSuccessChangePassword, setOpenSuccessChangePassword] = useState(false);
+  const handleOpenSuccessChangePassword = () => {
+    setOpenSuccessChangePassword(true);
+    
+  };
+  const handleCloseSuccessChangePassword = () => {
+    setOpenSuccessChangePassword(false);
+  };
+ 
   const [clickForSubmit,setClickForSubmit]=useState(false)
   const [otp, setOtp] = useState({
     part1: "",
@@ -28,16 +37,22 @@ useEffect(() => {
 const handleOtp = (e) => {
     if (e.target.name === "part1") {
         setOtp((co) => ({...co, part1: e.target.value}))
+        
     } else if (e.target.name === "part2") {
         setOtp((co) => ({...co, part2: e.target.value}))
+        
     } else if (e.target.name === "part3") {
         setOtp((co) => ({...co, part3: e.target.value}))
+        
     } else if (e.target.name === "part4") {
         setOtp((co) => ({...co, part4: e.target.value}))
+        
     } else if (e.target.name === "part5") {
       setOtp((co) => ({...co, part5: e.target.value}))
+      
     } else if (e.target.name === "part6") {
     setOtp((co) => ({...co, part6: e.target.value}))
+   
    }
 }
 const validate = (values, props) => {
@@ -56,6 +71,7 @@ const validate = (values, props) => {
 };
 
     const schema = yup.object().shape({
+        otp:yup.string().matches(/^[0-9]+$/, "کد ارسالی فقط شامل عدد میتواند باشد"),
         password:yup.string().matches(/^[0-9]+$/, "رمز فقط شامل عدد میتواند باشد").required("این بخش الزامی است").min(8,"رمز عبور شما باید حداقل 8 رقم باشد").max(16,"رمز عبور شما باید حداکثر 16 رقم باشد"),
         repeatPassword:yup.string().matches(/^[0-9]+$/, "رمز فقط شامل عدد میتواند باشد").required("این بخش الزامی است").oneOf([yup.ref('password'), null], "رمز وارد شده با تکرار آن یکسان نمی باشد."),
     });
@@ -89,6 +105,7 @@ const validate = (values, props) => {
             setClickForSubmit(false)
            handleReset()
            props.handleCloseChangePassword()
+           handleOpenSuccessChangePassword()
             
         },
     });
@@ -137,19 +154,17 @@ const validate = (values, props) => {
                                 </div>:null}
                                 
                                     <div className={"flex  justify-center items-center"}>
-
                                         <input  name="part6"  onChange={handleOtp} value={otp.part6} maxLength={1} className={"w-[2rem] h-[2rem] text-[1.3rem] mx-1 rounded text-center   border border-[#D9D9D9]"}/>
 
-                                        <input name="part5"  onChange={handleOtp} value={otp.part5} maxLength={1} className={"w-[2rem] h-[2rem] text-[1.3rem] mx-1 rounded text-center  border border-[#D9D9D9]t"}/>
+                                        <input  name="part5"  onChange={handleOtp} value={otp.part5} maxLength={1} className={"w-[2rem] h-[2rem] text-[1.3rem] mx-1 rounded text-center  border border-[#D9D9D9]t"}/>
 
-                                        <input  name="part4"  onChange={handleOtp} value={otp.part4} maxLength={1} className={"w-[2rem] h-[2rem] text-[1.3rem] mx-1 rounded text-center  border border-[#D9D9D9]"}/>
+                                        <input    name="part4"  onChange={handleOtp} value={otp.part4} maxLength={1} className={"w-[2rem] h-[2rem] text-[1.3rem] mx-1 rounded text-center  border border-[#D9D9D9]"}/>
 
-                                        <input name="part3"  onChange={handleOtp} value={otp.part3} maxLength={1} className={"w-[2rem] h-[2rem] text-[1.3rem] mx-1 rounded text-center  border border-[#D9D9D9]"}/>
+                                        <input  name="part3"  onChange={handleOtp} value={otp.part3} maxLength={1} className={"w-[2rem] h-[2rem] text-[1.3rem] mx-1 rounded text-center  border border-[#D9D9D9]"}/>
 
                                         <input name="part2"  onChange={handleOtp} value={otp.part2} maxLength={1} className={"w-[2rem] h-[2rem] text-[1.3rem] mx-1 rounded text-center  border border-[#D9D9D9]"}/>
 
-                                        <input name="part1"  onChange={handleOtp} value={otp.part1} maxLength={1} className={"w-[2rem] h-[2rem] text-[1.3rem] mx-1 rounded text-center  border border-[#D9D9D9]"}/>
-                                     
+                                        <input name="part1" onChange={handleOtp} value={otp.part1} maxLength={1} className={"w-[2rem] h-[2rem] text-[1.3rem] mx-1 rounded text-center  border border-[#D9D9D9]"}/>
                                     </div>
                                     <div className="flex justify-center">
                                         {
@@ -226,6 +241,9 @@ const validate = (values, props) => {
                     </DialogContentText>
                 </DialogContent>
             </Dialog>
+            <SuccessChangingPasswordDialog
+       handleCloseSuccessChangePassword={handleCloseSuccessChangePassword}
+       openSuccessChangePassword={openSuccessChangePassword}/>
         </>
     )
 }
