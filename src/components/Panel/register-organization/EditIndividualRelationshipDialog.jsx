@@ -103,12 +103,10 @@ export default function EditIndividualRelationshipInfoDialog(props) {
                 onClose={()=>{props.handleCloseEditIndividualRelationshipInfo();handleReset()}}
                 aria-describedby="alert-dialog-slide-description"
                 PaperProps={{
-                    style: {
-                        fontFamily: "IRANYekan",
-                    },
+                    style: {fontFamily: "__fonts_2f4189,__fonts_Fallback_2f4189"}
                 }}>
                 <DialogContent>
-                    <DialogContentText style={{fontFamily: "IRANYekan"}}>
+                    <DialogContentText style={{fontFamily: "__fonts_2f4189,__fonts_Fallback_2f4189"}}>
                         <div className="flex justify-end">
                             <button onClick={()=>{props.handleCloseEditIndividualRelationshipInfo();handleReset()}}>
                                 <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 14 14"
@@ -132,8 +130,8 @@ export default function EditIndividualRelationshipInfoDialog(props) {
                                         value={formik.values.fullname}
                                         onChange={formik.handleChange}
                                         error={formik.touched.fullname && Boolean(formik.errors.fullname)}
-                                        inputProps={{style: {fontFamily: "IRANYekan", fontSize: "0.8rem"}}}
-                                        InputLabelProps={{style: {fontFamily: "IRANYekan"}}}/>
+                                        inputProps={{style: {fontFamily: "__fonts_2f4189,__fonts_Fallback_2f4189", fontSize: "0.8rem"}}}
+                        InputLabelProps={{style: {fontFamily: "__fonts_2f4189,__fonts_Fallback_2f4189"}}}/>
                                 </div>
                                 <div className="flex justify-between">
                                   <div className="w-2/5">
@@ -146,8 +144,8 @@ export default function EditIndividualRelationshipInfoDialog(props) {
                                         onChange={formik.handleChange}
                                         error={formik.touched.phoneNumber && Boolean(formik.errors.phoneNumber)}
                                        
-                                        inputProps={{style: {fontFamily: "IRANYekan", fontSize: "0.8rem"}}}
-                                        InputLabelProps={{style: {fontFamily: "IRANYekan"}}}/>
+                                        inputProps={{style: {fontFamily: "__fonts_2f4189,__fonts_Fallback_2f4189", fontSize: "0.8rem"}}}
+                        InputLabelProps={{style: {fontFamily: "__fonts_2f4189,__fonts_Fallback_2f4189"}}}/>
                                   </div>
                                   <div className="w-2/5">
                                     <TextField
@@ -158,8 +156,8 @@ export default function EditIndividualRelationshipInfoDialog(props) {
                                         value={formik.values.relationship}
                                         onChange={formik.handleChange}
                                         error={formik.touched.relationship && Boolean(formik.errors.relationship)}
-                                        inputProps={{style: {fontFamily: "IRANYekan", fontSize: "0.8rem"}}}
-                                        InputLabelProps={{style: {fontFamily: "IRANYekan"}}}/>
+                                        inputProps={{style: {fontFamily: "__fonts_2f4189,__fonts_Fallback_2f4189", fontSize: "0.8rem"}}}
+                        InputLabelProps={{style: {fontFamily: "__fonts_2f4189,__fonts_Fallback_2f4189"}}}/>
                                   </div>
                                 </div>
                                   <div className="">
@@ -172,8 +170,8 @@ export default function EditIndividualRelationshipInfoDialog(props) {
                                         value={formik.values.address}
                                         onChange={formik.handleChange}
                                         error={formik.touched.address && Boolean(formik.errors.address)}
-                                        inputProps={{style: {fontFamily: "IRANYekan", fontSize: "0.8rem"}}}
-                                        InputLabelProps={{style: {fontFamily: "IRANYekan"}}}/>
+                                        inputProps={{style: {fontFamily: "__fonts_2f4189,__fonts_Fallback_2f4189", fontSize: "0.8rem"}}}
+                                        InputLabelProps={{style: {fontFamily: "__fonts_2f4189,__fonts_Fallback_2f4189"}}}/>
                                     
 
                                   </div>

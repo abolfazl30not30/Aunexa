@@ -8,7 +8,21 @@ body {
 }
 
 .table-body tr:nth-child(even){
-    background-color: #F8F8F8;
+    background-color: #F8F8F8 !important;
+}
+.table-body .MuiPaper-root:nth-child(even){
+    background-color: #F8F8F8 !important;
+    
+}
+.muirtl-15v22id-MuiAccordionDetails-root{
+   padding: 0px !important;
+}
+
+ 
+.MuiPaper-root  {
+    border-bottom: 1px solid #D9D9D9 !important;
+    padding-bottom:6px !important ;
+    
 }
 .muirtl-10w330c-MuiButtonBase-root-MuiPaginationItem-root.Mui-selected {
     background-color: #DB3746 !important;

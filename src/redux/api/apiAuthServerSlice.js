@@ -47,6 +47,6 @@ const baseQueryWithReauth = async (args, api, extraOptions) => {
 export const apiAuthServerSlice = createApi({
   reducerPath: "apiAuth",
   baseQuery: baseQueryWithReauth,
-  tagTypes: ["role"],
+  tagTypes: ["role", "categoryRole"],
   endpoints: (builder) => ({}),
 });

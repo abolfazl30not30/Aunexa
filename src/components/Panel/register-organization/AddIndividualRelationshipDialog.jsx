@@ -25,9 +25,8 @@ export default function AddIndividualRelationshipDialog(props) {
 
     const [submitData, { isLoading:isSubmitLoading ,error}] = useSaveMutation()
     const schema = yup.object().shape({
-        
         fullname: yup.string("لطفا نام و نام خانوادگی شخص را درست وارد نمایید"),
-        phoneNumber:yup.number("لطفا فقط عدد وارد نمایید").min(11,"تعداد رقم وارد شده کم می باشد").max(11,"تعداد رقم وارد شده زیاد می باشد"),
+        phoneNumber:yup.string("لطفا فقط عدد وارد نمایید").min(11,"تعداد رقم وارد شده کم می باشد").max(11,"تعداد رقم وارد شده زیاد می باشد"),
         relationship:yup.string(),
         address:yup.string(),
         
@@ -38,7 +37,8 @@ export default function AddIndividualRelationshipDialog(props) {
         initialValues: {
           individualId:"",
           fullname:"",
-          originalPhoneNumber:"",
+          relationship:"",
+          phoneNumber:"",
           address:"",
             
         },
@@ -66,12 +66,10 @@ export default function AddIndividualRelationshipDialog(props) {
                 onClose={()=>{props.handleCloseAddIndividualRelationship();handleReset()}}
                 aria-describedby="alert-dialog-slide-description"
                 PaperProps={{
-                    style: {
-                        fontFamily: "IRANYekan",
-                    },
+                    style: {fontFamily: "__fonts_2f4189,__fonts_Fallback_2f4189"}
                 }}>
                 <DialogContent>
-                    <DialogContentText style={{fontFamily: "IRANYekan"}}>
+                    <DialogContentText style={{fontFamily: "__fonts_2f4189,__fonts_Fallback_2f4189"}}>
                         <div className="flex justify-end">
                             <button onClick={()=>{props.handleCloseAddIndividualRelationship();handleReset()}}>
                                 <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 14 14"
@@ -129,8 +127,9 @@ export default function AddIndividualRelationshipDialog(props) {
                                         value={formik.values.fullname}
                                         onChange={formik.handleChange}
                                         error={formik.touched.fullname && Boolean(formik.errors.fullname)}
-                                        inputProps={{style: {fontFamily: "IRANYekan", fontSize: "0.8rem"}}}
-                                        InputLabelProps={{style: {fontFamily: "IRANYekan"}}}/>
+                                        helperText={formik.touched.fullname && formik.errors.fullname}
+                                        inputProps={{style: {fontFamily: "__fonts_2f4189,__fonts_Fallback_2f4189", fontSize: "0.8rem"}}}
+                                        InputLabelProps={{style: {fontFamily: "__fonts_2f4189,__fonts_Fallback_2f4189"}}}/>
                                 </div>
                                 <div className="flex justify-between">
                                   <div className="w-2/5">
@@ -142,9 +141,9 @@ export default function AddIndividualRelationshipDialog(props) {
                                         value={formik.values.phoneNumber}
                                         onChange={formik.handleChange}
                                         error={formik.touched.phoneNumber && Boolean(formik.errors.phoneNumber)}
-                                       
-                                        inputProps={{style: {fontFamily: "IRANYekan", fontSize: "0.8rem"}}}
-                                        InputLabelProps={{style: {fontFamily: "IRANYekan"}}}/>
+                                        helperText={formik.touched.phoneNumber && formik.errors.phoneNumber}
+                                        inputProps={{style: {fontFamily: "__fonts_2f4189,__fonts_Fallback_2f4189", fontSize: "0.8rem"}}}
+                                        InputLabelProps={{style: {fontFamily: "__fonts_2f4189,__fonts_Fallback_2f4189"}}}/>
                                   </div>
                                   <div className="w-2/5">
                                     <TextField
@@ -155,8 +154,9 @@ export default function AddIndividualRelationshipDialog(props) {
                                         value={formik.values.relationship}
                                         onChange={formik.handleChange}
                                         error={formik.touched.relationship && Boolean(formik.errors.relationship)}
-                                        inputProps={{style: {fontFamily: "IRANYekan", fontSize: "0.8rem"}}}
-                                        InputLabelProps={{style: {fontFamily: "IRANYekan"}}}/>
+                                        helperText={formik.touched.relationship && formik.errors.relationship}
+                                        inputProps={{style: {fontFamily: "__fonts_2f4189,__fonts_Fallback_2f4189", fontSize: "0.8rem"}}}
+                                        InputLabelProps={{style: {fontFamily: "__fonts_2f4189,__fonts_Fallback_2f4189"}}}/>
                                   </div>
                                 </div>
                                   <div className="">
@@ -169,8 +169,9 @@ export default function AddIndividualRelationshipDialog(props) {
                                         value={formik.values.address}
                                         onChange={formik.handleChange}
                                         error={formik.touched.address && Boolean(formik.errors.address)}
-                                        inputProps={{style: {fontFamily: "IRANYekan", fontSize: "0.8rem"}}}
-                                        InputLabelProps={{style: {fontFamily: "IRANYekan"}}}/>
+                                        helperText={formik.touched.address && formik.errors.address}
+                                        inputProps={{style: {fontFamily: "__fonts_2f4189,__fonts_Fallback_2f4189", fontSize: "0.8rem"}}}
+                                        InputLabelProps={{style: {fontFamily: "__fonts_2f4189,__fonts_Fallback_2f4189"}}}/>
                                     
 
                                   </div>
@@ -210,8 +211,8 @@ export default function AddIndividualRelationshipDialog(props) {
                                         value={formik.values.fullname}
                                         onChange={formik.handleChange}
                                         error={formik.touched.fullname && Boolean(formik.errors.fullname)}
-                                        inputProps={{style: {fontFamily: "IRANYekan", fontSize: "0.8rem"}}}
-                                        InputLabelProps={{style: {fontFamily: "IRANYekan"}}}/>
+                                        inputProps={{style: {fontFamily: "__fonts_2f4189,__fonts_Fallback_2f4189", fontSize: "0.8rem"}}}
+                                        InputLabelProps={{style: {fontFamily: "__fonts_2f4189,__fonts_Fallback_2f4189"}}}/>
                                 </div>
                                 <div className="flex justify-between">
                                   <div className="w-2/5">
@@ -224,8 +225,8 @@ export default function AddIndividualRelationshipDialog(props) {
                                         onChange={formik.handleChange}
                                         error={formik.touched.phoneNumber && Boolean(formik.errors.phoneNumber)}
                                        
-                                        inputProps={{style: {fontFamily: "IRANYekan", fontSize: "0.8rem"}}}
-                                        InputLabelProps={{style: {fontFamily: "IRANYekan"}}}/>
+                                        inputProps={{style: {fontFamily: "__fonts_2f4189,__fonts_Fallback_2f4189", fontSize: "0.8rem"}}}
+                                        InputLabelProps={{style: {fontFamily: "__fonts_2f4189,__fonts_Fallback_2f4189"}}}/>
                                   </div>
                                   <div className="w-2/5">
                                     <TextField
@@ -236,8 +237,8 @@ export default function AddIndividualRelationshipDialog(props) {
                                         value={formik.values.relationship}
                                         onChange={formik.handleChange}
                                         error={formik.touched.relationship && Boolean(formik.errors.relationship)}
-                                        inputProps={{style: {fontFamily: "IRANYekan", fontSize: "0.8rem"}}}
-                                        InputLabelProps={{style: {fontFamily: "IRANYekan"}}}/>
+                                        inputProps={{style: {fontFamily: "__fonts_2f4189,__fonts_Fallback_2f4189", fontSize: "0.8rem"}}}
+                                        InputLabelProps={{style: {fontFamily: "__fonts_2f4189,__fonts_Fallback_2f4189"}}}/>
                                   </div>
                                 </div>
                                   <div className="">
@@ -250,8 +251,8 @@ export default function AddIndividualRelationshipDialog(props) {
                                         value={formik.values.address}
                                         onChange={formik.handleChange}
                                         error={formik.touched.address && Boolean(formik.errors.address)}
-                                        inputProps={{style: {fontFamily: "IRANYekan", fontSize: "0.8rem"}}}
-                                        InputLabelProps={{style: {fontFamily: "IRANYekan"}}}/>
+                                        iinputProps={{style: {fontFamily: "__fonts_2f4189,__fonts_Fallback_2f4189", fontSize: "0.8rem"}}}
+                                        InputLabelProps={{style: {fontFamily: "__fonts_2f4189,__fonts_Fallback_2f4189"}}}/>
                                     
                 
                                   </div>

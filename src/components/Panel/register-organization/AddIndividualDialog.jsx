@@ -1,7 +1,7 @@
 'use client'
 import TextField from "@mui/material/TextField";
 import React, { useEffect, useState } from "react";
-import { Autocomplete, DialogContent, DialogContentText ,FormControlLabel,Checkbox} from "@mui/material";
+import { Autocomplete, DialogContent, DialogContentText ,FormControlLabel,Checkbox,FormControl,InputLabel,Select,OutlinedInput,MenuItem,Typography} from "@mui/material";
 import Dialog from "@mui/material/Dialog";
 import { TailSpin } from "react-loader-spinner";
 import * as yup from "yup";
@@ -11,6 +11,7 @@ import persian from "react-date-object/calendars/persian";
 import persian_fa from "react-date-object/locales/persian_fa";
 import DatePicker from "react-multi-date-picker";
 import AddIndividualRelationshipDialog from "./AddIndividualRelationshipDialog";
+import { useLazyGetAllRoleQuery } from "@/redux/features/category/CategorySlice";
 
 import { useSaveMutation } from "@/redux/features/organization/individual/IndividualSlice";
 
@@ -19,30 +20,37 @@ export default function AddIndividualDialog(props) {
   const [individual, setIndividual] = useState(null)
   const [cLevel,setClevel]=useState(false)
 
-
+  const [role,setRole] = useState(null)
+  const [openRoleList,setOpenRoleList] = useState(false)
+  const [getRoleList,{ data : roleList  = [] , isLoading : isRoleLoading, isError: roleIsError }] = useLazyGetAllRoleQuery()
+  useEffect(()=>{
+      if(openRoleList){
+          getRoleList()
+      }
+  },[openRoleList])
 
   const handleReset = () => {
     formik.resetForm()
     setIndividual(null)
     setDate("")
-    setGender(null)
-    setEducation(null)
+    setRole(null)
+    
   }
 
   const [submitData, { isLoading: isSubmitLoading, error }] = useSaveMutation()
   const schema = yup.object().shape({
     fullname: yup.string("لطفا نام و نام خانوادگی شخص را درست وارد نمایید").required("لطفا نام و نام خانوادگی شخص را وارد کنید"),
-    nationalCode: yup.number("لطفا فقط عدد وارد نمایید").min(10, "تعداد رقم وارد شده کم می باشد").max(10, "تعداد رقم وارد شده زیاد می باشد").required("لطفا کد ملی را وارد کنید"),
+    nationalCode: yup.string().matches(/^[0-9]{10}$/,"کد ملی فقط میتواند شامل عدد باشد").min(10, "تعداد رقم وارد شده کم می باشد").max(10, "تعداد رقم وارد شده زیاد می باشد").required("لطفا کد ملی را وارد کنید"),
     personalCode: yup.string(),
     birthDate: yup.date().required("لطفا تاریخ تولد را وارد کنید"),
     fatherName: yup.string("لطفا نام پدر را درست وارد نمایید").required("لطفا نام پدر را وارد نمایید"),
     gender: yup.string().required("لطفا جنسیت را وارد نمایید"),
-    role: yup.string("لطفا نقش را به درستی وارد نمایید").required("لطفا نقش را وارد نمایید"),
-    originalPhoneNumber: yup.number("لطفا فقط عدد وارد نمایید").required("لطفا شماره همراه را وارد نمایید").min(11, "تعداد رقم وارد شده کم می باشد").max(11, "تعداد رقم وارد شده زیاد می باشد"),
-    anotherPhoneNumber: yup.number("لطفا فقط عدد وارد نمایید").required("لطفا شماره همراه را وارد نمایید").min(11, "تعداد رقم وارد شده کم می باشد").max(11, "تعداد رقم وارد شده زیاد می باشد"),
-    telePhoneNumber: yup.number("لطفا فقط عدد وارد نمایید").required("لطفا شماره تلفن را با کد شهر (به عنوان مثال برای تهران 021) وارد نمایید").min(11, "تعداد رقم وارد شده کم می باشد").max(11, "تعداد رقم وارد شده زیاد می باشد"),
-    education: yup.string().required("لطفا سطح تحصیلات را وارد کنید"),
-    email: yup.string().email().required("لطفا ایمیل را وارد نمایید"),
+    roleId: yup.string().required("لطفا نقش را انتخاب کنید"),
+    originalPhoneNumber: yup.string("لطفا فقط عدد وارد نمایید").required("لطفا شماره همراه را وارد نمایید").min(11, "تعداد رقم وارد شده کم می باشد").max(11, "تعداد رقم وارد شده زیاد می باشد"),
+    anotherPhoneNumber: yup.string("لطفا فقط عدد وارد نمایید").required("لطفا شماره همراه را وارد نمایید").min(11, "تعداد رقم وارد شده کم می باشد").max(11, "تعداد رقم وارد شده زیاد می باشد"),
+    telePhoneNumber: yup.string("لطفا فقط عدد وارد نمایید").required("لطفا شماره تلفن را با کد شهر (به عنوان مثال برای تهران 021) وارد نمایید").min(11, "تعداد رقم وارد شده کم می باشد").max(11, "تعداد رقم وارد شده زیاد می باشد"),
+    education: yup.string().required(),
+    email: yup.string().email("فرمت ایمیل باید صحیح باشد").required("لطفا ایمیل را وارد نمایید"),
     address: yup.string().required("لطفا آدرس را وارد کنید"),
 
   });
@@ -56,7 +64,8 @@ export default function AddIndividualDialog(props) {
       birthDate: "",
       fatherName: "",
       gender: "",
-      role: "",
+      roleId: "",
+      roleName:"",
       originalPhoneNumber: "",
       anotherPhoneNumber: "",
       telePhoneNumber: "",
@@ -93,45 +102,6 @@ export default function AddIndividualDialog(props) {
       formik.setFieldValue("birthDate", "")
     }
   }
-
-  const [gender, setGender] = useState(null)
-  const genderList = [
-    { label: 'زن' },
-    { label: 'مرد' },
-    { label: 'دیگر' },
-  ];
-
-
-  const [education, setEducation] = useState(null)
-  const educationList = [
-    { label: 'زیر دیپلم' },
-    { label: 'دیپلم' },
-    { label: 'کاردانی' },
-    { label: 'لیسانس' },
-    { label: 'فوق لیسانس' },
-    { label: 'دکتری' },
-  ];
-
-
-  let anotherPhoneNumbers = []
-  const handleSendAnotherPhoneNumber = () => {
-    anotherPhoneNumbers.push(formik.values.anotherPhoneNumber)
-
-  }
-  const handleDeleteAnotherNumber = () => {
-    if (formik.values.anotherPhoneNumber) {
-      anotherPhoneNumbers.filter((phoneNumber) => {
-        formik.values.anotherPhoneNumber !== phoneNumber
-      })
-    }
-  }
-
-
-  const [anotherPhoneNumberCount,setAnotherPhoneNumberCount]=useState([])
-  
-
-
-
   return (
     <>
       <Dialog
@@ -141,12 +111,10 @@ export default function AddIndividualDialog(props) {
         onClose={() => { props.handleCloseAddIndividual(); handleReset() }}
         aria-describedby="alert-dialog-slide-description"
         PaperProps={{
-          style: {
-            fontFamily: "IRANYekan",
-          },
+          style: {fontFamily: "__fonts_2f4189,__fonts_Fallback_2f4189"}
         }}>
         <DialogContent>
-          <DialogContentText style={{ fontFamily: "IRANYekan" }}>
+          <DialogContentText style={{fontFamily: "__fonts_2f4189,__fonts_Fallback_2f4189"}}>
             <div className="flex justify-end">
               <button onClick={() => { props.handleCloseAddIndividual(); handleReset() }}>
                 <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 14 14"
@@ -170,11 +138,12 @@ export default function AddIndividualDialog(props) {
                     value={formik.values.fullname}
                     onChange={formik.handleChange}
                     error={formik.touched.fullname && Boolean(formik.errors.fullname)}
-                    inputProps={{ style: { fontFamily: "IRANYekan", fontSize: "0.8rem" } }}
-                    InputLabelProps={{ style: { fontFamily: "IRANYekan" } }} />
-                </div>
+                    helperText={formik.touched.fullname && formik.errors.fullname}
+                    inputProps={{style: {fontFamily: "__fonts_2f4189,__fonts_Fallback_2f4189", fontSize: "0.8rem"}}}
+                                        InputLabelProps={{style: {fontFamily: "__fonts_2f4189,__fonts_Fallback_2f4189"}}}/>
+                                        </div>
                 <div className="flex justify-between">
-                  <div className="w-2/5">
+                  <div className="w-[45%]">
                     <TextField
                       fullWidth
                       placeholder="کدملی"
@@ -183,11 +152,11 @@ export default function AddIndividualDialog(props) {
                       value={formik.values.nationalCode}
                       onChange={formik.handleChange}
                       error={formik.touched.nationalCode && Boolean(formik.errors.nationalCode)}
-
-                      inputProps={{ style: { fontFamily: "IRANYekan", fontSize: "0.8rem" } }}
-                      InputLabelProps={{ style: { fontFamily: "IRANYekan" } }} />
+                      helperText={formik.touched.nationalCode && formik.errors.nationalCode}
+                      inputProps={{style: {fontFamily: "__fonts_2f4189,__fonts_Fallback_2f4189", fontSize: "0.8rem"}}}
+                                        InputLabelProps={{style: {fontFamily: "__fonts_2f4189,__fonts_Fallback_2f4189"}}}/>
                   </div>
-                  <div className="w-2/5">
+                  <div className="w-[45%]">
                     <TextField
                       fullWidth
                       placeholder="کد پرسنلی"
@@ -196,13 +165,15 @@ export default function AddIndividualDialog(props) {
                       value={formik.values.personalCode}
                       onChange={formik.handleChange}
                       error={formik.touched.personalCode && Boolean(formik.errors.personalCode)}
-                      inputProps={{ style: { fontFamily: "IRANYekan", fontSize: "0.8rem" } }}
-                      InputLabelProps={{ style: { fontFamily: "IRANYekan" } }} />
+                      helperText={formik.touched.personalCode && formik.errors.personalCode}
+                      inputProps={{style: {fontFamily: "__fonts_2f4189,__fonts_Fallback_2f4189", fontSize: "0.8rem"}}}
+                      InputLabelProps={{style: {fontFamily: "__fonts_2f4189,__fonts_Fallback_2f4189"}}}/>
                   </div>
                 </div>
                 <div className="flex justify-between">
-                  <div className="w-2/5">
+                  <div className="w-[45%]">
                     <DatePicker
+                    
                       calendarPosition={`bottom`}
                       className="red"
                       digits={['0', '1', '2', '3', '4', '5', '6', '7', '8', '9']}
@@ -210,6 +181,8 @@ export default function AddIndividualDialog(props) {
                       containerStyle={{
                         width: "100%"
                       }}
+                      
+                      
                       placeholder="تاریخ تولد"
                       inputClass={`border border-[#D9D9D9] placeholder-neutral-300 text-gray-900 text-[0.8rem] rounded focus:ring-[#3B82F67F] focus:border-[#3B82F67F] block w-full px-3 py-4`}
                       value={date}
@@ -248,7 +221,7 @@ export default function AddIndividualDialog(props) {
                       </button>
                     </DatePicker>
                   </div>
-                  <div className="w-2/5">
+                  <div className="w-[45%]">
 
                     <TextField
                       fullWidth
@@ -258,8 +231,9 @@ export default function AddIndividualDialog(props) {
                       value={formik.values.fatherName}
                       onChange={formik.handleChange}
                       error={formik.touched.fatherName && Boolean(formik.errors.fatherName)}
-                      inputProps={{ style: { fontFamily: "IRANYekan", fontSize: "0.8rem" } }}
-                      InputLabelProps={{ style: { fontFamily: "IRANYekan" } }} />
+                      helperText={formik.touched.fatherName && formik.errors.fatherName}
+                      inputProps={{style: {fontFamily: "__fonts_2f4189,__fonts_Fallback_2f4189", fontSize: "0.8rem"}}}
+                      InputLabelProps={{style: {fontFamily: "__fonts_2f4189,__fonts_Fallback_2f4189"}}}/>
 
 
                   </div>
@@ -267,43 +241,72 @@ export default function AddIndividualDialog(props) {
                 <div className="flex justify-between">
 
 
-                  <div className="w-2/5">
-                    <Autocomplete
-                      fullWidth
-                      clearOnEscape
-                      disablePortal
-                      id="combo-box-demo"
-                      options={genderList}
-                      sx={{ width: 300 }}
-                      value={gender}
-                      onChange={(event, newValue) => {
-                        setGender(newValue)
-                        formik.setFieldValue("gender", newValue.abbreviation)
-                      }}
-                      renderInput={(params) => <TextField error={formik.touched.gender && Boolean(formik.errors.gender)}
-                        helperText={formik.touched.gender && formik.errors.gender}
-                        InputProps={{
-                          ...params.InputProps,
-                          style: { fontFamily: "IRANYekan", fontSize: "0.8rem" }
-                        }} {...params} placeholder="جنسیت" />}
-                    />
+                  <div className="w-[45%]">
+                  <FormControl fullWidth error={formik.touched.gender && Boolean(formik.errors.gender)}>
+                    <InputLabel id="demo-simple-select-label" sx={{fontFamily: "__fonts_2f4189,__fonts_Fallback_2f4189", fontSize: "0.8rem",color:"#9F9F9F"}}>جنسیت</InputLabel>
+                            <Select
+                                           
+                                labelId="demo-simple-select-label"
+                                id="demo-simple-select"
+                                value={formik.values.gender}
+                                name="gender"
+                                input={<OutlinedInput sx={{fontFamily: "__fonts_2f4189,__fonts_Fallback_2f4189", fontSize: "0.8rem"}}  label="جنسیت" />}
+                                sx={{fontFamily: "__fonts_2f4189,__fonts_Fallback_2f4189", fontSize: "0.8rem"}}
+                                onChange={formik.handleChange}>
+                                <MenuItem value="man" sx={{fontFamily: "__fonts_2f4189,__fonts_Fallback_2f4189", fontSize: "0.8rem"}}>مرد</MenuItem>
+                                <MenuItem value="woman" sx={{fontFamily: "__fonts_2f4189,__fonts_Fallback_2f4189", fontSize: "0.8rem"}}>زن</MenuItem>
+                                <MenuItem value="other" sx={{fontFamily: "__fonts_2f4189,__fonts_Fallback_2f4189", fontSize: "0.8rem"}}>دیگر</MenuItem>
+                            </Select>
+                                        
+                  </FormControl>
                   </div>
-                  <div className="w-2/5">
-                    <TextField
-                      fullWidth
-                      placeholder="نقش"
-                      type="text"
-                      name="role"
-                      value={formik.values.role}
-                      onChange={formik.handleChange}
-                      error={formik.touched.role && Boolean(formik.errors.role)}
-                      inputProps={{ style: { fontFamily: "IRANYekan", fontSize: "0.8rem" } }}
-                      InputLabelProps={{ style: { fontFamily: "IRANYekan" } }} />
+                  <div className="w-[45%]">
+                  <Autocomplete
+                                        open={openRoleList}
+                                        onOpen={() => {
+                                            setOpenRoleList(true);
+                                        }}
+                                        onClose={() => {
+                                            setOpenRoleList(false);
+                                        }}
+                                        fullWidth
+                                        clearOnEscape
+                                        disablePortal
+                                        id="combo-box-demo"
+                                        ListboxProps={{
+                                            sx: {fontFamily: "__fonts_2f4189,__fonts_Fallback_2f4189", fontSize: "0.8rem"},
+                                        }}
+                                        options={roleList}
+                                        getOptionLabel={(option) => option.persianName}
+                                        value={role}
+                                        onChange={(event, newValue) => {
+                                            setRole(newValue)
+                                            formik.setFieldValue("roleId", newValue?.id)
+                                            formik.setFieldValue("roleName", newValue?.persianName)
+                                        }}
+                                        renderInput={(params) =>
+                                            <TextField
+                                                error={formik.touched.roleId && Boolean(formik.errors.roleId)}
+                                                helperText={formik.touched.roleId && formik.errors.roleId}
+                                                {...params}
+                                                InputProps={{
+                                                    ...params.InputProps,
+                                                    style: {fontFamily: "__fonts_2f4189,__fonts_Fallback_2f4189", fontSize: "0.8rem"},
+                                                    endAdornment:(
+                                                        <React.Fragment>
+                                                            {isRoleLoading ? <CircularProgress color="inherit" size={20} /> : null}
+                                                            {params.InputProps.endAdornment}
+                                                        </React.Fragment>
+                                                    )
+                                            }}
+                                                placeholder=" نام نقش (اجباری)"
+                                            />}
+                                    />
                   </div>
 
                 </div>
                 <div className="flex justify-between">
-                  <div className="w-2/5">
+                  <div className="w-[45%]">
                     <TextField
                       fullWidth
                       placeholder="شماره همراه"
@@ -312,10 +315,27 @@ export default function AddIndividualDialog(props) {
                       value={formik.values.originalPhoneNumber}
                       onChange={formik.handleChange}
                       error={formik.touched.originalPhoneNumber && Boolean(formik.errors.originalPhoneNumber)}
-                      inputProps={{ style: { fontFamily: "IRANYekan", fontSize: "0.8rem" } }}
-                      InputLabelProps={{ style: { fontFamily: "IRANYekan" } }} />
+                      helperText={formik.touched.originalPhoneNumber && formik.errors.originalPhoneNumber}
+                      inputProps={{style: {fontFamily: "__fonts_2f4189,__fonts_Fallback_2f4189", fontSize: "0.8rem"}}}
+                                        InputLabelProps={{style: {fontFamily: "__fonts_2f4189,__fonts_Fallback_2f4189"}}}/>
                   </div>
-                  <div className="w-2/5">
+                  <div className="w-[45%]">
+                       <TextField
+                         
+                         fullWidth
+                         placeholder="شماره همراه دوم"
+                         type="text"
+                         name="anotherPhoneNumber"
+                         value={formik.values.anotherPhoneNumber}
+                         onChange={formik.handleChange}
+                         error={formik.touched.anotherPhoneNumber && Boolean(formik.errors.anotherPhoneNumber)}
+                         helperText={formik.touched.anotherPhoneNumber && formik.errors.anotherPhoneNumber}
+                         inputProps={{style: {fontFamily: "__fonts_2f4189,__fonts_Fallback_2f4189", fontSize: "0.8rem"}}}
+                                        InputLabelProps={{style: {fontFamily: "__fonts_2f4189,__fonts_Fallback_2f4189"}}}/>
+                    </div>
+                 
+                </div>
+                <div className="">
                     <TextField
                       fullWidth
                       placeholder="شماره ثابت"
@@ -324,80 +344,38 @@ export default function AddIndividualDialog(props) {
                       value={formik.values.telePhoneNumber}
                       onChange={formik.handleChange}
                       error={formik.touched.telePhoneNumber && Boolean(formik.errors.telePhoneNumber)}
-                      inputProps={{ style: { fontFamily: "IRANYekan", fontSize: "0.8rem" } }}
-                      InputLabelProps={{ style: { fontFamily: "IRANYekan" } }} />
+                      helperText={formik.touched.telePhoneNumber && formik.errors.telePhoneNumber}
+                      inputProps={{style: {fontFamily: "__fonts_2f4189,__fonts_Fallback_2f4189", fontSize: "0.8rem"}}}
+                      InputLabelProps={{style: {fontFamily: "__fonts_2f4189,__fonts_Fallback_2f4189"}}}/>
                   </div>
-                </div>
-                <div className="flex justify-between">
-                  {anotherPhoneNumberCount.map((addAnotherPhoneNumber,index)=>{
-                    <div className="w-2/5">
-                       <TextField
-                         onBlur={handleSendAnotherPhoneNumber}
-                         onFocus={handleDeleteAnotherNumber}
-                         fullWidth
-                         placeholder="شماره همراه"
-                         type="text"
-                         name="anotherPhoneNumber"
-                         value={formik.values.anotherPhoneNumber}
-                         onChange={formik.handleChange}
-                         error={formik.touched.anotherPhoneNumber && Boolean(formik.errors.anotherPhoneNumber)}
-                         inputProps={{ style: { fontFamily: "IRANYekan", fontSize: "0.8rem" } }}
-                         InputLabelProps={{ style: { fontFamily: "IRANYekan" } }} />
-                    </div>
-                  })}
-                </div>
+                  
+                   
+                  
+                
                 <div>
-                  <button
-                    className="flex text-gray60 bg-white border border-gray60 items-center text- px-3 py-2 rounded-full md:rounded"
-                    onClick={()=>{setAnotherPhoneNumberCount([...anotherPhoneNumberCount,"phoneNumber"])}}
-                  >
-                    <span className="hidden md:inline">
-                      افزودن شماره
-                    </span>
-                    <svg
-                      xmlns="http://www.w3.org/2000/svg"
-                      width="24"
-                      height="24"
-                      viewBox="0 0 24 24"
-                      fill="none"
-                    >
-                      <path
-                        d="M7 12H17"
-                        stroke="white"
-                        stroke-width="2"
-                        stroke-linecap="round"
-                        stroke-linejoin="round"
-                      />
-                      <path
-                        d="M12 7V17"
-                        stroke="white"
-                        stroke-width="2"
-                        stroke-linecap="round"
-                        stroke-linejoin="round"
-                      />
-                    </svg>
-                  </button>
+                  
                 </div>
                 <div >
-                  <Autocomplete
-                    fullWidth
-                    clearOnEscape
-                    disablePortal
-                    id="combo-box-demo"
-                    options={educationList}
-                    sx={{ width: 300 }}
-                    value={education}
-                    onChange={(event, newValue) => {
-                      setEducation(newValue)
-                      formik.setFieldValue("education", newValue.abbreviation)
-                    }}
-                    renderInput={(params) => <TextField error={formik.touched.education && Boolean(formik.errors.education)}
-                      helperText={formik.touched.education && formik.errors.education}
-                      InputProps={{
-                        ...params.InputProps,
-                        style: { fontFamily: "IRANYekan", fontSize: "0.8rem" }
-                      }} {...params} placeholder="تحصیلات" />}
-                  />
+                  <FormControl fullWidth error={formik.touched.education && Boolean(formik.errors.education)}>
+                    <InputLabel id="demo-simple-select-label" sx={{fontFamily: "__fonts_2f4189,__fonts_Fallback_2f4189", fontSize: "0.8rem",color:"#9F9F9F"}}>تحصیلات</InputLabel>
+                            <Select
+                                           
+                                labelId="demo-simple-select-label"
+                                id="demo-simple-select"
+                                value={formik.values.education}
+                                name="education"
+                                input={<OutlinedInput sx={{fontFamily: "__fonts_2f4189,__fonts_Fallback_2f4189", fontSize: "0.8rem"}}  label="تحصیلات" />}
+                                sx={{fontFamily: "__fonts_2f4189,__fonts_Fallback_2f4189", fontSize: "0.8rem"}}
+                                onChange={formik.handleChange}>
+                                <MenuItem value="highSchool" sx={{fontFamily: "__fonts_2f4189,__fonts_Fallback_2f4189", fontSize: "0.8rem"}}>زیر دیپلم</MenuItem>
+                                <MenuItem value="diploma" sx={{fontFamily: "__fonts_2f4189,__fonts_Fallback_2f4189", fontSize: "0.8rem"}}>دیپلم</MenuItem>
+                                <MenuItem value="associate" sx={{fontFamily: "__fonts_2f4189,__fonts_Fallback_2f4189", fontSize: "0.8rem"}}>فوق دیپلم</MenuItem>
+                                <MenuItem value="bachelor" sx={{fontFamily: "__fonts_2f4189,__fonts_Fallback_2f4189", fontSize: "0.8rem"}}>لیسانس</MenuItem>
+                                <MenuItem value="master" sx={{fontFamily: "__fonts_2f4189,__fonts_Fallback_2f4189", fontSize: "0.8rem"}}>فوق لیسانس</MenuItem>
+                                <MenuItem value="doctroal" sx={{fontFamily: "__fonts_2f4189,__fonts_Fallback_2f4189", fontSize: "0.8rem"}}>دکتری</MenuItem>
+                            </Select>
+                                        
+                  </FormControl>
 
                 </div>
                 <div className="">
@@ -410,8 +388,9 @@ export default function AddIndividualDialog(props) {
                     value={formik.values.email}
                     onChange={formik.handleChange}
                     error={formik.touched.email && Boolean(formik.errors.email)}
-                    inputProps={{ style: { fontFamily: "IRANYekan", fontSize: "0.8rem" } }}
-                    InputLabelProps={{ style: { fontFamily: "IRANYekan" } }} />
+                    helperText={formik.touched.email && formik.errors.email}
+                    inputProps={{style: {fontFamily: "__fonts_2f4189,__fonts_Fallback_2f4189", fontSize: "0.8rem"}}}
+                                        InputLabelProps={{style: {fontFamily: "__fonts_2f4189,__fonts_Fallback_2f4189"}}}/>
 
 
                 </div>
@@ -425,13 +404,15 @@ export default function AddIndividualDialog(props) {
                     value={formik.values.address}
                     onChange={formik.handleChange}
                     error={formik.touched.address && Boolean(formik.errors.address)}
-                    inputProps={{ style: { fontFamily: "IRANYekan", fontSize: "0.8rem" } }}
-                    InputLabelProps={{ style: { fontFamily: "IRANYekan" } }} />
+                    helperText={formik.touched.address && formik.errors.address}
+                    inputProps={{style: {fontFamily: "__fonts_2f4189,__fonts_Fallback_2f4189", fontSize: "0.8rem"}}}
+                                        InputLabelProps={{style: {fontFamily: "__fonts_2f4189,__fonts_Fallback_2f4189"}}}/>
 
 
                 </div>
                 <div className="w-full  border border-[#D9D9D9] flex flex-col gap-2 px-4">
-                    <FormControlLabel onClick={()=>{setClevel(!cLevel)}} control={<Checkbox />} label="دسترسی مدیریت" />
+                    <FormControlLabel 
+                     onClick={()=>{setClevel(!cLevel)}} control={<Checkbox />}  label={<Typography sx={{fontFamily: "__fonts_2f4189,__fonts_Fallback_2f4189",fontSize:"14px"}}>دسترسی مدیریت</Typography>} />
                 </div>
                 <div>
                   {
