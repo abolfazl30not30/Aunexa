@@ -93,11 +93,11 @@ export default function EditRoleInfoDialog(props) {
                 aria-describedby="alert-dialog-slide-description"
                 PaperProps={{
                     style: {
-                        fontFamily: "IRANYekan",
+                        fontFamily: "__fonts_2f4189,__fonts_Fallback_2f4189",
                     },
                 }}>
                 <DialogContent>
-                    <DialogContentText style={{fontFamily: "IRANYekan"}}>
+                    <DialogContentText style={{fontFamily: "__fonts_2f4189,__fonts_Fallback_2f4189"}}>
                         <div className="flex justify-end">
                             <button onClick={()=>{props.handleCloseEditRoleInfo();handleReset()}}>
                                 <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 14 14"
@@ -124,8 +124,8 @@ export default function EditRoleInfoDialog(props) {
                                             onChange={formik.handleChange}
                                             error={formik.touched.role && Boolean(formik.errors.role)}
                                             helperText={formik.touched.role && formik.errors.role}
-                                            inputProps={{style: {fontFamily: "IRANYekan", fontSize: "0.8rem"}}}
-                                            InputLabelProps={{style: {fontFamily: "IRANYekan"}}}/>
+                                            inputProps={{style: {fontFamily: "__fonts_2f4189,__fonts_Fallback_2f4189", fontSize: "0.8rem"}}}
+                                        InputLabelProps={{style: {fontFamily: "__fonts_2f4189,__fonts_Fallback_2f4189"}}}/>
                                     </div>
                                    
                                 

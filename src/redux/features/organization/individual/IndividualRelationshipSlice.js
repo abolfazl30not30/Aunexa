@@ -2,32 +2,35 @@ import { apiSlice } from "../../../api/apiSlice";
 
 export const IndividualRelationshipSlice = apiSlice.injectEndpoints({
   endpoints: (builder) => ({
-    save: builder.mutation({
+    saveRelationship: builder.mutation({
       query: (body) => ({
         url: "party/relationship-information",
         method: "POST",
         body: body,
       }),
-      invalidatesTags: ["individualRelationship"],
+      invalidatesTags: ["organization"],
     }),
-    update: builder.mutation({
+    updateRelationship: builder.mutation({
       query: (body) => ({
         url: `party/relationship-information`,
         method: "PUT",
         body: body,
       }),
-      invalidatesTags: ["individualRelationship"],
+      invalidatesTags: ["organization"],
     }),
-    delete: builder.mutation({
+    deleteRelationship: builder.mutation({
       query: (id) => ({
         url: `party/relationship-information${id}`,
         method: "DELETE",
         body: id,
       }),
-      invalidatesTags: ["individualRelationship"],
+      invalidatesTags: ["organization"],
     }),
   }),
 });
 
-export const { useSaveMutation, useUpdateMutation, useDeleteMutation } =
-  IndividualRelationshipSlice;
+export const {
+  useSaveRelationshipMutation,
+  useUpdateRelationshipMutation,
+  useDeleteRelationshipMutation,
+} = IndividualRelationshipSlice;

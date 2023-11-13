@@ -7,6 +7,9 @@ import {
   OutlinedInput,
   Pagination,
   Skeleton,
+  InputLabel,
+  MenuItem,
+  Select,
 } from "@mui/material";
 import Accordion from "@mui/material/Accordion";
 import AccordionDetails from "@mui/material/AccordionDetails";
@@ -28,10 +31,12 @@ import { useSelector } from "react-redux";
 export default function registerOrganization() {
   /* search bar */
   const [filterItem, setFilterItem] = useState();
+  const [filter, setFilter] = useState("organization");
   /* search bar */
-
   const [expanded, setExpanded] = React.useState(false);
   const [organizationIdTarget, setOrganizationIdTarget] = useState("");
+  const [subOrganizationIdTarget, setSubOrganizationIdTarget] = useState("");
+  const [individualIdTarget, setIndividualIdTarget] = useState("");
 
   const handleChangeIndividualList = (panel) => (event, isExpanded) => {
     setExpanded(isExpanded ? panel : false);
@@ -56,30 +61,32 @@ export default function registerOrganization() {
 
   const [openDeleteSubOrganization, setOpenDeleteSubOrganization] =
     useState(false);
-  const [deleteTargetSubOrganizationId, setdeleteTargetSubOrganizationId] =
+  const [deleteTargetSubOrganizationId, setDeleteTargetSubOrganizationId] =
     useState("");
   const handleOpenDeleteSubOrganization = (id) => {
-    setdeleteTargetSubOrganizationId(id);
+    setDeleteTargetSubOrganizationId(id);
     setOpenDeleteSubOrganization(true);
   };
   const handleCloseDeleteSubOrganization = () => {
-    setdeleteTargetSubOrganizationId("");
+    setDeleteTargetSubOrganizationId("");
     setOpenDeleteSubOrganization(false);
   };
 
   const [openDeleteIndividual, setOpenDeleteIndividual] = useState(false);
-  const [deleteTargetIndividualId, sediveleteTargetIndividualId] = useState("");
+  const [deleteTargetIndividualId, setDeleteTargetIndividualId] = useState("");
   const handleOpenDeleteIndividual = (id) => {
-    sediveleteTargetIndividualId(id);
+    setDeleteTargetIndividualId(id);
     setOpenDeleteIndividual(true);
   };
   const handleCloseDeleteIndividual = () => {
-    sediveleteTargetIndividualId("");
-    openDeleteIndividual(false);
+    setDeleteTargetIndividualId("");
+    setOpenDeleteIndividual(false);
   };
 
   const [openAddIndividual, setOpenAddIndividual] = useState(false);
-  const handleOpenAddIndividual = () => {
+  const handleOpenAddIndividual = (organizationId, subOrganizationId) => {
+    setSubOrganizationIdTarget(subOrganizationId);
+    setOrganizationIdTarget(organizationId);
     setOpenAddIndividual(true);
   };
   const handleCloseAddIndividual = () => {
@@ -88,7 +95,7 @@ export default function registerOrganization() {
 
   const [openMoreInfoIndividual, setOpenMoreInfoIndividual] = useState(false);
   const [moreInfoIndividualTarget, setMoreInfoIndividualTarget] = useState({
-    fullname: "",
+    fullName: "",
     nationalCode: "",
     personalCode: "",
     birthDate: "",
@@ -96,24 +103,21 @@ export default function registerOrganization() {
     gender: "",
     role: "",
     originalPhoneNumber: "",
-    anotherPhoneNumber: [],
-    telePhoneNumber: "",
-    eduction: "",
+    anotherPhoneNumber: "",
+    telephoneNumber: "",
+    education: "",
     email: "",
     address: "",
+    cLevel: "",
   });
   const handleOpenMoreInfoIndividual = (info) => {
     setMoreInfoIndividualTarget(info);
     setOpenMoreInfoIndividual(true);
   };
-  const handleOpenMoreInfoIndividualRow = (info) => {
-    if (window.innerWidth <= 768) {
-      handleOpenMoreInfoIndividual(info);
-    }
-  };
+
   const handleCloseMoreInfoIndividual = () => {
     setMoreInfoIndividualTarget({
-      fullname: "",
+      fullName: "",
       nationalCode: "",
       personalCode: "",
       birthDate: "",
@@ -121,11 +125,12 @@ export default function registerOrganization() {
       gender: "",
       role: "",
       originalPhoneNumber: "",
-      anotherPhoneNumber: [],
-      telePhoneNumber: "",
-      eduction: "",
+      anotherPhoneNumber: "",
+      telephoneNumber: "",
+      education: "",
       email: "",
       address: "",
+      cLevel: "",
     });
     setOpenMoreInfoIndividual(false);
   };
@@ -163,11 +168,12 @@ export default function registerOrganization() {
     gender: "",
     role: "",
     originalPhoneNumber: "",
-    anotherPhoneNumber: [],
-    telePhoneNumber: "",
-    eduction: "",
+    anotherPhoneNumber: "",
+    telephoneNumber: "",
+    education: "",
     email: "",
     address: "",
+    cLevel: "",
   });
   const handleOpenEditIndividualInfo = (info) => {
     setEditIndividualInfoTarget(info);
@@ -200,7 +206,7 @@ export default function registerOrganization() {
     editIndividualRelationshipInfoTarget,
     setEditIndividualRelationshipInfoTarget,
   ] = useState({
-    fullname: "",
+    fullName: "",
     phoneNumber: "",
     relationship: "",
     address: "",
@@ -211,22 +217,14 @@ export default function registerOrganization() {
   };
   const handleCloseEditIndividualRelationshipInfo = () => {
     setEditIndividualRelationshipInfoTarget({
-      fullname: "",
+      fullName: "",
       phoneNumber: "",
       relationship: "",
       address: "",
     });
     setOpenEditIndividualRelationshipInfo(false);
   };
-  const [filter, setFilter] = useState("organization");
-  const [anchorElFilter, setAnchorElFilter] = useState(null);
-  const openFilter = Boolean(anchorElFilter);
-  const handleOpenFilterSearchBarMenu = (event) => {
-    setAnchorElFilter(event.currentTarget);
-  };
-  const handleCloseFilterMenu = () => {
-    setAnchorElFilter(null);
-  };
+
   const {
     data: organizationList = [],
     isLoading: isDataLoading,
@@ -240,14 +238,15 @@ export default function registerOrganization() {
     moreInfoIndividualRelationshipTarget,
     setMoreInfoIndividualRelationshipTarget,
   ] = useState({
-    fullname: "",
-    PhoneNumber: "",
+    fullName: "",
+    phoneNumber: "",
     relationship: "",
     address: "",
   });
   const [openAddIndividualRelationship, setOpenAddIndividualRelationship] =
     useState(false);
-  const handleOpenAddIndividualRelationship = () => {
+  const handleOpenAddIndividualRelationship = (individualId) => {
+    setIndividualIdTarget(individualId);
     setOpenAddIndividualRelationship(true);
   };
   const handleCloseAddIndividualRelationship = () => {
@@ -278,7 +277,10 @@ export default function registerOrganization() {
                 placeholder="جست و جو"
                 id="outlined-adornment-amount"
                 inputProps={{
-                  style: { fontFamily: "IRANYekan", fontSize: "0.9rem" },
+                  style: {
+                    fontFamily: "__fonts_2f4189,__fonts_Fallback_2f4189",
+                    fontSize: "0.9rem",
+                  },
                 }}
                 startAdornment={
                   <InputAdornment position="start">
@@ -302,88 +304,71 @@ export default function registerOrganization() {
               />
             </FormControl>
           </div>
-          <div className="grow">
+          <div className={"w-[20%]"}>
             <div>
-              <button
-                onClick={handleOpenFilterSearchBarMenu}
-                className="flex items-center gap-2 text-[0.9rem] text-gray9F border border-1 border-solid border-borderGray  border-r-0 px-2 md:px-4 py-[0.8rem] md:py-[0.63rem]"
-              >
-                <span className="hidden md:inline">براساس</span>
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  width="16"
-                  height="16"
-                  viewBox="0 0 16 16"
-                  fill="none"
+              <FormControl fullWidth size="small">
+                <InputLabel
+                  id="demo-simple-select-label"
+                  sx={{
+                    fontFamily: "__fonts_2f4189,__fonts_Fallback_2f4189",
+                    fontSize: "0.8rem",
+                    color: "#9F9F9F",
+                  }}
                 >
-                  <path
-                    d="M4 6L8 10L12 6"
-                    stroke="#9F9F9F"
-                    stroke-linecap="round"
-                    stroke-linejoin="round"
-                  />
-                </svg>
-              </button>
-              <Menu
-                anchorEl={anchorElFilter}
-                id="account-menu"
-                open={openFilter}
-                onClose={handleCloseFilterMenu}
-                onClick={handleCloseFilterMenu}
-                PaperProps={{
-                  elevation: 0,
-                  sx: {
-                    width: "10rem",
-                    bgcolor: "#fff",
-                    borderRadius: "0.5rem",
-                    overflow: "visible",
-                    filter: "drop-shadow(0px 2px 3px rgba(0,0,0,0.1))",
-                    mt: 1.5,
-                    fontFamily: "IRANYekan",
-                    "& .MuiAvatar-root": {
-                      width: 32,
-                      height: 32,
-                      ml: -0.5,
-                      mr: 1,
-                    },
-                  },
-                }}
-                transformOrigin={{ horizontal: "left", vertical: "top" }}
-                anchorOrigin={{ horizontal: "left", vertical: "bottom" }}
-              >
-                <div className="px-2 py-2">
-                  <div className="">
-                    <button
-                      onClick={() => {
-                        setFilter("organization");
+                  براساس
+                </InputLabel>
+                <Select
+                  style={{ height: "2.8rem" }}
+                  labelId="demo-simple-select-label"
+                  id="demo-simple-select"
+                  value={filter}
+                  name="type"
+                  input={
+                    <OutlinedInput
+                      sx={{
+                        fontFamily: "__fonts_2f4189,__fonts_Fallback_2f4189",
+                        fontSize: "0.8rem",
                       }}
-                      className="w-full flex justify-center gap-2 py-3 px-2 hover:bg-neutral-100"
-                    >
-                      <span className="text-gray70 text-[0.8rem]  tracking-tighter">
-                        سازمان
-                      </span>
-                    </button>
-                    <button
-                      onClick={() => {
-                        setFilter("subOrganization");
-                      }}
-                      className="w-full flex justify-center gap-2 py-3 px-2 hover:bg-neutral-100 border-t border-t-[#D9D9D9]"
-                    >
-                      <span className="text-gray70 text-[0.8rem]  tracking-tighter">
-                        دپارتمان
-                      </span>
-                    </button>
-                    <button
-                      onClick={() => setFilter("individual")}
-                      className="w-full flex justify-center gap-2 py-3 px-2 hover:bg-neutral-100 border-t border-t-[#D9D9D9]"
-                    >
-                      <span className="text-gray70 text-[0.8rem]  tracking-tighter">
-                        افراد
-                      </span>
-                    </button>
-                  </div>
-                </div>
-              </Menu>
+                      label="براساس"
+                    />
+                  }
+                  sx={{
+                    fontFamily: "__fonts_2f4189,__fonts_Fallback_2f4189",
+                    fontSize: "0.8rem",
+                  }}
+                  onChange={(e) => {
+                    setFilter(e.target.value);
+                  }}
+                >
+                  <MenuItem
+                    value="organization"
+                    sx={{
+                      fontFamily: "__fonts_2f4189,__fonts_Fallback_2f4189",
+                      fontSize: "0.8rem",
+                    }}
+                  >
+                    سازمان
+                  </MenuItem>
+                  <MenuItem
+                    value="sub-organization"
+                    sx={{
+                      fontFamily: "__fonts_2f4189,__fonts_Fallback_2f4189",
+                      fontSize: "0.8rem",
+                    }}
+                  >
+                    دپارتمان
+                  </MenuItem>
+                  <MenuItem
+                    value="individual"
+                    sx={{
+                      fontFamily: "__fonts_2f4189,__fonts_Fallback_2f4189",
+                      fontSize: "0.8rem",
+                    }}
+                  >
+                    افراد
+                  </MenuItem>
+                </Select>
+              </FormControl>
             </div>
           </div>
         </div>
@@ -466,7 +451,7 @@ export default function registerOrganization() {
           <div className="">
             <div className="overflow-x-auto">
               <table className=" w-full table-auto overflow-scroll border-collapse border-spacing-0 text-sm text-center text-gray70  ">
-                <tbody className="table-body ">
+                <tbody className="div-body ">
                   {isDataLoading
                     ? [...Array(6)].map(() => (
                         <tr className="border-b">
@@ -534,11 +519,11 @@ export default function registerOrganization() {
                               aria-controls="panelbh-content"
                               id="panelbh-header"
                             >
-                              <div className="flex justify-between items-center ">
+                              <div className="flex  items-center ">
                                 <div className="hidden md:table-cell px-6   text-gray70 whitespace-nowrap ">
                                   {index + 1}
                                 </div>
-                                <div className="px-2 md:px-6  flex gap-2 text-gray70 whitespace-nowrap ">
+                                <div className="px-2 md:px-6 w-1/4 flex gap-2 text-gray70 whitespace-nowrap ">
                                   <span className="text-[#4E4E4E]">
                                     اسم دپارتمان :{" "}
                                   </span>
@@ -546,7 +531,7 @@ export default function registerOrganization() {
                                     {subOrganization.name}
                                   </span>
                                 </div>
-                                <div className="px-2 md:px-6   flex gap-2 text-gray70 whitespace-nowrap ">
+                                <div className="px-2 md:px-6 w-1/6  flex gap-2 text-gray70 whitespace-nowrap ">
                                   <span className="text-[#4E4E4E]">
                                     ظرفیت :{" "}
                                   </span>
@@ -555,7 +540,7 @@ export default function registerOrganization() {
                                   </span>
                                 </div>
 
-                                <div className="px-2 md:px-6   flex gap-2 text-gray70 whitespace-nowrap ">
+                                <div className="px-2 md:px-6 w-1/5  flex gap-2 text-gray70 whitespace-nowrap ">
                                   <span className="text-[#4E4E4E]">
                                     واحد :{" "}
                                   </span>
@@ -563,7 +548,7 @@ export default function registerOrganization() {
                                     {subOrganization.unit}
                                   </span>
                                 </div>
-                                <div className="px-2 md:px-6  flex gap-2 text-gray70 whitespace-nowrap ">
+                                <div className="px-2 md:px-6 w-1/6 flex gap-2 text-gray70 whitespace-nowrap ">
                                   <span className="text-[#4E4E4E]">نوع : </span>
                                   <span className=" text-sm">
                                     {subOrganization.type}
@@ -572,8 +557,13 @@ export default function registerOrganization() {
                                 <div className="hidden md:table-cell px-6    whitespace-nowrap ">
                                   <div>
                                     <button
-                                      className="flex text-gray60  border border-gray60 items-center text- px-3 py-2 rounded-full md:rounded"
-                                      onClick={handleOpenAddIndividual}
+                                      className="flex  text-gray60  border border-gray60 items-center text- px-3 py-2 rounded-full md:rounded"
+                                      onClick={() => {
+                                        handleOpenAddIndividual(
+                                          organization.id,
+                                          subOrganization.id
+                                        );
+                                      }}
                                     >
                                       <span className="hidden md:inline text-gray9F">
                                         ثبت افراد
@@ -698,289 +688,157 @@ export default function registerOrganization() {
                               </div>
                             </AccordionSummary>
                             <AccordionDetails>
-                              {/*subOrganization.individual?.map((individual) => (
-                                <div className="mt-10">
-                                  <div className="overflow-x-auto">
-                                    <table className=" w-full table-auto overflow-scroll border-collapse border-spacing-0 text-sm text-center text-gray70  ">
-                                      <tbody className="table-body">
-                                        <tr
-                                          onClick={() => {
-                                            handleOpenMoreInfoIndividualRow(
-                                              individual
-                                            );
-                                          }}
-                                          className="table-row border-b"
-                                        >
-                                          <Typography className="flex gap-2 items-center">
-                                            <span>نام و نام خانوادگی :</span>
-                                            {individual.fullname}
-                                          </Typography>
-                                          <Typography className="flex gap-2 items-center">
-                                            <span> کد ملی:</span>
-                                            {individual.nationalCode}
-                                          </Typography>
-                                          <Typography className="flex gap-2 items-center">
-                                            <span>نقش:</span>
-                                            {individual.role}
-                                          </Typography>
-                                          <div className="hidden md:flex gap-2 px-6  justify-center text-gray70 whitespace-nowrap ">
-                                            <button
-                                              onClick={() => {
-                                                handleOpenMoreInfoIndividual(
-                                                  individual
-                                                );
+                              <div className=" px-32 ">
+                                <div className="overflow-x-auto  border-r border-dotted border-black">
+                                  <table className=" w-full overflow-scroll individual-table border-collapse border-spacing-0 text-sm text-center text-gray70  ">
+                                    <tbody className=" ">
+                                      {subOrganization.individuals?.map(
+                                        (individual, index) => (
+                                          <tr className=" individual-table flex justify-between my-1 items-center ">
+                                            <Typography
+                                              sx={{
+                                                fontFamily:
+                                                  "__fonts_2f4189,__fonts_Fallback_2f4189",
                                               }}
-                                              className="border border-1 border-solid border-gray70 rounded p-[0.4rem] hover:bg-neutral-100"
+                                              className="flex gap-2 items-center w-1/3"
                                             >
-                                              <svg
-                                                xmlns="http://www.w3.org/2000/svg"
-                                                width="18"
-                                                height="18"
-                                                viewBox="0 0 18 18"
-                                                fill="none"
-                                              >
-                                                <path
-                                                  d="M9 4.56442V4.55554"
-                                                  stroke="#797979"
-                                                  stroke-linecap="round"
-                                                  stroke-linejoin="round"
-                                                />
-                                                <path
-                                                  d="M9 13.4445V7.22223"
-                                                  stroke="#797979"
-                                                  stroke-linecap="round"
-                                                  stroke-linejoin="round"
-                                                />
-                                                <path
-                                                  d="M9 17C13.4183 17 17 13.4183 17 9C17 4.58172 13.4183 1 9 1C4.58172 1 1 4.58172 1 9C1 13.4183 4.58172 17 9 17Z"
-                                                  stroke="#797979"
-                                                  stroke-linecap="round"
-                                                  stroke-linejoin="round"
-                                                />
-                                              </svg>
-                                            </button>
-                                            {
+                                              <span className="text-[#4E4E4E] pr-2 ">
+                                                نام و نام خانوادگی :
+                                              </span>
+                                              <span className=" text-sm">
+                                                {individual.fullName}
+                                              </span>
+                                            </Typography>
+                                            <Typography
+                                              sx={{
+                                                fontFamily:
+                                                  "__fonts_2f4189,__fonts_Fallback_2f4189",
+                                              }}
+                                              className="w-1/4 flex gap-2 items-center"
+                                            >
+                                              <span className="text-[#4E4E4E]">
+                                                {" "}
+                                                کد ملی:
+                                              </span>
+                                              <span className=" text-sm">
+                                                {individual.nationalCode}
+                                              </span>
+                                            </Typography>
+                                            <Typography
+                                              sx={{
+                                                fontFamily:
+                                                  "__fonts_2f4189,__fonts_Fallback_2f4189",
+                                              }}
+                                              className="w-1/5 flex gap-2 items-center"
+                                            >
+                                              <span className="text-[#4E4E4E]">
+                                                نقش:
+                                              </span>
+                                              <span className=" text-sm">
+                                                {individual?.role}
+                                              </span>
+                                            </Typography>
+                                            <div className="hidden md:flex gap-2 px-6  justify-center text-gray70 whitespace-nowrap ">
                                               <button
                                                 onClick={() => {
-                                                  handleOpenEditIndividualInfo(
+                                                  handleOpenMoreInfoIndividual(
                                                     individual
                                                   );
                                                 }}
-                                                className="border border-1 border-solid border-[#2492FF] rounded p-[0.4rem] hover:bg-blue-100"
+                                                className="border border-1 border-solid border-gray70 rounded p-[0.4rem] hover:bg-neutral-100"
                                               >
                                                 <svg
                                                   xmlns="http://www.w3.org/2000/svg"
-                                                  width="16"
-                                                  height="16"
-                                                  viewBox="0 0 16 16"
+                                                  width="18"
+                                                  height="18"
+                                                  viewBox="0 0 18 18"
                                                   fill="none"
                                                 >
-                                                  <g clip-path="url(#clip0_197_250)">
+                                                  <path
+                                                    d="M9 4.56442V4.55554"
+                                                    stroke="#797979"
+                                                    stroke-linecap="round"
+                                                    stroke-linejoin="round"
+                                                  />
+                                                  <path
+                                                    d="M9 13.4445V7.22223"
+                                                    stroke="#797979"
+                                                    stroke-linecap="round"
+                                                    stroke-linejoin="round"
+                                                  />
+                                                  <path
+                                                    d="M9 17C13.4183 17 17 13.4183 17 9C17 4.58172 13.4183 1 9 1C4.58172 1 1 4.58172 1 9C1 13.4183 4.58172 17 9 17Z"
+                                                    stroke="#797979"
+                                                    stroke-linecap="round"
+                                                    stroke-linejoin="round"
+                                                  />
+                                                </svg>
+                                              </button>
+                                              {
+                                                <button
+                                                  onClick={() => {
+                                                    handleOpenEditIndividualInfo(
+                                                      individual
+                                                    );
+                                                  }}
+                                                  className="border border-1 border-solid border-[#2492FF] rounded p-[0.4rem] hover:bg-blue-100"
+                                                >
+                                                  <svg
+                                                    xmlns="http://www.w3.org/2000/svg"
+                                                    width="16"
+                                                    height="16"
+                                                    viewBox="0 0 16 16"
+                                                    fill="none"
+                                                  >
+                                                    <g clip-path="url(#clip0_197_250)">
+                                                      <path
+                                                        d="M7.3335 2.66666H4.5335C3.41339 2.66666 2.85334 2.66666 2.42552 2.88464C2.04919 3.07639 1.74323 3.38235 1.55148 3.75867C1.3335 4.1865 1.3335 4.74655 1.3335 5.86666V11.4667C1.3335 12.5868 1.3335 13.1468 1.55148 13.5746C1.74323 13.951 2.04919 14.2569 2.42552 14.4487C2.85334 14.6667 3.41339 14.6667 4.5335 14.6667H10.1335C11.2536 14.6667 11.8137 14.6667 12.2415 14.4487C12.6178 14.2569 12.9238 13.951 13.1155 13.5746C13.3335 13.1468 13.3335 12.5868 13.3335 11.4667V8.66666M5.33348 10.6667H6.44984C6.77596 10.6667 6.93902 10.6667 7.09247 10.6298C7.22852 10.5972 7.35858 10.5433 7.47788 10.4702C7.61243 10.3877 7.72773 10.2724 7.95833 10.0418L14.3335 3.66666C14.8858 3.11437 14.8858 2.21894 14.3335 1.66666C13.7812 1.11437 12.8858 1.11437 12.3335 1.66665L5.95832 8.04182C5.72772 8.27242 5.61241 8.38772 5.52996 8.52228C5.45685 8.64157 5.40298 8.77163 5.37032 8.90768C5.33348 9.06113 5.33348 9.22419 5.33348 9.55031V10.6667Z"
+                                                        stroke="#2492FF"
+                                                        stroke-linecap="round"
+                                                        stroke-linejoin="round"
+                                                      />
+                                                    </g>
+                                                    <defs>
+                                                      <clipPath id="clip0_197_250">
+                                                        <rect
+                                                          width="16"
+                                                          height="16"
+                                                          fill="white"
+                                                        />
+                                                      </clipPath>
+                                                    </defs>
+                                                  </svg>
+                                                </button>
+                                              }
+                                              {
+                                                <button
+                                                  onClick={() => {
+                                                    handleOpenDeleteIndividual(
+                                                      individual.id
+                                                    );
+                                                  }}
+                                                  className="border border-1 border-solid border-[#FE4949] rounded p-[0.4rem] hover:bg-red-100"
+                                                >
+                                                  <svg
+                                                    xmlns="http://www.w3.org/2000/svg"
+                                                    width="16"
+                                                    height="16"
+                                                    viewBox="0 0 16 16"
+                                                    fill="none"
+                                                  >
                                                     <path
-                                                      d="M7.3335 2.66666H4.5335C3.41339 2.66666 2.85334 2.66666 2.42552 2.88464C2.04919 3.07639 1.74323 3.38235 1.55148 3.75867C1.3335 4.1865 1.3335 4.74655 1.3335 5.86666V11.4667C1.3335 12.5868 1.3335 13.1468 1.55148 13.5746C1.74323 13.951 2.04919 14.2569 2.42552 14.4487C2.85334 14.6667 3.41339 14.6667 4.5335 14.6667H10.1335C11.2536 14.6667 11.8137 14.6667 12.2415 14.4487C12.6178 14.2569 12.9238 13.951 13.1155 13.5746C13.3335 13.1468 13.3335 12.5868 13.3335 11.4667V8.66666M5.33348 10.6667H6.44984C6.77596 10.6667 6.93902 10.6667 7.09247 10.6298C7.22852 10.5972 7.35858 10.5433 7.47788 10.4702C7.61243 10.3877 7.72773 10.2724 7.95833 10.0418L14.3335 3.66666C14.8858 3.11437 14.8858 2.21894 14.3335 1.66666C13.7812 1.11437 12.8858 1.11437 12.3335 1.66665L5.95832 8.04182C5.72772 8.27242 5.61241 8.38772 5.52996 8.52228C5.45685 8.64157 5.40298 8.77163 5.37032 8.90768C5.33348 9.06113 5.33348 9.22419 5.33348 9.55031V10.6667Z"
-                                                      stroke="#2492FF"
+                                                      d="M10.6667 3.99998V3.46665C10.6667 2.71991 10.6667 2.34654 10.5213 2.06133C10.3935 1.81044 10.1895 1.60647 9.93865 1.47864C9.65344 1.33331 9.28007 1.33331 8.53333 1.33331H7.46667C6.71993 1.33331 6.34656 1.33331 6.06135 1.47864C5.81046 1.60647 5.60649 1.81044 5.47866 2.06133C5.33333 2.34654 5.33333 2.71991 5.33333 3.46665V3.99998M6.66667 7.66665V11M9.33333 7.66665V11M2 3.99998H14M12.6667 3.99998V11.4666C12.6667 12.5868 12.6667 13.1468 12.4487 13.5746C12.2569 13.951 11.951 14.2569 11.5746 14.4487C11.1468 14.6666 10.5868 14.6666 9.46667 14.6666H6.53333C5.41323 14.6666 4.85318 14.6666 4.42535 14.4487C4.04903 14.2569 3.74307 13.951 3.55132 13.5746C3.33333 13.1468 3.33333 12.5868 3.33333 11.4666V3.99998"
+                                                      stroke="#FE4949"
                                                       stroke-linecap="round"
                                                       stroke-linejoin="round"
                                                     />
-                                                  </g>
-                                                  <defs>
-                                                    <clipPath id="clip0_197_250">
-                                                      <rect
-                                                        width="16"
-                                                        height="16"
-                                                        fill="white"
-                                                      />
-                                                    </clipPath>
-                                                  </defs>
-                                                </svg>
-                                              </button>
-                                            }
-                                            {
-                                              <button
-                                                onClick={() => {
-                                                  handleOpenDeleteIndividual(
-                                                    individual.id
-                                                  );
-                                                }}
-                                                className="border border-1 border-solid border-[#FE4949] rounded p-[0.4rem] hover:bg-red-100"
-                                              >
-                                                <svg
-                                                  xmlns="http://www.w3.org/2000/svg"
-                                                  width="16"
-                                                  height="16"
-                                                  viewBox="0 0 16 16"
-                                                  fill="none"
-                                                >
-                                                  <path
-                                                    d="M10.6667 3.99998V3.46665C10.6667 2.71991 10.6667 2.34654 10.5213 2.06133C10.3935 1.81044 10.1895 1.60647 9.93865 1.47864C9.65344 1.33331 9.28007 1.33331 8.53333 1.33331H7.46667C6.71993 1.33331 6.34656 1.33331 6.06135 1.47864C5.81046 1.60647 5.60649 1.81044 5.47866 2.06133C5.33333 2.34654 5.33333 2.71991 5.33333 3.46665V3.99998M6.66667 7.66665V11M9.33333 7.66665V11M2 3.99998H14M12.6667 3.99998V11.4666C12.6667 12.5868 12.6667 13.1468 12.4487 13.5746C12.2569 13.951 11.951 14.2569 11.5746 14.4487C11.1468 14.6666 10.5868 14.6666 9.46667 14.6666H6.53333C5.41323 14.6666 4.85318 14.6666 4.42535 14.4487C4.04903 14.2569 3.74307 13.951 3.55132 13.5746C3.33333 13.1468 3.33333 12.5868 3.33333 11.4666V3.99998"
-                                                    stroke="#FE4949"
-                                                    stroke-linecap="round"
-                                                    stroke-linejoin="round"
-                                                  />
-                                                </svg>
-                                              </button>
-                                            }
-                                          </div>
-                                        </tr>
-                                      </tbody>
-                                    </table>
-                                  </div>
-                                </div>
-                                          ))*/}
-                              <div className="">
-                                <div className="overflow-x-auto">
-                                  <table className=" w-full table-auto overflow-scroll border-collapse border-spacing-0 text-sm text-center text-gray70  ">
-                                    <tbody className="table-body">
-                                      <tr
-                                        onClick={() => {
-                                          handleOpenMoreInfoIndividualRow(
-                                            individual
-                                          );
-                                        }}
-                                        className="  flex justify-evenly my-1 items-center"
-                                      >
-                                        <Typography
-                                          sx={{
-                                            fontFamily:
-                                              "__fonts_2f4189,__fonts_Fallback_2f4189",
-                                          }}
-                                          className="flex gap-2 items-center"
-                                        >
-                                          <span className="text-[#4E4E4E]">
-                                            نام و نام خانوادگی :
-                                          </span>
-                                          <span className=" text-sm">
-                                            {"individual.fullname"}
-                                          </span>
-                                        </Typography>
-                                        <Typography
-                                          sx={{
-                                            fontFamily:
-                                              "__fonts_2f4189,__fonts_Fallback_2f4189",
-                                          }}
-                                          className="flex gap-2 items-center"
-                                        >
-                                          <span className="text-[#4E4E4E]">
-                                            {" "}
-                                            کد ملی:
-                                          </span>
-                                          <span className=" text-sm">
-                                            {"individual.nationalCode"}
-                                          </span>
-                                        </Typography>
-                                        <Typography
-                                          sx={{
-                                            fontFamily:
-                                              "__fonts_2f4189,__fonts_Fallback_2f4189",
-                                          }}
-                                          className="flex gap-2 items-center"
-                                        >
-                                          <span className="text-[#4E4E4E]">
-                                            نقش:
-                                          </span>
-                                          <span className=" text-sm">
-                                            {"individual.role"}
-                                          </span>
-                                        </Typography>
-                                        <div className="hidden md:flex gap-2 px-6  justify-center text-gray70 whitespace-nowrap ">
-                                          <button
-                                            onClick={() => {
-                                              handleOpenMoreInfoIndividual(
-                                                individual
-                                              );
-                                            }}
-                                            className="border border-1 border-solid border-gray70 rounded p-[0.4rem] hover:bg-neutral-100"
-                                          >
-                                            <svg
-                                              xmlns="http://www.w3.org/2000/svg"
-                                              width="18"
-                                              height="18"
-                                              viewBox="0 0 18 18"
-                                              fill="none"
-                                            >
-                                              <path
-                                                d="M9 4.56442V4.55554"
-                                                stroke="#797979"
-                                                stroke-linecap="round"
-                                                stroke-linejoin="round"
-                                              />
-                                              <path
-                                                d="M9 13.4445V7.22223"
-                                                stroke="#797979"
-                                                stroke-linecap="round"
-                                                stroke-linejoin="round"
-                                              />
-                                              <path
-                                                d="M9 17C13.4183 17 17 13.4183 17 9C17 4.58172 13.4183 1 9 1C4.58172 1 1 4.58172 1 9C1 13.4183 4.58172 17 9 17Z"
-                                                stroke="#797979"
-                                                stroke-linecap="round"
-                                                stroke-linejoin="round"
-                                              />
-                                            </svg>
-                                          </button>
-                                          {
-                                            <button
-                                              onClick={() => {
-                                                handleOpenEditIndividualInfo(
-                                                  individual
-                                                );
-                                              }}
-                                              className="border border-1 border-solid border-[#2492FF] rounded p-[0.4rem] hover:bg-blue-100"
-                                            >
-                                              <svg
-                                                xmlns="http://www.w3.org/2000/svg"
-                                                width="16"
-                                                height="16"
-                                                viewBox="0 0 16 16"
-                                                fill="none"
-                                              >
-                                                <g clip-path="url(#clip0_197_250)">
-                                                  <path
-                                                    d="M7.3335 2.66666H4.5335C3.41339 2.66666 2.85334 2.66666 2.42552 2.88464C2.04919 3.07639 1.74323 3.38235 1.55148 3.75867C1.3335 4.1865 1.3335 4.74655 1.3335 5.86666V11.4667C1.3335 12.5868 1.3335 13.1468 1.55148 13.5746C1.74323 13.951 2.04919 14.2569 2.42552 14.4487C2.85334 14.6667 3.41339 14.6667 4.5335 14.6667H10.1335C11.2536 14.6667 11.8137 14.6667 12.2415 14.4487C12.6178 14.2569 12.9238 13.951 13.1155 13.5746C13.3335 13.1468 13.3335 12.5868 13.3335 11.4667V8.66666M5.33348 10.6667H6.44984C6.77596 10.6667 6.93902 10.6667 7.09247 10.6298C7.22852 10.5972 7.35858 10.5433 7.47788 10.4702C7.61243 10.3877 7.72773 10.2724 7.95833 10.0418L14.3335 3.66666C14.8858 3.11437 14.8858 2.21894 14.3335 1.66666C13.7812 1.11437 12.8858 1.11437 12.3335 1.66665L5.95832 8.04182C5.72772 8.27242 5.61241 8.38772 5.52996 8.52228C5.45685 8.64157 5.40298 8.77163 5.37032 8.90768C5.33348 9.06113 5.33348 9.22419 5.33348 9.55031V10.6667Z"
-                                                    stroke="#2492FF"
-                                                    stroke-linecap="round"
-                                                    stroke-linejoin="round"
-                                                  />
-                                                </g>
-                                                <defs>
-                                                  <clipPath id="clip0_197_250">
-                                                    <rect
-                                                      width="16"
-                                                      height="16"
-                                                      fill="white"
-                                                    />
-                                                  </clipPath>
-                                                </defs>
-                                              </svg>
-                                            </button>
-                                          }
-                                          {
-                                            <button
-                                              onClick={() => {
-                                                handleOpenDeleteIndividual(
-                                                  individual.id
-                                                );
-                                              }}
-                                              className="border border-1 border-solid border-[#FE4949] rounded p-[0.4rem] hover:bg-red-100"
-                                            >
-                                              <svg
-                                                xmlns="http://www.w3.org/2000/svg"
-                                                width="16"
-                                                height="16"
-                                                viewBox="0 0 16 16"
-                                                fill="none"
-                                              >
-                                                <path
-                                                  d="M10.6667 3.99998V3.46665C10.6667 2.71991 10.6667 2.34654 10.5213 2.06133C10.3935 1.81044 10.1895 1.60647 9.93865 1.47864C9.65344 1.33331 9.28007 1.33331 8.53333 1.33331H7.46667C6.71993 1.33331 6.34656 1.33331 6.06135 1.47864C5.81046 1.60647 5.60649 1.81044 5.47866 2.06133C5.33333 2.34654 5.33333 2.71991 5.33333 3.46665V3.99998M6.66667 7.66665V11M9.33333 7.66665V11M2 3.99998H14M12.6667 3.99998V11.4666C12.6667 12.5868 12.6667 13.1468 12.4487 13.5746C12.2569 13.951 11.951 14.2569 11.5746 14.4487C11.1468 14.6666 10.5868 14.6666 9.46667 14.6666H6.53333C5.41323 14.6666 4.85318 14.6666 4.42535 14.4487C4.04903 14.2569 3.74307 13.951 3.55132 13.5746C3.33333 13.1468 3.33333 12.5868 3.33333 11.4666V3.99998"
-                                                  stroke="#FE4949"
-                                                  stroke-linecap="round"
-                                                  stroke-linejoin="round"
-                                                />
-                                              </svg>
-                                            </button>
-                                          }
-                                        </div>
-                                      </tr>
+                                                  </svg>
+                                                </button>
+                                              }
+                                            </div>
+                                          </tr>
+                                        )
+                                      )}
                                     </tbody>
                                   </table>
                                 </div>
@@ -1005,6 +863,9 @@ export default function registerOrganization() {
         openAddSubOrganization={openAddSubOrganization}
       />
       <AddIndividualDialog
+        individualIdTarget={individualIdTarget}
+        organizationIdTarget={organizationIdTarget}
+        subOrganizationIdTarget={subOrganizationIdTarget}
         handleOpenAddIndividualRelationship={
           handleOpenAddIndividualRelationship
         }
@@ -1035,7 +896,7 @@ export default function registerOrganization() {
         handleCloseEditIndividualInfo={handleCloseEditIndividualInfo}
         openEditIndividualInfo={openEditIndividualInfo}
         handleOpenEditIndividualRelationshipInfo={
-          editIndividualRelationshipInfoTarget
+          handleOpenEditIndividualRelationshipInfo
         }
         editIndividualRelationshipInfoTarget={
           editIndividualRelationshipInfoTarget

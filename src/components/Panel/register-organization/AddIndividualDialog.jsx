@@ -13,13 +13,13 @@ import DatePicker from "react-multi-date-picker";
 import AddIndividualRelationshipDialog from "./AddIndividualRelationshipDialog";
 import { useLazyGetAllRoleQuery } from "@/redux/features/category/CategorySlice";
 
-import { useSaveMutation } from "@/redux/features/organization/individual/IndividualSlice";
+import { useSaveIndividualMutation } from "@/redux/features/organization/individual/IndividualSlice";
 
 export default function AddIndividualDialog(props) {
 
   const [individual, setIndividual] = useState(null)
-  const [cLevel,setClevel]=useState(false)
-
+  const [cLevel,setcLevel]=useState(false)
+  
   const [role,setRole] = useState(null)
   const [openRoleList,setOpenRoleList] = useState(false)
   const [getRoleList,{ data : roleList  = [] , isLoading : isRoleLoading, isError: roleIsError }] = useLazyGetAllRoleQuery()
@@ -36,43 +36,45 @@ export default function AddIndividualDialog(props) {
     setRole(null)
     
   }
-
-  const [submitData, { isLoading: isSubmitLoading, error }] = useSaveMutation()
+  
+  
+  const [submitData, { isLoading: isSubmitLoading, error }] = useSaveIndividualMutation()
   const schema = yup.object().shape({
-    fullname: yup.string("لطفا نام و نام خانوادگی شخص را درست وارد نمایید").required("لطفا نام و نام خانوادگی شخص را وارد کنید"),
-    nationalCode: yup.string().matches(/^[0-9]{10}$/,"کد ملی فقط میتواند شامل عدد باشد").min(10, "تعداد رقم وارد شده کم می باشد").max(10, "تعداد رقم وارد شده زیاد می باشد").required("لطفا کد ملی را وارد کنید"),
-    personalCode: yup.string(),
+    fullName: yup.string("لطفا نام و نام خانوادگی شخص را درست وارد نمایید").required("لطفا نام و نام خانوادگی شخص را وارد کنید"),
+    nationalCode: yup.string().min(10, "تعداد رقم وارد شده کم می باشد").max(10, "تعداد رقم وارد شده زیاد می باشد").required("لطفا کد ملی را وارد کنید"),
+    personalCode: yup.string().required("لطفا کد پرسنلی خود را وارد کنید"),
     birthDate: yup.date().required("لطفا تاریخ تولد را وارد کنید"),
     fatherName: yup.string("لطفا نام پدر را درست وارد نمایید").required("لطفا نام پدر را وارد نمایید"),
     gender: yup.string().required("لطفا جنسیت را وارد نمایید"),
-    roleId: yup.string().required("لطفا نقش را انتخاب کنید"),
-    originalPhoneNumber: yup.string("لطفا فقط عدد وارد نمایید").required("لطفا شماره همراه را وارد نمایید").min(11, "تعداد رقم وارد شده کم می باشد").max(11, "تعداد رقم وارد شده زیاد می باشد"),
-    anotherPhoneNumber: yup.string("لطفا فقط عدد وارد نمایید").required("لطفا شماره همراه را وارد نمایید").min(11, "تعداد رقم وارد شده کم می باشد").max(11, "تعداد رقم وارد شده زیاد می باشد"),
-    telePhoneNumber: yup.string("لطفا فقط عدد وارد نمایید").required("لطفا شماره تلفن را با کد شهر (به عنوان مثال برای تهران 021) وارد نمایید").min(11, "تعداد رقم وارد شده کم می باشد").max(11, "تعداد رقم وارد شده زیاد می باشد"),
+    role: yup.string(),
+    originalPhoneNumber: yup.string().required("لطفا شماره همراه را وارد نمایید").min(11, "تعداد رقم وارد شده کم می باشد").max(11, "تعداد رقم وارد شده زیاد می باشد"),
+    anotherPhoneNumber: yup.string().required("لطفا شماره همراه را وارد نمایید").min(11, "تعداد رقم وارد شده کم می باشد").max(11, "تعداد رقم وارد شده زیاد می باشد"),
+    telephoneNumber: yup.string().required("لطفا تلفن ثابت خود را وارد کنید را وارد نمایید").min(11, "لطفا شماره تلفن ثابت خود را به همراه کد استان وارد کنید برای مثال برای تهران 021").max(11, "تعداد رقم وارد شده زیاد می باشد"),
     education: yup.string().required(),
     email: yup.string().email("فرمت ایمیل باید صحیح باشد").required("لطفا ایمیل را وارد نمایید"),
     address: yup.string().required("لطفا آدرس را وارد کنید"),
 
   });
 
-
+  
   const formik = useFormik({
     initialValues: {
-      fullname: "",
+      fullName: "",
       nationalCode: "",
       personalCode: "",
       birthDate: "",
       fatherName: "",
       gender: "",
-      roleId: "",
-      roleName:"",
+      role: "",
       originalPhoneNumber: "",
       anotherPhoneNumber: "",
-      telePhoneNumber: "",
+      telephoneNumber: "",
       education: "",
       email: "",
       address: "",
-      cLevel:""
+      cLevel:"",
+      organizationId:"",
+      subOrganizationId:""
 
     },
 
@@ -81,14 +83,15 @@ export default function AddIndividualDialog(props) {
     validationSchema: schema,
 
     onSubmit: async (individual, helpers) => {
-      let updateIndividual = { ...individual }
+      let updateIndividual = { ...individual,organizationId:props.organizationIdTarget,subOrganizationId:props.subOrganizationIdTarget }
       const userData = await submitData(updateIndividual)
       handleReset()
       props.handleCloseAddIndividual()
-      props.handleOpenAddIndividualRelationship()
+      props.handleOpenAddIndividualRelationship(userData.data.id)
+      
     },
   });
-
+  
 
   const [date, setDate] = useState("")
   const handleDateInput = (value) => {
@@ -134,11 +137,11 @@ export default function AddIndividualDialog(props) {
                     fullWidth
                     placeholder="نام و نام خانوادگی"
                     type="text"
-                    name="fullname"
-                    value={formik.values.fullname}
+                    name="fullName"
+                    value={formik.values.fullName}
                     onChange={formik.handleChange}
-                    error={formik.touched.fullname && Boolean(formik.errors.fullname)}
-                    helperText={formik.touched.fullname && formik.errors.fullname}
+                    error={formik.touched.fullName && Boolean(formik.errors.fullName)}
+                    helperText={formik.touched.fullName && formik.errors.fullName}
                     inputProps={{style: {fontFamily: "__fonts_2f4189,__fonts_Fallback_2f4189", fontSize: "0.8rem"}}}
                                         InputLabelProps={{style: {fontFamily: "__fonts_2f4189,__fonts_Fallback_2f4189"}}}/>
                                         </div>
@@ -171,9 +174,9 @@ export default function AddIndividualDialog(props) {
                   </div>
                 </div>
                 <div className="flex justify-between">
-                  <div className="w-[45%]">
+                  <div className=" flex w-[45%] flex-col">
                     <DatePicker
-                    
+                      
                       calendarPosition={`bottom`}
                       className="red"
                       digits={['0', '1', '2', '3', '4', '5', '6', '7', '8', '9']}
@@ -215,12 +218,22 @@ export default function AddIndividualDialog(props) {
                       locale={persian_fa}>
                       <button className="px-2 pb-4" onClick={() => {
                         setDate("")
-                        formik.setFieldValue("expirationDate", "")
+                        formik.setFieldValue("birthDate", "")
                       }}>
                         ریست
                       </button>
                     </DatePicker>
+                    <div>
+                                        {
+                                            Boolean(formik.errors.birthDate) && (
+                                                <span className="mx-3 text-[0.6rem] text-red-600 ">
+                                                    {formik.errors.birthDate}
+                                                </span>
+                                            )
+                                        }
+                                    </div>
                   </div>
+                  
                   <div className="w-[45%]">
 
                     <TextField
@@ -253,8 +266,8 @@ export default function AddIndividualDialog(props) {
                                 input={<OutlinedInput sx={{fontFamily: "__fonts_2f4189,__fonts_Fallback_2f4189", fontSize: "0.8rem"}}  label="جنسیت" />}
                                 sx={{fontFamily: "__fonts_2f4189,__fonts_Fallback_2f4189", fontSize: "0.8rem"}}
                                 onChange={formik.handleChange}>
-                                <MenuItem value="man" sx={{fontFamily: "__fonts_2f4189,__fonts_Fallback_2f4189", fontSize: "0.8rem"}}>مرد</MenuItem>
-                                <MenuItem value="woman" sx={{fontFamily: "__fonts_2f4189,__fonts_Fallback_2f4189", fontSize: "0.8rem"}}>زن</MenuItem>
+                                <MenuItem value="male" sx={{fontFamily: "__fonts_2f4189,__fonts_Fallback_2f4189", fontSize: "0.8rem"}}>مرد</MenuItem>
+                                <MenuItem value="female" sx={{fontFamily: "__fonts_2f4189,__fonts_Fallback_2f4189", fontSize: "0.8rem"}}>زن</MenuItem>
                                 <MenuItem value="other" sx={{fontFamily: "__fonts_2f4189,__fonts_Fallback_2f4189", fontSize: "0.8rem"}}>دیگر</MenuItem>
                             </Select>
                                         
@@ -281,13 +294,13 @@ export default function AddIndividualDialog(props) {
                                         value={role}
                                         onChange={(event, newValue) => {
                                             setRole(newValue)
-                                            formik.setFieldValue("roleId", newValue?.id)
-                                            formik.setFieldValue("roleName", newValue?.persianName)
+                                            formik.setFieldValue("role", newValue?.role)
+                                            
                                         }}
                                         renderInput={(params) =>
                                             <TextField
-                                                error={formik.touched.roleId && Boolean(formik.errors.roleId)}
-                                                helperText={formik.touched.roleId && formik.errors.roleId}
+                                                error={formik.touched.role && Boolean(formik.errors.role)}
+                                                helperText={formik.touched.role && formik.errors.role}
                                                 {...params}
                                                 InputProps={{
                                                     ...params.InputProps,
@@ -340,11 +353,11 @@ export default function AddIndividualDialog(props) {
                       fullWidth
                       placeholder="شماره ثابت"
                       type="text"
-                      name="telePhoneNumber"
-                      value={formik.values.telePhoneNumber}
+                      name="telephoneNumber"
+                      value={formik.values.telephoneNumber}
                       onChange={formik.handleChange}
-                      error={formik.touched.telePhoneNumber && Boolean(formik.errors.telePhoneNumber)}
-                      helperText={formik.touched.telePhoneNumber && formik.errors.telePhoneNumber}
+                      error={formik.touched.telephoneNumber && Boolean(formik.errors.telephoneNumber)}
+                      helperText={formik.touched.telephoneNumber && formik.errors.telephoneNumber}
                       inputProps={{style: {fontFamily: "__fonts_2f4189,__fonts_Fallback_2f4189", fontSize: "0.8rem"}}}
                       InputLabelProps={{style: {fontFamily: "__fonts_2f4189,__fonts_Fallback_2f4189"}}}/>
                   </div>
@@ -367,12 +380,12 @@ export default function AddIndividualDialog(props) {
                                 input={<OutlinedInput sx={{fontFamily: "__fonts_2f4189,__fonts_Fallback_2f4189", fontSize: "0.8rem"}}  label="تحصیلات" />}
                                 sx={{fontFamily: "__fonts_2f4189,__fonts_Fallback_2f4189", fontSize: "0.8rem"}}
                                 onChange={formik.handleChange}>
-                                <MenuItem value="highSchool" sx={{fontFamily: "__fonts_2f4189,__fonts_Fallback_2f4189", fontSize: "0.8rem"}}>زیر دیپلم</MenuItem>
-                                <MenuItem value="diploma" sx={{fontFamily: "__fonts_2f4189,__fonts_Fallback_2f4189", fontSize: "0.8rem"}}>دیپلم</MenuItem>
-                                <MenuItem value="associate" sx={{fontFamily: "__fonts_2f4189,__fonts_Fallback_2f4189", fontSize: "0.8rem"}}>فوق دیپلم</MenuItem>
-                                <MenuItem value="bachelor" sx={{fontFamily: "__fonts_2f4189,__fonts_Fallback_2f4189", fontSize: "0.8rem"}}>لیسانس</MenuItem>
-                                <MenuItem value="master" sx={{fontFamily: "__fonts_2f4189,__fonts_Fallback_2f4189", fontSize: "0.8rem"}}>فوق لیسانس</MenuItem>
-                                <MenuItem value="doctroal" sx={{fontFamily: "__fonts_2f4189,__fonts_Fallback_2f4189", fontSize: "0.8rem"}}>دکتری</MenuItem>
+                                <MenuItem value="زیر دیپلم" sx={{fontFamily: "__fonts_2f4189,__fonts_Fallback_2f4189", fontSize: "0.8rem"}}>زیر دیپلم</MenuItem>
+                                <MenuItem value="دیپلم" sx={{fontFamily: "__fonts_2f4189,__fonts_Fallback_2f4189", fontSize: "0.8rem"}}>دیپلم</MenuItem>
+                                <MenuItem value="فوق دیپلم" sx={{fontFamily: "__fonts_2f4189,__fonts_Fallback_2f4189", fontSize: "0.8rem"}}>فوق دیپلم</MenuItem>
+                                <MenuItem value="لیسانس" sx={{fontFamily: "__fonts_2f4189,__fonts_Fallback_2f4189", fontSize: "0.8rem"}}>لیسانس</MenuItem>
+                                <MenuItem value="فوق لیسانس" sx={{fontFamily: "__fonts_2f4189,__fonts_Fallback_2f4189", fontSize: "0.8rem"}}>فوق لیسانس</MenuItem>
+                                <MenuItem value="دکتری" sx={{fontFamily: "__fonts_2f4189,__fonts_Fallback_2f4189", fontSize: "0.8rem"}}>دکتری</MenuItem>
                             </Select>
                                         
                   </FormControl>
@@ -412,11 +425,11 @@ export default function AddIndividualDialog(props) {
                 </div>
                 <div className="w-full  border border-[#D9D9D9] flex flex-col gap-2 px-4">
                     <FormControlLabel 
-                     onClick={()=>{setClevel(!cLevel)}} control={<Checkbox />}  label={<Typography sx={{fontFamily: "__fonts_2f4189,__fonts_Fallback_2f4189",fontSize:"14px"}}>دسترسی مدیریت</Typography>} />
+                     onClick={()=>{setcLevel(!cLevel)}} control={<Checkbox />}  label={<Typography sx={{fontFamily: "__fonts_2f4189,__fonts_Fallback_2f4189",fontSize:"14px"}}>دسترسی مدیریت</Typography>} />
                 </div>
                 <div>
                   {
-                    isSubmitLoading ? (<button disabled type="submit"
+                    isSubmitLoading ? (<button  disabled type="submit"
                       className="hidden flex gap-3 items-center justify-center w-full rounded-[0.5rem] py-3  border border-solid border-1 border-neutral-400 font-bold text-textGray bg-neutral-200">
                       <TailSpin
                         height="20"
@@ -429,7 +442,7 @@ export default function AddIndividualDialog(props) {
                         visible={true} />
                       بعدی
                     </button>) : (
-                      <button type="submit"
+                      <button type="submit" 
                         className="w-full rounded-[0.5rem] py-3 hover:border hover:opacity-80 font-bold  bg-mainRed text-white">بعدی
                       </button>
                     )
@@ -440,7 +453,9 @@ export default function AddIndividualDialog(props) {
           </DialogContentText>
         </DialogContent>
       </Dialog>
-      <AddIndividualRelationshipDialog handleCloseAddIndividualRelationship={props.handleCloseAddIndividualRelationship}
+      <AddIndividualRelationshipDialog
+      individualIdTarget={props.individualIdTarget}
+       handleCloseAddIndividualRelationship={props.handleCloseAddIndividualRelationship}
         openAddIndividualRelationship={props.openAddIndividualRelationship} />
     </>
   )

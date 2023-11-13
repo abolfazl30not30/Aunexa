@@ -113,7 +113,8 @@ export default function EditInfoDialog(props) {
             value: props.editInfoTarget?.value,
             unit: props.editInfoTarget?.unit,
             priority: props.editInfoTarget?.priority,
-            description:props.editInfoTarget?.description
+            description:props.editInfoTarget?.description,
+            productImage:props.editInfoTarget?.productImage
         })
         handleSetProductInput(props.editInfoTarget?.productId)
         handleSetUnitInput(props.editInfoTarget?.unit)
@@ -138,6 +139,7 @@ export default function EditInfoDialog(props) {
             unit: "",
             priority: false,
             description:"",
+            productImage:""
         },
 
         validationSchema: schema,
@@ -201,6 +203,7 @@ export default function EditInfoDialog(props) {
                                             setProduct(newValue)
                                             formik.setFieldValue("productId", newValue?.id)
                                             formik.setFieldValue("productName", newValue?.persianName)
+                                            formik.setFieldValue("productImage",newValue?.imageURL)
                                         }}
                                         renderInput={(params) =>
                                             <TextField

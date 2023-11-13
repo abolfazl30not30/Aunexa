@@ -29,6 +29,7 @@ export default function AddSubOrganizationDialog(props) {
     const schema = yup.object().shape({
         name: yup.string().required("لطفا نام دپارتمان را وارد کنید"),
         type:yup.string().required(),
+        capacity:yup.string()
     });
 
     const formik = useFormik({
@@ -98,7 +99,7 @@ export default function AddSubOrganizationDialog(props) {
                                         name="capacity"
                                         value={formik.values.capacity}
                                         onChange={formik.handleChange}
-                                        error={formik.touched.capacity && Boolean(formik.errors.capacity)}
+                                        
                                         inputProps={{style: {fontFamily: "__fonts_2f4189,__fonts_Fallback_2f4189", fontSize: "0.8rem"}}}
                                         InputLabelProps={{style: {fontFamily: "__fonts_2f4189,__fonts_Fallback_2f4189"}}}/>
                                 </div>
@@ -126,10 +127,10 @@ export default function AddSubOrganizationDialog(props) {
                                             input={<OutlinedInput sx={{fontFamily: "__fonts_2f4189,__fonts_Fallback_2f4189", fontSize: "0.8rem"}}  label="نوع دپارتمان" />}
                                             sx={{fontFamily: "__fonts_2f4189,__fonts_Fallback_2f4189", fontSize: "0.8rem"}}
                                             onChange={formik.handleChange}>
-                                            <MenuItem value="factory" sx={{fontFamily: "__fonts_2f4189,__fonts_Fallback_2f4189", fontSize: "0.8rem"}}>کارخانه</MenuItem>
-                                            <MenuItem value="primaryStore" sx={{fontFamily: "__fonts_2f4189,__fonts_Fallback_2f4189", fontSize: "0.8rem"}}>انبار مواد اولیه</MenuItem>
-                                            <MenuItem value="equipmentStore" sx={{fontFamily: "__fonts_2f4189,__fonts_Fallback_2f4189", fontSize: "0.8rem"}}>انبار تجهیزات</MenuItem>
-                                            <MenuItem value="productStore" sx={{fontFamily: "__fonts_2f4189,__fonts_Fallback_2f4189", fontSize: "0.8rem"}}>انبار محصولات</MenuItem>
+                                            <MenuItem value="کارخانه" sx={{fontFamily: "__fonts_2f4189,__fonts_Fallback_2f4189", fontSize: "0.8rem"}}>کارخانه</MenuItem>
+                                            <MenuItem value="انبار مواد اولیه" sx={{fontFamily: "__fonts_2f4189,__fonts_Fallback_2f4189", fontSize: "0.8rem"}}>انبار مواد اولیه</MenuItem>
+                                            <MenuItem value="انبار تجهیزات" sx={{fontFamily: "__fonts_2f4189,__fonts_Fallback_2f4189", fontSize: "0.8rem"}}>انبار تجهیزات</MenuItem>
+                                            <MenuItem value="انبار محصولات" sx={{fontFamily: "__fonts_2f4189,__fonts_Fallback_2f4189", fontSize: "0.8rem"}}>انبار محصولات</MenuItem>
                                         </Select>
                                         
                                     </FormControl>

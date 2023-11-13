@@ -109,6 +109,7 @@ export default function AddDataDialog(props) {
             unit: "",
             priority: false,
             description:"",
+            productImage:""
         },
 
         validationSchema: schema,
@@ -172,6 +173,7 @@ export default function AddDataDialog(props) {
                                             setProduct(newValue)
                                             formik.setFieldValue("productId", newValue?.id)
                                             formik.setFieldValue("productName", newValue?.persianName)
+                                            formik.setFieldValue("productImage",newValue?.imageURL)
                                         }}
                                         renderInput={(params) =>
                                             <TextField

@@ -6,22 +6,19 @@ import {
 } from "@mui/material";
 import Dialog from "@mui/material/Dialog";
 import {TailSpin} from "react-loader-spinner";
-import { useDeleteIndividualMutation } from "@/redux/features/organization/individual/IndividualSlice";
 
 
-export default function DeleteIndividualDialog(props) {
-    const [handleDelete ,{isLoading}] = useDeleteIndividualMutation()
-    const deleteData = async () =>{
-        const res = await handleDelete(props.deleteTargetIndividualId)
-        props.handleCloseDeleteIndividual()
-    }
+
+export default function CloseTicketDialog(props) {
+    
+    
     return(
         <>
             <Dialog
                 fullWidth={true}
-                open={props.openDeleteIndividual}
+                open={props.openCloseTicket}
                 keepMounted
-                onClose={props.handleCloseDeleteIndividual}
+                onClose={props.handleCloseCloseTicket}
                 aria-describedby="alert-dialog-slide-description"
                 PaperProps={{
                     style: {fontFamily: "__fonts_2f4189,__fonts_Fallback_2f4189"}
@@ -29,22 +26,22 @@ export default function DeleteIndividualDialog(props) {
                 <DialogContent>
                     <DialogContentText style={{fontFamily: "__fonts_2f4189,__fonts_Fallback_2f4189"}}>
                         <div className="flex justify-end">
-                            <button onClick={props.handleCloseDeleteIndividual}>
+                            <button onClick={props.handleCloseCloseTicket}>
                                 <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 14 14" fill="none">
                                     <path d="M13 1L1 13M1 1L13 13" stroke="black" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
                                 </svg>
                             </button>
                         </div>
                         <div className="flex justify-center mb-7">
-                            <h3 className="text-[1.2rem]">حذف</h3>
+                            <h3 className="text-[1.2rem]">{props.ticketStatus}</h3>
                         </div>
                         <div className="flex  justify-center">
-                            <h2 >آیا از حذف این آیتم مطمئن هستید؟</h2>
+                            <h2 >آیا از بستن این تیکت مطمئن هستید؟</h2>
                         </div>
                         <div className="flex justify-center mt-10 gap-4">
                             <div>
-                                <button onClick={deleteData}
-                                        className="px-6 py-2 text-[0.8rem] rounded-[0.5rem] py-3 hover:border hover:opacity-80 font-bold  bg-mainRed text-white">حذف
+                                <button onClick={()=>props.setTicketStatus("closed")}
+                                        className="px-6 py-2 text-[0.8rem] rounded-[0.5rem] py-3 hover:border hover:opacity-80 font-bold  bg-mainRed text-white">بستن
                                 </button>
                                 <button disabled type="submit"
                                         className="hidden flex gap-3 items-center justify-center w-full rounded-[0.5rem] py-3  border border-solid border-1 border-neutral-400 font-bold text-textGray bg-neutral-200">
@@ -57,11 +54,11 @@ export default function DeleteIndividualDialog(props) {
                                         wrapperStyle={{}}
                                         wrapperClass=""
                                         visible={true}/>
-                                    حذف
+                                    بستن
                                 </button>
                             </div>
                             <div>
-                                <button onClick={props.handleCloseDeleteIndividual} className="px-6 py-2 text-[0.8rem]  rounded-[0.5rem] py-3 hover:border hover:opacity-80 font-bold bg-neutral-400 text-white">بستن</button>
+                                <button onClick={props.handleCloseCloseTicket} className="px-6 py-2 text-[0.8rem]  rounded-[0.5rem] py-3 hover:border hover:opacity-80 font-bold bg-neutral-400 text-white">انصراف</button>
                             </div>
                         </div>
                     </DialogContentText>

@@ -16,7 +16,19 @@ export const ticketSlice = apiSlice.injectEndpoints({
       }),
       invalidatesTags: ["ticket"],
     }),
+    updateTicket: builder.mutation({
+      query: (body) => ({
+        url: "party/ticket",
+        method: "PUT",
+        body: body,
+      }),
+      invalidatesTags: ["ticket"],
+    }),
   }),
 });
 
-export const { useGetAllTicketsQuery, useSaveTicketMutation } = ticketSlice;
+export const {
+  useGetAllTicketsQuery,
+  useSaveTicketMutation,
+  useUpdateTicketMutation,
+} = ticketSlice;

@@ -6,7 +6,7 @@ import Dialog from "@mui/material/Dialog";
 import {TailSpin} from "react-loader-spinner";
 import * as yup from "yup";
 import {useFormik} from "formik";
-import { useUpdateMutation } from "@/redux/features/organization/individual/IndividualRelationshipSlice";
+import { useUpdateRelationshipMutation } from "@/redux/features/organization/individual/IndividualRelationshipSlice";
 
 
 export default function EditIndividualRelationshipInfoDialog(props) {
@@ -14,9 +14,9 @@ export default function EditIndividualRelationshipInfoDialog(props) {
   const [individualRelationship,setIndividualRelationship] = useState(null)
 
  
+    const relationshipCount=["اول","دوم"]
 
-
-    const [submitData, { isLoading:isSubmitLoading ,error}] = useUpdateMutation()
+    const [submitData, { isLoading:isSubmitLoading ,error}] = useUpdateRelationshipMutation()
 
     
 
@@ -24,20 +24,26 @@ export default function EditIndividualRelationshipInfoDialog(props) {
 
 
     const schema = yup.object().shape({
-        fullname: yup.string("لطفا نام و نام خانوادگی شخص را درست وارد نمایید"),
-        phoneNumber:yup.number(),
+        fullName: yup.string(),
+        phoneNumber:yup.string().min(11,"تعداد رقم وارد شده کم می باشد").max(11,"تعداد رقم وارد شده زیاد می باشد"),
         relationship:yup.string(),
         address: yup.string(),
+        
       
     });
 
     const formik = useFormik({
 
-        initialValues: {
-            fullname: "",
-            phoneNumber:"",
-            relationship:"",
-            address: "",
+        initialValues: {        
+            relationshipsInformation:[
+                {
+                    individualId:"",
+                    fullName:"",
+                    phoneNumber:"",
+                    relationship:"",
+                    address:""
+                }
+            ]
         },
 
         
@@ -45,9 +51,8 @@ export default function EditIndividualRelationshipInfoDialog(props) {
         validationSchema: schema,
 
         onSubmit: async (individualRelationship,helpers) => {
-            const body = {...individualRelationship,
-                organizationId:window.sessionStorage.getItem("organizationId"),
-                subOrganizationId:window.sessionStorage.getItem("subOrganizationId"),
+            const body = {...individualRelationship,individualId:props.editIndividualRelationshipInfoTarget,
+                
                 
             }
             const userData = await submitData(body)
@@ -61,7 +66,7 @@ export default function EditIndividualRelationshipInfoDialog(props) {
             
 
             props.handleCloseEditIndividualRelationshipInfo()
-            handleOpenEditIndividualRelationshipRelationship()
+            
         },
     });
    
@@ -71,8 +76,8 @@ export default function EditIndividualRelationshipInfoDialog(props) {
         
         
         formik.setValues({
-            id:props.editIndividualRelationshipInfoTarget?.id,
-            fullname: props.editIndividualRelationshipInfoTarget?.fullname,
+            id:props.editIndividualRelationshipInfoTarget?.individualId,
+            fullName: props.editIndividualRelationshipInfoTarget?.fullName,
             phoneNumber:props.editIndividualRelationshipInfoTarget?.phoneNumber,
             relationship:props.editIndividualRelationshipInfoTarget?.relationship,
             address: props.editIndividualRelationshipInfoTarget?.address,
@@ -119,45 +124,53 @@ export default function EditIndividualRelationshipInfoDialog(props) {
                         <div className="flex justify-center mb-7">
                             <h3 className="text-[1.1rem]">ویرایش اطلاعات نزدیکان</h3>
                         </div>
+                        
                         <form className="flex justify-center " onSubmit={formik.handleSubmit} method="POST">
                             <div className="flex flex-col justify-center w-[90%] gap-5">
-                            <div>
+                            {relationshipCount.map((item,index)=>(
+                                <div className="space-y-4">
+                                     <div>
+                                    <span>
+                                        فرد {item}
+                                    </span>
+                                </div>
+                                <div>
                                     <TextField
                                         fullWidth
                                         placeholder="نام و نام خانوادگی"
                                         type="text"
-                                        name="fullname"
-                                        value={formik.values.fullname}
+                                        name={`relationshipsInformation.${index}.fullName`}
+                                        value={formik.values.fullName}
                                         onChange={formik.handleChange}
-                                        error={formik.touched.fullname && Boolean(formik.errors.fullname)}
                                         inputProps={{style: {fontFamily: "__fonts_2f4189,__fonts_Fallback_2f4189", fontSize: "0.8rem"}}}
-                        InputLabelProps={{style: {fontFamily: "__fonts_2f4189,__fonts_Fallback_2f4189"}}}/>
+                                        InputLabelProps={{style: {fontFamily: "__fonts_2f4189,__fonts_Fallback_2f4189"}}}/>
                                 </div>
                                 <div className="flex justify-between">
-                                  <div className="w-2/5">
+                                  <div className="w-[45%]">
                                     <TextField
                                         fullWidth
                                         placeholder="شماره تماس"
                                         type="text"
-                                        name="phoneNumber"
+                                        name={`relationshipsInformation.${index}.phoneNumber`}
                                         value={formik.values.phoneNumber}
                                         onChange={formik.handleChange}
                                         error={formik.touched.phoneNumber && Boolean(formik.errors.phoneNumber)}
-                                       
+                                        helperText={formik.touched.phoneNumber && formik.errors.phoneNumber}
                                         inputProps={{style: {fontFamily: "__fonts_2f4189,__fonts_Fallback_2f4189", fontSize: "0.8rem"}}}
-                        InputLabelProps={{style: {fontFamily: "__fonts_2f4189,__fonts_Fallback_2f4189"}}}/>
+                                        InputLabelProps={{style: {fontFamily: "__fonts_2f4189,__fonts_Fallback_2f4189"}}}/>
                                   </div>
-                                  <div className="w-2/5">
+                                  <div className="w-[45%]">
                                     <TextField
                                         fullWidth
                                         placeholder="نسبت"
                                         type="text"
-                                        name="relationship"
+                                        name={`relationshipsInformation.${index}.relationship`}
                                         value={formik.values.relationship}
                                         onChange={formik.handleChange}
                                         error={formik.touched.relationship && Boolean(formik.errors.relationship)}
+                                        helperText={formik.touched.relationship && formik.errors.relationship}
                                         inputProps={{style: {fontFamily: "__fonts_2f4189,__fonts_Fallback_2f4189", fontSize: "0.8rem"}}}
-                        InputLabelProps={{style: {fontFamily: "__fonts_2f4189,__fonts_Fallback_2f4189"}}}/>
+                                        InputLabelProps={{style: {fontFamily: "__fonts_2f4189,__fonts_Fallback_2f4189"}}}/>
                                   </div>
                                 </div>
                                   <div className="">
@@ -166,15 +179,19 @@ export default function EditIndividualRelationshipInfoDialog(props) {
                                         fullWidth
                                         placeholder="آدرس"
                                         type="text"
-                                        name="address"
+                                        name={`relationshipsInformation.${index}.address`}
                                         value={formik.values.address}
                                         onChange={formik.handleChange}
                                         error={formik.touched.address && Boolean(formik.errors.address)}
+                                        helperText={formik.touched.address && formik.errors.address}
                                         inputProps={{style: {fontFamily: "__fonts_2f4189,__fonts_Fallback_2f4189", fontSize: "0.8rem"}}}
                                         InputLabelProps={{style: {fontFamily: "__fonts_2f4189,__fonts_Fallback_2f4189"}}}/>
                                     
 
                                   </div>
+                                </div>
+                            ))}
+                                 
                                 <div>
                                     {
                                         isSubmitLoading ? (<button disabled type="submit"
@@ -188,10 +205,10 @@ export default function EditIndividualRelationshipInfoDialog(props) {
                                                 wrapperStyle={{}}
                                                 wrapperClass=""
                                                 visible={true}/>
-                                            بعدی
+                                            ثبت
                                         </button>) : (
                                             <button type="submit"
-                                                    className="w-full rounded-[0.5rem] py-3 hover:border hover:opacity-80 font-bold  bg-mainRed text-white">بعدی
+                                                    className="w-full rounded-[0.5rem] py-3 hover:border hover:opacity-80 font-bold  bg-mainRed text-white">ثبت
                                             </button>
                                         )
                                     }

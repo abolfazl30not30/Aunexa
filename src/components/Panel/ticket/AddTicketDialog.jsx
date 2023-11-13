@@ -11,9 +11,47 @@ import { useSaveTicketMutation } from "@/redux/features/ticket/TicketSlice";
 import {
    useLazyGetAllSubOrganizationQuery
 } from "@/redux/features/category/CategorySlice";
+import { TextareaAutosize as BaseTextareaAutosize } from '@mui/base/TextareaAutosize';
+import { styled } from '@mui/system';
 
 export default function AddTicketDialog(props) {
   
+    const blue = {
+        100: '#DAECFF',
+        200: '#b6daff',
+        400: '#3399FF',
+        500: '#007FFF',
+        600: '#0072E5',
+        900: '#003A75',
+      };
+    
+      const grey = {
+        50: '#F3F6F9',
+        100: '#E5EAF2',
+        200: '#DAE2ED',
+        300: '#C7D0DD',
+        400: '#B0B8C4',
+        500: '#9DA8B7',
+        600: '#6B7A90',
+        700: '#434D5B',
+        800: '#303740',
+        900: '#1C2025',
+      };
+      const Textarea = styled(BaseTextareaAutosize)(
+        ({ theme }) => `
+        width:100%;
+        font-family: __fonts_2f4189,__fonts_Fallback_2f4189;
+        font-size: 0.875rem;
+        font-weight: 400;
+        line-height: 1.5;
+        padding: 8px 12px;
+        border-radius: 8px;
+        color: ${theme.palette.mode === 'dark' ? grey[300] : grey[900]};
+        background: ${theme.palette.mode === 'dark' ? grey[900] : '#fff'};
+        border: 1px solid ${theme.palette.mode === 'dark' ? grey[700] : grey[200]};
+        
+      `,
+      );
     
 
     const [subOrganization,setSubOrganization] = useState(null)
@@ -74,7 +112,7 @@ export default function AddTicketDialog(props) {
                 aria-describedby="alert-dialog-slide-description"
                 PaperProps={{
                     style: {
-                        fontFamily: "IRANYekan",
+                        fontFamily: "__fonts_2f4189,__fonts_Fallback_2f4189",
                     },
                 }}>
                 <DialogContent>
@@ -92,9 +130,14 @@ export default function AddTicketDialog(props) {
                             <h3 className="text-[1.1rem]">ثبت تیکت جدید</h3>
                         </div>
                         <form className="flex justify-center " onSubmit={formik.handleSubmit} method="POST">
-                            <div className="flex flex-col justify-center w-[90%] gap-5">
-                                <div className="flex justify-between gap-2">
-                                    <div className="w-1/2" >
+                            <div className="flex flex-col  w-[90%] gap-8">
+                                     
+                                    <div className=" space-y-2" >
+                                    <div>
+                                        <span className="text-gray60 text-sm">
+                                            واحد مربوطه
+                                        </span>
+                                     </div>
                                     <Autocomplete
                                             open={openSubOrganizationList}
                                             onOpen={() => {
@@ -135,12 +178,17 @@ export default function AddTicketDialog(props) {
                                                             </React.Fragment>
                                                         )
                                                     }}
-                                                    placeholder="از دپارتمان"
+                                                    placeholder="به دپارتمان"
                                                 />}
                                         />
 
                                     </div>
-                                    <div className="w-1/2 h-full">
+                                    <div className="space-y-2 ">
+                                    <div>
+                                        <span className="text-gray60 text-sm">
+                                             عنوان
+                                        </span>
+                                     </div>
                                     <TextField
                                         fullWidth
                                         placeholder="موضوع پیام (اجباری)"
@@ -153,7 +201,16 @@ export default function AddTicketDialog(props) {
                                         inputProps={{style: {fontFamily: "__fonts_2f4189,__fonts_Fallback_2f4189", fontSize: "0.8rem"}}}
                                             InputLabelProps={{style: {fontFamily: "__fonts_2f4189,__fonts_Fallback_2f4189"}}}/>
                                     </div>
-                                </div>
+                                    <div  className="space-y-2 ">
+                                    <div >
+                                        <span className="text-gray60 text-sm">
+                                             متن پیام
+                                        </span>
+                                     </div>
+                                        <Textarea aria-label="minimum height" minRows={10} />
+                                    </div>
+                                    
+                                
                                 <div className="mt-16">
                                     {
                                         isSubmitLoading ? (<button disabled type="submit"

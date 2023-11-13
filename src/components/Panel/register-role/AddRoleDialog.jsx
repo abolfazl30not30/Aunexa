@@ -31,11 +31,14 @@ export default function AddRoleDialog(props) {
     const [submitData, {isLoading: isSubmitLoading, error}] = useSaveRoleMutation()
     const schema = yup.object().shape({
         role: yup.string().required("لطفا نام نقش را وارد کنید"),
+        
     });
 
     const formik = useFormik({
         initialValues: {
             role: "",
+            authorities:[],
+            pages:[]
         },
 
         validationSchema: schema,
@@ -46,6 +49,7 @@ export default function AddRoleDialog(props) {
             console.log(listOfChecked)
             handleReset()
             props.handleCloseAddRole()
+            setListOfChecked({})
         },
     });
 
@@ -72,14 +76,18 @@ export default function AddRoleDialog(props) {
             }
         }
         setListOfChecked(booleanListAuthorities)
-        console.log(listOfChecked)
+        
     }
 
     const handleChangeChecked = (e) =>{
-        console.log(e.target.id,e.target.checked)
-        let updateCheckedList = {...listOfChecked}
+        
+        
+        if(e.target.checked){
+            let updateCheckedList = {...listOfChecked}
         updateCheckedList[e.target.id] = e.target.checked
-        setListOfChecked(updateCheckedList)
+            setListOfChecked(updateCheckedList)
+        }
+        
     }
 
     useEffect(()=>{
@@ -100,11 +108,11 @@ export default function AddRoleDialog(props) {
                 aria-describedby="alert-dialog-slide-description"
                 PaperProps={{
                     style: {
-                        fontFamily: "IRANYekan",
+                        fontFamily: "__fonts_2f4189,__fonts_Fallback_2f4189",
                     },
                 }}>
                 <DialogContent>
-                    <DialogContentText style={{fontFamily: "IRANYekan"}}>
+                    <DialogContentText style={{fontFamily: "__fonts_2f4189,__fonts_Fallback_2f4189"}}>
                         <div className="flex justify-end">
                             <button onClick={() => {
                                 props.handleCloseAddRole();
@@ -132,21 +140,22 @@ export default function AddRoleDialog(props) {
                                         onChange={formik.handleChange}
                                         error={formik.touched.role && Boolean(formik.errors.role)}
                                         helperText={formik.touched.role && formik.errors.role}
-                                        inputProps={{style: {fontFamily: "IRANYekan", fontSize: "0.8rem"}}}
-                                        InputLabelProps={{style: {fontFamily: "IRANYekan"}}}/>
+                                        inputProps={{style: {fontFamily: "__fonts_2f4189,__fonts_Fallback_2f4189", fontSize: "0.8rem"}}}
+                                        InputLabelProps={{style: {fontFamily: "__fonts_2f4189,__fonts_Fallback_2f4189"}}}/>
                                 </div>
 
                                 <div className="w-full  flex flex-col gap-2">
 
                                     <List
                                         sx={{
+                                            
                                             bgcolor: 'background.paper',
                                             border: "1px solid #D9D9D9",
                                             color: "#29262A"}}
                                         component="nav"
                                         aria-labelledby="nested-list-subheader"
                                         subheader={
-                                            <ListSubheader component="div" id="nested-list-subheader">
+                                            <ListSubheader sx={{fontFamily:"__fonts_2f4189,__fonts_Fallback_2f4189",}} component="div" id="nested-list-subheader">
                                                 دسترسی ها
                                             </ListSubheader>}>
                                         {
@@ -183,7 +192,6 @@ export default function AddRoleDialog(props) {
                                                             <li>
                                                                 <Box sx={{display: 'flex', flexDirection: 'column',fontFamily: "__fonts_2f4189,__fonts_Fallback_2f4189", ml: 3}}>
                                                                     <FormControlLabel
-                                                                        sx={{fontFamily: "__fonts_2f4189,__fonts_Fallback_2f4189", fontSize: "0.8rem"}}
                                                                         label={page.authorities[`${page.title}::ReadAll`]}
                                                                         control={<Checkbox checked={listOfChecked[`${page.title}::ReadAll`]}
                                                                                            id={`${page.title}::ReadAll`}
@@ -193,7 +201,6 @@ export default function AddRoleDialog(props) {
                                                             <li>
                                                                 <Box sx={{display: 'flex', flexDirection: 'column', ml: 3}}>
                                                                     <FormControlLabel
-                                                                        sx={{fontFamily: "__fonts_2f4189,__fonts_Fallback_2f4189", fontSize: "0.8rem"}}
                                                                         label={page.authorities[`${page.title}::Create`]}
                                                                         control={<Checkbox checked={listOfChecked[`${page.title}::Create`]}
                                                                                            id={`${page.title}::Create`}
@@ -238,6 +245,7 @@ export default function AddRoleDialog(props) {
                                                 wrapperStyle={{}}
                                                 wrapperClass=""
                                                 visible={true}/>
+                                                
                                             ثبت
                                         </button>) : (
                                             <button type="submit"
