@@ -4,7 +4,7 @@ export const IndividualRelationshipSlice = apiSlice.injectEndpoints({
   endpoints: (builder) => ({
     saveRelationship: builder.mutation({
       query: (body) => ({
-        url: "party/relationship-information",
+        url: "party/relationship-information/bulk",
         method: "POST",
         body: body,
       }),
@@ -12,7 +12,7 @@ export const IndividualRelationshipSlice = apiSlice.injectEndpoints({
     }),
     updateRelationship: builder.mutation({
       query: (body) => ({
-        url: `party/relationship-information`,
+        url: `party/relationship-information/bulk`,
         method: "PUT",
         body: body,
       }),

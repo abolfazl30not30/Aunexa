@@ -44,23 +44,42 @@ function Ticket() {
     setPage(value);
   };
 
+  const [openEditTicketInfo, setOpenEditTicketInfo] = useState(false);
+  const [editTicketInfoTarget, setEditTicketInfoTarget] = useState({
+    status: "",
+    targetDepartmentName: "",
+    sourceDepartmentName: "",
+    sourceDepartmentId: "",
+    targetDepartmentId: "",
+    createAt: "",
+    updateAt: "",
+    ticketNumber: "",
+    title: "",
+  });
+  const handleOpenEditTicketInfo = (info) => {
+    setEditTicketInfoTarget(info);
+    setOpenEditTicketInfo(true);
+  };
+  const handleCloseEditTicketInfo = () => {
+    setEditTicketInfoTarget({
+      status: "",
+      targetDepartmentName: "",
+      sourceDepartmentName: "",
+      sourceDepartmentId: "",
+      targetDepartmentId: "",
+      createAt: "",
+      updateAt: "",
+      ticketNumber: "",
+      title: "",
+    });
+    setOpenEditTicketInfo(false);
+  };
+
   const {
     data: ticketData = [],
     isLoading: isDataLoading,
     isError: isDataError,
   } = useGetAllTicketsQuery({ page }, { refetchOnMountOrArgChange: true });
-  const [ticketStatus, setTicketStatus] = useState();
-  const [openCloseTicket, setOpenCloseTicket] = useState(false);
-  const [closeTicketId, setCloseTicketId] = useState("");
-  const handleOpenCloseTicket = (id, status) => {
-    setTicketStatus(status);
-    setCloseTicketId(id);
-    setOpenCloseTicket(true);
-  };
-  const handleCloseCloseTicket = () => {
-    setCloseTicketId("");
-    setOpenCloseTicket(false);
-  };
 
   return (
     <>
@@ -263,7 +282,7 @@ function Ticket() {
                                       در انتظار پاسخ
                                     </span>
                                   ) : data.status === "inProgress" ? (
-                                    <span className="bg-[#ffe9d4] text-[#e95a18]">
+                                    <span className=" text-[0.8rem] bg-[#ffe9d4] text-[#e95a18] py-1 px-2 rounded-xl">
                                       در حال بررسی
                                     </span>
                                   ) : null}
@@ -293,10 +312,7 @@ function Ticket() {
                                   </Link>
                                   <button
                                     onClick={() => {
-                                      handleOpenCloseTicket(
-                                        data.id,
-                                        data.status
-                                      );
+                                      handleOpenEditTicketInfo(data.id);
                                     }}
                                     className="border border-1 border-solid border-[#FE4949] rounded p-[0.4rem] hover:bg-red-100"
                                   >
@@ -340,7 +356,7 @@ function Ticket() {
                                 </td>
                                 <td className="px-2 md:px-6 py-4  text-gray70 whitespace-nowrap ">
                                   {data.status === "closed" ? (
-                                    <span className="bg-[#fdd5d2] text-[#f31c1c]">
+                                    <span className=" text-[0.8rem] bg-[#fdd5d2] text-[#f31c1c] py-1 px-2 rounded-xl">
                                       بسته شده
                                     </span>
                                   ) : null}
@@ -370,10 +386,7 @@ function Ticket() {
                                   </Link>
                                   <button
                                     onClick={() => {
-                                      handleOpenCloseTicket(
-                                        data.id,
-                                        data.status
-                                      );
+                                      handleOpenEditTicketInfo(data);
                                     }}
                                     className="border border-1 border-solid border-[#FE4949] rounded p-[0.4rem] hover:bg-red-100"
                                   >
@@ -420,11 +433,9 @@ function Ticket() {
         openAddTicket={openAddTicket}
       />
       <CloseTicketDialog
-        ticketStatus={ticketStatus}
-        setTicketStatus={setTicketStatus}
-        closeTicketId={closeTicketId}
-        openCloseTicket={openCloseTicket}
-        handleCloseCloseTicket={handleCloseCloseTicket}
+        editTicketInfoTarget={editTicketInfoTarget}
+        handleCloseEditTicketInfo={handleCloseEditTicketInfo}
+        openEditTicketInfo={openEditTicketInfo}
       />
     </>
   );

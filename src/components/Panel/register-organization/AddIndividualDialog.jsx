@@ -11,7 +11,7 @@ import persian from "react-date-object/calendars/persian";
 import persian_fa from "react-date-object/locales/persian_fa";
 import DatePicker from "react-multi-date-picker";
 import AddIndividualRelationshipDialog from "./AddIndividualRelationshipDialog";
-import { useLazyGetAllRoleQuery } from "@/redux/features/category/CategorySlice";
+import { useLazyGetAllRoleNameQuery } from "@/redux/features/category/CategorySlice";
 
 import { useSaveIndividualMutation } from "@/redux/features/organization/individual/IndividualSlice";
 
@@ -22,7 +22,7 @@ export default function AddIndividualDialog(props) {
   
   const [role,setRole] = useState(null)
   const [openRoleList,setOpenRoleList] = useState(false)
-  const [getRoleList,{ data : roleList  = [] , isLoading : isRoleLoading, isError: roleIsError }] = useLazyGetAllRoleQuery()
+  const [getRoleList,{ data : roleList  = [] , isLoading : isRoleLoading, isError: roleIsError }] = useLazyGetAllRoleNameQuery()
   useEffect(()=>{
       if(openRoleList){
           getRoleList()

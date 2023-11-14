@@ -109,6 +109,20 @@ export default function registerOrganization() {
     email: "",
     address: "",
     cLevel: "",
+    relationshipsInformation: [
+      {
+        fullName: "",
+        phoneNumber: "",
+        address: "",
+        relationship: "",
+      },
+      {
+        fullName: "",
+        phoneNumber: "",
+        address: "",
+        relationship: "",
+      },
+    ],
   });
   const handleOpenMoreInfoIndividual = (info) => {
     setMoreInfoIndividualTarget(info);
@@ -131,6 +145,20 @@ export default function registerOrganization() {
       email: "",
       address: "",
       cLevel: "",
+      relationshipsInformation: [
+        {
+          fullName: "",
+          phoneNumber: "",
+          address: "",
+          relationship: "",
+        },
+        {
+          fullName: "",
+          phoneNumber: "",
+          address: "",
+          relationship: "",
+        },
+      ],
     });
     setOpenMoreInfoIndividual(false);
   };
@@ -189,7 +217,7 @@ export default function registerOrganization() {
       gender: "",
       role: "",
       originalPhoneNumber: "",
-      anotherPhoneNumber: [],
+      anotherPhoneNumber: "",
       telePhoneNumber: "",
       eduction: "",
       email: "",
@@ -206,10 +234,20 @@ export default function registerOrganization() {
     editIndividualRelationshipInfoTarget,
     setEditIndividualRelationshipInfoTarget,
   ] = useState({
-    fullName: "",
-    phoneNumber: "",
-    relationship: "",
-    address: "",
+    relationshipsInformation: [
+      {
+        fullName: "",
+        phoneNumber: "",
+        relationship: "",
+        address: "",
+      },
+      {
+        fullName: "",
+        phoneNumber: "",
+        relationship: "",
+        address: "",
+      },
+    ],
   });
   const handleOpenEditIndividualRelationshipInfo = (info) => {
     setEditIndividualRelationshipInfoTarget(info);
@@ -217,11 +255,22 @@ export default function registerOrganization() {
   };
   const handleCloseEditIndividualRelationshipInfo = () => {
     setEditIndividualRelationshipInfoTarget({
-      fullName: "",
-      phoneNumber: "",
-      relationship: "",
-      address: "",
+      relationshipsInformation: [
+        {
+          fullName: "",
+          phoneNumber: "",
+          relationship: "",
+          address: "",
+        },
+        {
+          fullName: "",
+          phoneNumber: "",
+          relationship: "",
+          address: "",
+        },
+      ],
     });
+    editIndividualRelationshipInfoTarget;
     setOpenEditIndividualRelationshipInfo(false);
   };
 
@@ -238,10 +287,20 @@ export default function registerOrganization() {
     moreInfoIndividualRelationshipTarget,
     setMoreInfoIndividualRelationshipTarget,
   ] = useState({
-    fullName: "",
-    phoneNumber: "",
-    relationship: "",
-    address: "",
+    relationshipsInformation: [
+      {
+        fullName: "",
+        phoneNumber: "",
+        relationship: "",
+        address: "",
+      },
+      {
+        fullName: "",
+        phoneNumber: "",
+        relationship: "",
+        address: "",
+      },
+    ],
   });
   const [openAddIndividualRelationship, setOpenAddIndividualRelationship] =
     useState(false);

@@ -38,8 +38,16 @@ export default function AddIndividualRelationshipDialog(props) {
 
     const formik = useFormik({
         initialValues: {
-           
-           
+        individualId:"",
+        firstFullName: "",
+        firstPhoneNumber:"",
+        firstRelationship:"",
+        firstAddress:"",
+        secondFullName: "",
+        secondPhoneNumber:"",
+        secondRelationship:"",
+        secondAddress:""
+          
             
 
 
@@ -49,8 +57,25 @@ export default function AddIndividualRelationshipDialog(props) {
 
         validationSchema: schema,
 
-        onSubmit: async (individualRelationShip,helpers) => {
-            let updateIndividualRelationShip = {...individualRelationShip,individualId:props.individualIdTarget}
+        onSubmit: async (individualRelationShip) => {
+           
+            let updateIndividualRelationShip = {relationshipsInformation:[
+                {
+                    individualId:props.individualIdTarget,
+                    fullName: individualRelationShip.firstFullName,
+                    phoneNumber:individualRelationShip.firstPhoneNumber,
+                    relationship:individualRelationShip.firstRelationship,
+                    address:individualRelationShip.firstAddress
+                },
+                {
+                    individualId:props.individualIdTarget,
+                    fullName:individualRelationShip.secondFullName,
+                    phoneNumber:individualRelationShip.secondPhoneNumber,
+                    relationship:individualRelationShip.secondRelationship,
+                    address:individualRelationShip.secondAddress
+                }
+               ]}
+           
             const userData = await submitData(updateIndividualRelationShip)
             handleReset()
             props.handleCloseAddIndividualRelationship()

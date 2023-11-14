@@ -79,23 +79,22 @@ margin:0px !important;}
     margin-top: 5px !important;
     margin-bottom: 5px !important;
 }
+.MuiButtonBase-root {
+    
+   gap: 16px !important;
+   padding-right: 4px !important;
+}
 .MuiTabs-flexContainer{
     display: flex !important;
-    justify-content: space-evenly !important;
-   
-}
-.MuiTabs-flexContainer .Mui-selected {
-    color:#DB3746 !important ;
-}
-.MuiButtonBase-root .MuiTab-wrapper{
+    justify-content: center !important;
     
+}
+.MuiTabs-flexContainer .Mui-selected{
+   color: #DB3746 !important;
+}
+.MuiTab-wrapper{
     font-size: 18px !important;
-    font-family: "__fonts_2f4189,__fonts_Fallback_2f4189" !important;
 }
-
-.MuiBox-root {
-    margin-bottom: 32px;
-}
-.MuiTabs-flexContainer{
-    border-color:#D9D9D9 !important;
+.MuiTabs-root{
+    margin-bottom: 32px !important;
 }

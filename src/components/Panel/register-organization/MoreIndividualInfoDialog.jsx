@@ -29,8 +29,9 @@ export default function MoreIndividualInfoDialog(props) {
                             </button>
                         </div>
                         <div className="flex justify-center mb-5">
-                            <h3 className="text-[1.1rem]">جزییات</h3>
+                            <h3 className="text-[1.1rem]">{console.log(props.moreInfoIndividualTarget)}</h3>
                         </div>
+                        
                         <div className="hidden md:flex md:justify-center mb-4">
                             <div className="w-full md:w-[70%] flex flex-col gap-2">
                                 <div className="flex flex-col">
@@ -167,55 +168,66 @@ export default function MoreIndividualInfoDialog(props) {
                                 </div>
                                            
                                    
-                                   <div className="flex flex-col gap-5 border-t my-4 py-3">
-                                    <div>
-                                        <span>
-                                             اطلاعات آشنای اول 
-                                        </span>
-                                    </div>
-                                        <div className="flex flex-col">
-                                            <div className="mb-2">
-                                                <span className="text-[0.9rem] text-gray70 ">نام و نام خانوادگی</span>
-                                            </div>
-                                            <div className="border border-[#D9D9D9]  flex justify-start px-4">
-                                                <div className="p-2">
-                                                    <span className="text-[#29262A] text-[0.9rem]">{props.moreInfoIndividualRelationshipTarget?.fullName}</span>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div className="flex flex-col">
-                                            <div className="mb-2">
-                                                <span className="text-[0.9rem] text-gray70 ">شماره تماس</span>
-                                            </div>
-                                            <div className="border border-[#D9D9D9]  flex justify-start px-4">
-                                                <div className="p-2">
-                                                    <span className="text-[#29262A] text-[0.9rem]">{"rel.phoneNumber"}</span>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div className="flex flex-col">
-                                            <div className="mb-2">
-                                                <span className="text-[0.9rem] text-gray70 ">نسبت</span>
-                                            </div>
-                                            <div className="border border-[#D9D9D9]  flex justify-start px-4">
-                                                <div className="p-2">
-                                                    <span className="text-[#29262A] text-[0.9rem]">{"rel.relationship"}</span>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div className="flex flex-col">
-                                            <div className="mb-2">
-                                                <span className="text-[0.9rem] text-gray70 ">آدرس</span>
-                                            </div>
-                                            <div className="border border-[#D9D9D9]  flex justify-start px-4">
-                                                <div className="p-2">
-                                                    <span className="text-[#29262A] text-[0.9rem]">{"rel.address"}</span>
-                                                </div>
-                                            </div>
-                                        </div>
+                                  {props.moreInfoIndividualTarget?.relationshipsInformation[0]?.fullName ?
+                                     <div className="flex flex-col gap-5 border-t my-4 py-3">
+                                     <div>
+                                         <span>
+                                              اطلاعات آشنای اول 
+                                         </span>
+                                     </div>
                                         
-                                   </div>
-                                   <div className="flex flex-col gap-5 border-t my-4 py-3">
+                                          <div className="flex flex-col">
+                                          <div className="mb-2">
+                                              <span className="text-[0.9rem] text-gray70 ">نام و نام خانوادگی</span>
+                                          </div>
+                                          <div className="border border-[#D9D9D9]  flex justify-start px-4">
+                                              <div className="p-2">
+                                                  <span className="text-[#29262A] text-[0.9rem]">{props.moreInfoIndividualTarget?.relationshipsInformation[0].fullName}</span>
+                                              </div>
+                                          </div>
+                                      </div> 
+                                        
+                                         { props.moreInfoIndividualTarget?.relationshipsInformation[0]?.phoneNumber?
+                                             <div className="flex flex-col">
+                                             <div className="mb-2">
+                                                 <span className="text-[0.9rem] text-gray70 ">شماره تماس</span>
+                                             </div>
+                                             <div className="border border-[#D9D9D9]  flex justify-start px-4">
+                                                 <div className="p-2">
+                                                     <span className="text-[#29262A] text-[0.9rem]">{props.moreInfoIndividualTarget?.relationshipsInformation[0]?.phoneNumber}</span>
+                                                 </div>
+                                             </div>
+                                         </div>:null
+                                         }
+                                         {props.moreInfoIndividualTarget?.relationshipsInformation[0]?.relationship ?
+                                             <div className="flex flex-col">
+                                             <div className="mb-2">
+                                                 <span className="text-[0.9rem] text-gray70 ">نسبت</span>
+                                             </div>
+                                             <div className="border border-[#D9D9D9]  flex justify-start px-4">
+                                                 <div className="p-2">
+                                                     <span className="text-[#29262A] text-[0.9rem]">{props.moreInfoIndividualTarget?.relationshipsInformation[0]?.relationship}</span>
+                                                 </div>
+                                             </div>
+                                         </div>:null
+                                         }
+                                         {props.moreInfoIndividualTarget?.relationshipsInformation[0]?.address ?
+                                             <div className="flex flex-col">
+                                             <div className="mb-2">
+                                                 <span className="text-[0.9rem] text-gray70 ">آدرس</span>
+                                             </div>
+                                             <div className="border border-[#D9D9D9]  flex justify-start px-4">
+                                                 <div className="p-2">
+                                                     <span className="text-[#29262A] text-[0.9rem]">{props.moreInfoIndividualTarget?.relationshipsInformation[0]?.address}</span>
+                                                 </div>
+                                             </div>
+                                         </div>:null
+                                         }
+                                         
+                                    </div>:null
+                                  }
+                                   { props.moreInfoIndividualTarget?.relationshipsInformation[1]?.fullName ?
+                                    <div className="flex flex-col gap-5 border-t my-4 py-3">
                                     <div>
                                         <span>
                                             اطلاعات آشنای دوم
@@ -227,7 +239,7 @@ export default function MoreIndividualInfoDialog(props) {
                                             </div>
                                             <div className="border border-[#D9D9D9]  flex justify-start px-4">
                                                 <div className="p-2">
-                                                    <span className="text-[#29262A] text-[0.9rem]">{"rel.fullName"}</span>
+                                                    <span className="text-[#29262A] text-[0.9rem]">{props.moreInfoIndividualTarget?.relationshipsInformation[1]?.fullName}</span>
                                                 </div>
                                             </div>
                                         </div>
@@ -237,7 +249,7 @@ export default function MoreIndividualInfoDialog(props) {
                                             </div>
                                             <div className="border border-[#D9D9D9]  flex justify-start px-4">
                                                 <div className="p-2">
-                                                    <span className="text-[#29262A] text-[0.9rem]">{"rel.phoneNumber"}</span>
+                                                    <span className="text-[#29262A] text-[0.9rem]">{props.moreInfoIndividualTarget?.relationshipsInformation[1]?.phoneNumber}</span>
                                                 </div>
                                             </div>
                                         </div>
@@ -247,7 +259,7 @@ export default function MoreIndividualInfoDialog(props) {
                                             </div>
                                             <div className="border border-[#D9D9D9]  flex justify-start px-4">
                                                 <div className="p-2">
-                                                    <span className="text-[#29262A] text-[0.9rem]">{"rel.relationship"}</span>
+                                                    <span className="text-[#29262A] text-[0.9rem]">{props.moreInfoIndividualTarget?.relationshipsInformation[1]?.relationship}</span>
                                                 </div>
                                             </div>
                                         </div>
@@ -257,13 +269,14 @@ export default function MoreIndividualInfoDialog(props) {
                                             </div>
                                             <div className="border border-[#D9D9D9]  flex justify-start px-4">
                                                 <div className="p-2">
-                                                    <span className="text-[#29262A] text-[0.9rem]">{"rel.address"}</span>
+                                                    <span className="text-[#29262A] text-[0.9rem]">{props.moreInfoIndividualTarget?.relationshipsInformation[1]?.address}</span>
                                                 </div>
                                             </div>
                                         </div>
                                         
-                                   </div>
-                                
+                                   </div> :null
+                                   }
+           
                             </div>
                         </div>
                         
@@ -274,7 +287,7 @@ export default function MoreIndividualInfoDialog(props) {
                             <button onClick={()=>{props.handleOpenEditIndividualInfo(props.moreInfoIndividualTarget);props.handleCloseMoreInfoIndividual()}}  className="px-5 py-2 text-[0.8rem] text-[#4087DB] border border-[#4087DB] rounded hover:bg-[#4087DB] hover:text-white">
                                 ویرایش
                             </button>
-                        </div>
+                        </div> 
                     </DialogContentText>
                 </DialogContent>
             </Dialog>

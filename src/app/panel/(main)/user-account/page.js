@@ -88,7 +88,7 @@ export default function page() {
           </h2>
         </div>
       </header>
-      <section className="py-16 md:px-32 mt-5 bg-white h-[65rem] ">
+      <section className="py-16 2xl:px-72 xl:px-48 lg:px-32 px-8 mt-5  bg-white ">
         <div className="flex justify-start gap-4 items-center">
           <div className="w-16 h-16 md:w-20 md:h-20 border border-solid border-1 border-borderGray rounded">
             <img
@@ -110,15 +110,9 @@ export default function page() {
         </div>
         <div className="mt-12 ">
           <Box
-            className="boxUserAccount"
+            className="boxUserAccount grid sm:grid-cols-2 grid-cols-1 2xl:gap-x-12 gap-x-8 gap-y-5"
             component="form"
             noValidate
-            sx={{
-              display: "grid",
-              gridTemplateColumns: { sm: "1fr 1fr" },
-              gridRowGap: 30,
-              gridColumnGap: 96,
-            }}
           >
             <div className="flex flex-col">
               <label className="mb-2" for="organization">
