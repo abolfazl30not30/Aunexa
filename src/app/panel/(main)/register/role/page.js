@@ -24,7 +24,6 @@ function registerRole() {
 
     const [openDeleteRole, setOpenDeleteRole] = useState(false);
     const [deleteTargetRoleId, setDeleteTargetRoleId] = useState("");
-
     const [openMoreRoleInfo, setOpenMoreRoleInfo] = useState(false);
     const [moreRoleInfoTarget, setMoreRoleInfoTarget] = useState({
         roleId: "",
@@ -94,6 +93,7 @@ function registerRole() {
         isError: isDataError,
         error:dataError,
     } = useGetAllRolesQuery({page, token});
+
     return (
         <>
             <div>
@@ -171,16 +171,16 @@ function registerRole() {
                         }
                     </div>
                 </header>
-                <section className="py-4 md:px-8 mt-5 bg-white h-[50rem]">
+                <section className="py-4 md:px-8 mt-5 bg-white">
                     <div className="mt-10 flex justify-evenly gap-8">
-                        <div className="overflow-x-auto w-2/5">
+                        <div className="overflow-x-auto">
                             <table
-                                className=" w-full table-auto overflow-scroll border-collapse border-spacing-0 text-sm text-center text-gray70  ">
+                                className="w-full table-auto overflow-scroll border-collapse border-spacing-0 text-sm text-center text-gray70  ">
                                 <thead className="text-[0.9rem] text-gray80  bg-[#F8F8F8] md:bg-[#F2EDED] ">
                                 <tr>
-                                    <th className="hidden md:table-cell px-6 py-4">#</th>
-                                    <th className="px-2 md:px-6 py-4">نام نقش</th>
-                                    <th className="hidden md:table-cell px-6 py-4">عملیات</th>
+                                    <th className="px-6 py-4">#</th>
+                                    <th className="px-10 py-4">نام نقش</th>
+                                    <th className="px-10 py-4 hidden md:table-cell">عملیات</th>
                                 </tr>
                                 </thead>
                                 <tbody className="table-body">
@@ -193,7 +193,7 @@ function registerRole() {
                                                     sx={{fontSize: "1rem"}}
                                                 />
                                             </td>
-                                            <td className="px-2 md:px-6 py-4  text-gray70 whitespace-nowrap ">
+                                            <td className="px-10 py-4  text-gray70 whitespace-nowrap ">
                                                 <Skeleton
                                                     variant="text"
                                                     sx={{fontSize: "1rem"}}
@@ -201,7 +201,7 @@ function registerRole() {
                                             </td>
                                             <td
                                                 scope="row"
-                                                className="hidden md:flex gap-2 px-6 py-4 justify-center text-gray70 whitespace-nowrap "
+                                                className="hidden md:flex gap-2 px-10 py-4 justify-center text-gray70 whitespace-nowrap "
                                             >
                                                 <Skeleton
                                                     variant="rounded"
@@ -227,22 +227,20 @@ function registerRole() {
                                             handleOpenMoreRoleInfoRow(data);
                                         }}
                                         className="table-row border-b">
-                                        <td className="hidden md:table-cell px-6 py-4  text-gray70 whitespace-nowrap ">
+                                        <td className="px-6 py-4  text-gray70 whitespace-nowrap ">
                                             {index + 1}
                                         </td>
-                                        <td className="px-2 md:px-6 py-4  text-gray70 whitespace-nowrap ">
+                                        <td className="px-10 py-4  text-gray70 whitespace-nowrap ">
                                             {data.roleName}
                                         </td>
                                         <td
                                             scope="row"
-                                            className="hidden md:flex gap-2 px-6 py-4 justify-center text-gray70 whitespace-nowrap "
-                                        >
+                                            className="hidden md:flex gap-2 px-10 py-4 justify-center text-gray70 whitespace-nowrap ">
                                             <button
                                                 onClick={() => {
                                                     handleOpenMoreRoleInfo(data);
                                                 }}
-                                                className="border border-1 border-solid border-gray70 rounded p-[0.4rem] hover:bg-neutral-100"
-                                            >
+                                                className="border border-1 border-solid border-gray70 rounded p-[0.4rem] hover:bg-neutral-100">
                                                 <svg
                                                     xmlns="http://www.w3.org/2000/svg"
                                                     width="18"

@@ -24,17 +24,17 @@ export const RoleSlice = apiAuthServerSlice.injectEndpoints({
     }),
     updateRole: builder.mutation({
       query: (body) => ({
-        url: `roles/`,
+        url: `roles`,
         method: "PUT",
         body: body,
       }),
       invalidatesTags: ["role"],
     }),
     deleteRole: builder.mutation({
-      query: (id) => ({
-        url: `roles/${id}`,
+      query: (body) => ({
+        url: `roles`,
         method: "DELETE",
-        body: id,
+        body: body,
       }),
       invalidatesTags: ["role"],
     }),

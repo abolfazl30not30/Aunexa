@@ -23,14 +23,17 @@ export default function AddRoleDialog(props) {
     const [authorities,setAuthorities] = useState([])
     const [pages,setPages] = useState([])
     const [listOfChecked,setListOfChecked] = useState({})
+
     const handleReset = () => {
         formik.resetForm()
-        setListOfChecked({})
+        setBooleanList()
     }
+
     const [submitData, {isLoading: isSubmitLoading, error}] = useSaveRoleMutation()
     const schema = yup.object().shape({
         role: yup.string().required("لطفا نام نقش را وارد کنید"),
     });
+
 
     const formik = useFormik({
         initialValues: {
@@ -39,20 +42,31 @@ export default function AddRoleDialog(props) {
 
         validationSchema: schema,
 
-        onSubmit: async (role, helpers) => {
-            let updateRole = {...role}
-            // const userData = await submitData(updateRole)
-            console.log(listOfChecked)
+        onSubmit: async (role) => {
+            let authorities = []
+            let pages = []
+            for (const auth in listOfChecked){
+                if(listOfChecked[auth] === true){
+                    authorities.push(auth)
+                    let result = auth.split("::")
+                    if(!(pages.find(value => value === result[0]))){
+                        pages.push(result[0])
+                    }
+                }
+            }
+            const sendObj = {
+                role:role.role,
+                authorities:authorities,
+                pages:pages,
+                token:token
+            }
+            const res = await submitData(sendObj)
             handleReset()
             props.handleCloseAddRole()
         },
     });
 
     const [openAccess, setOpenAccess] = React.useState(true);
-
-    const handleClick = () => {
-        setOpenAccess(!openAccess);
-    };
 
     const token = useSelector((state) => state.auth.accessToken)
 
@@ -61,30 +75,29 @@ export default function AddRoleDialog(props) {
         isLoading: isPagesLoading,
         isError: isPagesError,
         error: pagesError,
-    }] = useLazyGetPageAccessQuery();
+    }] = useLazyGetPageAccessQuery({ refetchOnMountOrArgChange: true });
 
     const setBooleanList =  () =>{
         let booleanListAuthorities = {}
         for(const page of pagesList){
             for(const auth in page['authorities']){
-                booleanListAuthorities[`${auth}`] = true
+                booleanListAuthorities[`${auth}`] = false
             }
         }
         setListOfChecked(booleanListAuthorities)
     }
 
     const handleChangeChecked = (e) =>{
-        console.log(e.target.id,e.target.checked)
         let updateCheckedList = {...listOfChecked}
-        updateCheckedList[e.target.id] = e.target.checked
+        updateCheckedList[`${e.target.value}`] = e.target.checked
         setListOfChecked(updateCheckedList)
     }
 
-
     useEffect(()=>{
-        getPages(token)
-        setBooleanList()
-        console.log(listOfChecked)
+        if(props.openAddRole === true){
+            getPages(token)
+            setBooleanList()
+        }
     },[props.openAddRole])
 
     return (
@@ -94,8 +107,8 @@ export default function AddRoleDialog(props) {
                 open={props.openAddRole}
                 keepMounted
                 onClose={() => {
-                    props.handleCloseAddRole();
                     handleReset()
+                    props.handleCloseAddRole();
                 }}
                 aria-describedby="alert-dialog-slide-description"
                 PaperProps={{
@@ -107,8 +120,8 @@ export default function AddRoleDialog(props) {
                     <DialogContentText style={{fontFamily: "IRANYekan"}}>
                         <div className="flex justify-end">
                             <button onClick={() => {
-                                props.handleCloseAddRole();
                                 handleReset()
+                                props.handleCloseAddRole();
                             }}>
                                 <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 14 14"
                                      fill="none">
@@ -135,9 +148,7 @@ export default function AddRoleDialog(props) {
                                         inputProps={{style: {fontFamily: "IRANYekan", fontSize: "0.8rem"}}}
                                         InputLabelProps={{style: {fontFamily: "IRANYekan"}}}/>
                                 </div>
-
                                 <div className="w-full  flex flex-col gap-2">
-
                                     <List
                                         sx={{
                                             bgcolor: 'background.paper',
@@ -175,8 +186,8 @@ export default function AddRoleDialog(props) {
                                                                 <Box sx={{display: 'flex', flexDirection: 'column', ml: 3}}>
                                                                     <FormControlLabel
                                                                         label={page.authorities[`${page.title}::ReadOne`]}
-                                                                        control={<Checkbox checked={listOfChecked[`${page.title}::ReadOne`]}
-                                                                                           id={`${page.title}::ReadOne`}
+                                                                        control={<Checkbox checked={listOfChecked[`${page.title}::ReadOne`] || false}
+                                                                                           value={`${page.title}::ReadOne`}
                                                                                            onChange={handleChangeChecked}/>}/>
                                                                 </Box>
                                                             </li>
@@ -185,8 +196,8 @@ export default function AddRoleDialog(props) {
                                                                     <FormControlLabel
                                                                         sx={{fontFamily: "__fonts_2f4189,__fonts_Fallback_2f4189", fontSize: "0.8rem"}}
                                                                         label={page.authorities[`${page.title}::ReadAll`]}
-                                                                        control={<Checkbox checked={listOfChecked[`${page.title}::ReadAll`]}
-                                                                                           id={`${page.title}::ReadAll`}
+                                                                        control={<Checkbox checked={listOfChecked[`${page.title}::ReadAll` ] || false}
+                                                                                           value={`${page.title}::ReadAll` || ''}
                                                                                            onChange={handleChangeChecked}/>}/>
                                                                 </Box>
                                                             </li>
@@ -195,8 +206,8 @@ export default function AddRoleDialog(props) {
                                                                     <FormControlLabel
                                                                         sx={{fontFamily: "__fonts_2f4189,__fonts_Fallback_2f4189", fontSize: "0.8rem"}}
                                                                         label={page.authorities[`${page.title}::Create`]}
-                                                                        control={<Checkbox checked={listOfChecked[`${page.title}::Create`]}
-                                                                                           id={`${page.title}::Create`}
+                                                                        control={<Checkbox checked={listOfChecked[`${page.title}::Create` ]|| false}
+                                                                                           value={`${page.title}::Create` || ''}
                                                                                            onChange={handleChangeChecked}/>}/>
                                                                 </Box>
                                                             </li>
@@ -204,8 +215,8 @@ export default function AddRoleDialog(props) {
                                                                 <Box sx={{display: 'flex', flexDirection: 'column', ml: 3}}>
                                                                     <FormControlLabel
                                                                         label={page.authorities[`${page.title}::Update`]}
-                                                                        control={<Checkbox checked={listOfChecked[`${page.title}::Update`]}
-                                                                                           id={`${page.title}::Update`}
+                                                                        control={<Checkbox checked={listOfChecked[`${page.title}::Update` ]|| false}
+                                                                                           value={`${page.title}::Update` || ''}
                                                                                            onChange={handleChangeChecked}/>}/>
                                                                 </Box>
                                                             </li>
@@ -213,8 +224,8 @@ export default function AddRoleDialog(props) {
                                                                 <Box sx={{display: 'flex', flexDirection: 'column', ml: 3}}>
                                                                     <FormControlLabel
                                                                         label={page.authorities[`${page.title}::Delete`]}
-                                                                        control={<Checkbox checked={listOfChecked[`${page.title}::Delete`]}
-                                                                                           id={`${page.title}::Delete`}
+                                                                        control={<Checkbox checked={listOfChecked[`${page.title}::Delete` ] || false}
+                                                                                           value={`${page.title}::Delete` || ''}
                                                                                            onChange={handleChangeChecked}/>}/>
                                                                 </Box>
                                                             </li>
