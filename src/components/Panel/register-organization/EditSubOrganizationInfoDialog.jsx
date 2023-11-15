@@ -69,18 +69,13 @@ export default function EditSubOrganizationInfoDialog(props) {
    
     
     useEffect(()=>{
-        
-        
         formik.setValues({
             id:props.editSubOrganizationInfoTarget?.id,
             name: props.editSubOrganizationInfoTarget?.name,
             capacity: props.editSubOrganizationInfoTarget?.capacity,
             unit: props.editSubOrganizationInfoTarget?.unit,
             type: props.editSubOrganizationInfoTarget?.type,
-            
         })
-        
-        
     },[props.openEditSubOrganizationInfo])
 
     

@@ -79,11 +79,12 @@ margin:0px !important;}
     margin-top: 5px !important;
     margin-bottom: 5px !important;
 }
-.MuiButtonBase-root {
+/* .MuiButtonBase-root {
     
    gap: 16px !important;
    padding-right: 4px !important;
-}
+} */
+
 .MuiTabs-flexContainer{
     display: flex !important;
     justify-content: center !important;
