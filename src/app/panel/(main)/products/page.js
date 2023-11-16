@@ -25,10 +25,7 @@ import {useGetAllProductListQuery} from "@/redux/features/product/ProductSlice";
 function vehiclesAndEquipment() {
     let permission = useSelector((state) => state.access?.pages?.primaryStoreInput)
 
-    const handleCloseFilterMenu = () => {
-        setAnchorElFilter(null);
-    };
-
+    const [searchValue,setSearchValue] = useState("")
     const [page, setPage] = useState(1)
     const [sort, setSort] = useState("desc")
     const [openAddData, setOpenAddData] = useState(false)
@@ -62,16 +59,23 @@ function vehiclesAndEquipment() {
         }
     )
 
+    const [filterItem,setFilterItem] = useState("persianName=")
 
-    const [filter, setFilter] = useState("persianName");
-    const [anchorElFilter, setAnchorElFilter] = useState(null);
-    const openFilter = Boolean(anchorElFilter);
-    const handleOpenFilterSearchBarMenu = (event) => {
-        setAnchorElFilter(event.currentTarget);
-    };
+    const [filterType, setFilterType] = useState("persianName");
+    const handleFilterType = (e) => {
+        setFilterType(e.target.value)
+        let params = new URLSearchParams()
+        params.set(e.target.value,"")
+        setFilterItem(params.toString())
+        setSearchValue("")
+    }
 
-    // const [openFilter, setOpenFilter] = useState(false)
-    const [filterItem,setFilterItem] = useState("")
+    const handleSearchBox = (e) =>{
+        setSearchValue(e.target.value)
+        let params = new URLSearchParams()
+        params.set(filterType,e.target.value)
+        setFilterItem(params.toString())
+    }
 
     const [anchorElSort, setAnchorElSort] = useState(null);
     const openSort = Boolean(anchorElSort);
@@ -159,9 +163,6 @@ function vehiclesAndEquipment() {
         sort,
         filterItem
     }, {refetchOnMountOrArgChange: true})
-    // isPrimaryStoreInputReadAll
-    //     :
-    //     true
     return (
         <>
             <div>
@@ -182,18 +183,16 @@ function vehiclesAndEquipment() {
                                       stroke-linejoin="round"/>
                             </svg>
                         </button>
-
                     </div>
                 </header>
                 <section className="py-4 md:px-8 mt-5 bg-white h-[50rem]">
-                    <div className="px-4 flex justify-between">
-                        <div className="w-[70%] md:w-[50%] flex ">
+                    <div className="px-4 flex flex-col md:flex-row justify-between gap-2 md:gap-0">
+                        <div className="w-full md:w-[50%] flex ">
                             <div className="grow">
                                 <FormControl fullWidth>
                                     <OutlinedInput
-                                        onKeyUp={(event) => {
-                                            setFilterItem(event.target.value);
-                                        }}
+                                        value={searchValue}
+                                        onChange={handleSearchBox}
                                         className=""
                                         size="small"
                                         sx={{
@@ -227,7 +226,7 @@ function vehiclesAndEquipment() {
                                     />
                                 </FormControl>
                             </div>
-                            <div className={"w-[20%]"} >
+                            <div className={"w-[40%] md:w-[20%]"} >
                                 <div>
                                     <FormControl fullWidth size="small">
                                         <InputLabel id="demo-simple-select-label" sx={{fontFamily: "IRANYekan", fontSize: "0.8rem",color:"#9F9F9F"}}>براساس</InputLabel>
@@ -235,11 +234,11 @@ function vehiclesAndEquipment() {
                                             style={{ height:"2.8rem" }}
                                             labelId="demo-simple-select-label"
                                             id="demo-simple-select"
-                                            value={filter}
+                                            value={filterType}
                                             name="type"
                                             input={<OutlinedInput sx={{fontFamily: "IRANYekan", fontSize: "0.8rem"}} label="براساس" />}
                                             sx={{fontFamily: "IRANYekan", fontSize: "0.8rem"}}
-                                            onChange={(e)=>{setFilter(e.target.value)}}>
+                                            onChange={handleFilterType}>
                                             <MenuItem value="persianName" sx={{fontFamily: "IRANYekan", fontSize: "0.8rem"}}>نام محصول</MenuItem>
                                             <MenuItem value="abbreviation" sx={{fontFamily: "IRANYekan", fontSize: "0.8rem"}}>مخفف</MenuItem>
                                             <MenuItem value="code" sx={{fontFamily: "IRANYekan", fontSize: "0.8rem"}}>كد</MenuItem>
@@ -248,26 +247,6 @@ function vehiclesAndEquipment() {
                                 </div>
                             </div>
                         </div>
-                        {/*<div className="w-[50%] md:w-[37%]">*/}
-                        {/*    <FormControl fullWidth>*/}
-                        {/*        <OutlinedInput*/}
-                        {/*            size="small"*/}
-                        {/*            sx={{py: "0.2rem"}}*/}
-                        {/*            placeholder="جستوجو..."*/}
-                        {/*            id="outlined-adornment-amount"*/}
-                        {/*            inputProps={{style: {fontFamily: "__fonts_2f4189,__fonts_Fallback_2f4189", fontSize: "0.9rem"}}}*/}
-                        {/*            startAdornment={<InputAdornment position="start">*/}
-                        {/*                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"*/}
-                        {/*                     viewBox="0 0 24 24" fill="none">*/}
-                        {/*                    <path*/}
-                        {/*                        d="M21 21L16.65 16.65M11 6C13.7614 6 16 8.23858 16 11M19 11C19 15.4183 15.4183 19 11 19C6.58172 19 3 15.4183 3 11C3 6.58172 6.58172 3 11 3C15.4183 3 19 6.58172 19 11Z"*/}
-                        {/*                        stroke="#9F9F9F" stroke-width="1.5" stroke-linecap="round"*/}
-                        {/*                        stroke-linejoin="round"/>*/}
-                        {/*                </svg>*/}
-                        {/*            </InputAdornment>}*/}
-                        {/*        />*/}
-                        {/*    </FormControl>*/}
-                        {/*</div>*/}
                         <div className="flex gap-3">
                             {/*<button onClick={handleOpenFilter}*/}
                             {/*        className="flex items-center gap-2 text-[0.9rem] text-gray9F border border-1 border-solid border-borderGray rounded px-2 md:px-4 py-2">*/}
@@ -350,13 +329,13 @@ function vehiclesAndEquipment() {
                                     <th className="px-2 md:px-6 px-6 py-4">
                                         نام
                                     </th>
-                                    <th className="px-2 md:px-6 px-6 py-4">
+                                    <th className="hidden md:table-cell px-2 md:px-6 px-6 py-4">
                                         کد
                                     </th>
-                                    <th className="px-2 md:px-6 px-6 py-4">
-                                        <span className="hidden md:inline">منقضی شونده</span>
+                                    <th className="hidden md:table-cell px-2 md:px-6 px-6 py-4">
+                                        <span>منقضی شونده</span>
                                     </th>
-                                    <th className="hidden md:table-cell px-6 py-4">
+                                    <th className="px-6 py-4">
                                         نوع محصول
                                     </th>
                                     <th className="hidden md:table-cell px-6 py-4">
@@ -372,8 +351,8 @@ function vehiclesAndEquipment() {
                                                 <td className="hidden md:table-cell px-6 py-4  text-gray70 whitespace-nowrap ">
                                                     <Skeleton variant="text" sx={{fontSize: '1rem'}}/>
                                                 </td>
-                                                <td className="px-2 md:px-6 py-4  text-gray70 whitespace-nowrap ">
-                                                    <Skeleton variant="text" sx={{fontSize: '1rem'}}/>
+                                                <td className="flex justify-center px-2 md:px-6 py-4  text-gray70 whitespace-nowrap ">
+                                                    <Skeleton variant="rounded" width={40} height={40}/>
                                                 </td>
                                                 <td className="px-2 md:px-6 py-4  text-gray70 whitespace-nowrap ">
                                                     <Skeleton variant="text" sx={{fontSize: '1rem'}}/>
@@ -405,8 +384,14 @@ function vehiclesAndEquipment() {
                                                 <td className="hidden md:table-cell px-6 py-4  text-gray70 whitespace-nowrap ">
                                                     {index + 1}
                                                 </td>
-                                                <td className="px-2 md:px-6 py-4  text-gray70 whitespace-nowrap ">
-                                                    <div>{data?.imageURL}</div>
+                                                <td className="flex items-center justify-center px-2 md:px-6 py-2  text-gray70 whitespace-nowrap ">
+                                                    {
+                                                        data.imageURL && (
+                                                            <div className="flex items-center w-12 h-12">
+                                                                <img className="object-cover" src={data?.imageURL} alt="productImage" />
+                                                            </div>
+                                                        )
+                                                    }
                                                 </td>
                                                 <td className="px-2 md:px-6 py-2  text-gray70 whitespace-nowrap ">
                                                     {data?.persianName}
@@ -414,7 +399,7 @@ function vehiclesAndEquipment() {
                                                 <td className="hidden md:table-cell px-6 py-4  text-gray70 whitespace-nowrap ">
                                                     {data?.code}
                                                 </td>
-                                                <td scope="row" className="px-2 md:px-6 py-4 flex justify-center  text-gray70 whitespace-nowrap ">
+                                                <td scope="row" className="hidden md:flex px-2 md:px-6 py-4  md:justify-center  text-gray70 whitespace-nowrap ">
                                                     {data?.isExpirable ? (
                                                         <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20"
                                                              viewBox="0 0 20 20" fill="none">

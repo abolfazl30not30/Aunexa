@@ -55,6 +55,7 @@ export const apiSlice = createApi({
   reducerPath: "api",
   baseQuery: baseQueryWithReauth,
   tagTypes: [
+      "file",
     "purchase-request",
     "primary-store-input",
     "primary-store-output",
