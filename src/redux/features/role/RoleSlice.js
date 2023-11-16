@@ -3,14 +3,14 @@ import {apiAuthServerSlice} from "@/redux/api/apiAuthServerSlice";
 export const RoleSlice = apiAuthServerSlice.injectEndpoints({
   endpoints: (builder) => ({
     getAllRoles: builder.query({
-      query: ({ page,token }) => ({
-        url: `roles/find-all/page?page=${page - 1}&size=20&Token=${token}`,
+      query: ({ page,searchRole }) => ({
+        url: `roles/filter?page=${page - 1}&size=20&role=${searchRole}`,
       }),
       providesTags: ["role"],
     }),
     getPageAccess: builder.query({
-      query: (token) => ({
-        url: `roles/pages?Token=${token}`,
+      query: () => ({
+        url: `roles/pages`,
       }),
       providesTags: ["role"],
     }),

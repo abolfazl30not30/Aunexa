@@ -70,48 +70,48 @@ export default function MoreRoleInfoDialog(props) {
                                             <ListSubheader component="div" id="nested-list-subheader">
                                                 دسترسی ها
                                             </ListSubheader>}>
-                                        {/*{*/}
-                                        {/*    props.moreRoleInfoTarget?.authorities.map((auth)=>(*/}
-                                        {/*        <div>*/}
-                                        {/*            <details className="group py-3 border-b border-b-1 border-b-solid  border-b-borderGray">*/}
-                                        {/*                <summary className="flex items-center justify-between gap-2 p-2 font-medium marker:content-none hover:cursor-pointer">*/}
-                                        {/*                    <span className="text-gray9F group-open:text-textGray text-[0.9rem]">{page.title}</span>*/}
-                                        {/*                    <svg*/}
-                                        {/*                        className="transition group-open:rotate-90"*/}
-                                        {/*                        xmlns="http://www.w3.org/2000/svg"*/}
-                                        {/*                        width="16"*/}
-                                        {/*                        height="16"*/}
-                                        {/*                        viewBox="0 0 16 16"*/}
-                                        {/*                        fill="none">*/}
-                                        {/*                        <path*/}
-                                        {/*                            d="M10 4L6 8L10 12"*/}
-                                        {/*                            stroke="#9F9F9F"*/}
-                                        {/*                            stroke-linecap="round"*/}
-                                        {/*                            stroke-linejoin="round"*/}
-                                        {/*                        />*/}
-                                        {/*                    </svg>*/}
-                                        {/*                </summary>*/}
-                                        {/*                <ul className="flex flex-col gap-1 pr-2">*/}
-                                        {/*                    <li>*/}
-                                        {/*                        <span>{auth[`${page.title}::ReadOne`]}</span>*/}
-                                        {/*                    </li>*/}
-                                        {/*                    <li>*/}
-                                        {/*                        <span>{auth[`${page.title}::ReadAll`]}</span>*/}
-                                        {/*                    </li>*/}
-                                        {/*                    <li>*/}
-                                        {/*                        <span>{auth[`${page.title}::Create`]}</span>*/}
-                                        {/*                    </li>*/}
-                                        {/*                    <li>*/}
-                                        {/*                        <span>{auth[`${page.title}::Update`]}</span>*/}
-                                        {/*                    </li>*/}
-                                        {/*                    <li>*/}
-                                        {/*                        <span>{auth[`${page.title}::Delete`]}</span>*/}
-                                        {/*                    </li>*/}
-                                        {/*                </ul>*/}
-                                        {/*            </details>*/}
-                                        {/*        </div>*/}
-                                        {/*    ))*/}
-                                        {/*}*/}
+                                        {
+                                            Object.keys(props.moreRoleInfoTarget?.authorityDescription).map((auth)=>(
+                                                <div>
+                                                    <details className="group py-3 border-b border-b-1 border-b-solid  border-b-borderGray">
+                                                        <summary className="flex items-center justify-between gap-2 p-2 font-medium marker:content-none hover:cursor-pointer">
+                                                            <span className="text-gray9F group-open:text-textGray text-[0.9rem]">{auth}</span>
+                                                            <svg
+                                                                className="transition group-open:rotate-90"
+                                                                xmlns="http://www.w3.org/2000/svg"
+                                                                width="16"
+                                                                height="16"
+                                                                viewBox="0 0 16 16"
+                                                                fill="none">
+                                                                <path
+                                                                    d="M10 4L6 8L10 12"
+                                                                    stroke="#9F9F9F"
+                                                                    stroke-linecap="round"
+                                                                    stroke-linejoin="round"
+                                                                />
+                                                            </svg>
+                                                        </summary>
+                                                        {/*<ul className="flex flex-col gap-1 pr-2">*/}
+                                                        {/*    <li>*/}
+                                                        {/*        <span>{auth[`${page.title}::ReadOne`]}</span>*/}
+                                                        {/*    </li>*/}
+                                                        {/*    <li>*/}
+                                                        {/*        <span>{auth[`${page.title}::ReadAll`]}</span>*/}
+                                                        {/*    </li>*/}
+                                                        {/*    <li>*/}
+                                                        {/*        <span>{auth[`${page.title}::Create`]}</span>*/}
+                                                        {/*    </li>*/}
+                                                        {/*    <li>*/}
+                                                        {/*        <span>{auth[`${page.title}::Update`]}</span>*/}
+                                                        {/*    </li>*/}
+                                                        {/*    <li>*/}
+                                                        {/*        <span>{auth[`${page.title}::Delete`]}</span>*/}
+                                                        {/*    </li>*/}
+                                                        {/*</ul>*/}
+                                                    </details>
+                                                </div>
+                                            ))
+                                        }
                                     </List>
                                 </div>
                             </div>
@@ -129,37 +129,12 @@ export default function MoreRoleInfoDialog(props) {
                                 <div className="w-full md:w-[70%] flex flex-col gap-3">
                                     <div>
                                     <span className="ml-1 text-gray9F text-[0.8rem]">
-                                        دسترسی ها
+                                        دسترسی ها :
+                                    </span>
+                                        <span className="text-[#29262A] text-[0.8rem]">
+                                       {props.moreRoleInfoTarget?.roleName}
                                     </span>
                                     </div>
-                                    <List
-                                        sx={{
-                                            width: '100%',
-                                            maxWidth: 360,
-                                            bgcolor: 'background.paper',
-                                            border: "1px solid #D9D9D9",
-                                            color: "#29262A"
-                                        }}
-                                        component="nav"
-                                        aria-labelledby="nested-list-subheader"
-                                        subheader={
-                                            <ListSubheader component="div" id="nested-list-subheader">
-
-                                            </ListSubheader>
-                                        }
-                                    >
-                                        <ListItemButton onClick={handleClick}>
-                                            <ListItemText primary="صفحه"/>
-                                            {openAccess ? <ExpandLess/> : <ExpandMore/>}
-                                        </ListItemButton>
-                                        <Collapse in={openAccess} timeout="auto" unmountOnExit>
-                                            <List component="div" disablePadding>
-                                                <ListItemButton sx={{pr: 4}}>
-                                                    <ListItemText primary="API"/>
-                                                </ListItemButton>
-                                            </List>
-                                        </Collapse>
-                                    </List>
                                 </div>
                             </div>
                             <div className="md:hidden flex  justify-center mt-5 gap-3">

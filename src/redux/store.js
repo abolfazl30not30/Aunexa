@@ -5,7 +5,7 @@ import authReducer from "@/redux/api/authSlice";
 import accessReducer from "@/redux/permission/accessSlice";
 import { apiSlice } from '../redux/api/apiSlice';
 import { apiAuthServerSlice} from "@/redux/api/apiAuthServerSlice";
-import {getAccessSlice} from "@/redux/api/getAccessSlice";
+import {getAccessSlice} from "@/redux/features/access/getAccessSlice";
 
 export const store = configureStore({
     reducer: {

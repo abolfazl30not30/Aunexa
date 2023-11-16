@@ -24,6 +24,7 @@ export default function AddRoleDialog(props) {
     const [pages,setPages] = useState([])
     const [listOfChecked,setListOfChecked] = useState({})
 
+
     const handleReset = () => {
         formik.resetForm()
         setBooleanList()
@@ -58,7 +59,6 @@ export default function AddRoleDialog(props) {
                 role:role.role,
                 authorities:authorities,
                 pages:pages,
-                token:token
             }
             const res = await submitData(sendObj)
             handleReset()
@@ -69,6 +69,7 @@ export default function AddRoleDialog(props) {
     const [openAccess, setOpenAccess] = React.useState(true);
 
     const token = useSelector((state) => state.auth.accessToken)
+
 
     const [getPages,{
         data : pagesList = [],
@@ -95,7 +96,7 @@ export default function AddRoleDialog(props) {
 
     useEffect(()=>{
         if(props.openAddRole === true){
-            getPages(token)
+            getPages()
             setBooleanList()
         }
     },[props.openAddRole])

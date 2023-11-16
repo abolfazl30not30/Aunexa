@@ -13,7 +13,7 @@ import {useSelector} from "react-redux";
 import {apiAuthServerSlice} from "@/redux/api/apiAuthServerSlice";
 
 function registerRole() {
-    const [searchRole, setSearchRole] = useState();
+    const [searchRole, setSearchRole] = useState("");
 
     const token = useSelector((state) => state.auth.accessToken)
 
@@ -28,6 +28,7 @@ function registerRole() {
     const [moreRoleInfoTarget, setMoreRoleInfoTarget] = useState({
         roleId: "",
         role: "",
+        authorityDescription:{}
     });
 
     const [openEditRoleInfo, setOpenEditRoleInfo] = useState(false);
@@ -52,6 +53,7 @@ function registerRole() {
         setMoreRoleInfoTarget({
             roleId: "",
             role: "",
+            authorityDescription:{}
         });
         setOpenMoreRoleInfo(false);
     };
@@ -92,8 +94,8 @@ function registerRole() {
         isLoading: isDataLoading,
         isError: isDataError,
         error:dataError,
-    } = useGetAllRolesQuery({page, token});
-
+    } = useGetAllRolesQuery({ page,searchRole });
+    console.log(roleData)
     return (
         <>
             <div>
@@ -106,9 +108,10 @@ function registerRole() {
                     <div className="w-[50%] md:w-[37%]">
                         <FormControl fullWidth>
                             <OutlinedInput
-                                onKeyUp={(event) => {
+                                onChange={(event) => {
                                     setSearchRole(event.target.value);
                                 }}
+                                value={searchRole}
                                 size="small"
                                 sx={{py: "0.2rem"}}
                                 placeholder="جستجو نقش"

@@ -5,6 +5,13 @@ import axios from "axios";
 //https://auth.vipsoftware1.com
 const baseQuery = fetchBaseQuery({
   baseUrl: "https://auth.vipsoftware1.com/",
+  prepareHeaders: (headers, { getState }) => {
+    const token = getState().auth.accessToken;
+    if (token) {
+      headers.set("Authorization", `${token}`);
+    }
+    return headers;
+  },
 });
 
 const login = async () => {
@@ -43,6 +50,6 @@ const baseQueryWithReauth = async (args, api, extraOptions) => {
 export const apiAuthServerSlice = createApi({
   reducerPath: "apiAuth",
   baseQuery: baseQueryWithReauth,
-  tagTypes: ["role"],
+  tagTypes: ["role","access"],
   endpoints: (builder) => ({}),
 });
