@@ -89,14 +89,14 @@ export default function AddIndividualRelationshipDialog(props) {
         formik.setValues({
             
             individualId:props.editIndividualRelationshipInfoTarget?.id,
-            firstFullName:props.editIndividualRelationshipInfoTarget?.relationshipsInformation[0].fullName,
-            firstRelationship:props.editIndividualRelationshipInfoTarget?.relationshipsInformation[0].relationship,
-            firstAddress:props.editIndividualRelationshipInfoTarget?.relationshipsInformation[0].address,
-            firstPhoneNumber:props.editIndividualRelationshipInfoTarget?.relationshipsInformation[0].phoneNumber,
-            secondFullName:props.editIndividualRelationshipInfoTarget?.relationshipsInformation[1].fullName,
-            secondRelationship:props.editIndividualRelationshipInfoTarget?.relationshipsInformation[1].relationship,
-            secondAddress:props.editIndividualRelationshipInfoTarget?.relationshipsInformation[1].address,
-            secondPhoneNumber:props.editIndividualRelationshipInfoTarget?.relationshipsInformation[1].phoneNumber,
+            firstFullName:props.editIndividualRelationshipInfoTarget?.relationshipsInformation[0]?.fullName,
+            firstRelationship:props.editIndividualRelationshipInfoTarget?.relationshipsInformation[0]?.relationship,
+            firstAddress:props.editIndividualRelationshipInfoTarget?.relationshipsInformation[0]?.address,
+            firstPhoneNumber:props.editIndividualRelationshipInfoTarget?.relationshipsInformation[0]?.phoneNumber,
+            secondFullName:props.editIndividualRelationshipInfoTarget?.relationshipsInformation[1]?.fullName,
+            secondRelationship:props.editIndividualRelationshipInfoTarget?.relationshipsInformation[1]?.relationship,
+            secondAddress:props.editIndividualRelationshipInfoTarget?.relationshipsInformation[1]?.address,
+            secondPhoneNumber:props.editIndividualRelationshipInfoTarget?.relationshipsInformation[1]?.phoneNumber,
             
         })
         

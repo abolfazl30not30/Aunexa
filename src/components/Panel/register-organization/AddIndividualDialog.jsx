@@ -18,7 +18,10 @@ import { useSaveIndividualMutation } from "@/redux/features/organization/individ
 export default function AddIndividualDialog(props) {
 
   const [individual, setIndividual] = useState(null)
-  const [cLevel,setcLevel]=useState(false)
+  const [cLevel,setCLevel]=useState(false)
+  const handleChangeClevel = (event) => {
+    setCLevel(event.target.checked);
+  };
   
   const [role,setRole] = useState(null)
   const [openRoleList,setOpenRoleList] = useState(false)
@@ -33,6 +36,7 @@ export default function AddIndividualDialog(props) {
     formik.resetForm()
     setIndividual(null)
     setDate("")
+    setCLevel(false)
     setRole(null)
     
   }
@@ -72,20 +76,21 @@ export default function AddIndividualDialog(props) {
       education: "",
       email: "",
       address: "",
-      cLevel:"",
+      cLevel:false,
       organizationId:"",
       subOrganizationId:""
 
     },
 
-
+    
 
     validationSchema: schema,
 
     onSubmit: async (individual, helpers) => {
-      let updateIndividual = { ...individual,organizationId:props.organizationIdTarget,subOrganizationId:props.subOrganizationIdTarget }
+      let updateIndividual = { ...individual,organizationId:props.organizationIdTarget,subOrganizationId:props.subOrganizationIdTarget,cLevel:cLevel }
       const userData = await submitData(updateIndividual)
       handleReset()
+      
       props.handleCloseAddIndividual()
       props.handleOpenAddIndividualRelationship(userData.data.id)
       
@@ -425,7 +430,11 @@ export default function AddIndividualDialog(props) {
                 </div>
                 <div className="w-full  border border-[#D9D9D9] flex flex-col gap-2 px-4">
                     <FormControlLabel 
-                     onClick={()=>{setcLevel(!cLevel)}} control={<Checkbox />}  label={<Typography sx={{fontFamily: "__fonts_2f4189,__fonts_Fallback_2f4189",fontSize:"14px"}}>دسترسی مدیریت</Typography>} />
+                     onClick={()=>{setCLevel(!cLevel)}} control={<Checkbox checked={
+                      cLevel
+                     }
+                     
+                     onChange={handleChangeClevel} />}  label={<Typography sx={{fontFamily: "__fonts_2f4189,__fonts_Fallback_2f4189",fontSize:"14px"}}>دسترسی مدیریت</Typography>} />
                 </div>
                 <div>
                   {

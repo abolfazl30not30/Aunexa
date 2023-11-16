@@ -3,11 +3,14 @@ import { apiSlice } from "@/redux/api/apiSlice";
 export const ticketSlice = apiSlice.injectEndpoints({
   endpoints: (builder) => ({
     getAllTickets: builder.query({
-      query: ({ page }) => ({
-        url: `party/ticket?page=${page - 1}&size=10`,
+      query: ({ page, openTicket }) => ({
+        url: `party/ticket/filter?isClosed=${openTicket}&page=${
+          page - 1
+        }&size=10`,
       }),
       providesTags: ["ticket"],
     }),
+
     saveTicket: builder.mutation({
       query: (body) => ({
         url: "party/ticket",

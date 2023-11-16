@@ -10,7 +10,7 @@ import { useUpdateIndividualMutation } from "@/redux/features/organization/indiv
 import EditIndividualRelationshipInfoDialog from "./EditIndividualRelationshipDialog";
 import persian from "react-date-object/calendars/persian";
 import persian_fa from "react-date-object/locales/persian_fa";
-import DatePicker from "react-multi-date-picker";
+import DatePicker,{DateObject} from "react-multi-date-picker";
 import { useLazyGetAllRoleQuery } from "@/redux/features/category/CategorySlice";
 import CircularProgress from '@mui/material/CircularProgress';
 
@@ -19,8 +19,10 @@ export default function EditIndividualInfoDialog(props) {
   const [individual,setIndividual] = useState(null)
 
  
-
-
+  const [cLevel,setCLevel]=useState(props.editIndividualInfoTarget?.cLevel)
+  const handleChangeClevel = (event) => {
+    setCLevel(event.target.checked);
+  };
     const [submitData, { isLoading:isSubmitLoading ,error}] = useUpdateIndividualMutation()
 
     
@@ -69,6 +71,7 @@ export default function EditIndividualInfoDialog(props) {
           education: "",
           email: "",
           address: "",
+          cLevel:false
           
         },
 
@@ -77,7 +80,7 @@ export default function EditIndividualInfoDialog(props) {
         validationSchema: schema,
 
         onSubmit: async (individual,helpers) => {
-            const body = {...individual,
+            const body = {...individual,cLevel:cLevel,
                 organizationId:window.sessionStorage.getItem("organizationId"),
                 subOrganizationId:window.sessionStorage.getItem("subOrganizationId"),
                 
@@ -97,7 +100,17 @@ export default function EditIndividualInfoDialog(props) {
         },
     });
     
-   
+    const handleSetBirthDate = (date)=>{
+      if(date !== ""){
+          const newDate = new DateObject({
+              date: date,
+              format: "YYYY/MM/DD",
+              calendar: persian,
+              locale: persian_fa
+          })
+          setDate(newDate)
+      }
+  }
     
     useEffect(()=>{
         
@@ -117,12 +130,13 @@ export default function EditIndividualInfoDialog(props) {
             education: props.editIndividualInfoTarget?.education,
             email: props.editIndividualInfoTarget?.email,
             address: props.editIndividualInfoTarget?.address,
+            cLevel:props.editIndividualInfoTarget?.cLevel
           
         })
-        
+        handleSetBirthDate(props.editIndividualInfoTarget?.birthDate)
         
     },[props.openEditIndividualInfo])
-
+   
     
 
    
@@ -467,7 +481,11 @@ export default function EditIndividualInfoDialog(props) {
                 </div>
                 <div className="w-full  border border-[#D9D9D9] flex flex-col gap-2 px-4">
                     <FormControlLabel 
-                     onClick={()=>{setClevel(!cLevel)}} control={<Checkbox />}  label={<Typography sx={{fontFamily: "__fonts_2f4189,__fonts_Fallback_2f4189",fontSize:"14px"}}>دسترسی مدیریت</Typography>} />
+                     onClick={()=>{setCLevel(!cLevel)}} control={<Checkbox checked={
+                      cLevel
+                     }
+                     
+                     onChange={handleChangeClevel} />}   label={<Typography sx={{fontFamily: "__fonts_2f4189,__fonts_Fallback_2f4189",fontSize:"14px"}}>دسترسی مدیریت</Typography>} />
                 </div>
                 <div>
                   {

@@ -26,6 +26,7 @@ import CloseTicketDialog from "@/components/Panel/ticket/CloseTicketDialog";
 function Ticket() {
   let permission = useSelector((state) => state.access?.pages?.ticket);
   const [page, setPage] = useState(1);
+  const [openTicket, setOpenTicket] = useState(false);
   const [openAddTicket, setOpenAddTicket] = useState(false);
 
   const [ticketState, setTicketState] = useState("تیکت های باز");
@@ -79,7 +80,10 @@ function Ticket() {
     data: ticketData = [],
     isLoading: isDataLoading,
     isError: isDataError,
-  } = useGetAllTicketsQuery({ page }, { refetchOnMountOrArgChange: true });
+  } = useGetAllTicketsQuery(
+    { page, openTicket },
+    { refetchOnMountOrArgChange: true }
+  );
 
   return (
     <>
@@ -147,8 +151,20 @@ function Ticket() {
                       aria-label="lab API tabs example"
                       className=""
                     >
-                      <Tab label="تیکت های باز" value="تیکت های باز" />
-                      <Tab label="بسته شده" value="بسته شده" />
+                      <Tab
+                        onClick={() => {
+                          setOpenTicket(false);
+                        }}
+                        label="تیکت های باز"
+                        value="تیکت های باز"
+                      />
+                      <Tab
+                        onClick={() => {
+                          setOpenTicket(true);
+                        }}
+                        label="بسته شده"
+                        value="بسته شده"
+                      />
                     </TabList>
                   </Box>
                   <table className=" w-full table-auto overflow-scroll border-collapse border-spacing-0 text-sm text-center text-gray70  ">
@@ -292,7 +308,7 @@ function Ticket() {
                                   className="hidden md:flex gap-2 md:px-10 px-2  py-4 justify-center text-gray70 whitespace-nowrap "
                                 >
                                   <Link
-                                    href={"/"}
+                                    href={`/panel/ticket/chat-page/${data.id}`}
                                     className="border border-1 border-solid border-[#6C8DFF] rounded p-[0.4rem] hover:bg-blue-100"
                                   >
                                     <svg
@@ -384,27 +400,6 @@ function Ticket() {
                                       />
                                     </svg>
                                   </Link>
-                                  <button
-                                    onClick={() => {
-                                      handleOpenEditTicketInfo(data);
-                                    }}
-                                    className="border border-1 border-solid border-[#FE4949] rounded p-[0.4rem] hover:bg-red-100"
-                                  >
-                                    <svg
-                                      xmlns="http://www.w3.org/2000/svg"
-                                      width="18"
-                                      height="18"
-                                      viewBox="0 0 18 18"
-                                      fill="none"
-                                    >
-                                      <path
-                                        d="M6.77778 5.33377L11.2222 9.66754M11.2222 5.33377L6.77778 9.66754M4.55556 14.0013V16.0256C4.55556 16.4875 4.55556 16.7184 4.65265 16.837C4.73709 16.9401 4.86513 17.0001 5.00048 17C5.15611 16.9998 5.34104 16.8556 5.71089 16.5671L7.8313 14.913C8.26446 14.5751 8.48104 14.4061 8.72221 14.286C8.93618 14.1794 9.16394 14.1015 9.3993 14.0544C9.66459 14.0013 9.94195 14.0013 10.4967 14.0013H12.7333C14.2268 14.0013 14.9735 14.0013 15.544 13.7179C16.0457 13.4686 16.4537 13.0708 16.7094 12.5815C17 12.0253 17 11.2972 17 9.84089V5.16042C17 3.70413 17 2.97599 16.7094 2.41977C16.4537 1.9305 16.0457 1.53271 15.544 1.28341C14.9735 1 14.2268 1 12.7333 1H5.26667C3.77319 1 3.02646 1 2.45603 1.28341C1.95426 1.53271 1.54631 1.9305 1.29065 2.41977C1 2.97599 1 3.70413 1 5.16042V10.5343C1 11.3403 1 11.7434 1.09086 12.074C1.33744 12.9714 2.05624 13.6723 2.97648 13.9127C3.31559 14.0013 3.72891 14.0013 4.55556 14.0013Z"
-                                        stroke="#DB3746"
-                                        stroke-linecap="round"
-                                        stroke-linejoin="round"
-                                      />
-                                    </svg>
-                                  </button>
                                 </td>
                               </tr>
                             ) : null

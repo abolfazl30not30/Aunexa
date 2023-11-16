@@ -88,14 +88,17 @@ margin:0px !important;}
 .MuiTabs-flexContainer{
     display: flex !important;
     justify-content: center !important;
-    
 }
 .MuiTabs-flexContainer .Mui-selected{
    color: #DB3746 !important;
+
 }
 .MuiTab-wrapper{
     font-size: 18px !important;
 }
 .MuiTabs-root{
     margin-bottom: 32px !important;
+}
+.example::-webkit-scrollbar {
+    display: none;
 }

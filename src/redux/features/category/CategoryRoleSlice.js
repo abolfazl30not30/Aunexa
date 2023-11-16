@@ -3,7 +3,7 @@ import { apiAuthServerSlice } from "@/redux/api/apiAuthServerSlice";
 export const CategorySlice = apiAuthServerSlice.injectEndpoints({
   endpoints: (builder) => ({
     getAllRole: builder.query({
-      query: () => "party/role/find-all",
+      query: () => "roles/find-all",
       providesTags: ["categoryRole"],
     }),
   }),

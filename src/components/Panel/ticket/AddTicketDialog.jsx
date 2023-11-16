@@ -12,15 +12,14 @@ import {
    useLazyGetAllSubOrganizationQuery
 } from "@/redux/features/category/CategorySlice";
 
-import { useRouter } from "next/router";
+
+import { useRouter, usePathname } from "next/navigation";
 
 
 
 export default function AddTicketDialog(props) {
-  
-    
-    
-
+    const router = useRouter()
+    const pathname = usePathname();
     const [subOrganization,setSubOrganization] = useState(null)
     const [openSubOrganizationList,setOpenSubOrganizationList] = useState(false)
     const [getSubOrganizationList,{ data : subOrganizationList  = [] , isLoading : isSubOrganizationLoading, isError: isSubOrganizationError }] = useLazyGetAllSubOrganizationQuery()
@@ -62,6 +61,9 @@ export default function AddTicketDialog(props) {
             const userData = await submitData(updateTiket)
             handleReset()
             props.handleCloseAddTicket()
+            history.pushState({ ticketInfo: userData }, "", pathname + "/chat-page"+`/${userData.data.id}`);
+            router.push(`${userData.data.id}`);
+            
             
         },
     });
