@@ -1,7 +1,9 @@
 'use client'
 import TextField from "@mui/material/TextField";
 import React, {useEffect, useState} from "react";
-import { DialogContent, DialogContentText, FormControl, MenuItem, Select,Autocomplete} from "@mui/material";
+import { DialogContent, DialogContentText, FormControl, MenuItem, Select,Autocomplete,
+    InputLabel,
+    OutlinedInput,} from "@mui/material";
 import Dialog from "@mui/material/Dialog";
 import {TailSpin} from "react-loader-spinner";
 import * as yup from "yup";
@@ -25,14 +27,13 @@ export default function EditSubOrganizationInfoDialog(props) {
 
     const schema = yup.object().shape({
       name: yup.string().required("لطفا نام دپارتمان را وارد کنید"),
-      capacity: yup.string(),
       unit: yup.string(),
-      type:yup.string().required()
+      type:yup.string().required(),
+      
       
     });
 
     const formik = useFormik({
-
         initialValues: {
           SubOrganizationId: "",
           name:"",
@@ -68,18 +69,13 @@ export default function EditSubOrganizationInfoDialog(props) {
    
     
     useEffect(()=>{
-        
-        
         formik.setValues({
             id:props.editSubOrganizationInfoTarget?.id,
             name: props.editSubOrganizationInfoTarget?.name,
             capacity: props.editSubOrganizationInfoTarget?.capacity,
             unit: props.editSubOrganizationInfoTarget?.unit,
             type: props.editSubOrganizationInfoTarget?.type,
-            
         })
-        
-        
     },[props.openEditSubOrganizationInfo])
 
     
@@ -89,20 +85,11 @@ export default function EditSubOrganizationInfoDialog(props) {
 
     const handleReset = () =>{
         formik.resetForm()
-        
         setSubOrganization(null)
        
     }
 
-    const [type, setType] = useState(null)
-    const typeList = [
-        { label: 'خرید ' },
-        { label: 'تولید' },
-        { label: 'انبار' },
-        { label: 'فروش' },
-        { label: 'حسابداری' },
-      
-    ];
+    
     return (
         <>
             <Dialog
@@ -112,12 +99,10 @@ export default function EditSubOrganizationInfoDialog(props) {
                 onClose={()=>{props.handleCloseEditSubOrganizationInfo();handleReset()}}
                 aria-describedby="alert-dialog-slide-description"
                 PaperProps={{
-                    style: {
-                        fontFamily: "IRANYekan",
-                    },
+                    style: {fontFamily: "__fonts_2f4189,__fonts_Fallback_2f4189"}
                 }}>
                 <DialogContent>
-                    <DialogContentText style={{fontFamily: "IRANYekan"}}>
+                    <DialogContentText style={{fontFamily: "__fonts_2f4189,__fonts_Fallback_2f4189"}}>
                         <div className="flex justify-end">
                             <button onClick={()=>{props.handleCloseEditSubOrganizationInfo();handleReset()}}>
                                 <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 14 14"
@@ -144,8 +129,8 @@ export default function EditSubOrganizationInfoDialog(props) {
                                             onChange={formik.handleChange}
                                             error={formik.touched.name && Boolean(formik.errors.name)}
                                             helperText={formik.touched.name && formik.errors.name}
-                                            inputProps={{style: {fontFamily: "IRANYekan", fontSize: "0.8rem"}}}
-                                            InputLabelProps={{style: {fontFamily: "IRANYekan"}}}/>
+                                            inputProps={{style: {fontFamily: "__fonts_2f4189,__fonts_Fallback_2f4189", fontSize: "0.8rem"}}}
+                                            InputLabelProps={{style: {fontFamily: "__fonts_2f4189,__fonts_Fallback_2f4189"}}}/>
                                     </div>
                                     <div className="w-full">
                                         <TextField
@@ -157,8 +142,8 @@ export default function EditSubOrganizationInfoDialog(props) {
                                             onChange={formik.handleChange}
                                             error={formik.touched.capacity && Boolean(formik.errors.capacity)}
                                             helperText={formik.touched.capacity && formik.errors.capacity}
-                                            inputProps={{style: {fontFamily: "IRANYekan", fontSize: "0.8rem"}}}
-                                            InputLabelProps={{style: {fontFamily: "IRANYekan"}}}/>
+                                            inputProps={{style: {fontFamily: "__fonts_2f4189,__fonts_Fallback_2f4189", fontSize: "0.8rem"}}}
+                                            InputLabelProps={{style: {fontFamily: "__fonts_2f4189,__fonts_Fallback_2f4189"}}}/>
                                     </div>
                                     <div className="w-full">
                                         <TextField
@@ -170,29 +155,28 @@ export default function EditSubOrganizationInfoDialog(props) {
                                             onChange={formik.handleChange}
                                             error={formik.touched.unit && Boolean(formik.errors.unit)}
                                             helperText={formik.touched.unit && formik.errors.unit}
-                                            inputProps={{style: {fontFamily: "IRANYekan", fontSize: "0.8rem"}}}
-                                            InputLabelProps={{style: {fontFamily: "IRANYekan"}}}/>
+                                            inputProps={{style: {fontFamily: "__fonts_2f4189,__fonts_Fallback_2f4189", fontSize: "0.8rem"}}}
+                        InputLabelProps={{style: {fontFamily: "__fonts_2f4189,__fonts_Fallback_2f4189"}}}/>
                                     </div>
                                     <div >
-                                        <Autocomplete
-                                            fullWidth
-                                            clearOnEscape
-                                            disablePortal
-                                            id="combo-box-demo"
-                                            options={typeList}
-                                            sx={{ width: 300 }}
-                                            value={type}
-                                            onChange={(event, newValue) => {
-                                            setType(newValue)
-                                            formik.setFieldValue("type", newValue.abbreviation)
-                                            }}
-                                            renderInput={(params) => <TextField error={formik.touched.type && Boolean(formik.errors.type)}
-                                             helperText={formik.touched.type && formik.errors.type}
-                                            InputProps={{
-                                                ...params.InputProps,
-                                                style: { fontFamily: "IRANYekan", fontSize: "0.8rem" }
-                                            }} {...params} placeholder="تحصیلات" />}
-                                         />
+                                    <FormControl fullWidth error={formik.touched.type && Boolean(formik.errors.type)}>
+                                        <InputLabel id="demo-simple-select-label" sx={{fontFamily: "__fonts_2f4189,__fonts_Fallback_2f4189", fontSize: "0.8rem",color:"#9F9F9F"}}>نوع دپارتمان </InputLabel>
+                                        <Select
+                                           defaultValue={formik.values.type}
+                                            labelId="demo-simple-select-label"
+                                            id="demo-simple-select"
+                                            value={formik.values.type}
+                                            name="type"
+                                            input={<OutlinedInput sx={{fontFamily: "__fonts_2f4189,__fonts_Fallback_2f4189", fontSize: "0.8rem"}}  label="نوع دپارتمان" />}
+                                            sx={{fontFamily: "__fonts_2f4189,__fonts_Fallback_2f4189", fontSize: "0.8rem"}}
+                                            onChange={formik.handleChange}>
+                                            <MenuItem value="کارخانه" sx={{fontFamily: "__fonts_2f4189,__fonts_Fallback_2f4189", fontSize: "0.8rem"}}>کارخانه</MenuItem>
+                                            <MenuItem value="انبار مواد اولیه" sx={{fontFamily: "__fonts_2f4189,__fonts_Fallback_2f4189", fontSize: "0.8rem"}}>انبار مواد اولیه</MenuItem>
+                                            <MenuItem value="انبار تجهیزات" sx={{fontFamily: "__fonts_2f4189,__fonts_Fallback_2f4189", fontSize: "0.8rem"}}>انبار تجهیزات</MenuItem>
+                                            <MenuItem value="انبار محصولات" sx={{fontFamily: "__fonts_2f4189,__fonts_Fallback_2f4189", fontSize: "0.8rem"}}>انبار محصولات</MenuItem>
+                                        </Select>
+                                        
+                                    </FormControl>
 
                                     </div>
                                    

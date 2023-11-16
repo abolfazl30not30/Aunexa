@@ -53,12 +53,10 @@ export default function AddOrganizationDialog(props) {
                 onClose={()=>{props.handleCloseAddOrganization();handleReset()}}
                 aria-describedby="alert-dialog-slide-description"
                 PaperProps={{
-                    style: {
-                        fontFamily: "IRANYekan",
-                    },
+                    style: {fontFamily: "__fonts_2f4189,__fonts_Fallback_2f4189"}
                 }}>
                 <DialogContent>
-                    <DialogContentText style={{fontFamily: "IRANYekan"}}>
+                    <DialogContentText style={{fontFamily: "__fonts_2f4189,__fonts_Fallback_2f4189"}}>
                         <div className="flex justify-end">
                             <button onClick={()=>{props.handleCloseAddOrganization();handleReset()}}>
                                 <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 14 14"
@@ -83,8 +81,8 @@ export default function AddOrganizationDialog(props) {
                                         onChange={formik.handleChange}
                                         error={formik.touched.name && Boolean(formik.errors.name)}
                                         helperText={formik.touched.name && formik.errors.name}
-                                        inputProps={{style: {fontFamily: "IRANYekan", fontSize: "0.8rem"}}}
-                                        InputLabelProps={{style: {fontFamily: "IRANYekan"}}}/>
+                                        inputProps={{style: {fontFamily: "__fonts_2f4189,__fonts_Fallback_2f4189", fontSize: "0.8rem"}}}
+                                        InputLabelProps={{style: {fontFamily: "__fonts_2f4189,__fonts_Fallback_2f4189"}}}/>
                                 </div>
                                 <div>
                                     {

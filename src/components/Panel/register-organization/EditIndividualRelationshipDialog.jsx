@@ -1,99 +1,108 @@
 'use client'
 import TextField from "@mui/material/TextField";
 import React, {useEffect, useState} from "react";
-import { DialogContent, DialogContentText, FormControl, MenuItem, Select,} from "@mui/material";
+import {Autocomplete, DialogContent, DialogContentText} from "@mui/material";
 import Dialog from "@mui/material/Dialog";
 import {TailSpin} from "react-loader-spinner";
 import * as yup from "yup";
 import {useFormik} from "formik";
-import { useUpdateMutation } from "@/redux/features/organization/individual/IndividualRelationshipSlice";
+import CircularProgress from '@mui/material/CircularProgress';
 
 
-export default function EditIndividualRelationshipInfoDialog(props) {
+
+import { useUpdateRelationshipMutation } from "@/redux/features/organization/individual/IndividualRelationshipSlice";
+
+export default function AddIndividualRelationshipDialog(props) {
+  
+    const [individualRelationShip,setIndividualRelationship] = useState(null)
     
-  const [individualRelationship,setIndividualRelationship] = useState(null)
-
- 
-
-
-    const [submitData, { isLoading:isSubmitLoading ,error}] = useUpdateMutation()
-
     
+  
+    const handleReset = () =>{
+        formik.resetForm()
+        setIndividualRelationship(null)
+    }
 
-    
-
-
+    const [submitData, { isLoading:isSubmitLoading ,error}] = useUpdateRelationshipMutation()
     const schema = yup.object().shape({
-        fullname: yup.string("لطفا نام و نام خانوادگی شخص را درست وارد نمایید"),
-        phoneNumber:yup.number(),
-        relationship:yup.string(),
-        address: yup.string(),
-      
+        firstFullName: yup.string(),
+        firstPhoneNumber:yup.string().min(11,"تعداد رقم وارد شده کم می باشد").max(11,"تعداد رقم وارد شده زیاد می باشد"),
+        firstRelationship:yup.string(),
+        firstAddress:yup.string(),
+        secondFullName: yup.string(),
+        secondPhoneNumber:yup.string().min(11,"تعداد رقم وارد شده کم می باشد").max(11,"تعداد رقم وارد شده زیاد می باشد"),
+        secondRelationship:yup.string(),
+        secondAddress:yup.string(),
     });
+    
 
     const formik = useFormik({
-
         initialValues: {
-            fullname: "",
-            phoneNumber:"",
-            relationship:"",
-            address: "",
+            id:"",
+            individualId:"",
+            firstFullName:"",
+            firstPhoneNumber:"",
+            firstRelationship:"",
+            firstAddress:"",
+            secondFullName:"",
+            secondPhoneNumber:"",
+            secondAddress:"",
+            secondRelationship:""
         },
-
+      
         
 
         validationSchema: schema,
 
-        onSubmit: async (individualRelationship,helpers) => {
-            const body = {...individualRelationship,
-                organizationId:window.sessionStorage.getItem("organizationId"),
-                subOrganizationId:window.sessionStorage.getItem("subOrganizationId"),
-                
-            }
-            const userData = await submitData(body)
-            console.log(error)
-            console.log(userData)
-            helpers.resetForm({
-                individualRelationship
-            });
-            
-            setIndividualRelationship(null)
-            
-
+        onSubmit: async (individualRelationShip) => {
+          
+            let updateIndividualRelationShip = {  relationshipsInformation:[
+                {
+                    id:props.editIndividualRelationshipInfoTarget?.relationshipsInformation[0]?.id,
+                    individualId:props.editIndividualRelationshipInfoTarget?.id,
+                    fullName: individualRelationShip?.firstFullName,
+                    phoneNumber:individualRelationShip?.firstPhoneNumber,
+                    relationship:individualRelationShip?.firstRelationship,
+                    address:individualRelationShip?.firstAddress
+                },
+                {
+                    id:props.editIndividualRelationshipInfoTarget?.relationshipsInformation[1]?.id,
+                    individualId:props.editIndividualRelationshipInfoTarget.id,
+                    fullName:individualRelationShip?.secondFullName,
+                    phoneNumber:individualRelationShip?.secondPhoneNumber,
+                    relationship:individualRelationShip?.secondRelationship,
+                    address:individualRelationShip?.secondAddress
+                }
+               ] }
+           
+           
+           
+            const userData = await submitData(updateIndividualRelationShip)
+            handleReset()
             props.handleCloseEditIndividualRelationshipInfo()
-            handleOpenEditIndividualRelationshipRelationship()
         },
     });
-   
-   
     
     useEffect(()=>{
         
         
         formik.setValues({
-            id:props.editIndividualRelationshipInfoTarget?.id,
-            fullname: props.editIndividualRelationshipInfoTarget?.fullname,
-            phoneNumber:props.editIndividualRelationshipInfoTarget?.phoneNumber,
-            relationship:props.editIndividualRelationshipInfoTarget?.relationship,
-            address: props.editIndividualRelationshipInfoTarget?.address,
+            
+            individualId:props.editIndividualRelationshipInfoTarget?.id,
+            firstFullName:props.editIndividualRelationshipInfoTarget?.relationshipsInformation[0]?.fullName,
+            firstRelationship:props.editIndividualRelationshipInfoTarget?.relationshipsInformation[0]?.relationship,
+            firstAddress:props.editIndividualRelationshipInfoTarget?.relationshipsInformation[0]?.address,
+            firstPhoneNumber:props.editIndividualRelationshipInfoTarget?.relationshipsInformation[0]?.phoneNumber,
+            secondFullName:props.editIndividualRelationshipInfoTarget?.relationshipsInformation[1]?.fullName,
+            secondRelationship:props.editIndividualRelationshipInfoTarget?.relationshipsInformation[1]?.relationship,
+            secondAddress:props.editIndividualRelationshipInfoTarget?.relationshipsInformation[1]?.address,
+            secondPhoneNumber:props.editIndividualRelationshipInfoTarget?.relationshipsInformation[1]?.phoneNumber,
             
         })
         
         
     },[props.openEditIndividualRelationshipInfo])
-
-    
-
    
-    
-
-    const handleReset = () =>{
-        formik.resetForm()
-        
-        setIndividualRelationship(null)
-       
-    }
-
     return (
         <>
             <Dialog
@@ -103,12 +112,10 @@ export default function EditIndividualRelationshipInfoDialog(props) {
                 onClose={()=>{props.handleCloseEditIndividualRelationshipInfo();handleReset()}}
                 aria-describedby="alert-dialog-slide-description"
                 PaperProps={{
-                    style: {
-                        fontFamily: "IRANYekan",
-                    },
+                    style: {fontFamily: "__fonts_2f4189,__fonts_Fallback_2f4189"}
                 }}>
                 <DialogContent>
-                    <DialogContentText style={{fontFamily: "IRANYekan"}}>
+                    <DialogContentText style={{fontFamily: "__fonts_2f4189,__fonts_Fallback_2f4189"}}>
                         <div className="flex justify-end">
                             <button onClick={()=>{props.handleCloseEditIndividualRelationshipInfo();handleReset()}}>
                                 <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 14 14"
@@ -118,48 +125,72 @@ export default function EditIndividualRelationshipInfoDialog(props) {
                                 </svg>
                             </button>
                         </div>
-                        <div className="flex justify-center mb-7">
-                            <h3 className="text-[1.1rem]">ویرایش اطلاعات نزدیکان</h3>
+                        <div className="flex justify-center ">
+                        
+                            <div>
+                                <h3 className="text-[1.1rem]">اطلاعات نزدیکان</h3>
+                            </div>
+                            {/*<div>
+                                <button
+                                        className="flex text-gray60 bg-white border border-gray60 items-center text- px-3 py-2 rounded-full md:rounded"
+                                        
+                                      >
+                                        <span className="hidden md:inline">
+                                          افزودن افراد نزدیک 
+                                        </span>
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none">
+                                            <path d="M7 12H17" stroke="#797979" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                                            <path d="M12 7V17" stroke="#797979" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                                        </svg>
+                                    </button>
+                             </div>*/}
                         </div>
                         <form className="flex justify-center " onSubmit={formik.handleSubmit} method="POST">
                             <div className="flex flex-col justify-center w-[90%] gap-5">
-                            <div>
+                                <div>
+                                    <span>
+                                        فرد اول
+                                    </span>
+                                </div>
+                                <div>
                                     <TextField
                                         fullWidth
                                         placeholder="نام و نام خانوادگی"
                                         type="text"
-                                        name="fullname"
-                                        value={formik.values.fullname}
+                                        name="firstFullName"
+                                        value={formik.values.firstFullName}
                                         onChange={formik.handleChange}
-                                        error={formik.touched.fullname && Boolean(formik.errors.fullname)}
-                                        inputProps={{style: {fontFamily: "IRANYekan", fontSize: "0.8rem"}}}
-                                        InputLabelProps={{style: {fontFamily: "IRANYekan"}}}/>
+                                        error={formik.touched.firstFullName && Boolean(formik.errors.firstFullName)}
+                                        helperText={formik.touched.firstFullName && formik.errors.firstFullName}
+                                        inputProps={{style: {fontFamily: "__fonts_2f4189,__fonts_Fallback_2f4189", fontSize: "0.8rem"}}}
+                                        InputLabelProps={{style: {fontFamily: "__fonts_2f4189,__fonts_Fallback_2f4189"}}}/>
                                 </div>
                                 <div className="flex justify-between">
-                                  <div className="w-2/5">
+                                  <div className="w-[45%]">
                                     <TextField
                                         fullWidth
                                         placeholder="شماره تماس"
                                         type="text"
-                                        name="phoneNumber"
-                                        value={formik.values.phoneNumber}
+                                        name="firstPhoneNumber"
+                                        value={formik.values.firstPhoneNumber}
                                         onChange={formik.handleChange}
-                                        error={formik.touched.phoneNumber && Boolean(formik.errors.phoneNumber)}
-                                       
-                                        inputProps={{style: {fontFamily: "IRANYekan", fontSize: "0.8rem"}}}
-                                        InputLabelProps={{style: {fontFamily: "IRANYekan"}}}/>
+                                        error={formik.touched.firstPhoneNumber && Boolean(formik.errors.firstPhoneNumber)}
+                                        helperText={formik.touched.firstPhoneNumber && formik.errors.firstPhoneNumber}
+                                        inputProps={{style: {fontFamily: "__fonts_2f4189,__fonts_Fallback_2f4189", fontSize: "0.8rem"}}}
+                                        InputLabelProps={{style: {fontFamily: "__fonts_2f4189,__fonts_Fallback_2f4189"}}}/>
                                   </div>
-                                  <div className="w-2/5">
+                                  <div className="w-[45%]">
                                     <TextField
                                         fullWidth
                                         placeholder="نسبت"
                                         type="text"
-                                        name="relationship"
-                                        value={formik.values.relationship}
+                                        name="firstRelationship"
+                                        value={formik.values.firstRelationship}
                                         onChange={formik.handleChange}
-                                        error={formik.touched.relationship && Boolean(formik.errors.relationship)}
-                                        inputProps={{style: {fontFamily: "IRANYekan", fontSize: "0.8rem"}}}
-                                        InputLabelProps={{style: {fontFamily: "IRANYekan"}}}/>
+                                        error={formik.touched.firstRelationship && Boolean(formik.errors.firstRelationship)}
+                                        helperText={formik.touched.firstRelationship && formik.errors.firstRelationship}
+                                        inputProps={{style: {fontFamily: "__fonts_2f4189,__fonts_Fallback_2f4189", fontSize: "0.8rem"}}}
+                                        InputLabelProps={{style: {fontFamily: "__fonts_2f4189,__fonts_Fallback_2f4189"}}}/>
                                   </div>
                                 </div>
                                   <div className="">
@@ -168,12 +199,75 @@ export default function EditIndividualRelationshipInfoDialog(props) {
                                         fullWidth
                                         placeholder="آدرس"
                                         type="text"
-                                        name="address"
-                                        value={formik.values.address}
+                                        name="firstAddress"
+                                        value={formik.values.firstAddress}
                                         onChange={formik.handleChange}
-                                        error={formik.touched.address && Boolean(formik.errors.address)}
-                                        inputProps={{style: {fontFamily: "IRANYekan", fontSize: "0.8rem"}}}
-                                        InputLabelProps={{style: {fontFamily: "IRANYekan"}}}/>
+                                        error={formik.touched.firstAddress && Boolean(formik.errors.firstAddress)}
+                                        helperText={formik.touched.firstAddress && formik.errors.firstAddress}
+                                        inputProps={{style: {fontFamily: "__fonts_2f4189,__fonts_Fallback_2f4189", fontSize: "0.8rem"}}}
+                                        InputLabelProps={{style: {fontFamily: "__fonts_2f4189,__fonts_Fallback_2f4189"}}}/>
+                                    
+
+                                  </div>
+                                  <div>
+                                    <span>
+                                        فرد دوم
+                                    </span>
+                                </div>
+                                <div>
+                                    <TextField
+                                        fullWidth
+                                        placeholder="نام و نام خانوادگی"
+                                        type="text"
+                                        name="secondFullName"
+                                        value={formik.values.secondFullName}
+                                        onChange={formik.handleChange}
+                                        error={formik.touched.secondFullName && Boolean(formik.errors.secondFullName)}
+                                        helperText={formik.touched.secondFullName && formik.errors.secondFullName}
+                                        inputProps={{style: {fontFamily: "__fonts_2f4189,__fonts_Fallback_2f4189", fontSize: "0.8rem"}}}
+                                        InputLabelProps={{style: {fontFamily: "__fonts_2f4189,__fonts_Fallback_2f4189"}}}/>
+                                </div>
+                                <div className="flex justify-between">
+                                  <div className="w-[45%]">
+                                    <TextField
+                                        fullWidth
+                                        placeholder="شماره تماس"
+                                        type="text"
+                                        name="secondPhoneNumber"
+                                        value={formik.values.secondPhoneNumber}
+                                        onChange={formik.handleChange}
+                                        error={formik.touched.secondPhoneNumber && Boolean(formik.errors.secondPhoneNumber)}
+                                        helperText={formik.touched.secondPhoneNumber && formik.errors.secondPhoneNumber}
+                                        inputProps={{style: {fontFamily: "__fonts_2f4189,__fonts_Fallback_2f4189", fontSize: "0.8rem"}}}
+                                        InputLabelProps={{style: {fontFamily: "__fonts_2f4189,__fonts_Fallback_2f4189"}}}/>
+                                  </div>
+                                  <div className="w-[45%]">
+                                    <TextField
+                                        fullWidth
+                                        placeholder="نسبت"
+                                        type="text"
+                                        name="secondRelationship"
+                                        value={formik.values.secondRelationship}
+                                        onChange={formik.handleChange}
+                                        error={formik.touched.secondRelationship && Boolean(formik.errors.secondRelationship)}
+                                        helperText={formik.touched.secondRelationship && formik.errors.secondRelationship}
+                                        inputProps={{style: {fontFamily: "__fonts_2f4189,__fonts_Fallback_2f4189", fontSize: "0.8rem"}}}
+                                        InputLabelProps={{style: {fontFamily: "__fonts_2f4189,__fonts_Fallback_2f4189"}}}/>
+                                  </div>
+                                </div>
+                                  <div className="">
+                                    
+                                      <TextField
+                                        fullWidth
+                                        placeholder="آدرس"
+                                        type="text"
+                                        name="secondAddress"
+                                        value={formik.values.secondAddress}
+                                        onChange={formik.handleChange}
+                                        error={formik.touched.secondAddress && Boolean(formik.errors.secondAddress)}
+                                        helperText={formik.touched.secondAddress && formik.errors.secondAddress}
+                                        inputProps={{style: {fontFamily: "__fonts_2f4189,__fonts_Fallback_2f4189", fontSize: "0.8rem"}}}
+                                        InputLabelProps={{style: {fontFamily: "__fonts_2f4189,__fonts_Fallback_2f4189"}}}/>
                                     
 
                                   </div>
@@ -190,16 +284,18 @@ export default function EditIndividualRelationshipInfoDialog(props) {
                                                 wrapperStyle={{}}
                                                 wrapperClass=""
                                                 visible={true}/>
-                                            بعدی
+                                            ثبت
                                         </button>) : (
-                                            <button type="submit"
-                                                    className="w-full rounded-[0.5rem] py-3 hover:border hover:opacity-80 font-bold  bg-mainRed text-white">بعدی
+                                            <button type="submit" onClick={console.log(props.editIndividualRelationshipInfoTarget)} 
+                                                    className="w-full rounded-[0.5rem] py-3 hover:border hover:opacity-80 font-bold  bg-mainRed text-white">ثبت
                                             </button>
                                         )
                                     }
                                 </div>
                             </div>
                         </form>
+                        
+                        
                     </DialogContentText>
                 </DialogContent>
             </Dialog>

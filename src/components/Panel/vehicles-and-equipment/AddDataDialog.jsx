@@ -271,6 +271,7 @@ export default function AddDataDialog(props) {
                                         getOptionLabel={(option) => option.name}
                                         value={vehicleCategory}
                                         onChange={(event, newValue) => {
+                                            
                                             setVehicleCategory(newValue)
                                             formik.setFieldValue("type", newValue?.name)
                                         }}

@@ -7,6 +7,9 @@ import {
   OutlinedInput,
   Pagination,
   Skeleton,
+  InputLabel,
+  MenuItem,
+  Select,
 } from "@mui/material";
 import Accordion from "@mui/material/Accordion";
 import AccordionDetails from "@mui/material/AccordionDetails";
@@ -24,14 +27,18 @@ import MoreIndividualInfoDialog from "@/components/Panel/register-organization/M
 import Link from "next/link";
 import { useGetAllOrganizationQuery } from "@/redux/features/organization/OrganizationSlice";
 import { useSelector } from "react-redux";
+import RegisterUserDialog from "@/components/Panel/register-organization/RegisterUserDialog";
+import UnregisterUserDialog from "@/components/Panel/register-organization/UnregisterUserDialog";
 
 export default function registerOrganization() {
   /* search bar */
   const [filterItem, setFilterItem] = useState();
+  const [filter, setFilter] = useState("organization");
   /* search bar */
-
   const [expanded, setExpanded] = React.useState(false);
-  const [organizationIdTarget,setOrganizationIdTarget] = useState("");
+  const [organizationIdTarget, setOrganizationIdTarget] = useState("");
+  const [subOrganizationIdTarget, setSubOrganizationIdTarget] = useState("");
+  const [individualIdTarget, setIndividualIdTarget] = useState("");
 
   const handleChangeIndividualList = (panel) => (event, isExpanded) => {
     setExpanded(isExpanded ? panel : false);
@@ -47,7 +54,7 @@ export default function registerOrganization() {
 
   const [openAddSubOrganization, setOpenAddSubOrganization] = useState(false);
   const handleOpenAddSubOrganization = (id) => {
-    setOrganizationIdTarget(id)
+    setOrganizationIdTarget(id);
     setOpenAddSubOrganization(true);
   };
   const handleCloseAddSubOrganization = () => {
@@ -56,30 +63,32 @@ export default function registerOrganization() {
 
   const [openDeleteSubOrganization, setOpenDeleteSubOrganization] =
     useState(false);
-  const [deleteTargetSubOrganizationId, sediveleteTargetSubOrganizationId] =
+  const [deleteTargetSubOrganizationId, setDeleteTargetSubOrganizationId] =
     useState("");
   const handleOpenDeleteSubOrganization = (id) => {
-    sediveleteTargetSubOrganizationId(id);
+    setDeleteTargetSubOrganizationId(id);
     setOpenDeleteSubOrganization(true);
   };
   const handleCloseDeleteSubOrganization = () => {
-    sediveleteTargetSubOrganizationId("");
-    openDeleteSubOrganization(false);
+    setDeleteTargetSubOrganizationId("");
+    setOpenDeleteSubOrganization(false);
   };
 
   const [openDeleteIndividual, setOpenDeleteIndividual] = useState(false);
-  const [deleteTargetIndividualId, sediveleteTargetIndividualId] = useState("");
+  const [deleteTargetIndividualId, setDeleteTargetIndividualId] = useState("");
   const handleOpenDeleteIndividual = (id) => {
-    sediveleteTargetIndividualId(id);
+    setDeleteTargetIndividualId(id);
     setOpenDeleteIndividual(true);
   };
   const handleCloseDeleteIndividual = () => {
-    sediveleteTargetIndividualId("");
-    openDeleteIndividual(false);
+    setDeleteTargetIndividualId("");
+    setOpenDeleteIndividual(false);
   };
 
   const [openAddIndividual, setOpenAddIndividual] = useState(false);
-  const handleOpenAddIndividual = () => {
+  const handleOpenAddIndividual = (organizationId, subOrganizationId) => {
+    setSubOrganizationIdTarget(subOrganizationId);
+    setOrganizationIdTarget(organizationId);
     setOpenAddIndividual(true);
   };
   const handleCloseAddIndividual = () => {
@@ -88,7 +97,7 @@ export default function registerOrganization() {
 
   const [openMoreInfoIndividual, setOpenMoreInfoIndividual] = useState(false);
   const [moreInfoIndividualTarget, setMoreInfoIndividualTarget] = useState({
-    fullname: "",
+    fullName: "",
     nationalCode: "",
     personalCode: "",
     birthDate: "",
@@ -96,24 +105,35 @@ export default function registerOrganization() {
     gender: "",
     role: "",
     originalPhoneNumber: "",
-    anotherPhoneNumber: [],
-    telePhoneNumber: "",
-    eduction: "",
+    anotherPhoneNumber: "",
+    telephoneNumber: "",
+    education: "",
     email: "",
     address: "",
+    cLevel: "",
+    relationshipsInformation: [
+      {
+        fullName: "",
+        phoneNumber: "",
+        address: "",
+        relationship: "",
+      },
+      {
+        fullName: "",
+        phoneNumber: "",
+        address: "",
+        relationship: "",
+      },
+    ],
   });
   const handleOpenMoreInfoIndividual = (info) => {
     setMoreInfoIndividualTarget(info);
     setOpenMoreInfoIndividual(true);
   };
-  const handleOpenMoreInfoIndividualRow = (info) => {
-    if (window.innerWidth <= 768) {
-      handleOpenMoreInfoIndividual(info);
-    }
-  };
+
   const handleCloseMoreInfoIndividual = () => {
     setMoreInfoIndividualTarget({
-      fullname: "",
+      fullName: "",
       nationalCode: "",
       personalCode: "",
       birthDate: "",
@@ -121,13 +141,113 @@ export default function registerOrganization() {
       gender: "",
       role: "",
       originalPhoneNumber: "",
-      anotherPhoneNumber: [],
-      telePhoneNumber: "",
-      eduction: "",
+      anotherPhoneNumber: "",
+      telephoneNumber: "",
+      education: "",
       email: "",
       address: "",
+      cLevel: "",
+      relationshipsInformation: [
+        {
+          fullName: "",
+          phoneNumber: "",
+          address: "",
+          relationship: "",
+        },
+        {
+          fullName: "",
+          phoneNumber: "",
+          address: "",
+          relationship: "",
+        },
+      ],
     });
     setOpenMoreInfoIndividual(false);
+  };
+
+  const [openRegisterIndividual, setOpenRegisterIndividual] = useState(false);
+  const [registerIndividualTarget, setRegisterIndividualTarget] = useState({
+    fullName: "",
+    nationalCode: "",
+    personalCode: "",
+    birthDate: "",
+    fatherName: "",
+    gender: "",
+    role: "",
+    originalPhoneNumber: "",
+    anotherPhoneNumber: "",
+    telephoneNumber: "",
+    education: "",
+    email: "",
+    address: "",
+    cLevel: "",
+  });
+  const handleOpenRegisterIndividual = (info) => {
+    setRegisterIndividualTarget(info);
+    setOpenRegisterIndividual(true);
+  };
+
+  const handleCloseRegisterIndividual = () => {
+    setRegisterIndividualTarget({
+      fullName: "",
+      nationalCode: "",
+      personalCode: "",
+      birthDate: "",
+      fatherName: "",
+      gender: "",
+      role: "",
+      originalPhoneNumber: "",
+      anotherPhoneNumber: "",
+      telephoneNumber: "",
+      education: "",
+      email: "",
+      address: "",
+      cLevel: "",
+    });
+    setOpenRegisterIndividual(false);
+  };
+
+  const [openUnregisterIndividual, setOpenUnregisterIndividual] =
+    useState(false);
+  const [unregisterIndividualTarget, setUnregisterIndividualTarget] = useState({
+    fullName: "",
+    nationalCode: "",
+    personalCode: "",
+    birthDate: "",
+    fatherName: "",
+    gender: "",
+    role: "",
+    originalPhoneNumber: "",
+    anotherPhoneNumber: "",
+    telephoneNumber: "",
+    education: "",
+    email: "",
+    address: "",
+    cLevel: "",
+  });
+  const handleOpenUnregisterIndividual = (info) => {
+    setUnregisterIndividualTarget(info);
+    setOpenUnregisterIndividual(true);
+  };
+
+  const handleCloseUnregisterIndividual = () => {
+    setUnregisterIndividualTarget({
+      fullName: "",
+      nationalCode: "",
+      personalCode: "",
+      birthDate: "",
+      fatherName: "",
+      gender: "",
+      role: "",
+      originalPhoneNumber: "",
+      anotherPhoneNumber: "",
+      telephoneNumber: "",
+      education: "",
+      email: "",
+      address: "",
+      cLevel: "",
+    });
+    setOpenUnregisterIndividual(false);
   };
 
   const [openEditSubOrganizationInfo, setOpenEditSubOrganizationInfo] =
@@ -163,11 +283,12 @@ export default function registerOrganization() {
     gender: "",
     role: "",
     originalPhoneNumber: "",
-    anotherPhoneNumber: [],
-    telePhoneNumber: "",
-    eduction: "",
+    anotherPhoneNumber: "",
+    telephoneNumber: "",
+    education: "",
     email: "",
     address: "",
+    cLevel: "",
   });
   const handleOpenEditIndividualInfo = (info) => {
     setEditIndividualInfoTarget(info);
@@ -183,7 +304,7 @@ export default function registerOrganization() {
       gender: "",
       role: "",
       originalPhoneNumber: "",
-      anotherPhoneNumber: [],
+      anotherPhoneNumber: "",
       telePhoneNumber: "",
       eduction: "",
       email: "",
@@ -200,10 +321,20 @@ export default function registerOrganization() {
     editIndividualRelationshipInfoTarget,
     setEditIndividualRelationshipInfoTarget,
   ] = useState({
-    fullname: "",
-    phoneNumber: "",
-    relationship: "",
-    address: "",
+    relationshipsInformation: [
+      {
+        fullName: "",
+        phoneNumber: "",
+        relationship: "",
+        address: "",
+      },
+      {
+        fullName: "",
+        phoneNumber: "",
+        relationship: "",
+        address: "",
+      },
+    ],
   });
   const handleOpenEditIndividualRelationshipInfo = (info) => {
     setEditIndividualRelationshipInfoTarget(info);
@@ -211,22 +342,25 @@ export default function registerOrganization() {
   };
   const handleCloseEditIndividualRelationshipInfo = () => {
     setEditIndividualRelationshipInfoTarget({
-      fullname: "",
-      phoneNumber: "",
-      relationship: "",
-      address: "",
+      relationshipsInformation: [
+        {
+          fullName: "",
+          phoneNumber: "",
+          relationship: "",
+          address: "",
+        },
+        {
+          fullName: "",
+          phoneNumber: "",
+          relationship: "",
+          address: "",
+        },
+      ],
     });
+    editIndividualRelationshipInfoTarget;
     setOpenEditIndividualRelationshipInfo(false);
   };
-  const [filter, setFilter] = useState("organization");
-  const [anchorElFilter, setAnchorElFilter] = useState(null);
-  const openFilter = Boolean(anchorElFilter);
-  const handleOpenFilterSearchBarMenu = (event) => {
-    setAnchorElFilter(event.currentTarget);
-  };
-  const handleCloseFilterMenu = () => {
-    setAnchorElFilter(null);
-  };
+
   const {
     data: organizationList = [],
     isLoading: isDataLoading,
@@ -240,14 +374,25 @@ export default function registerOrganization() {
     moreInfoIndividualRelationshipTarget,
     setMoreInfoIndividualRelationshipTarget,
   ] = useState({
-    fullname: "",
-    PhoneNumber: "",
-    relationship: "",
-    address: "",
+    relationshipsInformation: [
+      {
+        fullName: "",
+        phoneNumber: "",
+        relationship: "",
+        address: "",
+      },
+      {
+        fullName: "",
+        phoneNumber: "",
+        relationship: "",
+        address: "",
+      },
+    ],
   });
   const [openAddIndividualRelationship, setOpenAddIndividualRelationship] =
     useState(false);
-  const handleOpenAddIndividualRelationship = () => {
+  const handleOpenAddIndividualRelationship = (individualId) => {
+    setIndividualIdTarget(individualId);
     setOpenAddIndividualRelationship(true);
   };
   const handleCloseAddIndividualRelationship = () => {
@@ -278,7 +423,10 @@ export default function registerOrganization() {
                 placeholder="جست و جو"
                 id="outlined-adornment-amount"
                 inputProps={{
-                  style: { fontFamily: "IRANYekan", fontSize: "0.9rem" },
+                  style: {
+                    fontFamily: "__fonts_2f4189,__fonts_Fallback_2f4189",
+                    fontSize: "0.9rem",
+                  },
                 }}
                 startAdornment={
                   <InputAdornment position="start">
@@ -302,88 +450,71 @@ export default function registerOrganization() {
               />
             </FormControl>
           </div>
-          <div className="grow">
+          <div className={"w-[20%]"}>
             <div>
-              <button
-                onClick={handleOpenFilterSearchBarMenu}
-                className="flex items-center gap-2 text-[0.9rem] text-gray9F border border-1 border-solid border-borderGray  border-r-0 px-2 md:px-4 py-[0.8rem] md:py-[0.63rem]"
-              >
-                <span className="hidden md:inline">براساس</span>
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  width="16"
-                  height="16"
-                  viewBox="0 0 16 16"
-                  fill="none"
+              <FormControl fullWidth size="small">
+                <InputLabel
+                  id="demo-simple-select-label"
+                  sx={{
+                    fontFamily: "__fonts_2f4189,__fonts_Fallback_2f4189",
+                    fontSize: "0.8rem",
+                    color: "#9F9F9F",
+                  }}
                 >
-                  <path
-                    d="M4 6L8 10L12 6"
-                    stroke="#9F9F9F"
-                    stroke-linecap="round"
-                    stroke-linejoin="round"
-                  />
-                </svg>
-              </button>
-              <Menu
-                anchorEl={anchorElFilter}
-                id="account-menu"
-                open={openFilter}
-                onClose={handleCloseFilterMenu}
-                onClick={handleCloseFilterMenu}
-                PaperProps={{
-                  elevation: 0,
-                  sx: {
-                    width: "10rem",
-                    bgcolor: "#fff",
-                    borderRadius: "0.5rem",
-                    overflow: "visible",
-                    filter: "drop-shadow(0px 2px 3px rgba(0,0,0,0.1))",
-                    mt: 1.5,
-                    fontFamily: "IRANYekan",
-                    "& .MuiAvatar-root": {
-                      width: 32,
-                      height: 32,
-                      ml: -0.5,
-                      mr: 1,
-                    },
-                  },
-                }}
-                transformOrigin={{ horizontal: "left", vertical: "top" }}
-                anchorOrigin={{ horizontal: "left", vertical: "bottom" }}
-              >
-                <div className="px-2 py-2">
-                  <div className="">
-                    <button
-                      onClick={() => {
-                        setFilter("organization");
+                  براساس
+                </InputLabel>
+                <Select
+                  style={{ height: "2.8rem" }}
+                  labelId="demo-simple-select-label"
+                  id="demo-simple-select"
+                  value={filter}
+                  name="type"
+                  input={
+                    <OutlinedInput
+                      sx={{
+                        fontFamily: "__fonts_2f4189,__fonts_Fallback_2f4189",
+                        fontSize: "0.8rem",
                       }}
-                      className="w-full flex justify-center gap-2 py-3 px-2 hover:bg-neutral-100"
-                    >
-                      <span className="text-gray70 text-[0.8rem]  tracking-tighter">
-                        سازمان
-                      </span>
-                    </button>
-                    <button
-                      onClick={() => {
-                        setFilter("subOrganization");
-                      }}
-                      className="w-full flex justify-center gap-2 py-3 px-2 hover:bg-neutral-100 border-t border-t-[#D9D9D9]"
-                    >
-                      <span className="text-gray70 text-[0.8rem]  tracking-tighter">
-                        دپارتمان
-                      </span>
-                    </button>
-                    <button
-                      onClick={() => setFilter("individual")}
-                      className="w-full flex justify-center gap-2 py-3 px-2 hover:bg-neutral-100 border-t border-t-[#D9D9D9]"
-                    >
-                      <span className="text-gray70 text-[0.8rem]  tracking-tighter">
-                        افراد
-                      </span>
-                    </button>
-                  </div>
-                </div>
-              </Menu>
+                      label="براساس"
+                    />
+                  }
+                  sx={{
+                    fontFamily: "__fonts_2f4189,__fonts_Fallback_2f4189",
+                    fontSize: "0.8rem",
+                  }}
+                  onChange={(e) => {
+                    setFilter(e.target.value);
+                  }}
+                >
+                  <MenuItem
+                    value="organization"
+                    sx={{
+                      fontFamily: "__fonts_2f4189,__fonts_Fallback_2f4189",
+                      fontSize: "0.8rem",
+                    }}
+                  >
+                    سازمان
+                  </MenuItem>
+                  <MenuItem
+                    value="sub-organization"
+                    sx={{
+                      fontFamily: "__fonts_2f4189,__fonts_Fallback_2f4189",
+                      fontSize: "0.8rem",
+                    }}
+                  >
+                    دپارتمان
+                  </MenuItem>
+                  <MenuItem
+                    value="individual"
+                    sx={{
+                      fontFamily: "__fonts_2f4189,__fonts_Fallback_2f4189",
+                      fontSize: "0.8rem",
+                    }}
+                  >
+                    افراد
+                  </MenuItem>
+                </Select>
+              </FormControl>
             </div>
           </div>
         </div>
@@ -422,47 +553,67 @@ export default function registerOrganization() {
       </header>
       {organizationList?.map((organization) => (
         <div>
-          <div className="flex justify-between items-center text-[0.9rem] bg-white py-6 mt-8 px-10">
-              <div className="">
-                <h2 className="font-[800] text-[0.9rem] md:text-[1.1rem]">
-                  {organization.name}
-                </h2>
-              </div>
-              <div className="">
-                {
-                  <button
-                    className="flex text-mainRed bg-white border border-mainRed items-center text- px-3 py-2 rounded-full md:rounded"
-                    onClick={()=>{handleOpenAddSubOrganization(organization.id)}}
+          <div className="flex justify-between items-center text-[0.9rem] bg-white py-4 mt-4 px-10">
+            <div className="">
+              <h2 className="font-[800] text-[0.9rem] md:text-[1.1rem]">
+                {organization.name}
+              </h2>
+            </div>
+            <div className="">
+              {
+                <button
+                  className="flex text-mainRed bg-white border border-mainRed items-center text- px-3 py-2 rounded-full md:rounded"
+                  onClick={() => {
+                    handleOpenAddSubOrganization(organization.id);
+                  }}
+                >
+                  <span className="hidden md:inline">ثبت دپارتمان</span>
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    width="24"
+                    height="24"
+                    viewBox="0 0 24 24"
+                    fill="none"
                   >
-                    <span className="hidden md:inline">ثبت دپارتمان</span>
-                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none">
-                      <path d="M7 12H17" stroke="#DB3746" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-                      <path d="M12 7V17" stroke="#DB3746" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-                    </svg>
-                  </button>
-                }
-              </div>
+                    <path
+                      d="M7 12H17"
+                      stroke="#DB3746"
+                      stroke-width="2"
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                    />
+                    <path
+                      d="M12 7V17"
+                      stroke="#DB3746"
+                      stroke-width="2"
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                    />
+                  </svg>
+                </button>
+              }
+            </div>
           </div>
           <div className="">
             <div className="overflow-x-auto">
               <table className=" w-full table-auto overflow-scroll border-collapse border-spacing-0 text-sm text-center text-gray70  ">
-                <tbody className="table-body">
+                <tbody className="div-body ">
                   {isDataLoading
                     ? [...Array(6)].map(() => (
                         <tr className="border-b">
-                          <div className="hidden md:table-cell px-6 py-4  text-gray70 whitespace-nowrap ">
+                          <div className="hidden md:table-cell px-6   text-gray70 whitespace-nowrap ">
                             <Skeleton
                               variant="text"
                               sx={{ fontSize: "1rem" }}
                             />
                           </div>
-                          <div className="px-2 md:px-6 py-4  text-gray70 whitespace-nowrap ">
+                          <div className="px-2 md:px-6   text-gray70 whitespace-nowrap ">
                             <Skeleton
                               variant="text"
                               sx={{ fontSize: "1rem" }}
                             />
                           </div>
-                          <div className="px-2 md:px-6 py-4  text-gray70 whitespace-nowrap ">
+                          <div className="px-2 md:px-6   text-gray70 whitespace-nowrap ">
                             <Skeleton
                               variant="text"
                               sx={{ fontSize: "1rem" }}
@@ -474,7 +625,7 @@ export default function registerOrganization() {
                               sx={{ fontSize: "1rem" }}
                             />
                           </div>
-                          <div className="hidden md:table-cell px-6 py-4  text-gray70 whitespace-nowrap ">
+                          <div className="hidden md:table-cell px-6   text-gray70 whitespace-nowrap ">
                             <Skeleton
                               variant="text"
                               sx={{ fontSize: "1rem" }}
@@ -482,7 +633,7 @@ export default function registerOrganization() {
                           </div>
                           <div
                             scope="row"
-                            className="hidden md:flex gap-2 px-6 py-4 justify-center text-gray70 whitespace-nowrap "
+                            className="hidden md:flex gap-2 px-6  justify-center text-gray70 whitespace-nowrap "
                           >
                             <Skeleton
                               variant="rounded"
@@ -505,51 +656,92 @@ export default function registerOrganization() {
                     : organization.subOrganizations?.map(
                         (subOrganization, index) => (
                           <Accordion
-                            expanded={expanded === "panel"}
-                            onChange={handleChangeIndividualList("panel")}>
+                            className="div-body"
+                            onChange={handleChangeIndividualList(
+                              `panel${organization.id + index}`
+                            )}
+                          >
                             <AccordionSummary
                               aria-controls="panelbh-content"
-                              id="panelbh-header">
-                              <div className="flex justify-between items-center border-b">
-                                <div className="hidden md:table-cell px-6 py-4  text-gray70 whitespace-nowrap ">
-                                    {index + 1}
+                              id="panelbh-header"
+                            >
+                              <div className="flex  items-center ">
+                                <div className="hidden md:table-cell px-6   text-gray70 whitespace-nowrap ">
+                                  {index + 1}
                                 </div>
-                                <div className="px-2 md:px-6 py-4 flex gap-2 text-gray70 whitespace-nowrap ">
-                                    <span>: اسم دپارتمان</span>
-                                    s<span>{subOrganization.name}</span>
+                                <div className="px-2 md:px-6 w-1/4 flex gap-2 text-gray70 whitespace-nowrap ">
+                                  <span className="text-[#4E4E4E]">
+                                    اسم دپارتمان :{" "}
+                                  </span>
+                                  <span className=" text-sm">
+                                    {subOrganization.name}
+                                  </span>
                                 </div>
-                                <div className="px-2 md:px-6 py-4  text-gray70 whitespace-nowrap ">
-                                    <span>:ظرفیت</span>
-                                    <span>{subOrganization.capacity}</span>
+                                <div className="px-2 md:px-6 w-1/6  flex gap-2 text-gray70 whitespace-nowrap ">
+                                  <span className="text-[#4E4E4E]">
+                                    ظرفیت :{" "}
+                                  </span>
+                                  <span className=" text-sm">
+                                    {subOrganization.capacity}
+                                  </span>
                                 </div>
 
-                                <div className="hidden md:table-cell px-6 py-4  text-gray70 whitespace-nowrap ">
-                                    <span>:واحد</span>
-                                    <span>{subOrganization.unit}</span>
+                                <div className="px-2 md:px-6 w-1/5  flex gap-2 text-gray70 whitespace-nowrap ">
+                                  <span className="text-[#4E4E4E]">
+                                    واحد :{" "}
+                                  </span>
+                                  <span className=" text-sm">
+                                    {subOrganization.unit}
+                                  </span>
                                 </div>
-                                <div className="hidden md:table-cell px-6 py-4  text-gray70 whitespace-nowrap ">
-                                    <span>:نوع</span>
-                                    <span>{subOrganization.type}</span>
+                                <div className="px-2 md:px-6 w-1/6 flex gap-2 text-gray70 whitespace-nowrap ">
+                                  <span className="text-[#4E4E4E]">نوع : </span>
+                                  <span className=" text-sm">
+                                    {subOrganization.type}
+                                  </span>
                                 </div>
-                                <div className="hidden md:table-cell px-6 py-4   whitespace-nowrap ">
-                                    <div>
-                                      <button
-                                        className="flex text-gray60 bg-white border border-gray60 items-center text- px-3 py-2 rounded-full md:rounded"
-                                        onClick={handleOpenAddIndividual}
+                                <div className="hidden md:table-cell px-6    whitespace-nowrap ">
+                                  <div>
+                                    <button
+                                      className="flex  text-gray60  border border-gray60 items-center text- px-3 py-2 rounded-full md:rounded"
+                                      onClick={() => {
+                                        handleOpenAddIndividual(
+                                          organization.id,
+                                          subOrganization.id
+                                        );
+                                      }}
+                                    >
+                                      <span className="hidden md:inline text-gray9F">
+                                        ثبت افراد
+                                      </span>
+                                      <svg
+                                        xmlns="http://www.w3.org/2000/svg"
+                                        width="24"
+                                        height="24"
+                                        viewBox="0 0 24 24"
+                                        fill="none"
                                       >
-                                        <span className="hidden md:inline text-gray9F">
-                                          ثبت افراد
-                                        </span>
-                                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none">
-                                          <path d="M7 12H17" stroke="#9F9F9F" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-                                          <path d="M12 7V17" stroke="#9F9F9F" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-                                        </svg>
-                                      </button>
-                                    </div>
+                                        <path
+                                          d="M7 12H17"
+                                          stroke="#9F9F9F"
+                                          stroke-width="2"
+                                          stroke-linecap="round"
+                                          stroke-linejoin="round"
+                                        />
+                                        <path
+                                          d="M12 7V17"
+                                          stroke="#9F9F9F"
+                                          stroke-width="2"
+                                          stroke-linecap="round"
+                                          stroke-linejoin="round"
+                                        />
+                                      </svg>
+                                    </button>
+                                  </div>
                                 </div>
                                 <div
                                   scope="row"
-                                  className="hidden md:flex gap-2 px-6 py-4 justify-center text-gray70 whitespace-nowrap "
+                                  className="hidden md:flex gap-2 px-6  justify-center text-gray70 whitespace-nowrap "
                                 >
                                   <button
                                     onClick={() => {
@@ -611,13 +803,16 @@ export default function registerOrganization() {
 
                                   <button
                                     onClick={() => {
-                                      handleChangeIndividualList("panel");
+                                      handleChangeIndividualList(
+                                        `panel${organization.id + index}`
+                                      );
                                     }}
                                     className="border border-1 border-solid border-[#797979] rounded p-[0.4rem] hover:bg-red-100"
                                   >
                                     <svg
                                       className={
-                                        expanded === "panel"
+                                        expanded ===
+                                        `panel${organization.id + index}`
                                           ? "rotate-180 transition-all duration-300"
                                           : " transition-all duration-300"
                                       }
@@ -639,33 +834,103 @@ export default function registerOrganization() {
                               </div>
                             </AccordionSummary>
                             <AccordionDetails>
-                              {subOrganization.individual?.map((individual) => (
-                                <div className="mt-10">
-                                  <div className="overflow-x-auto">
-                                    <table className=" w-full table-auto overflow-scroll border-collapse border-spacing-0 text-sm text-center text-gray70  ">
-                                      <tbody className="table-body">
-                                        <tr
-                                          onClick={() => {
-                                            handleOpenMoreInfoIndividualRow(
-                                              individual
-                                            );
-                                          }}
-                                          className="table-row border-b"
-                                        >
-                                          <Typography className="flex gap-2 items-center">
-                                            <span>نام و نام خانوادگی :</span>
-                                            {individual.fullname}
-                                          </Typography>
-                                          <Typography className="flex gap-2 items-center">
-                                            <span> کد ملی:</span>
-                                            {individual.nationalCode}
-                                          </Typography>
-                                          <Typography className="flex gap-2 items-center">
-                                            <span>نقش:</span>
-                                            {individual.role}
-                                          </Typography>
-                                            <div
-                                              className="hidden md:flex gap-2 px-6 py-4 justify-center text-gray70 whitespace-nowrap ">
+                              <div className=" px-32 ">
+                                <div className="overflow-x-auto  border-r border-dotted border-black">
+                                  <table className=" w-full overflow-scroll individual-table border-collapse border-spacing-0 text-sm text-center text-gray70  ">
+                                    <tbody className=" ">
+                                      {subOrganization.individuals?.map(
+                                        (individual, index) => (
+                                          <tr className=" individual-table flex justify-between my-1 items-center ">
+                                            <Typography
+                                              sx={{
+                                                fontFamily:
+                                                  "__fonts_2f4189,__fonts_Fallback_2f4189",
+                                              }}
+                                              className="flex gap-2 items-center w-1/3"
+                                            >
+                                              <span className="text-[#4E4E4E] pr-2 ">
+                                                نام و نام خانوادگی :
+                                              </span>
+                                              <span className=" text-sm">
+                                                {individual.fullName}
+                                              </span>
+                                            </Typography>
+                                            <Typography
+                                              sx={{
+                                                fontFamily:
+                                                  "__fonts_2f4189,__fonts_Fallback_2f4189",
+                                              }}
+                                              className="w-1/4 flex gap-2 items-center"
+                                            >
+                                              <span className="text-[#4E4E4E]">
+                                                {" "}
+                                                کد ملی:
+                                              </span>
+                                              <span className=" text-sm">
+                                                {individual.nationalCode}
+                                              </span>
+                                            </Typography>
+                                            <Typography
+                                              sx={{
+                                                fontFamily:
+                                                  "__fonts_2f4189,__fonts_Fallback_2f4189",
+                                              }}
+                                              className="w-1/5 flex gap-2 items-center"
+                                            >
+                                              <span className="text-[#4E4E4E]">
+                                                نقش:
+                                              </span>
+                                              <span className=" text-sm">
+                                                {individual?.role}
+                                              </span>
+                                            </Typography>
+                                            <div className="hidden md:flex gap-2 px-6  justify-center text-gray70 whitespace-nowrap ">
+                                              <button
+                                                className="border  border-[#FE4949] rounded p-[0.4rem] hover:bg-[#f8dfdf]"
+                                                onClick={() => {
+                                                  handleOpenUnregisterIndividual(
+                                                    individual
+                                                  );
+                                                }}
+                                              >
+                                                <svg
+                                                  xmlns="http://www.w3.org/2000/svg"
+                                                  width="18"
+                                                  height="18"
+                                                  viewBox="0 0 16 16"
+                                                  fill="none"
+                                                >
+                                                  <path
+                                                    d="M12 4L4 12M4 4L12 12"
+                                                    stroke="#DB3746"
+                                                    stroke-linecap="round"
+                                                    stroke-linejoin="round"
+                                                  />
+                                                </svg>
+                                              </button>
+                                              <button
+                                                className="border  border-[#12D377] rounded p-[0.4rem] hover:bg-[#e9fcf3]"
+                                                onClick={() => {
+                                                  handleOpenRegisterIndividual(
+                                                    individual
+                                                  );
+                                                }}
+                                              >
+                                                <svg
+                                                  xmlns="http://www.w3.org/2000/svg"
+                                                  width="18"
+                                                  height="18"
+                                                  viewBox="0 0 16 16"
+                                                  fill="none"
+                                                >
+                                                  <path
+                                                    d="M13.3337 4L6.00033 11.3333L2.66699 8"
+                                                    stroke="#12D377"
+                                                    stroke-linecap="round"
+                                                    stroke-linejoin="round"
+                                                  />
+                                                </svg>
+                                              </button>
                                               <button
                                                 onClick={() => {
                                                   handleOpenMoreInfoIndividual(
@@ -763,12 +1028,13 @@ export default function registerOrganization() {
                                                 </button>
                                               }
                                             </div>
-                                        </tr>
-                                      </tbody>
-                                    </table>
-                                  </div>
+                                          </tr>
+                                        )
+                                      )}
+                                    </tbody>
+                                  </table>
                                 </div>
-                              ))}
+                              </div>
                             </AccordionDetails>
                           </Accordion>
                         )
@@ -784,11 +1050,14 @@ export default function registerOrganization() {
         openAddOrganization={openAddOrganization}
       />
       <AddSubOrganizationDialog
-          organizationIdTarget={organizationIdTarget}
+        organizationIdTarget={organizationIdTarget}
         handleCloseAddSubOrganization={handleCloseAddSubOrganization}
         openAddSubOrganization={openAddSubOrganization}
       />
       <AddIndividualDialog
+        individualIdTarget={individualIdTarget}
+        organizationIdTarget={organizationIdTarget}
+        subOrganizationIdTarget={subOrganizationIdTarget}
         handleOpenAddIndividualRelationship={
           handleOpenAddIndividualRelationship
         }
@@ -819,7 +1088,7 @@ export default function registerOrganization() {
         handleCloseEditIndividualInfo={handleCloseEditIndividualInfo}
         openEditIndividualInfo={openEditIndividualInfo}
         handleOpenEditIndividualRelationshipInfo={
-          editIndividualRelationshipInfoTarget
+          handleOpenEditIndividualRelationshipInfo
         }
         editIndividualRelationshipInfoTarget={
           editIndividualRelationshipInfoTarget
@@ -838,6 +1107,16 @@ export default function registerOrganization() {
         moreInfoIndividualRelationshipTarget={
           moreInfoIndividualRelationshipTarget
         }
+      />
+      <RegisterUserDialog
+        registerIndividualTarget={registerIndividualTarget}
+        openRegisterIndividual={openRegisterIndividual}
+        handleCloseRegisterIndividual={handleCloseRegisterIndividual}
+      />
+      <UnregisterUserDialog
+        unregisterIndividualTarget={unregisterIndividualTarget}
+        openUnregisterIndividual={openUnregisterIndividual}
+        handleCloseUnregisterIndividual={handleCloseUnregisterIndividual}
       />
     </div>
   );

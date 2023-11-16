@@ -3,15 +3,26 @@ import { apiSlice } from "@/redux/api/apiSlice";
 export const ticketSlice = apiSlice.injectEndpoints({
   endpoints: (builder) => ({
     getAllTickets: builder.query({
-      query: ({ page }) => ({
-        url: `tickets/find-all/?page=${page - 1}&size=20`,
+      query: ({ page, openTicket }) => ({
+        url: `party/ticket/filter?isClosed=${openTicket}&page=${
+          page - 1
+        }&size=10`,
       }),
       providesTags: ["ticket"],
     }),
-    save: builder.mutation({
+
+    saveTicket: builder.mutation({
       query: (body) => ({
-        url: "tickets/create",
+        url: "party/ticket",
         method: "POST",
+        body: body,
+      }),
+      invalidatesTags: ["ticket"],
+    }),
+    updateTicket: builder.mutation({
+      query: (body) => ({
+        url: "party/ticket",
+        method: "PUT",
         body: body,
       }),
       invalidatesTags: ["ticket"],
@@ -19,4 +30,8 @@ export const ticketSlice = apiSlice.injectEndpoints({
   }),
 });
 
-export const { useGetAllTicketsQuery, useSaveMutation } = ticketSlice;
+export const {
+  useGetAllTicketsQuery,
+  useSaveTicketMutation,
+  useUpdateTicketMutation,
+} = ticketSlice;

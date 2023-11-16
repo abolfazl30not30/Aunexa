@@ -9,8 +9,8 @@ import FormControl from "@mui/material/FormControl";
 import * as yup from "yup";
 import { useFormik } from "formik";
 import { TailSpin } from "react-loader-spinner";
-import { useState } from "react";
-
+import { useState, useEffect } from "react";
+import ChangePasswordDialog from "@/components/Panel/user-account/ChangePasswordDialog";
 export default function page() {
   {
     /*const [submitData, { isLoading:isSubmitLoading ,error}] = useSavePurchaseRequestMutation()*/
@@ -22,6 +22,7 @@ export default function page() {
       .number()
       .required("لطفا شماره همراه دوم خود را وارد کنید"),
     telePhoneNumber: yup.number().required("لطفا شماره ثابت خود را وارد کنید"),
+    email: yup.string().email().required("لطفا ایمیل خود را وارد کنید"),
   });
 
   const formik = useFormik({
@@ -40,6 +41,44 @@ export default function page() {
       handleReset();
     },
   });
+  const [openChangePassword, setOpenChangePassword] = useState(false);
+  const handleOpenChangePassword = () => {
+    setOpenChangePassword(true);
+    setSeconds(0);
+    setMinutes(0);
+  };
+  const handleCloseChangePassword = () => {
+    setOpenChangePassword(false);
+  };
+
+  const [minutes, setMinutes] = useState(0);
+  const [seconds, setSeconds] = useState(0);
+
+  useEffect(() => {
+    const interval = setInterval(() => {
+      if (seconds > 0) {
+        setSeconds(seconds - 1);
+      }
+
+      if (seconds === 0) {
+        if (minutes === 0) {
+          clearInterval(interval);
+        } else {
+          setSeconds(59);
+          setMinutes(minutes - 1);
+        }
+      }
+    }, 1000);
+
+    return () => {
+      clearInterval(interval);
+    };
+  });
+  const resendOTP = () => {
+    setMinutes(2);
+    setSeconds(59);
+  };
+
   return (
     <div>
       <header className="flex justify-start items-center text-[0.9rem] bg-white py-6 md:px-8 px-2 ">
@@ -49,7 +88,7 @@ export default function page() {
           </h2>
         </div>
       </header>
-      <section className="py-16 md:px-32 mt-5 bg-white h-[55rem] ">
+      <section className="py-16 2xl:px-72 xl:px-48 lg:px-32 px-8 mt-5  bg-white ">
         <div className="flex justify-start gap-4 items-center">
           <div className="w-16 h-16 md:w-20 md:h-20 border border-solid border-1 border-borderGray rounded">
             <img
@@ -69,132 +108,146 @@ export default function page() {
             </div>
           </div>
         </div>
-        <div className="mt-16 ">
+        <div className="mt-12 ">
           <Box
-            className="boxUserAccount"
+            className="boxUserAccount grid sm:grid-cols-2 grid-cols-1 2xl:gap-x-12 gap-x-8 gap-y-5"
             component="form"
             noValidate
-            sx={{
-              display: "grid",
-              gridTemplateColumns: { sm: "1fr 1fr" },
-              gridRowGap: 40,
-              gridColumnGap: 96,
-            }}
           >
-            <FormControl variant="standard">
-              <InputLabel
-                className="labelUserAccount "
-                shrink
-                htmlFor="organization"
-              >
+            <div className="flex flex-col">
+              <label className="mb-2" for="organization">
                 نام سازمان
-              </InputLabel>
+              </label>
               <TextField
                 type="text"
-                className="inputUserAccount"
-                name="organizationName"
-                value={"سازمان"}
-                sx={{
-                  backgroundColor: "#F2EDED",
-                  color: "#29262A",
-                  fontSize: 16,
-                }}
+                className="bg-[#F2EDED]"
+                name="organization"
+                value={formik.values.organization}
+                onChange={formik.handleChange}
+                error={
+                  formik.touched.organization &&
+                  Boolean(formik.errors.organization)
+                }
+                helperText={
+                  formik.touched.organization && formik.errors.organization
+                }
                 inputProps={{
                   style: {
-                    fontFamily: "IRANYekan",
-                    fontWeight: "600",
+                    fontFamily: "__fonts_2f4189,__fonts_Fallback_2f4189",
+                    fontSize: "0.8rem",
+                  },
+                }}
+                InputLabelProps={{
+                  style: {
+                    fontFamily: "__fonts_2f4189,__fonts_Fallback_2f4189",
                   },
                 }}
                 disabled
                 id="organization"
               />
-            </FormControl>
-            <FormControl variant="standard">
-              <InputLabel
-                className="labelUserAccount "
-                shrink
-                htmlFor="subOrganization"
-              >
+            </div>
+            <div className="flex flex-col">
+              <label className="mb-2" for="subOrganizationName">
                 نام دپارتمان
-              </InputLabel>
+              </label>
               <TextField
                 type="text"
-                className="inputUserAccount"
+                className="bg-[#F2EDED]"
                 name="subOrganizationName"
-                value={"دپارتمان"}
-                sx={{
-                  backgroundColor: "#F2EDED",
-                  color: "#29262A",
-                  fontSize: 16,
-                }}
+                value={formik.values.subOrganizationName}
+                onChange={formik.handleChange}
+                error={
+                  formik.touched.subOrganizationName &&
+                  Boolean(formik.errors.subOrganizationName)
+                }
+                helperText={
+                  formik.touched.subOrganizationName &&
+                  formik.errors.subOrganizationName
+                }
                 inputProps={{
                   style: {
-                    fontFamily: "IRANYekan",
-                    fontWeight: "600",
+                    fontFamily: "__fonts_2f4189,__fonts_Fallback_2f4189",
+                    fontSize: "0.8rem",
+                  },
+                }}
+                InputLabelProps={{
+                  style: {
+                    fontFamily: "__fonts_2f4189,__fonts_Fallback_2f4189",
                   },
                 }}
                 disabled
-                id="subOrganization"
+                id="subOrganizationName"
               />
-            </FormControl>
-            <FormControl variant="standard">
-              <InputLabel
-                className="labelUserAccount "
-                shrink
-                htmlFor="nationalCode"
-              >
+            </div>
+            <div className="flex flex-col">
+              <label className="mb-2" for="nationalCode">
                 کد ملی
-              </InputLabel>
+              </label>
               <TextField
                 type="text"
-                className="inputUserAccount"
+                className="bg-[#F2EDED]"
                 name="nationalCode"
-                value={"کدملی"}
-                sx={{
-                  backgroundColor: "#F2EDED",
-                  color: "#29262A",
-                  fontSize: 16,
-                }}
+                value={formik.values.nationalCode}
+                onChange={formik.handleChange}
+                error={
+                  formik.touched.nationalCode &&
+                  Boolean(formik.errors.nationalCode)
+                }
+                helperText={
+                  formik.touched.nationalCode && formik.errors.nationalCode
+                }
                 inputProps={{
                   style: {
-                    fontFamily: "IRANYekan",
-                    fontWeight: "600",
+                    fontFamily: "__fonts_2f4189,__fonts_Fallback_2f4189",
+                    fontSize: "0.8rem",
+                  },
+                }}
+                InputLabelProps={{
+                  style: {
+                    fontFamily: "__fonts_2f4189,__fonts_Fallback_2f4189",
                   },
                 }}
                 disabled
                 id="nationalCode"
               />
-            </FormControl>
-            <FormControl variant="standard">
-              <InputLabel
-                className="labelUserAccount "
-                shrink
-                htmlFor="personalCode"
-              >
+            </div>
+            <div className="flex flex-col">
+              <label className="mb-2" for="personalCode">
                 کد پرسنلی
-              </InputLabel>
+              </label>
               <TextField
                 type="text"
-                className="inputUserAccount"
+                className="bg-[#F2EDED]"
                 name="personalCode"
-                value={"کد پرسنلی"}
-                sx={{
-                  backgroundColor: "#F2EDED",
-                  color: "#29262A",
-                  fontSize: 16,
-                }}
+                value={formik.values.personalCode}
+                onChange={formik.handleChange}
+                error={
+                  formik.touched.personalCode &&
+                  Boolean(formik.errors.personalCode)
+                }
+                helperText={
+                  formik.touched.personalCode && formik.errors.personalCode
+                }
                 inputProps={{
                   style: {
-                    fontFamily: "IRANYekan",
-                    fontWeight: "600",
+                    fontFamily: "__fonts_2f4189,__fonts_Fallback_2f4189",
+                    fontSize: "0.8rem",
+                  },
+                }}
+                InputLabelProps={{
+                  style: {
+                    fontFamily: "__fonts_2f4189,__fonts_Fallback_2f4189",
                   },
                 }}
                 disabled
                 id="personalCode"
               />
-            </FormControl>
+            </div>
+
             <div className="flex flex-col">
-              <label for="originalPhoneNumber">شماره همراه</label>
+              <label className="mb-2" for="originalPhoneNumber">
+                شماره همراه
+              </label>
               <TextField
                 type="text"
                 className={
@@ -228,14 +281,10 @@ export default function page() {
                 id="originalPhoneNumber"
               />
             </div>
-            <FormControl variant="standard">
-              <InputLabel
-                className="labelUserAccount "
-                shrink
-                htmlFor="anotherPhoneNumber"
-              >
+            <div className="flex flex-col">
+              <label className="mb-2" for="anotherPhoneNumber">
                 شماره همراه دوم
-              </InputLabel>
+              </label>
               <TextField
                 type="text"
                 className={
@@ -256,23 +305,23 @@ export default function page() {
                 }
                 inputProps={{
                   style: {
-                    fontWeight: "600",
-                    letterSpacing: "0.3rem",
-                    textAlign: "center",
+                    fontFamily: "__fonts_2f4189,__fonts_Fallback_2f4189",
+                    fontSize: "0.8rem",
+                  },
+                }}
+                InputLabelProps={{
+                  style: {
+                    fontFamily: "__fonts_2f4189,__fonts_Fallback_2f4189",
                   },
                 }}
                 disabled={!enable}
                 id="anotherPhoneNumber"
               />
-            </FormControl>
-            <FormControl variant="standard">
-              <InputLabel
-                className="labelUserAccount "
-                shrink
-                htmlFor="telePhoneNumber"
-              >
+            </div>
+            <div className="flex flex-col">
+              <label className="mb-2" for="telePhoneNumber">
                 شماره ثابت
-              </InputLabel>
+              </label>
               <TextField
                 type="text"
                 className={
@@ -305,12 +354,11 @@ export default function page() {
                 disabled={!enable}
                 id="telePhoneNumber"
               />
-            </FormControl>
-
-            <FormControl variant="standard">
-              <InputLabel className="labelUserAccount " shrink htmlFor="email">
+            </div>
+            <div className="flex flex-col">
+              <label className="mb-2" for="email">
                 ایمیل
-              </InputLabel>
+              </label>
               <TextField
                 type="text"
                 className={
@@ -337,29 +385,36 @@ export default function page() {
                 disabled={!enable}
                 id="email"
               />
-            </FormControl>
-            <FormControl variant="standard">
-              <InputLabel
-                className="labelUserAccount "
-                shrink
-                htmlFor="education"
-              >
+            </div>
+            <div className="flex flex-col">
+              <label className="mb-2" for="education">
                 تحصیلات
-              </InputLabel>
+              </label>
               <TextField
                 type="text"
-                className="inputUserAccount"
-                name="value"
-                value={"تحصیلات"}
-                sx={{
-                  backgroundColor: "#F2EDED",
-                  color: "#29262A",
-                  fontSize: 16,
+                className="bg-[#F2EDED]"
+                name="education"
+                value={formik.values.education}
+                onChange={formik.handleChange}
+                error={
+                  formik.touched.education && Boolean(formik.errors.education)
+                }
+                helperText={formik.touched.education && formik.errors.education}
+                inputProps={{
+                  style: {
+                    fontFamily: "__fonts_2f4189,__fonts_Fallback_2f4189",
+                    fontSize: "0.8rem",
+                  },
+                }}
+                InputLabelProps={{
+                  style: {
+                    fontFamily: "__fonts_2f4189,__fonts_Fallback_2f4189",
+                  },
                 }}
                 disabled
                 id="education"
               />
-            </FormControl>
+            </div>
           </Box>
           <Box
             className="boxUserAccount"
@@ -370,28 +425,39 @@ export default function page() {
               gridTemplateColumns: { sm: "1fr " },
             }}
           >
-            <FormControl variant="standard">
-              <InputLabel
-                className="labelUserAccount "
-                shrink
-                htmlFor="address"
-              >
+            <div className="flex flex-col">
+              <label className="mb-2" for="inputUserAccount">
                 آدرس
-              </InputLabel>
+              </label>
               <TextField
                 type="text"
-                className="inputUserAccount"
-                name="value"
-                value={"آدرس"}
-                sx={{
-                  backgroundColor: "#F2EDED",
-                  color: "#29262A",
-                  fontSize: 16,
+                className="bg-[#F2EDED]"
+                name="inputUserAccount"
+                value={formik.values.inputUserAccount}
+                onChange={formik.handleChange}
+                error={
+                  formik.touched.inputUserAccount &&
+                  Boolean(formik.errors.inputUserAccount)
+                }
+                helperText={
+                  formik.touched.inputUserAccount &&
+                  formik.errors.inputUserAccount
+                }
+                inputProps={{
+                  style: {
+                    fontFamily: "__fonts_2f4189,__fonts_Fallback_2f4189",
+                    fontSize: "0.8rem",
+                  },
+                }}
+                InputLabelProps={{
+                  style: {
+                    fontFamily: "__fonts_2f4189,__fonts_Fallback_2f4189",
+                  },
                 }}
                 disabled
-                id="address"
+                id="inputUserAccount"
               />
-            </FormControl>
+            </div>
           </Box>
         </div>
         <div className="flex justify-between items-center mt-8">
@@ -423,7 +489,22 @@ export default function page() {
             </button>
           </div>
         </div>
+        <div className="text-center mt-8">
+          <button
+            onClick={handleOpenChangePassword}
+            className="text-[#797979] border-b border-[#797979]"
+          >
+            تغییر رمز عبور
+          </button>
+        </div>
       </section>
+      <ChangePasswordDialog
+        handleCloseChangePassword={handleCloseChangePassword}
+        openChangePassword={openChangePassword}
+        resendOTP={resendOTP}
+        seconds={seconds}
+        minutes={minutes}
+      />
     </div>
   );
 }

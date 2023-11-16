@@ -7,21 +7,39 @@ import {TailSpin} from "react-loader-spinner";
 import * as yup from "yup";
 import {useFormik} from "formik";
 import CircularProgress from '@mui/material/CircularProgress';
-import { useSaveMutation } from "@/redux/features/ticket/TicketSlice";
+import { useSaveTicketMutation } from "@/redux/features/ticket/TicketSlice";
+import {
+   useLazyGetAllSubOrganizationQuery
+} from "@/redux/features/category/CategorySlice";
+
+
+import { useRouter, usePathname } from "next/navigation";
+
+
 
 export default function AddTicketDialog(props) {
-  
-    const [ticket,setTicket] = useState(null)
-    
+    const router = useRouter()
+    const pathname = usePathname();
+    const [subOrganization,setSubOrganization] = useState(null)
+    const [openSubOrganizationList,setOpenSubOrganizationList] = useState(false)
+    const [getSubOrganizationList,{ data : subOrganizationList  = [] , isLoading : isSubOrganizationLoading, isError: isSubOrganizationError }] = useLazyGetAllSubOrganizationQuery()
+    useEffect(()=>{
+        if(openSubOrganizationList){
+            getSubOrganizationList()
+        }
+    },[openSubOrganizationList])
   
     const handleReset = () =>{
         formik.resetForm()
-        setTicket(null)
+        setSubOrganization(null)
+        
     }
 
-    const [submitData, { isLoading:isSubmitLoading ,error}] = useSaveMutation()
+    const [submitData, { isLoading:isSubmitLoading ,error}] = useSaveTicketMutation()
     const schema = yup.object().shape({
         title: yup.string().required("لطفا موضوع پیام را مشخص کنید"),
+        targetDepartmentId: yup.string().required("لطفا دپارتمان مورد نظر را انتخاب کنید"),
+    
         
         
     });
@@ -29,6 +47,7 @@ export default function AddTicketDialog(props) {
     const formik = useFormik({
         initialValues: {
             title:"",
+            targetDepartmentId: "",
             
             
         },
@@ -39,19 +58,16 @@ export default function AddTicketDialog(props) {
 
         onSubmit: async (tiket,helpers) => {
             let updateTiket = {...tiket}
-            
             const userData = await submitData(updateTiket)
             handleReset()
             props.handleCloseAddTicket()
-            setSubOrganization(null)
+            history.pushState({ ticketInfo: userData }, "", pathname + "/chat-page"+`/${userData.data.id}`);
+            router.push(`${userData.data.id}`);
+            
+            
         },
     });
-    const [subOrganization, setSubOrganization] = useState(null)
-    const subOrganizationList = [
-      { label: 'دپارتمان یک' },
-      { label: 'دپارتمان دو' },
-      
-    ];
+    
 
     
     return (
@@ -64,11 +80,11 @@ export default function AddTicketDialog(props) {
                 aria-describedby="alert-dialog-slide-description"
                 PaperProps={{
                     style: {
-                        fontFamily: "IRANYekan",
+                        fontFamily: "__fonts_2f4189,__fonts_Fallback_2f4189",
                     },
                 }}>
                 <DialogContent>
-                    <DialogContentText style={{fontFamily: "IRANYekan"}}>
+                    <DialogContentText style={{fontFamily: "__fonts_2f4189,__fonts_Fallback_2f4189"}}>
                         <div className="flex justify-end">
                             <button onClick={()=>{props.handleCloseAddTicket();handleReset()}}>
                                 <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 14 14"
@@ -82,31 +98,65 @@ export default function AddTicketDialog(props) {
                             <h3 className="text-[1.1rem]">ثبت تیکت جدید</h3>
                         </div>
                         <form className="flex justify-center " onSubmit={formik.handleSubmit} method="POST">
-                            <div className="flex flex-col justify-center w-[90%] gap-5">
-                                <div className="flex justify-between gap-2">
-                                    <div className="" >
-                                      <Autocomplete
-                                        fullWidth
-                                        clearOnEscape
-                                        disablePortal
-                                        id="combo-box-demo"
-                                        options={subOrganizationList}
-                                        sx={{ width: 300 }}
-                                        value={subOrganization}
-                                        onChange={(event, newValue) => {
-                                            setSubOrganization(newValue)
-                                            formik.setFieldValue("subOrganization", newValue.abbreviation)
-                                        }}
-                                        renderInput={(params) => <TextField error={formik.touched.subOrganization && Boolean(formik.errors.subOrganization)}
-                                            helperText={formik.touched.subOrganization && formik.errors.subOrganization}
-                                            InputProps={{
-                                            ...params.InputProps,
-                                            style: { fontFamily: "IRANYekan", fontSize: "0.8rem" }
-                                            }} {...params} placeholder="دپارتمان" />}
+                            <div className="flex flex-col  w-[90%] gap-8">
+                                     
+                                    <div className=" space-y-2" >
+                                    <div>
+                                        <span className="text-gray60 text-sm">
+                                            واحد مربوطه
+                                        </span>
+                                     </div>
+                                    <Autocomplete
+                                            open={openSubOrganizationList}
+                                            onOpen={() => {
+                                                setOpenSubOrganizationList(true);
+                                            }}
+                                            onClose={() => {
+                                                setOpenSubOrganizationList(false);
+                                            }}
+                                            fullWidth
+                                            clearOnEscape
+                                            disablePortal
+                                            id="combo-box-demo"
+                                            ListboxProps={{
+                                                sx: {fontFamily: "__fonts_2f4189,__fonts_Fallback_2f4189", fontSize: "0.8rem"},
+                                            }}
+                                            options={subOrganizationList}
+                                            getOptionLabel={(option) => option.name}
+                                            value={subOrganization}
+                                            onChange={(event, newValue) => {
+                                                setSubOrganization(newValue)
+                                                formik.setFieldValue("targetDepartmentId", newValue?.id)
+                                                formik.setFieldValue("sourceSubOrganizationName", newValue?.name)
+                                            }}
+                                            renderInput={(params) =>
+                                                <TextField
+                                                    error={formik.touched.targetDepartmentId && Boolean(formik.errors.targetDepartmentId)}
+                                                    helperText={formik.touched.targetDepartmentId && formik.errors.targetDepartmentId}
+                                                    {...params}
+                                                    InputProps={{
+                                                        ...params.InputProps,
+                                                        style: {fontFamily: "__fonts_2f4189,__fonts_Fallback_2f4189", fontSize: "0.8rem"},
+                                                        endAdornment: (
+                                                            <React.Fragment>
+                                                                {isSubOrganizationLoading ?
+                                                                    <CircularProgress color="inherit"
+                                                                                      size={20}/> : null}
+                                                                {params.InputProps.endAdornment}
+                                                            </React.Fragment>
+                                                        )
+                                                    }}
+                                                    placeholder="به دپارتمان"
+                                                />}
                                         />
 
                                     </div>
-                                    <div className="w-11/12 h-full">
+                                    <div className="space-y-2 ">
+                                    <div>
+                                        <span className="text-gray60 text-sm">
+                                             عنوان
+                                        </span>
+                                     </div>
                                     <TextField
                                         fullWidth
                                         placeholder="موضوع پیام (اجباری)"
@@ -116,13 +166,16 @@ export default function AddTicketDialog(props) {
                                         onChange={formik.handleChange}
                                         error={formik.touched.title && Boolean(formik.errors.title)}
                                         helperText={formik.touched.title && formik.errors.title}
-                                        inputProps={{style: {fontFamily: "IRANYekan", fontSize: "0.8rem"}}}
-                                        InputLabelProps={{style: {fontFamily: "IRANYekan"}}}/>
+                                        inputProps={{style: {fontFamily: "__fonts_2f4189,__fonts_Fallback_2f4189", fontSize: "0.8rem"}}}
+                                            InputLabelProps={{style: {fontFamily: "__fonts_2f4189,__fonts_Fallback_2f4189"}}}/>
                                     </div>
-                                </div>
-                                <div>
+                                   
+                                    
+                                
+                                <div className="mt-16">
                                     {
-                                        isSubmitLoading ? (<button disabled type="submit"
+                                        isSubmitLoading ? (
+                                        <button disabled type="submit"
                                                                    className="hidden flex gap-3 items-center justify-center w-full rounded-[0.5rem] py-3  border border-solid border-1 border-neutral-400 font-bold text-textGray bg-neutral-200">
                                             <TailSpin
                                                 height="20"
@@ -134,7 +187,8 @@ export default function AddTicketDialog(props) {
                                                 wrapperClass=""
                                                 visible={true}/>
                                             ثبت
-                                        </button>) : (
+                                        </button>
+                                        ) : (
                                             <button type="submit"
                                                     className="w-full rounded-[0.5rem] py-3 hover:border hover:opacity-80 font-bold  bg-mainRed text-white">ثبت
                                             </button>

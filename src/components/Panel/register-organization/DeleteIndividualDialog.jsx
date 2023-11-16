@@ -6,11 +6,11 @@ import {
 } from "@mui/material";
 import Dialog from "@mui/material/Dialog";
 import {TailSpin} from "react-loader-spinner";
-import { useDeleteMutation } from "@/redux/features/organization/individual/IndividualSlice";
+import { useDeleteIndividualMutation } from "@/redux/features/organization/individual/IndividualSlice";
 
 
 export default function DeleteIndividualDialog(props) {
-    const [handleDelete ,{isLoading}] = useDeleteMutation()
+    const [handleDelete ,{isLoading}] = useDeleteIndividualMutation()
     const deleteData = async () =>{
         const res = await handleDelete(props.deleteTargetIndividualId)
         props.handleCloseDeleteIndividual()
@@ -24,12 +24,10 @@ export default function DeleteIndividualDialog(props) {
                 onClose={props.handleCloseDeleteIndividual}
                 aria-describedby="alert-dialog-slide-description"
                 PaperProps={{
-                    style: {
-                        fontFamily: "IRANYekan",
-                    },
+                    style: {fontFamily: "__fonts_2f4189,__fonts_Fallback_2f4189"}
                 }}>
                 <DialogContent>
-                    <DialogContentText style={{ fontFamily: "IRANYekan" }}>
+                    <DialogContentText style={{fontFamily: "__fonts_2f4189,__fonts_Fallback_2f4189"}}>
                         <div className="flex justify-end">
                             <button onClick={props.handleCloseDeleteIndividual}>
                                 <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 14 14" fill="none">

@@ -33,11 +33,11 @@ export default function MoreRoleInfoDialog(props) {
                 aria-describedby="alert-dialog-slide-description"
                 PaperProps={{
                     style: {
-                        fontFamily: "IRANYekan",
+                        fontFamily: "__fonts_2f4189,__fonts_Fallback_2f4189",
                     },
                 }}>
                 <DialogContent>
-                    <DialogContentText style={{ fontFamily: "IRANYekan" }}>
+                    <DialogContentText style={{ fontFamily: "__fonts_2f4189,__fonts_Fallback_2f4189" }}>
                         <div className="flex justify-end">
                             <button onClick={props.handleCloseMoreRoleInfo}>
                                 <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 14 14" fill="none">
@@ -48,8 +48,8 @@ export default function MoreRoleInfoDialog(props) {
                         <div className="flex justify-center mb-5">
                             <h3 className="text-[1.1rem]">جزییات</h3>
                         </div>
-                        <div className="hidden md:flex md:justify-center mb-4">
-                            <div className="w-full md:w-[70%] flex flex-col gap-2">
+                        <div className="hidden md:flex flex-col items-center gap-8 md:justify-center mb-4">
+                            <div className="w-full md:w-[90%] flex flex-col gap-2">
                                 <div className="flex flex-col">
                                     <div className="mb-2">
                                         <span className="text-[0.9rem] text-gray70 ">نام نقش</span>
@@ -61,14 +61,14 @@ export default function MoreRoleInfoDialog(props) {
                                     </div>
                                 </div>
                             </div>
-                            <div className="w-full md:w-[70%] flex flex-col gap-2">
+                            <div className="w-full md:w-[90%] flex flex-col gap-2">
                                 <div>
                                     <span className="text-[0.9rem] text-gray70">
                                         دسترسی ها
                                     </span>
                                 </div>
                                 <List
-                                  sx={{ width: '100%', maxWidth: 360, bgcolor: 'background.paper',border:"1px solid #D9D9D9",color:"#29262A" }}
+                                  sx={{ width: '100%', bgcolor: 'background.paper',border:"1px solid #D9D9D9",color:"#29262A"}}
                                   component="nav"
                                   aria-labelledby="nested-list-subheader"
                                   subheader={
@@ -78,13 +78,13 @@ export default function MoreRoleInfoDialog(props) {
                                   }
                                 >
                                   <ListItemButton onClick={handleClick}>
-                                    <ListItemText primary="صفحه" />
+                                    <ListItemText primaryTypographyProps={{fontFamily: "__fonts_2f4189,__fonts_Fallback_2f4189"}}  primary="صفحه" />
                                     {openAccess ? <ExpandLess /> : <ExpandMore />}
                                   </ListItemButton>
                                   <Collapse in={openAccess} timeout="auto" unmountOnExit>
                                     <List component="div" disablePadding>
                                       <ListItemButton sx={{ pr: 4 }}>
-                                        <ListItemText primary="API" />
+                                        <ListItemText primaryTypographyProps={{fontFamily: "__fonts_2f4189,__fonts_Fallback_2f4189"}} primary="API" />
                                       </ListItemButton>
                                     </List>
                                   </Collapse>

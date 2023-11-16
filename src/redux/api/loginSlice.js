@@ -7,7 +7,7 @@ let base64encodedData = Buffer.from(
 ).toString("base64");
 
 const baseQuery = fetchBaseQuery({
-  baseUrl: "http://localhost:8080",
+  baseUrl: "https://auth.vipsoftware1.com",
   prepareHeaders: (headers) => {
     headers.set("Authorization", "Basic " + base64encodedData);
     return headers;
