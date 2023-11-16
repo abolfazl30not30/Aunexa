@@ -27,6 +27,8 @@ import MoreIndividualInfoDialog from "@/components/Panel/register-organization/M
 import Link from "next/link";
 import { useGetAllOrganizationQuery } from "@/redux/features/organization/OrganizationSlice";
 import { useSelector } from "react-redux";
+import RegisterUserDialog from "@/components/Panel/register-organization/RegisterUserDialog";
+import UnregisterUserDialog from "@/components/Panel/register-organization/UnregisterUserDialog";
 
 export default function registerOrganization() {
   /* search bar */
@@ -161,6 +163,91 @@ export default function registerOrganization() {
       ],
     });
     setOpenMoreInfoIndividual(false);
+  };
+
+  const [openRegisterIndividual, setOpenRegisterIndividual] = useState(false);
+  const [registerIndividualTarget, setRegisterIndividualTarget] = useState({
+    fullName: "",
+    nationalCode: "",
+    personalCode: "",
+    birthDate: "",
+    fatherName: "",
+    gender: "",
+    role: "",
+    originalPhoneNumber: "",
+    anotherPhoneNumber: "",
+    telephoneNumber: "",
+    education: "",
+    email: "",
+    address: "",
+    cLevel: "",
+  });
+  const handleOpenRegisterIndividual = (info) => {
+    setRegisterIndividualTarget(info);
+    setOpenRegisterIndividual(true);
+  };
+
+  const handleCloseRegisterIndividual = () => {
+    setRegisterIndividualTarget({
+      fullName: "",
+      nationalCode: "",
+      personalCode: "",
+      birthDate: "",
+      fatherName: "",
+      gender: "",
+      role: "",
+      originalPhoneNumber: "",
+      anotherPhoneNumber: "",
+      telephoneNumber: "",
+      education: "",
+      email: "",
+      address: "",
+      cLevel: "",
+    });
+    setOpenRegisterIndividual(false);
+  };
+
+  const [openUnregisterIndividual, setOpenUnregisterIndividual] =
+    useState(false);
+  const [unregisterIndividualTarget, setUnregisterIndividualTarget] = useState({
+    fullName: "",
+    nationalCode: "",
+    personalCode: "",
+    birthDate: "",
+    fatherName: "",
+    gender: "",
+    role: "",
+    originalPhoneNumber: "",
+    anotherPhoneNumber: "",
+    telephoneNumber: "",
+    education: "",
+    email: "",
+    address: "",
+    cLevel: "",
+  });
+  const handleOpenUnregisterIndividual = (info) => {
+    setUnregisterIndividualTarget(info);
+    setOpenUnregisterIndividual(true);
+  };
+
+  const handleCloseUnregisterIndividual = () => {
+    setUnregisterIndividualTarget({
+      fullName: "",
+      nationalCode: "",
+      personalCode: "",
+      birthDate: "",
+      fatherName: "",
+      gender: "",
+      role: "",
+      originalPhoneNumber: "",
+      anotherPhoneNumber: "",
+      telephoneNumber: "",
+      education: "",
+      email: "",
+      address: "",
+      cLevel: "",
+    });
+    setOpenUnregisterIndividual(false);
   };
 
   const [openEditSubOrganizationInfo, setOpenEditSubOrganizationInfo] =
@@ -799,6 +886,52 @@ export default function registerOrganization() {
                                             </Typography>
                                             <div className="hidden md:flex gap-2 px-6  justify-center text-gray70 whitespace-nowrap ">
                                               <button
+                                                className="border  border-[#FE4949] rounded p-[0.4rem] hover:bg-[#f8dfdf]"
+                                                onClick={() => {
+                                                  handleOpenUnregisterIndividual(
+                                                    individual
+                                                  );
+                                                }}
+                                              >
+                                                <svg
+                                                  xmlns="http://www.w3.org/2000/svg"
+                                                  width="18"
+                                                  height="18"
+                                                  viewBox="0 0 16 16"
+                                                  fill="none"
+                                                >
+                                                  <path
+                                                    d="M12 4L4 12M4 4L12 12"
+                                                    stroke="#DB3746"
+                                                    stroke-linecap="round"
+                                                    stroke-linejoin="round"
+                                                  />
+                                                </svg>
+                                              </button>
+                                              <button
+                                                className="border  border-[#12D377] rounded p-[0.4rem] hover:bg-[#e9fcf3]"
+                                                onClick={() => {
+                                                  handleOpenRegisterIndividual(
+                                                    individual
+                                                  );
+                                                }}
+                                              >
+                                                <svg
+                                                  xmlns="http://www.w3.org/2000/svg"
+                                                  width="18"
+                                                  height="18"
+                                                  viewBox="0 0 16 16"
+                                                  fill="none"
+                                                >
+                                                  <path
+                                                    d="M13.3337 4L6.00033 11.3333L2.66699 8"
+                                                    stroke="#12D377"
+                                                    stroke-linecap="round"
+                                                    stroke-linejoin="round"
+                                                  />
+                                                </svg>
+                                              </button>
+                                              <button
                                                 onClick={() => {
                                                   handleOpenMoreInfoIndividual(
                                                     individual
@@ -974,6 +1107,16 @@ export default function registerOrganization() {
         moreInfoIndividualRelationshipTarget={
           moreInfoIndividualRelationshipTarget
         }
+      />
+      <RegisterUserDialog
+        registerIndividualTarget={registerIndividualTarget}
+        openRegisterIndividual={openRegisterIndividual}
+        handleCloseRegisterIndividual={handleCloseRegisterIndividual}
+      />
+      <UnregisterUserDialog
+        unregisterIndividualTarget={unregisterIndividualTarget}
+        openUnregisterIndividual={openUnregisterIndividual}
+        handleCloseUnregisterIndividual={handleCloseUnregisterIndividual}
       />
     </div>
   );

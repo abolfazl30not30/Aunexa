@@ -11,9 +11,8 @@ import persian from "react-date-object/calendars/persian";
 import persian_fa from "react-date-object/locales/persian_fa";
 import DatePicker from "react-multi-date-picker";
 import AddIndividualRelationshipDialog from "./AddIndividualRelationshipDialog";
-import { useLazyGetAllRoleQuery } from "@/redux/features/category/CategorySlice";
-
 import { useSaveIndividualMutation } from "@/redux/features/organization/individual/IndividualSlice";
+import { useLazyGetAllRoleListQuery } from "@/redux/features/category/CategoryRoleSlice";
 
 export default function AddIndividualDialog(props) {
 
@@ -25,7 +24,7 @@ export default function AddIndividualDialog(props) {
   
   const [role,setRole] = useState(null)
   const [openRoleList,setOpenRoleList] = useState(false)
-  const [getRoleList,{ data : roleList  = [] , isLoading : isRoleLoading, isError: roleIsError }] = useLazyGetAllRoleQuery()
+  const [getRoleList,{ data : roleList  = [] , isLoading : isRoleLoading, isError: roleIsError }] = useLazyGetAllRoleListQuery()
   useEffect(()=>{
       if(openRoleList){
           getRoleList()
@@ -295,7 +294,7 @@ export default function AddIndividualDialog(props) {
                                             sx: {fontFamily: "__fonts_2f4189,__fonts_Fallback_2f4189", fontSize: "0.8rem"},
                                         }}
                                         options={roleList}
-                                        getOptionLabel={(option) => option.persianName}
+                                        getOptionLabel={(option) => option.role}
                                         value={role}
                                         onChange={(event, newValue) => {
                                             setRole(newValue)

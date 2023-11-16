@@ -29,7 +29,7 @@ export default function MoreIndividualInfoDialog(props) {
                             </button>
                         </div>
                         <div className="flex justify-center mb-5">
-                            <h3 className="text-[1.1rem]">{console.log(props.moreInfoIndividualTarget)}</h3>
+                            <h3 className="text-[1.1rem]">جزئیات</h3>
                         </div>
                         
                         <div className="hidden md:flex md:justify-center mb-4">
