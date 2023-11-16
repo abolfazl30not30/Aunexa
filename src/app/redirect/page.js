@@ -12,7 +12,7 @@ import {useDispatch, useSelector} from 'react-redux'
 import {setAccessToken, setCredentials} from '../../redux/api/authSlice'
 import {generateCodeVerifier} from "@/helper/pkce";
 import jwt_decode from "jwt-decode";
-import {useGetAccessMutation} from "@/redux/api/getAccessSlice";
+import { useLazyGetAccessQuery} from "@/redux/features/access/getAccessSlice";
 import {setAccess} from "@/redux/permission/accessSlice";
 
 export default function redirect() {
@@ -21,7 +21,7 @@ export default function redirect() {
     const dispatch = useDispatch()
 
     const [login, { isLoading:isLoadingLogin,error:errorLogin }] = useLoginMutation()
-    const [getAccess, { isLoading:isLoadingAccess ,error:errorAccess }] = useGetAccessMutation()
+    const [getAccess, { isLoading:isLoadingAccess ,error:errorAccess }] = useLazyGetAccessQuery()
 
     const code = searchParams.get('code')
 
@@ -34,13 +34,12 @@ export default function redirect() {
     }
 
 
-
     const handleLogin = async ()=>{
 
         try {
             const userData = await login(formData)
             dispatch(setAccessToken(userData?.data?.access_token))
-            const accessData = await getAccess({Token:userData?.data?.access_token})
+            const accessData = await getAccess()
             dispatch(setAccess(accessData?.data))
             console.log(accessData?.data)
             let tokenContent = jwt_decode(userData?.data?.access_token);

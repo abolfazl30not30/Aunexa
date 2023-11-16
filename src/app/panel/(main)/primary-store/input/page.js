@@ -263,7 +263,7 @@ function primaryStoreInput() {
                     <div className="mt-10">
                         <div className="overflow-x-auto">
                             <table
-                                className=" w-full table-auto overflow-scroll border-collapse border-spacing-0 text-sm text-center text-gray70  ">
+                                className="w-full table-auto overflow-scroll border-collapse border-spacing-0 text-sm text-center text-gray70  ">
                                 <thead className="text-[0.9rem] text-gray80  bg-[#F8F8F8] md:bg-[#F2EDED] ">
                                 <tr>
                                     <th className="hidden md:table-cell px-6 py-4">

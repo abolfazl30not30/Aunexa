@@ -26,16 +26,12 @@ const login = async () => {
     grant_type: "refresh_token",
   };
 
-  return await axios.post(
-    "https://auth.vipsoftware1.com/oauth2/token",
-    formData,
-    {
-      headers: {
-        "Content-Type": "application/x-www-form-urlencoded",
-        Authorization: "Basic " + base64encodedData,
-      },
-    }
-  );
+  return await axios.post("https://auth.vipsoftware1.com/oauth2/token", formData, {
+    headers: {
+      "Content-Type": "application/x-www-form-urlencoded",
+      Authorization: "Basic " + base64encodedData,
+    },
+  });
 };
 
 const baseQueryWithReauth = async (args, api, extraOptions) => {
@@ -43,7 +39,7 @@ const baseQueryWithReauth = async (args, api, extraOptions) => {
 
   if (result?.error?.status === 401 || result?.error?.status === 500) {
     const refreshResult = await login();
-    console.log(refreshResult);
+    console.log(refreshResult)
     api.dispatch(setAccessToken(refreshResult?.data?.access_token));
     if (refreshResult?.data) {
       result = await baseQuery(args, api, extraOptions);
@@ -59,6 +55,7 @@ export const apiSlice = createApi({
   reducerPath: "api",
   baseQuery: baseQueryWithReauth,
   tagTypes: [
+      "file",
     "purchase-request",
     "primary-store-input",
     "primary-store-output",
@@ -69,8 +66,6 @@ export const apiSlice = createApi({
     "category",
     "vehicle-machine",
     "product",
-    "ticket",
-    "organization",
   ],
   endpoints: (builder) => ({}),
 });

@@ -7,14 +7,21 @@ import {
 import Dialog from "@mui/material/Dialog";
 import {TailSpin} from "react-loader-spinner";
 import { useDeleteRoleMutation } from "@/redux/features/role/RoleSlice";
+import {useSelector} from "react-redux";
 
 
 export default function DeleteRoleDialog(props) {
     const [handleDelete ,{isLoading}] = useDeleteRoleMutation()
+    const token = useSelector((state) => state.auth.accessToken)
+
     const deleteData = async () =>{
-        const res = await handleDelete(props.deleteTargetRoleId)
+        const res = await handleDelete({
+            id:props.deleteTargetRoleId,
+            token:token,
+        })
         props.handleCloseDeleteRole()
     }
+    
     return(
         <>
             <Dialog

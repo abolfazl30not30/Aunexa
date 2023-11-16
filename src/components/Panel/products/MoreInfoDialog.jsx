@@ -35,6 +35,20 @@ export default function MoreInfoDialog(props) {
                         </div>
                         <div className="hidden md:flex md:justify-center mb-4">
                             <div className="w-full md:w-[70%] flex flex-col gap-2">
+                                {
+                                    props.moreInfoTarget.imageURL !== "" && (
+                                        <div className="flex justify-center items-center gap-4">
+                                            <div>
+                                                <span className="text-[0.9rem] text-gray70"> تصویر محصول :</span>
+                                            </div>
+                                            <div>
+                                                <div className="w-20 h-20 rounded border border-dashed border-[#D9D9D9]">
+                                                    <img className="object-cover w-full h-full" src={props.moreInfoTarget.imageURL} alt="uploadedImage"/>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    )
+                                }
                                 <div className="flex flex-col">
                                     <div className="mb-2">
                                         <span className="text-[0.9rem] text-gray70 ">نام فارسی</span>
