@@ -28,7 +28,7 @@ function registerRole() {
     const [moreRoleInfoTarget, setMoreRoleInfoTarget] = useState({
         roleId: "",
         role: "",
-        authorityDescription:{}
+        authorityDescription:[]
     });
 
     const [openEditRoleInfo, setOpenEditRoleInfo] = useState(false);
@@ -53,7 +53,7 @@ function registerRole() {
         setMoreRoleInfoTarget({
             roleId: "",
             role: "",
-            authorityDescription:{}
+            authorityDescription:[]
         });
         setOpenMoreRoleInfo(false);
     };
