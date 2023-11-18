@@ -1,75 +1,64 @@
 'use client'
 import TextField from "@mui/material/TextField";
 import React, {useEffect, useState} from "react";
-import {
-    Autocomplete,
-    DialogContent,
-    DialogContentText,
-} from "@mui/material";
+import {Autocomplete, DialogContent, DialogContentText,} from "@mui/material";
 import Dialog from "@mui/material/Dialog";
 import {TailSpin} from "react-loader-spinner";
 import * as yup from "yup";
 import {useFormik} from "formik";
-
-import CircularProgress from '@mui/material/CircularProgress';
 import "react-multi-date-picker/styles/colors/red.css"
-import {
-    useLazyGetAllProductQuery,
-    useLazyGetAllUnitQuery,
-} from "@/redux/features/category/CategorySlice";
-import {styled} from "@mui/material/styles";
-import Switch from "@mui/material/Switch";
-import {
-    useSavePurchaseRequestMutation,
-    useUpdatePurchaseRequestMutation
-} from "@/redux/features/purchase-request/PurchaseRequestSlice";
-
+import {useLazyGetAllUnitQuery, useLazyGetInventoryBalanceQuery,} from "@/redux/features/category/CategorySlice";
+import {useUpdatePurchaseRequestMutation} from "@/redux/features/purchase-request/PurchaseRequestSlice";
 
 
 export default function ConfirmDialog(props) {
 
 
+    const [getInventoryBalance, {
+        data: inventoryBalanceList = [],
+        isLoading: isInventoryBalanceLoading,
+        isError: isInventoryBalanceError
+    }] = useLazyGetInventoryBalanceQuery()
 
     //unit input
-    const [unit,setUnit] = useState(null)
-    const [openUnitList,setOpenUnitList] = useState(false)
-    const [getUnitList,{ data : unitList  = [] , isLoading : isUnitLoading, isError: unitIsError }] = useLazyGetAllUnitQuery()
-    useEffect(()=>{
-        if(openUnitList){
+    const [unit, setUnit] = useState(null)
+    const [openUnitList, setOpenUnitList] = useState(false)
+    const [getUnitList, {
+        data: unitList = [],
+        isLoading: isUnitLoading,
+        isError: unitIsError
+    }] = useLazyGetAllUnitQuery()
+    useEffect(() => {
+        if (openUnitList) {
             getUnitList()
         }
-    },[openUnitList])
+    }, [openUnitList])
 
-    const handleReset = () =>{
+    const handleReset = () => {
         formik.resetForm()
-        setProduct(null)
         setUnit(null)
     }
 
-    const handleSetProductInput = (id) =>{
-        const product = productList.filter((product)=> product.id === id)
-        setProduct(product[0])
-    }
-    const handleSetUnitInput = (ab) =>{
-        const units= unitList.filter((unit)=> unit.persianName === ab)
+    const handleSetUnitInput = (ab) => {
+        const units = unitList.filter((unit) => unit.persianName === ab)
         setUnit(units[0])
     }
 
-    useEffect(()=>{
+    useEffect(() => {
         getUnitList()
+        getInventoryBalance(props.confirmTarget.productId)
         formik.setValues({
-            id:props.confirmTarget?.id,
+            id: props.confirmTarget?.id,
             value: props.confirmTarget?.value,
             unit: props.confirmTarget?.unit,
         })
         handleSetUnitInput(props.confirmTarget?.unit)
-    },[props.openConfirm])
+    }, [props.openConfirm])
 
     //submit data
-    const [submitData, { isLoading:isSubmitLoading ,error}] = useUpdatePurchaseRequestMutation()
+    const [submitData, {isLoading: isSubmitLoading, error}] = useUpdatePurchaseRequestMutation()
 
     const schema = yup.object().shape({
-        productId: yup.string().required("لطفا نام محصول را وارد کنید"),
         value: yup.string().required("لطفا مقدار محصول را وارد کنید"),
         unit: yup.string().required("لطفا واحد محصول را وارد کنید"),
     });
@@ -77,19 +66,17 @@ export default function ConfirmDialog(props) {
 
     const formik = useFormik({
         initialValues: {
-            id:"",
-            productId:"",
-            productName:"",
+            id: "",
             value: "",
             unit: "",
             priority: false,
-            description:"",
-            productImage:""
+            description: "",
+            productImage: ""
         },
 
         validationSchema: schema,
 
-        onSubmit: async (product,helpers) => {
+        onSubmit: async (product, helpers) => {
             let updateProduct = {...product}
             const userData = await submitData(updateProduct)
             handleReset()
@@ -103,16 +90,23 @@ export default function ConfirmDialog(props) {
                 fullWidth={true}
                 open={props.openConfirm}
                 keepMounted
-                onClose={()=>{props.handleCloseConfirm();handleReset()}}
+                onClose={() => {
+                    props.handleCloseConfirm();
+                    handleReset()
+                }}
                 aria-describedby="alert-dialog-slide-description"
                 PaperProps={{
                     style: {
                         fontFamily: "__fonts_2f4189,__fonts_Fallback_2f4189",
-                    },}}>
+                    },
+                }}>
                 <DialogContent>
                     <DialogContentText style={{fontFamily: "__fonts_2f4189,__fonts_Fallback_2f4189"}}>
                         <div className="flex justify-end">
-                            <button onClick={()=>{props.handleCloseConfirm();handleReset()}}>
+                            <button onClick={() => {
+                                props.handleCloseConfirm();
+                                handleReset()
+                            }}>
                                 <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 14 14"
                                      fill="none">
                                     <path d="M13 1L1 13M1 1L13 13" stroke="black" stroke-width="2"
@@ -123,8 +117,31 @@ export default function ConfirmDialog(props) {
                         <div className="flex justify-center mb-7">
                             <h3 className="text-[1.1rem]">تایید درخواست</h3>
                         </div>
+                        <div className="flex justify-center">
+
+                            <div className="flex flex-col justify-center w-[90%] md:w-[75%] gap-3">
+                                <div>
+                                    <span className="text-gray70 text-[0.8rem]">لیست موجودی محصول در انبارها</span>
+                                </div>
+                                {
+                                    inventoryBalanceList.content.map((product)=>(
+                                        <div className="border border-[#D9D9D9]  flex justify-between px-4">
+                                            <div className="p-2">
+                                        <span
+                                            className="text-[#29262A] text-[0.9rem]"> <span className="text-mainRed">{product.quantity.value}</span>از این محصول در <span className="text-mainRed">{product.subOrganizationInfo.subOrganizationName}</span> موجود است</span>
+
+                                            </div>
+                                        </div>
+                                    ))
+                                }
+                            </div>
+                        </div>
+
                         <form className="flex justify-center " onSubmit={formik.handleSubmit} method="POST">
-                            <div className="flex flex-col justify-center w-[90%] gap-5">
+                            <div className="flex flex-col justify-center w-[90%] md:w-[75%] gap-2">
+                                <div>
+                                    <span className="text-gray70 text-[0.8rem]">وارد کردن مقدار مورد نیاز خرید</span>
+                                </div>
                                 <div className="flex">
                                     <div className="w-[70%]">
                                         <TextField
@@ -136,7 +153,12 @@ export default function ConfirmDialog(props) {
                                             onChange={formik.handleChange}
                                             error={formik.touched.value && Boolean(formik.errors.value)}
                                             helperText={formik.touched.value && formik.errors.value}
-                                            inputProps={{style: {fontFamily: "__fonts_2f4189,__fonts_Fallback_2f4189", fontSize: "0.8rem"}}}
+                                            inputProps={{
+                                                style: {
+                                                    fontFamily: "__fonts_2f4189,__fonts_Fallback_2f4189",
+                                                    fontSize: "0.8rem"
+                                                }
+                                            }}
                                             InputLabelProps={{style: {fontFamily: "__fonts_2f4189,__fonts_Fallback_2f4189"}}}/>
                                     </div>
                                     <div className="w-[30%]">
@@ -152,7 +174,10 @@ export default function ConfirmDialog(props) {
                                             disablePortal
                                             id="combo-box-demo"
                                             ListboxProps={{
-                                                sx: {fontFamily: "__fonts_2f4189,__fonts_Fallback_2f4189", fontSize: "0.8rem"},
+                                                sx: {
+                                                    fontFamily: "__fonts_2f4189,__fonts_Fallback_2f4189",
+                                                    fontSize: "0.8rem"
+                                                },
                                             }}
                                             options={unitList}
                                             getOptionLabel={(option) => option.persianName}
@@ -168,15 +193,21 @@ export default function ConfirmDialog(props) {
                                                     helperText={formik.touched.unit && formik.errors.unit}
                                                     InputProps={{
                                                         ...params.InputProps,
-                                                        style: {fontFamily: "__fonts_2f4189,__fonts_Fallback_2f4189", fontSize: "0.8rem"}
+                                                        style: {
+                                                            fontFamily: "__fonts_2f4189,__fonts_Fallback_2f4189",
+                                                            fontSize: "0.8rem"
+                                                        }
                                                     }}
                                                     placeholder="واحد"
                                                 />}/>
                                     </div>
                                 </div>
-                                <div>
+                                <div className="flex justify-between gap-3">
+                                    <button onClick={props.handleCloseConfirm}
+                                            className="w-full rounded-[0.5rem] py-3 border border-gray70 hover:opacity-80 font-bold  bg-transparent text-gray70">انصراف
+                                    </button>
                                     {
-                                        isSubmitLoading ? (<button disabled type="submit"
+                                        isSubmitLoading ? (<button disabled
                                                                    className="hidden flex gap-3 items-center justify-center w-full rounded-[0.5rem] py-3  border border-solid border-1 border-neutral-400 font-bold text-textGray bg-neutral-200">
                                             <TailSpin
                                                 height="20"
@@ -187,10 +218,10 @@ export default function ConfirmDialog(props) {
                                                 wrapperStyle={{}}
                                                 wrapperClass=""
                                                 visible={true}/>
-                                            ثبت
+                                            تایید
                                         </button>) : (
                                             <button type="submit"
-                                                    className="w-full rounded-[0.5rem] py-3 hover:border hover:opacity-80 font-bold  bg-mainRed text-white">ثبت
+                                                    className="w-full rounded-[0.5rem] py-3 hover:border hover:opacity-80 font-bold  bg-mainRed text-white">تایید
                                             </button>
                                         )
                                     }

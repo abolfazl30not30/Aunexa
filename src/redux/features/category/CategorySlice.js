@@ -26,6 +26,10 @@ export const CategorySlice = apiSlice.injectEndpoints({
       query: () => "party/role/find-all",
       providesTags: ["category"],
     }),
+    getInventoryBalance: builder.query({
+      query: (productId) => `inventory/store-balance/filter?productId=${productId}`,
+      providesTags: ["category"],
+    }),
   }),
 });
 
@@ -36,4 +40,5 @@ export const {
   useLazyGetAllVehicleQuery,
   useLazyGetAllSubOrganizationQuery,
   useLazyGetAllRoleQuery,
+  useLazyGetInventoryBalanceQuery
 } = CategorySlice;
