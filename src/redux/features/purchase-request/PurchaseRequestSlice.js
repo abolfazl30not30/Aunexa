@@ -5,7 +5,7 @@ export const PurchaseRequestSlice  = apiSlice.injectEndpoints({
     endpoints: builder => ({
         getAllPurchaseRequest: builder.query({
             query: ({page, sort ,filterItem}) => ({
-                url:`bill/bill-cycle/filter?page=${page - 1}&size=10&sort=date,${sort}&sort=time,${sort}&${filterItem}`,
+                url:`bill/bill-cycle/filter?page=${page - 1}&size=10&sort=requestDate,${sort}&sort=requestTime,${sort}&${filterItem}`,
             }),
             providesTags: ['purchase-request']
         }),

@@ -1,87 +1,115 @@
 'use client'
 import TextField from "@mui/material/TextField";
 import React, {useEffect, useState} from "react";
-import { DialogContent, DialogContentText, FormControl, MenuItem, Select,} from "@mui/material";
+import {DialogContent, DialogContentText} from "@mui/material";
 import Dialog from "@mui/material/Dialog";
 import {TailSpin} from "react-loader-spinner";
 import * as yup from "yup";
 import {useFormik} from "formik";
-import { useUpdateRoleMutation } from "@/redux/features/role/RoleSlice";
-
+import {useLazyGetPageAccessQuery, useUpdateRoleMutation} from "@/redux/features/role/RoleSlice";
+import ExpandLess from '@mui/icons-material/ExpandLess';
+import ExpandMore from '@mui/icons-material/ExpandMore';
+import Collapse from '@mui/material/Collapse';
+import ListSubheader from '@mui/material/ListSubheader';
+import List from '@mui/material/List';
+import ListItemButton from '@mui/material/ListItemButton';
+import Box from '@mui/material/Box';
+import Checkbox from '@mui/material/Checkbox';
+import FormControlLabel from '@mui/material/FormControlLabel';
+import {useSelector} from "react-redux";
+import Link from "next/link";
 
 export default function EditRoleInfoDialog(props) {
-    
-    const [role, setRole] = useState(null)
+    const [authorities,setAuthorities] = useState([])
+    const [pages,setPages] = useState([])
+    const [listOfChecked,setListOfChecked] = useState({})
 
- 
+    const handleReset = () => {
+        formik.resetForm()
+        setBooleanList()
+    }
 
-
-    const [submitData, { isLoading:isSubmitLoading ,error}] = useUpdateRoleMutation()
-
-    
-
-    
-
-
+    const [submitData, {isLoading: isSubmitLoading, error}] = useUpdateRoleMutation()
     const schema = yup.object().shape({
         role: yup.string().required("لطفا نام نقش را وارد کنید"),
     });
 
+
     const formik = useFormik({
-
         initialValues: {
-            role: ""
+            id:"",
+            role: "",
         },
-
-        
 
         validationSchema: schema,
 
-        onSubmit: async (role,helpers) => {
-            const body = {...role,
-                organizationId:window.sessionStorage.getItem("organizationId"),
-                subOrganizationId:window.sessionStorage.getItem("subOrganizationId"),
-                
+        onSubmit: async (role) => {
+            let authorities = []
+            let pages = []
+            for (const auth in listOfChecked){
+                if(listOfChecked[auth] === true){
+                    authorities.push(auth)
+                    let result = auth.split("::")
+                    if(!(pages.find(value => value === result[0]))){
+                        pages.push(result[0])
+                    }
+                }
             }
-            const userData = await submitData(body)
-            console.log(error)
-            console.log(userData)
-            helpers.resetForm({
-                role
-            });
-            
-            setRole(null)
-            
-
+            const sendObj = {
+                id:role.id,
+                role:role.role,
+                authorities:authorities,
+                pages:pages,
+            }
+            const res = await submitData(sendObj)
+            handleReset()
             props.handleCloseEditRoleInfo()
         },
     });
-   
-   
-    
-    useEffect(()=>{
-        
-        
-        formik.setValues({
-            id:props.editRoleInfoTarget?.id,
-            role: props.editRoleInfoTarget?.role,
-            
-        })
-        
-        
-    },[props.openEditRoleInfo])
 
-    
+    const [openAccess, setOpenAccess] = React.useState(true);
 
-   
-    
 
-    const handleReset = () =>{
-        formik.resetForm()
-        
-        setRole(null)
-       
+
+    const [getPages,{
+        data : pagesList = [],
+        isLoading: isPagesLoading,
+        isError: isPagesError,
+        error: pagesError,
+    }] = useLazyGetPageAccessQuery({ refetchOnMountOrArgChange: true });
+
+    const setBooleanList =  () =>{
+        let booleanListAuthorities = {}
+        for(const page of pagesList){
+            for(const auth in page['authorities']){
+                if(props.editRoleInfoTarget.authorities.includes(auth)){
+                    booleanListAuthorities[`${auth}`] = true
+                }else {
+                    booleanListAuthorities[`${auth}`] = false
+                }
+
+            }
+        }
+        setListOfChecked(booleanListAuthorities)
     }
+
+    const handleChangeChecked = (e) =>{
+        let updateCheckedList = {...listOfChecked}
+        updateCheckedList[`${e.target.value}`] = e.target.checked
+        setListOfChecked(updateCheckedList)
+    }
+
+    useEffect(()=>{
+        if(props.openEditRoleInfo === true){
+            getPages()
+            formik.setValues({
+                id:props.editRoleInfoTarget?.id,
+                role: props.editRoleInfoTarget?.roleName,
+            })
+            setBooleanList()
+            console.log(listOfChecked)
+        }
+    },[props.openEditRoleInfo])
 
     return (
         <>
@@ -89,17 +117,23 @@ export default function EditRoleInfoDialog(props) {
                 fullWidth={true}
                 open={props.openEditRoleInfo}
                 keepMounted
-                onClose={()=>{props.handleCloseEditRoleInfo();handleReset()}}
+                onClose={() => {
+                    handleReset()
+                    props.handleCloseEditRoleInfo();
+                }}
                 aria-describedby="alert-dialog-slide-description"
                 PaperProps={{
                     style: {
-                        fontFamily: "__fonts_2f4189,__fonts_Fallback_2f4189",
+                        fontFamily: "IRANYekan",
                     },
                 }}>
                 <DialogContent>
-                    <DialogContentText style={{fontFamily: "__fonts_2f4189,__fonts_Fallback_2f4189"}}>
+                    <DialogContentText style={{fontFamily: "IRANYekan"}}>
                         <div className="flex justify-end">
-                            <button onClick={()=>{props.handleCloseEditRoleInfo();handleReset()}}>
+                            <button onClick={() => {
+                                handleReset()
+                                props.handleCloseEditRoleInfo();
+                            }}>
                                 <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 14 14"
                                      fill="none">
                                     <path d="M13 1L1 13M1 1L13 13" stroke="black" stroke-width="2"
@@ -108,29 +142,111 @@ export default function EditRoleInfoDialog(props) {
                             </button>
                         </div>
                         <div className="flex justify-center mb-7">
-                            <h3 className="text-[1.1rem]">ویرایش نقش</h3>
+                            <h3 className="text-[1.1rem]">ثبت نقش</h3>
                         </div>
                         <form className="flex justify-center " onSubmit={formik.handleSubmit} method="POST">
                             <div className="flex flex-col justify-center w-[90%] gap-5">
-                               
-                                
-                                    <div className="w-full">
-                                        <TextField
-                                            fullWidth
-                                            placeholder="نام نقش (اجباری)"
-                                            type="text"
-                                            name="value"
-                                            value={formik.values.role}
-                                            onChange={formik.handleChange}
-                                            error={formik.touched.role && Boolean(formik.errors.role)}
-                                            helperText={formik.touched.role && formik.errors.role}
-                                            inputProps={{style: {fontFamily: "__fonts_2f4189,__fonts_Fallback_2f4189", fontSize: "0.8rem"}}}
-                                        InputLabelProps={{style: {fontFamily: "__fonts_2f4189,__fonts_Fallback_2f4189"}}}/>
-                                    </div>
-                                   
-                                
-                               
-                               
+                                <div>
+                                    <TextField
+                                        fullWidth
+                                        placeholder="نقش (اجباری)"
+                                        type="text"
+                                        name="role"
+                                        value={formik.values.role}
+                                        onChange={formik.handleChange}
+                                        error={formik.touched.role && Boolean(formik.errors.role)}
+                                        helperText={formik.touched.role && formik.errors.role}
+                                        inputProps={{style: {fontFamily: "IRANYekan", fontSize: "0.8rem"}}}
+                                        InputLabelProps={{style: {fontFamily: "IRANYekan"}}}/>
+                                </div>
+                                <div className="w-full  flex flex-col gap-2">
+                                    <List
+                                        sx={{
+                                            bgcolor: 'background.paper',
+                                            border: "1px solid #D9D9D9",
+                                            color: "#29262A"}}
+                                        component="nav"
+                                        aria-labelledby="nested-list-subheader"
+                                        subheader={
+                                            <ListSubheader component="div" id="nested-list-subheader">
+                                                دسترسی ها
+                                            </ListSubheader>}>
+                                        {
+                                            pagesList?.map((page)=>(
+                                                <div>
+                                                    <details className="group py-3 border-b border-b-1 border-b-solid  border-b-borderGray">
+                                                        <summary className="flex items-center justify-between gap-2 p-2 font-medium marker:content-none hover:cursor-pointer">
+                                                            <span className="text-gray9F group-open:text-textGray text-[0.9rem]">{page.title}</span>
+                                                            <svg
+                                                                className="transition group-open:rotate-90"
+                                                                xmlns="http://www.w3.org/2000/svg"
+                                                                width="16"
+                                                                height="16"
+                                                                viewBox="0 0 16 16"
+                                                                fill="none">
+                                                                <path
+                                                                    d="M10 4L6 8L10 12"
+                                                                    stroke="#9F9F9F"
+                                                                    stroke-linecap="round"
+                                                                    stroke-linejoin="round"
+                                                                />
+                                                            </svg>
+                                                        </summary>
+                                                        <ul className="flex flex-col gap-1 pr-2">
+                                                            <li>
+                                                                <Box sx={{display: 'flex', flexDirection: 'column', ml: 3}}>
+                                                                    <FormControlLabel
+                                                                        label={page.authorities[`${page.title}::ReadOne`]}
+                                                                        control={<Checkbox checked={listOfChecked[`${page.title}::ReadOne`] || false}
+                                                                                           value={`${page.title}::ReadOne`}
+                                                                                           onChange={handleChangeChecked}/>}/>
+                                                                </Box>
+                                                            </li>
+                                                            <li>
+                                                                <Box sx={{display: 'flex', flexDirection: 'column',fontFamily: "__fonts_2f4189,__fonts_Fallback_2f4189", ml: 3}}>
+                                                                    <FormControlLabel
+                                                                        sx={{fontFamily: "__fonts_2f4189,__fonts_Fallback_2f4189", fontSize: "0.8rem"}}
+                                                                        label={page.authorities[`${page.title}::ReadAll`]}
+                                                                        control={<Checkbox checked={listOfChecked[`${page.title}::ReadAll` ] || false}
+                                                                                           value={`${page.title}::ReadAll` || ''}
+                                                                                           onChange={handleChangeChecked}/>}/>
+                                                                </Box>
+                                                            </li>
+                                                            <li>
+                                                                <Box sx={{display: 'flex', flexDirection: 'column', ml: 3}}>
+                                                                    <FormControlLabel
+                                                                        sx={{fontFamily: "__fonts_2f4189,__fonts_Fallback_2f4189", fontSize: "0.8rem"}}
+                                                                        label={page.authorities[`${page.title}::Create`]}
+                                                                        control={<Checkbox checked={listOfChecked[`${page.title}::Create` ]|| false}
+                                                                                           value={`${page.title}::Create` || ''}
+                                                                                           onChange={handleChangeChecked}/>}/>
+                                                                </Box>
+                                                            </li>
+                                                            <li>
+                                                                <Box sx={{display: 'flex', flexDirection: 'column', ml: 3}}>
+                                                                    <FormControlLabel
+                                                                        label={page.authorities[`${page.title}::Update`]}
+                                                                        control={<Checkbox checked={listOfChecked[`${page.title}::Update` ]|| false}
+                                                                                           value={`${page.title}::Update` || ''}
+                                                                                           onChange={handleChangeChecked}/>}/>
+                                                                </Box>
+                                                            </li>
+                                                            <li>
+                                                                <Box sx={{display: 'flex', flexDirection: 'column', ml: 3}}>
+                                                                    <FormControlLabel
+                                                                        label={page.authorities[`${page.title}::Delete`]}
+                                                                        control={<Checkbox checked={listOfChecked[`${page.title}::Delete` ] || false}
+                                                                                           value={`${page.title}::Delete` || ''}
+                                                                                           onChange={handleChangeChecked}/>}/>
+                                                                </Box>
+                                                            </li>
+                                                        </ul>
+                                                    </details>
+                                                </div>
+                                            ))
+                                        }
+                                    </List>
+                                </div>
                                 <div>
                                     {
                                         isSubmitLoading ? (<button disabled type="submit"

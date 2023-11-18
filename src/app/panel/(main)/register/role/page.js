@@ -26,15 +26,18 @@ function registerRole() {
     const [deleteTargetRoleId, setDeleteTargetRoleId] = useState("");
     const [openMoreRoleInfo, setOpenMoreRoleInfo] = useState(false);
     const [moreRoleInfoTarget, setMoreRoleInfoTarget] = useState({
-        roleId: "",
+        id: "",
         role: "",
+        authorities:{},
         authorityDescription:[]
     });
 
     const [openEditRoleInfo, setOpenEditRoleInfo] = useState(false);
     const [editRoleInfoTarget, setEditRoleInfoTarget] = useState({
-        roleId: "",
+        id: "",
         role: "",
+        authorities:{},
+        authorityDescription:[]
     });
 
     const handleOpenAddRole = () => {
@@ -51,8 +54,9 @@ function registerRole() {
 
     const handleCloseMoreRoleInfo = () => {
         setMoreRoleInfoTarget({
-            roleId: "",
+            id: "",
             role: "",
+            authorities:{},
             authorityDescription:[]
         });
         setOpenMoreRoleInfo(false);
@@ -73,8 +77,10 @@ function registerRole() {
     };
     const handleCloseEditRoleInfo = () => {
         setEditRoleInfoTarget({
-            roleId: "",
+            id: "",
             role: "",
+            authorities:{},
+            authorityDescription:[]
         });
         setOpenEditRoleInfo(false);
     };
@@ -95,7 +101,6 @@ function registerRole() {
         isError: isDataError,
         error:dataError,
     } = useGetAllRolesQuery({ page,searchRole });
-    console.log(roleData)
     return (
         <>
             <div>

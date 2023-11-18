@@ -12,13 +12,9 @@ import {useSelector} from "react-redux";
 
 export default function DeleteRoleDialog(props) {
     const [handleDelete ,{isLoading}] = useDeleteRoleMutation()
-    const token = useSelector((state) => state.auth.accessToken)
 
     const deleteData = async () =>{
-        const res = await handleDelete({
-            id:props.deleteTargetRoleId,
-            token:token,
-        })
+        const res = await handleDelete({id:props.deleteTargetRoleId})
         props.handleCloseDeleteRole()
     }
     
