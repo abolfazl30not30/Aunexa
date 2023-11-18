@@ -151,7 +151,7 @@ function primaryStoreInput() {
     return (
         <>
             <div>
-                <header className="flex justify-between items-center text-[0.9rem] bg-white py-6 px-10">
+                <header className="flex justify-between items-center text-[0.9rem] bg-white py-6 px-5 md:px-10">
                     <div className="">
                         <h2 className="font-[800] text-[0.9rem] md:text-[1.1rem]">انبار مواد اولیه / بخش ورودی</h2>
                     </div>
@@ -263,7 +263,7 @@ function primaryStoreInput() {
                     <div className="mt-10">
                         <div className="overflow-x-auto">
                             <table
-                                className=" w-full table-auto overflow-scroll border-collapse border-spacing-0 text-sm text-center text-gray70  ">
+                                className="w-full table-auto overflow-scroll border-collapse border-spacing-0 text-sm text-center text-gray70  ">
                                 <thead className="text-[0.9rem] text-gray80  bg-[#F8F8F8] md:bg-[#F2EDED] ">
                                 <tr>
                                     <th className="hidden md:table-cell px-6 py-4">
@@ -352,7 +352,10 @@ function primaryStoreInput() {
                                                     {data.producer}
                                                 </td>
                                                 <td className="hidden md:table-cell px-6 py-4  text-gray70 whitespace-nowrap ">
-                                                    {data.time} {data.date}
+                                                    <div>{data?.date}</div>
+                                                    <div className="mt-1 text-gray9F text-[0.75rem]">
+                                                        {data?.time.slice(0,5)}
+                                                    </div>
                                                 </td>
                                                 <td className="px-2 md:px-6 py-4  text-gray70 whitespace-nowrap ">
                                                     {data.status === "CONFIRMED" ? (<span className="text-[0.8rem] bg-greenBg text-greenText py-1 px-2 rounded-xl">تاييد شده</span>) : (

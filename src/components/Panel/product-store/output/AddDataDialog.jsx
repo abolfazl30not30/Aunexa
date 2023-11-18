@@ -179,6 +179,7 @@ export default function AddDataDialog(props) {
 
     const formik = useFormik({
         initialValues: {
+            type:"PRODUCT",
             productId: "",
             productName:"",
             value: "",
@@ -214,10 +215,6 @@ export default function AddDataDialog(props) {
                 }else {
                     updateProduct = {...updateProduct,machineType:"نا معلوم",machineId:""}
                 }
-            }
-            updateProduct = {...updateProduct,
-                organizationId:window.sessionStorage.getItem("organizationId"),
-                subOrganizationId:window.sessionStorage.getItem("subOrganizationId"),
             }
             const userData = await submitData(updateProduct)
             handleReset()
@@ -468,7 +465,7 @@ export default function AddDataDialog(props) {
                                     </div>
                                 </div>
 
-                                <div className="flex flex-col md:flex-row gap-1 justify-between">
+                                <div className="flex flex-col md:flex-row gap-5 md:gap-1 justify-between">
                                     <div className="w-full md:w-1/2">
                                         <TextField
                                             fullWidth

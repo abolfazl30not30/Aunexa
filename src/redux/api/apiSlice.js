@@ -1,55 +1,71 @@
-'use client'
-import {createApi, fetchBaseQuery} from '@reduxjs/toolkit/query/react'
-import {logOut,setAccessToken} from './authSlice'
+"use client";
+import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
+import { logOut, setAccessToken } from "./authSlice";
 import axios from "axios";
+//https://gateway.vipsoftware1.com
 
 const baseQuery = fetchBaseQuery({
-    baseUrl: 'http://194.33.125.112:30664/api/v1/',
-    prepareHeaders: (headers, { getState }) => {
-        const token = getState().auth.accessToken
-        if (token) {
-            headers.set("Authorization", `Bearer ${token}`)
-        }
-        return headers
+  baseUrl: "http://194.33.125.112:31690/api/v1/",
+  prepareHeaders: (headers, { getState }) => {
+    const token = getState().auth.accessToken;
+    if (token) {
+      headers.set("Authorization", `Bearer ${token}`);
     }
-})
+    return headers;
+  },
+});
 
-const login =  async () =>{
-    let base64encodedData = Buffer.from( "client1"+ ':' +"myClientSecretValue" ).toString('base64');
+const login = async () => {
+  let base64encodedData = Buffer.from(
+    "client1" + ":" + "myClientSecretValue"
+  ).toString("base64");
 
-    const formData = {
-        client_id:"client1",
-        refresh_token:window.sessionStorage.getItem("refresh_token"),
-        grant_type:"refresh_token",
-    }
+  const formData = {
+    client_id: "client1",
+    refresh_token: window.sessionStorage.getItem("refresh_token"),
+    grant_type: "refresh_token",
+  };
 
-    return await axios.post("http://194.33.125.112:30835/oauth2/token", formData, {
-        headers: {
-            "Content-Type": "application/x-www-form-urlencoded",
-            "Authorization": "Basic " + base64encodedData
-        }
-    })
-}
+  return await axios.post("http://194.33.125.112:32190/oauth2/token", formData, {
+    headers: {
+      "Content-Type": "application/x-www-form-urlencoded",
+      Authorization: "Basic " + base64encodedData,
+    },
+  });
+};
 
 const baseQueryWithReauth = async (args, api, extraOptions) => {
-    let result = await baseQuery(args, api, extraOptions)
+  let result = await baseQuery(args, api, extraOptions);
 
-    if (result?.error?.status === 401 || result?.error?.status === 500 ) {
-        const refreshResult = await login()
-        api.dispatch(setAccessToken(refreshResult?.data?.access_token))
-        if (refreshResult?.data) {
-            result = await baseQuery(args, api, extraOptions)
-        } else {
-            api.dispatch(logOut())
-        }
+  if (result?.error?.status === 401 || result?.error?.status === 500) {
+    const refreshResult = await login();
+    console.log(refreshResult)
+    api.dispatch(setAccessToken(refreshResult?.data?.access_token));
+    if (refreshResult?.data) {
+      result = await baseQuery(args, api, extraOptions);
+    } else {
+      api.dispatch(logOut());
     }
+  }
 
-    return result
-}
+  return result;
+};
 
 export const apiSlice = createApi({
-    reducerPath:"api",
-    baseQuery: baseQueryWithReauth,
-    tagTypes: ['primary-store-input','primary-store-output','product-store-input','product-store-output','equipment-store-input','equipment-store-output','category','vehicle-machine'],
-    endpoints: builder => ({})
-})
+  reducerPath: "api",
+  baseQuery: baseQueryWithReauth,
+  tagTypes: [
+      "file",
+    "purchase-request",
+    "primary-store-input",
+    "primary-store-output",
+    "product-store-input",
+    "product-store-output",
+    "equipment-store-input",
+    "equipment-store-output",
+    "category",
+    "vehicle-machine",
+    "product",
+  ],
+  endpoints: (builder) => ({}),
+});

@@ -8,7 +8,20 @@ body {
 }
 
 .table-body tr:nth-child(even){
-    background-color: #F8F8F8;
+    background-color: #F8F8F8 !important;
+}
+.div-body > .MuiPaper-root:nth-child(even){
+    background-color: #F8F8F8 !important;
+    
+}
+.muirtl-15v22id-MuiAccordionDetails-root{
+   padding: 0px !important;
+}
+
+.MuiPaper-root  {
+    border-bottom: 1px solid #D9D9D9 !important;
+    padding-bottom:6px !important ;
+    
 }
 .muirtl-10w330c-MuiButtonBase-root-MuiPaginationItem-root.Mui-selected {
     background-color: #DB3746 !important;
@@ -32,4 +45,60 @@ body {
         background-color: #efefef;
         cursor: pointer;
     }
+}
+.MuiAccordionSummary-contentGutters{
+   display: block !important;
+}
+.muirtl-1elwnq4-MuiPaper-root-MuiAccordion-root.Mui-expanded {
+margin:0px !important;}
+.labelUserAccount {
+    font-size: 20px !important;
+    font-weight: 900 !important;
+    color: #9F9F9F  !important;
+    margin-top: -26px !important ;
+    font-family: "IRANYekan" !important;
+
+}
+.inputUserAccount{
+    border-color:  #D9D9D9 !important;
+    font-family: "IRANYekan" !important;
+    font-size: 18px !important;
+    font-weight: 900 !important;
+}
+.boxUserAccount{
+    margin-top: 36px !important;
+}
+.MuiFormControlLabel-label {
+    font-family: "__fonts_2f4189,__fonts_Fallback_2f4189","IRANYekan" !important;
+    font-size: 0.8rem !important;
+}
+.individual-table{
+    background-color: inherit !important;
+}
+.MuiAccordionSummary-content{
+    margin-top: 5px !important;
+    margin-bottom: 5px !important;
+}
+/* .MuiButtonBase-root {
+    
+   gap: 16px !important;
+   padding-right: 4px !important;
+} */
+
+.MuiTabs-flexContainer{
+    display: flex !important;
+    justify-content: center !important;
+}
+.MuiTabs-flexContainer .Mui-selected{
+   color: #DB3746 !important;
+
+}
+.MuiTab-wrapper{
+    font-size: 18px !important;
+}
+.MuiTabs-root{
+    margin-bottom: 32px !important;
+}
+.example::-webkit-scrollbar {
+    display: none;
 }

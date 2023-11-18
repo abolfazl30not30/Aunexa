@@ -5,13 +5,13 @@ export const ESOapiSlice  = apiSlice.injectEndpoints({
     endpoints: builder => ({
         getAllESO: builder.query({
             query: ({page, sort ,filterItem}) => ({
-                url:`inventory/equipment-store-output/filter?page=${page - 1}&size=10&sort=date,${sort}&sort=time,${sort}&${filterItem}`,
+                url:`inventory/store-output/filter?page=${page - 1}&type=EQUIPMENT&size=10&sort=date,${sort}&sort=time,${sort}&${filterItem}`,
             }),
             providesTags: ['equipment-store-output']
         }),
         saveESO: builder.mutation({
             query: (body) => ({
-                url: 'inventory/equipment-store-output',
+                url: 'inventory/store-output',
                 method: 'POST',
                 body: body
             }),
@@ -19,7 +19,7 @@ export const ESOapiSlice  = apiSlice.injectEndpoints({
         }),
         updateESO: builder.mutation({
             query: (body) => ({
-                url: `inventory/equipment-store-output`,
+                url: `inventory/store-output`,
                 method: 'PUT',
                 body: body
             }),
@@ -27,7 +27,7 @@ export const ESOapiSlice  = apiSlice.injectEndpoints({
         }),
         deleteESO: builder.mutation({
             query: ( id ) => ({
-                url: `inventory/equipment-store-output/${id}`,
+                url: `inventory/store-output/${id}`,
                 method: 'DELETE',
                 body: id
             }),

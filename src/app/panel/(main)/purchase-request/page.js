@@ -11,9 +11,9 @@ import DeleteDialog from "@/components/Panel/purchase-request/DeleteDialog";
 import Link from "next/link";
 import EditInfoDialog from "@/components/Panel/purchase-request/EditInfoDialog";
 import {useSelector} from "react-redux";
-import {useGetAllESIQuery} from "@/redux/features/equipment-store/input/ESIapiSlice";
+import {useGetAllPurchaseRequestQuery} from "@/redux/features/purchase-request/PurchaseRequestSlice";
 
-function primaryStoreInput() {
+function PurchaseRequest() {
     let permission =  useSelector((state)=> state.access?.pages?.primaryStoreInput)
     const [page, setPage] = useState(1)
     const [sort,setSort] = useState("desc")
@@ -25,32 +25,24 @@ function primaryStoreInput() {
 
     const [openMoreInfo, setOpenMoreInfo] = useState(false)
     const [moreInfoTarget, setMoreInfoTarget] = useState({
-        productId: "",
+        productId:"",
         productName:"",
+        time:"",
         value: "",
         unit: "",
-        status:"",
-        expirationDate: "",
-        machineTag: "",
-        machineCode: "",
-        driverName: "",
-        producer: "",
+        priority: false,
         description:"",
     })
 
     const [openEditInfo, setOpenEditInfo] = useState(false)
     const [editInfoTarget,setEditInfoTarget] = useState(
         {
-            productId: "",
+            productId:"",
+            machineTag:"",
             productName:"",
             value: "",
             unit: "",
-            status:"",
-            expirationDate: "",
-            machineTag: "",
-            machineCode: "",
-            driverName: "",
-            producer: "",
+            priority: false,
             description:"",
         }
     )
@@ -89,17 +81,13 @@ function primaryStoreInput() {
     const handleCloseMoreInfo = () => {
         setMoreInfoTarget(
             {
-                productId: "",
+                productId:"",
                 productName:"",
                 value: "",
                 unit: "",
-                status:"",
-                expirationDate: "",
-                machineTag: "",
-                machineCode: "",
-                driverName: "",
-                producer: "",
+                priority: false,
                 description:"",
+                time:"",
             }
         )
         setOpenMoreInfo(false)
@@ -120,16 +108,11 @@ function primaryStoreInput() {
     }
     const handleCloseEditInfo = () =>{
         setEditInfoTarget({
-            productId: "",
+            productId:"",
             productName:"",
             value: "",
             unit: "",
-            status:"",
-            expirationDate: "",
-            machineTag: "",
-            machineCode: "",
-            driverName: "",
-            producer: "",
+            priority: false,
             description:"",
         })
         setOpenEditInfo(false)
@@ -145,12 +128,12 @@ function primaryStoreInput() {
         setPage(value)
     }
 
-    const {data: inventoryData = [], isLoading: isDataLoading, isError: isDataError} = useGetAllESIQuery({page,sort,filterItem},{ refetchOnMountOrArgChange: true })
+    const {data: inventoryData = [], isLoading: isDataLoading, isError: isDataError} = useGetAllPurchaseRequestQuery({page,sort,filterItem},{ refetchOnMountOrArgChange: true })
 
     return (
         <>
             <div>
-                <header className="flex justify-between items-center text-[0.9rem] bg-white py-6 px-10">
+                <header className="flex justify-between items-center text-[0.9rem] bg-white py-6 px-5 md:px-10">
                     <div className="">
                         <h2 className="font-[800] text-[0.9rem] md:text-[1.1rem]">درخواست خرید</h2>
                     </div>
@@ -268,20 +251,17 @@ function primaryStoreInput() {
                                     <th className="hidden md:table-cell px-6 py-4">
                                         #
                                     </th>
-                                    <th className="px-2 md:px-6 py-4">
+                                    <th className="hidden md:table-cell px-2 md:px-6 py-4">
+                                        کد درخواست
+                                    </th>
+                                    <th className="px-2 md:px-6 px-6 py-4">
                                         محصول
                                     </th>
                                     <th className="px-2 md:px-6 px-6 py-4">
                                         مقدار
                                     </th>
-                                    <th className="px-2 md:px-6 px-6 py-4">
-                                        نوع وسیله
-                                    </th>
                                     <th className="hidden md:table-cell px-6 py-4">
-                                        تامین کننده
-                                    </th>
-                                    <th className="hidden md:table-cell px-6 py-4">
-                                        تاریخ
+                                        فوری
                                     </th>
                                     <th className="px-2 md:px-6 px-6 py-4">
                                         <span className="hidden md:inline">وضعیت</span>
@@ -333,30 +313,30 @@ function primaryStoreInput() {
                                                 <td className="hidden md:table-cell px-6 py-4  text-gray70 whitespace-nowrap ">
                                                     {index + 1}
                                                 </td>
-                                                <td className="px-2 md:px-6 py-4  text-gray70 whitespace-nowrap ">
-                                                    {data.productName}
+                                                <td className="hidden md:table-cell px-2 md:px-6 py-4  text-gray70 whitespace-nowrap ">
+                                                    {data?.code}
+                                                </td>
+                                                <td className="px-6 py-4  text-gray70 whitespace-nowrap ">
+                                                    {data?.productName}
                                                 </td>
                                                 <td className="px-2 md:px-6 py-4  text-gray70 whitespace-nowrap ">
-                                                    {data.value} {data.unit}
+                                                    {data?.value} {data?.unit}
                                                 </td>
-                                                <td className="px-2 md:px-6 py-2  text-gray70 whitespace-nowrap ">
-                                                    <div>{data.machineType}</div>
-                                                    <div className="mt-1 text-gray9F text-[0.75rem]">{
-                                                        data?.machineTag === "" ? (data?.machineCode) : (
-                                                            data?.machineTag?.slice(2, 5) + "-" + data?.machineTag?.slice(5, 7) + " " + data?.machineTag?.slice(7, 8) + " " + data?.machineTag?.slice(0, 2)
-                                                        )
-                                                    }</div>
-                                                </td>
-                                                <td className="hidden md:table-cell px-6 py-4  text-gray70 whitespace-nowrap ">
-                                                    {data.producer}
-                                                </td>
-                                                <td className="hidden md:table-cell px-6 py-4  text-gray70 whitespace-nowrap ">
-                                                    {data.time} {data.date}
+                                                <td className="hidden md:flex  md:justify-center px-2 md:px-6 py-4  text-gray70 whitespace-nowrap ">
+                                                    {data?.priority ? (
+                                                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 16 16" fill="none">
+                                                            <circle cx="8" cy="8" r="7.5" fill="#DB3746" stroke="#DB3746"/>
+                                                        </svg>
+                                                    ):(
+                                                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 16 16" fill="none">
+                                                            <circle cx="8" cy="8" r="8" fill="#D9D9D9"/>
+                                                        </svg>
+                                                    )}
                                                 </td>
                                                 <td className="px-2 md:px-6 py-4  text-gray70 whitespace-nowrap ">
-                                                    {data.status === "CONFIRMED" ? (<span className="text-[0.8rem] bg-greenBg text-greenText py-1 px-2 rounded-xl">تاييد شده</span>) : (
-                                                        data.status === "UNKNOWN" ? (<span className="text-[0.8rem] bg-[#EBEBEB] text-gray70 py-1 px-2 rounded-xl">نامعلوم</span>) : (
-                                                            <span className="text-[0.8rem] bg-orangeBg text-orangeText py-1 px-2 rounded-xl">مشکل دار</span>
+                                                    {data.status === "DONE" ? (<span className="text-[0.8rem] bg-greenBg text-greenText py-1 px-2 rounded-xl">انجام شده</span>) : (
+                                                        data.status === "IN_PROGRESS" ? (<span className="text-[0.8rem] bg-[#EBEBEB] text-gray70 py-1 px-2 rounded-xl">درحال بررسی</span>) : (
+                                                            <span className="text-[0.8rem] bg-orangeBg text-orangeText py-1 px-2 rounded-xl">رد شده</span>
                                                         )
                                                     )}
                                                 </td>
@@ -434,4 +414,4 @@ function primaryStoreInput() {
     )
 }
 
-export default primaryStoreInput;
+export default PurchaseRequest;
