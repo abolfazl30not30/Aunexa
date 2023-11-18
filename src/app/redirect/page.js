@@ -27,7 +27,7 @@ export default function redirect() {
 
     const formData = {
         code:code,
-        redirect_uri:"http://localhost:3000/redirect",
+        redirect_uri:"http://194.33.125.112:32732/redirect",
         client_id:"client1",
         grant_type:"authorization_code",
         code_verifier:window.sessionStorage.getItem("codeVerifier")
