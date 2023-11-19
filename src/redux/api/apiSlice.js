@@ -5,7 +5,7 @@ import axios from "axios";
 //https://gateway.vipsoftware1.com
 
 const baseQuery = fetchBaseQuery({
-  baseUrl: "http://194.33.125.112:31690/api/v1/",
+  baseUrl: "https://gateway.vipsoftware1.com/api/v1/",
   prepareHeaders: (headers, { getState }) => {
     const token = getState().auth.accessToken;
     if (token) {
@@ -26,12 +26,16 @@ const login = async () => {
     grant_type: "refresh_token",
   };
 
-  return await axios.post("http://194.33.125.112:32190/oauth2/token", formData, {
-    headers: {
-      "Content-Type": "application/x-www-form-urlencoded",
-      Authorization: "Basic " + base64encodedData,
-    },
-  });
+  return await axios.post(
+    "https://auth.vipsoftware1.com/oauth2/token",
+    formData,
+    {
+      headers: {
+        "Content-Type": "application/x-www-form-urlencoded",
+        Authorization: "Basic " + base64encodedData,
+      },
+    }
+  );
 };
 
 const baseQueryWithReauth = async (args, api, extraOptions) => {
@@ -39,7 +43,7 @@ const baseQueryWithReauth = async (args, api, extraOptions) => {
 
   if (result?.error?.status === 401 || result?.error?.status === 500) {
     const refreshResult = await login();
-    console.log(refreshResult)
+    console.log(refreshResult);
     api.dispatch(setAccessToken(refreshResult?.data?.access_token));
     if (refreshResult?.data) {
       result = await baseQuery(args, api, extraOptions);
@@ -55,7 +59,7 @@ export const apiSlice = createApi({
   reducerPath: "api",
   baseQuery: baseQueryWithReauth,
   tagTypes: [
-      "file",
+    "file",
     "purchase-request",
     "primary-store-input",
     "primary-store-output",

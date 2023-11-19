@@ -124,7 +124,7 @@ export default function ConfirmDialog(props) {
                                     <span className="text-gray70 text-[0.8rem]">لیست موجودی محصول در انبارها</span>
                                 </div>
                                 {
-                                    inventoryBalanceList.content.map((product)=>(
+                                    inventoryBalanceList?.content?.map((product)=>(
                                         <div className="border border-[#D9D9D9]  flex justify-between px-4">
                                             <div className="p-2">
                                         <span
