@@ -9,16 +9,12 @@ import {
   Pagination,
   Skeleton,
 } from "@mui/material";
-import { useGetAllPendingPurchaseRequestListQuery } from "@/redux/features/purchase/pending-purchase-request-list/PendingPurchaseRequestListSlice";
+import { useGetAllSuccessfulPurchaseRequestListQuery } from "@/redux/features/purchase/successful-purchase-request-list/SuccessfulPurchaseRequestList";
 import Link from "next/link";
-import FilterDialog from "@/components/Panel/purchase/PendingPurchaseRequestList/FilterDialog";
-import MoreInfoDialog from "@/components/Panel/purchase/PendingPurchaseRequestList/MoreInfoDialog";
-import DeleteDialog from "@/components/Panel/purchase/PendingPurchaseRequestList/DeleteDialog";
-import EditInfoDialog from "@/components/Panel/purchase/PendingPurchaseRequestList/EditInfoDialog";
-import { useSelector } from "react-redux";
-import Checkbox from "@mui/material/Checkbox";
-import RegisterFactorDialog from "@/components/Panel/purchase/PendingPurchaseRequestList/RegisterFactorDialog";
+import FilterDialog from "@/components/Panel/purchase/SuccessfulPurchaseRequestList/FilterDialog";
 
+import { useSelector } from "react-redux";
+import MoreInfoDialog from "@/components/Panel/purchase/SuccessfulPurchaseRequestList/MoreInfoDialog";
 export default function page() {
   let permission = useSelector(
     (state) => state.access?.pages?.primaryStoreInput
@@ -37,23 +33,12 @@ export default function page() {
   const [filterItem, setFilterItem] = useState("");
 
   const [paymentList, setPaymentList] = useState([]);
-  const [checkedAll, setCheckedAll] = useState(false);
-  const handleChangeAllCheckbox = (event) => {
-    setCheckedAll(event.target.checked);
-  };
-  const handleChangeCheckbox = (event, id) => {
-    if (event.target.checked && id === event.target.id) {
-      return false;
-    } else if (!event.target.checked && id === event.target.id) {
-      return true;
-    }
-  };
 
   const {
     data: inventoryData = [],
     isLoading: isDataLoading,
     isError: isDataError,
-  } = useGetAllPendingPurchaseRequestListQuery(
+  } = useGetAllSuccessfulPurchaseRequestListQuery(
     { page, sort, filterItem },
     { refetchOnMountOrArgChange: true }
   );
@@ -66,63 +51,51 @@ export default function page() {
   const handleCloseFilter = () => {
     setOpenFilter(false);
   };
-  const [openRegisterFactor, setOpenRegisterFactor] = useState(false);
-  const handleOpenRegisterFactor = () => {
-    setOpenRegisterFactor(true);
-  };
-  const handleCloseRegisterFactor = () => {
-    setOpenRegisterFactor(false);
-  };
-  const [openDelete, setOpenDelete] = useState(false);
-  const [deleteTargetId, setDeleteTargetId] = useState("");
-
   const [openMoreInfo, setOpenMoreInfo] = useState(false);
   const [moreInfoTarget, setMoreInfoTarget] = useState({
     id: "",
-    confirmationDate: "",
-    confirmerName: "",
-    quantity: {
-      unit: "",
-      value: "",
-    },
-    billCycle: {
-      id: "",
-      requestTime: "",
-      requestDate: "",
-      productId: "",
-      productName: "",
-      productImage: "",
-      code: 0,
-      registrar: "",
+    purchaseDate: "",
+    purchaseTime: "",
+    producer: "",
+    buyerName: "",
+    status: "IN_PROGRESS",
+    receiptCode: "",
+    receiptFile: "",
+    paymentItems: [
+      {
+        id: "",
+        quantity: {
+          unit: "",
+          value: 0,
+        },
+        paymentMethod: "",
+        bill: {
+          id: "",
+          confirmationDate: "",
+          confirmationTime: "",
+          confirmerName: "",
+          billCycle: {
+            id: "",
+            requestDate: "",
+            requestTime: "",
+            productId: "",
+            productName: "",
+            productImage: "",
+            code: 0,
+            registrar: "",
+            description: "",
+            subOrganizationName: "",
+            subOrganizationId: "",
+          },
+        },
+        paymentId: "",
+      },
+    ],
+    failureReason: {
+      date: "",
+      time: "",
       description: "",
-      priority: true,
-      subOrganizationName: "",
-      subOrganizationId: "",
-    },
-  });
-
-  const [openEditInfo, setOpenEditInfo] = useState(false);
-  const [editInfoTarget, setEditInfoTarget] = useState({
-    id: "",
-    confirmationDate: "",
-    confirmerName: "",
-    quantity: {
-      unit: "",
-      value: "",
-    },
-    billCycle: {
-      id: "",
-      requestTime: "",
-      requestDate: "",
-      productId: "",
-      productName: "",
-      productImage: "",
-      code: 0,
-      registrar: "",
-      description: "",
-      priority: true,
-      subOrganizationName: "",
-      subOrganizationId: "",
+      reporter: "",
     },
   });
   const handleOpenMoreInfo = (info) => {
@@ -133,97 +106,59 @@ export default function page() {
   const handleCloseMoreInfo = () => {
     setMoreInfoTarget({
       id: "",
-      confirmationDate: "",
-      confirmerName: "",
-      quantity: {
-        unit: "",
-        value: "",
-      },
-      billCycle: {
-        id: "",
-        requestTime: "",
-        requestDate: "",
-        productId: "",
-        productName: "",
-        productImage: "",
-        code: 0,
-        registrar: "",
+      purchaseDate: "",
+      purchaseTime: "",
+      producer: "",
+      buyerName: "",
+      status: "IN_PROGRESS",
+      receiptCode: "",
+      receiptFile: "",
+      paymentItems: [
+        {
+          id: "",
+          quantity: {
+            unit: "",
+            value: 0,
+          },
+          paymentMethod: "",
+          bill: {
+            id: "",
+            confirmationDate: "",
+            confirmationTime: "",
+            confirmerName: "",
+            billCycle: {
+              id: "",
+              requestDate: "",
+              requestTime: "",
+              productId: "",
+              productName: "",
+              productImage: "",
+              code: 0,
+              registrar: "",
+              description: "",
+              subOrganizationName: "",
+              subOrganizationId: "",
+            },
+          },
+          paymentId: "",
+        },
+      ],
+      failureReason: {
+        date: "",
+        time: "",
         description: "",
-        priority: true,
-        subOrganizationName: "",
-        subOrganizationId: "",
+        reporter: "",
       },
     });
     setOpenMoreInfo(false);
   };
-  const handleOpenDelete = (id) => {
-    setDeleteTargetId(id);
-    setOpenDelete(true);
-  };
-
-  const handleCloseDelete = () => {
-    setDeleteTargetId("");
-    setOpenDelete(false);
-  };
-
-  const handleOpenEditInfo = (info) => {
-    setEditInfoTarget(info);
-    setOpenEditInfo(true);
-  };
-  const handleCloseEditInfo = () => {
-    setEditInfoTarget({
-      id: "",
-      confirmationDate: "",
-      confirmerName: "",
-      quantity: {
-        unit: "",
-        value: "",
-      },
-      billCycle: {
-        id: "",
-        requestTime: "",
-        requestDate: "",
-        productId: "",
-        productName: "",
-        productImage: "",
-        code: 0,
-        registrar: "",
-        description: "",
-        priority: true,
-        subOrganizationName: "",
-        subOrganizationId: "",
-      },
-    });
-    setOpenEditInfo(false);
-  };
-
-  const handleOpenMoreInfoRow = (info) => {
-    if (window.innerWidth <= 768) {
-      handleOpenMoreInfo(info);
-    }
-  };
   return (
     <div>
-      <header className="flex justify-between items-center text-[0.9rem] bg-white py-6 px-5 md:px-10">
+      <header className=" text-[0.9rem] bg-white py-6 px-5 md:px-10">
         <div className="">
           <h2 className="font-[800] text-[0.9rem] md:text-[1.1rem]">
-            در انتظار خرید
+            کالاهای خریداری شده
           </h2>
-        </div>
-        <div className="">
-          {
-            <button className="flex hover:cursor-default text-[#9F9F9F] bg-[#F2EDED] disabled items-center border-[#E0E3E0] border px-3 py-2 rounded-full md:rounded">
-              <span className="hidden md:inline">ثبت فاکتور</span>
-            </button>
-          }
-          {
-            <button
-              className="flex  text-mainRed items-center border-mainRed border px-3 py-2 rounded-full md:rounded"
-              onClick={handleOpenRegisterFactor}
-            >
-              <span className="hidden md:inline">ثبت فاکتور</span>
-            </button>
-          }
         </div>
       </header>
       <section className="py-4 md:px-8 mt-5 bg-white h-[50rem]">
@@ -351,27 +286,18 @@ export default function page() {
             <table className=" w-full table-auto overflow-scroll border-collapse border-spacing-0 text-sm text-center text-gray70  ">
               <thead className="text-[0.9rem] text-gray80  bg-[#F8F8F8] md:bg-[#F2EDED] ">
                 <tr>
-                  <th className="hidden md:table-cell px-6 py-4">
-                    <Checkbox
-                      checked={checkedAll}
-                      onChange={(e) => {
-                        handleChangeAllCheckbox(e);
-                      }}
-                      style={{
-                        color: "#12D377",
-                      }}
-                      inputProps={{ "aria-label": "controlled" }}
-                    />
-                  </th>
+                  <th className="hidden md:table-cell px-6 py-4">#</th>
                   <th className="hidden md:table-cell px-2 md:px-6 py-4">
-                    کد درخواست
+                    شماره فاکتور
                   </th>
                   <th className="px-2 md:px-6 px-6 py-4">محصول</th>
                   <th className="px-2 md:px-6 px-6 py-4">مقدار</th>
-                  <th className="px-2 md:px-6 px-6 py-4">تاریخ</th>
+                  <th className="px-2 md:px-6 px-6 py-4">تاریخ خرید</th>
 
-                  <th className="px-2 md:px-6 px-6 py-4">فوری</th>
                   <th className="hidden md:table-cell px-6 py-4">دپارتمان</th>
+                  <th className="hidden md:table-cell px-6 py-4">
+                    وضعیت فاکتور
+                  </th>
                   <th className="hidden md:table-cell px-6 py-4">عملیات</th>
                 </tr>
               </thead>
@@ -379,8 +305,8 @@ export default function page() {
                 {isDataLoading
                   ? [...Array(8)].map(() => (
                       <tr className="border-b">
-                        <td className="flex justify-center  px-2 md:px-6 py-4  text-gray70 whitespace-nowrap ">
-                          <Skeleton variant="rounded" width={23} height={23} />
+                        <td className="px-2 md:px-6 py-4  text-gray70 whitespace-nowrap ">
+                          <Skeleton variant="text" sx={{ fontSize: "1rem" }} />
                         </td>
                         <td className="px-2 md:px-6 py-4  text-gray70 whitespace-nowrap ">
                           <Skeleton variant="text" sx={{ fontSize: "1rem" }} />
@@ -395,22 +321,17 @@ export default function page() {
                         <td className="hidden md:table-cell px-6 py-4  text-gray70 whitespace-nowrap ">
                           <Skeleton variant="text" sx={{ fontSize: "1rem" }} />
                         </td>
-                        <td
-                          scope="row"
-                          className="  px-6 py-4 flex justify-center   text-gray70 whitespace-nowrap "
-                        >
-                          <Skeleton variant="rounded" width={10} height={10} />
+
+                        <td className="hidden md:table-cell px-6 py-4  text-gray70 whitespace-nowrap ">
+                          <Skeleton variant="text" sx={{ fontSize: "1rem" }} />
                         </td>
                         <td className="hidden md:table-cell px-6 py-4  text-gray70 whitespace-nowrap ">
                           <Skeleton variant="text" sx={{ fontSize: "1rem" }} />
                         </td>
-
                         <td
                           scope="row"
-                          className="hidden md:flex gap-2 px-6 py-4 justify-center text-gray70 whitespace-nowrap "
+                          className="hidden md:flex  px-6 py-4 justify-center text-gray70 whitespace-nowrap "
                         >
-                          <Skeleton variant="rounded" width={23} height={23} />
-                          <Skeleton variant="rounded" width={23} height={23} />
                           <Skeleton variant="rounded" width={23} height={23} />
                         </td>
                       </tr>
@@ -418,65 +339,65 @@ export default function page() {
                   : inventoryData?.content?.map((data, index) => (
                       <tr className="table-row border-b">
                         <td className="hidden md:table-cell md:px-6 py-4 px-2  text-gray70 whitespace-nowrap ">
-                          <Checkbox
-                            id={data.id}
-                            checked={
-                              console.log(handleChangeCheckbox) || checkedAll
-                            }
-                            onClick={(e) => {
-                              handleChangeCheckbox(e, data.id);
-                            }}
-                            style={{
-                              color: "#12D377",
-                            }}
-                            inputProps={{ "aria-label": "controlled" }}
-                          />
+                          {index + 1}
                         </td>
                         <td className="hidden md:table-cell px-2 md:px-6 py-4  text-gray70 whitespace-nowrap ">
-                          <span>{data?.billCycle?.code}</span>
+                          <span>{data?.receiptCode}</span>
                         </td>
                         <td className="px-6 py-4  text-gray70 whitespace-nowrap ">
-                          <span>{data?.billCycle?.productName}</span>
+                          <span>
+                            {
+                              data?.paymentItems[index]?.bill?.billCycle
+                                ?.productName
+                            }
+                          </span>
                         </td>
                         <td className="px-2 md:px-6 py-4  text-gray70 whitespace-nowrap ">
-                          <span>{data?.quantity?.value}</span>
-                          <span>{data?.quantity?.unit}</span>
+                          <span>
+                            {data?.paymentItems[index]?.quantity?.value}
+                          </span>
+                          <span>
+                            {data?.paymentItems[index]?.quantity?.unit}
+                          </span>
                         </td>
                         <td className=" space-x-2 px-2 py-4 md:px-6  text-gray70 whitespace-nowrap ">
-                          <span>{data?.billCycle?.requestTime}</span>
-                          <span>{data?.billCycle?.requestDate}</span>
-                        </td>
-                        <td className="hidden md:flex  md:justify-center px-2 md:px-6 py-4  text-gray70 whitespace-nowrap ">
-                          {data?.billCycle?.priority ? (
-                            <svg
-                              xmlns="http://www.w3.org/2000/svg"
-                              width="16"
-                              height="16"
-                              viewBox="0 0 16 16"
-                              fill="none"
-                            >
-                              <circle
-                                cx="8"
-                                cy="8"
-                                r="7.5"
-                                fill="#DB3746"
-                                stroke="#DB3746"
-                              />
-                            </svg>
-                          ) : (
-                            <svg
-                              xmlns="http://www.w3.org/2000/svg"
-                              width="16"
-                              height="16"
-                              viewBox="0 0 16 16"
-                              fill="none"
-                            >
-                              <circle cx="8" cy="8" r="8" fill="#D9D9D9" />
-                            </svg>
-                          )}
+                          <span>
+                            {
+                              data?.paymentItems[index]?.bill?.billCycle
+                                ?.requestTime
+                            }
+                          </span>
+                          <span>
+                            {
+                              data?.paymentItems[index]?.bill?.billCycle
+                                ?.requestDate
+                            }
+                          </span>
                         </td>
                         <td className="px-6 py-4  text-gray70 whitespace-nowrap ">
-                          <span>{data?.billCycle?.subOrganizationName}</span>
+                          <span>
+                            {
+                              data?.paymentItems[index]?.bill?.billCycle
+                                ?.subOrganizationName
+                            }
+                          </span>
+                        </td>
+                        <td className="px-6 py-4  text-gray70 whitespace-nowrap ">
+                          <span>
+                            {/*data.status === "answered" ? (
+                                    <span className="text-[0.8rem] bg-greenBg text-greenText py-1 px-2 rounded-xl">
+                                        تایید شده
+                                    </span>
+                                  ) : data.status === "Initialize" ? (
+                                    <span className="text-[0.8rem] text-gray70 bg-[#EBEBEB]  py-1 px-2 rounded-xl">
+                                      در انتظار تایید
+                                    </span>
+                                  ) : data.status === "inProgress" ? (
+                                    <span className=" text-[0.8rem] bg-[#ffe9d4] text-[#e95a18] py-1 px-2 rounded-xl">
+                                        رد شده
+                                    </span>
+                                  ) : null*/}
+                          </span>
                         </td>
 
                         <td
@@ -516,59 +437,6 @@ export default function page() {
                               />
                             </svg>
                           </button>
-                          {
-                            <button
-                              onClick={() => {
-                                handleOpenEditInfo(data);
-                              }}
-                              className="border border-1 border-solid border-[#2492FF] rounded p-[0.4rem] hover:bg-blue-100"
-                            >
-                              <svg
-                                xmlns="http://www.w3.org/2000/svg"
-                                width="16"
-                                height="16"
-                                viewBox="0 0 16 16"
-                                fill="none"
-                              >
-                                <g clip-path="url(#clip0_197_250)">
-                                  <path
-                                    d="M7.3335 2.66666H4.5335C3.41339 2.66666 2.85334 2.66666 2.42552 2.88464C2.04919 3.07639 1.74323 3.38235 1.55148 3.75867C1.3335 4.1865 1.3335 4.74655 1.3335 5.86666V11.4667C1.3335 12.5868 1.3335 13.1468 1.55148 13.5746C1.74323 13.951 2.04919 14.2569 2.42552 14.4487C2.85334 14.6667 3.41339 14.6667 4.5335 14.6667H10.1335C11.2536 14.6667 11.8137 14.6667 12.2415 14.4487C12.6178 14.2569 12.9238 13.951 13.1155 13.5746C13.3335 13.1468 13.3335 12.5868 13.3335 11.4667V8.66666M5.33348 10.6667H6.44984C6.77596 10.6667 6.93902 10.6667 7.09247 10.6298C7.22852 10.5972 7.35858 10.5433 7.47788 10.4702C7.61243 10.3877 7.72773 10.2724 7.95833 10.0418L14.3335 3.66666C14.8858 3.11437 14.8858 2.21894 14.3335 1.66666C13.7812 1.11437 12.8858 1.11437 12.3335 1.66665L5.95832 8.04182C5.72772 8.27242 5.61241 8.38772 5.52996 8.52228C5.45685 8.64157 5.40298 8.77163 5.37032 8.90768C5.33348 9.06113 5.33348 9.22419 5.33348 9.55031V10.6667Z"
-                                    stroke="#2492FF"
-                                    stroke-linecap="round"
-                                    stroke-linejoin="round"
-                                  />
-                                </g>
-                                <defs>
-                                  <clipPath id="clip0_197_250">
-                                    <rect width="16" height="16" fill="white" />
-                                  </clipPath>
-                                </defs>
-                              </svg>
-                            </button>
-                          }
-                          {
-                            <button
-                              onClick={() => {
-                                handleOpenDelete(data.id);
-                              }}
-                              className="border border-1 border-solid border-[#FE4949] rounded p-[0.4rem] hover:bg-red-100"
-                            >
-                              <svg
-                                xmlns="http://www.w3.org/2000/svg"
-                                width="16"
-                                height="16"
-                                viewBox="0 0 16 16"
-                                fill="none"
-                              >
-                                <path
-                                  d="M10.6667 3.99998V3.46665C10.6667 2.71991 10.6667 2.34654 10.5213 2.06133C10.3935 1.81044 10.1895 1.60647 9.93865 1.47864C9.65344 1.33331 9.28007 1.33331 8.53333 1.33331H7.46667C6.71993 1.33331 6.34656 1.33331 6.06135 1.47864C5.81046 1.60647 5.60649 1.81044 5.47866 2.06133C5.33333 2.34654 5.33333 2.71991 5.33333 3.46665V3.99998M6.66667 7.66665V11M9.33333 7.66665V11M2 3.99998H14M12.6667 3.99998V11.4666C12.6667 12.5868 12.6667 13.1468 12.4487 13.5746C12.2569 13.951 11.951 14.2569 11.5746 14.4487C11.1468 14.6666 10.5868 14.6666 9.46667 14.6666H6.53333C5.41323 14.6666 4.85318 14.6666 4.42535 14.4487C4.04903 14.2569 3.74307 13.951 3.55132 13.5746C3.33333 13.1468 3.33333 12.5868 3.33333 11.4666V3.99998"
-                                  stroke="#FE4949"
-                                  stroke-linecap="round"
-                                  stroke-linejoin="round"
-                                />
-                              </svg>
-                            </button>
-                          }
                         </td>
                       </tr>
                     ))}
@@ -594,26 +462,10 @@ export default function page() {
         openFilter={openFilter}
         handleCloseFilter={handleCloseFilter}
       />
-      <RegisterFactorDialog
-        handleCloseRegisterFactor={handleCloseRegisterFactor}
-        openRegisterFactor={openRegisterFactor}
-      />
       <MoreInfoDialog
-        handleOpenDelete={handleOpenDelete}
-        handleOpenEditInfo={handleOpenEditInfo}
         moreInfoTarget={moreInfoTarget}
         openMoreInfo={openMoreInfo}
         handleCloseMoreInfo={handleCloseMoreInfo}
-      />
-      <DeleteDialog
-        deleteTargetId={deleteTargetId}
-        openDelete={openDelete}
-        handleCloseDelete={handleCloseDelete}
-      />
-      <EditInfoDialog
-        editInfoTarget={editInfoTarget}
-        handleCloseEditInfo={handleCloseEditInfo}
-        openEditInfo={openEditInfo}
       />
     </div>
   );
