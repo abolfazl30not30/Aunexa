@@ -9,7 +9,7 @@ import {
   Pagination,
   Skeleton,
 } from "@mui/material";
-import { useGetAllPurchaseRequestQuery } from "@/redux/features/purchase-request/PurchaseRequestSlice";
+import { useGetAllSuccessfulPurchaseRequestListQuery } from "@/redux/features/purchase/successful-purchase-request-list/SuccessfulPurchaseRequestList";
 import Link from "next/link";
 import FilterDialog from "@/components/Panel/purchase/SuccessfulPurchaseRequestList/FilterDialog";
 
@@ -38,7 +38,7 @@ export default function page() {
     data: inventoryData = [],
     isLoading: isDataLoading,
     isError: isDataError,
-  } = useGetAllPurchaseRequestQuery(
+  } = useGetAllSuccessfulPurchaseRequestListQuery(
     { page, sort, filterItem },
     { refetchOnMountOrArgChange: true }
   );
@@ -54,39 +54,43 @@ export default function page() {
   const [openMoreInfo, setOpenMoreInfo] = useState(false);
   const [moreInfoTarget, setMoreInfoTarget] = useState({
     id: "",
-    confirmationDate: "",
-    confirmationTime: "",
-    confirmerName: "",
-    quantity: {
-      unit: "",
-      value: "",
-    },
-    description: "",
+    purchaseDate: "",
+    purchaseTime: "",
+    producer: "",
+    buyerName: "",
     status: "IN_PROGRESS",
-    billCycle: {
-      id: "",
-      requestDate: "",
-      requestTime: "",
-      productId: "",
-      productName: "",
-      productImage: "",
-      code: 0,
-      unit: "",
-      value: 0,
-      registrar: "",
-      description: "",
-      status: "IN_PROGRESS",
-      priority: true,
-      subOrganizationName: "",
-      subOrganizationId: "",
-      organizationId: "",
-      failureReason: {
-        date: "",
-        time: "",
-        description: "",
-        reporter: "",
+    receiptCode: "",
+    receiptFile: "",
+    paymentItems: [
+      {
+        id: "",
+        quantity: {
+          unit: "",
+          value: 0,
+        },
+        paymentMethod: "",
+        bill: {
+          id: "",
+          confirmationDate: "",
+          confirmationTime: "",
+          confirmerName: "",
+          billCycle: {
+            id: "",
+            requestDate: "",
+            requestTime: "",
+            productId: "",
+            productName: "",
+            productImage: "",
+            code: 0,
+            registrar: "",
+            description: "",
+            subOrganizationName: "",
+            subOrganizationId: "",
+          },
+        },
+        paymentId: "",
       },
-    },
+    ],
     failureReason: {
       date: "",
       time: "",
@@ -102,39 +106,43 @@ export default function page() {
   const handleCloseMoreInfo = () => {
     setMoreInfoTarget({
       id: "",
-      confirmationDate: "",
-      confirmationTime: "",
-      confirmerName: "",
-      quantity: {
-        unit: "",
-        value: "",
-      },
-      description: "",
+      purchaseDate: "",
+      purchaseTime: "",
+      producer: "",
+      buyerName: "",
       status: "IN_PROGRESS",
-      billCycle: {
-        id: "",
-        requestDate: "",
-        requestTime: "",
-        productId: "",
-        productName: "",
-        productImage: "",
-        code: 0,
-        unit: "",
-        value: 0,
-        registrar: "",
-        description: "",
-        status: "IN_PROGRESS",
-        priority: true,
-        subOrganizationName: "",
-        subOrganizationId: "",
-        organizationId: "",
-        failureReason: {
-          date: "",
-          time: "",
-          description: "",
-          reporter: "",
+      receiptCode: "",
+      receiptFile: "",
+      paymentItems: [
+        {
+          id: "",
+          quantity: {
+            unit: "",
+            value: 0,
+          },
+          paymentMethod: "",
+          bill: {
+            id: "",
+            confirmationDate: "",
+            confirmationTime: "",
+            confirmerName: "",
+            billCycle: {
+              id: "",
+              requestDate: "",
+              requestTime: "",
+              productId: "",
+              productName: "",
+              productImage: "",
+              code: 0,
+              registrar: "",
+              description: "",
+              subOrganizationName: "",
+              subOrganizationId: "",
+            },
+          },
+          paymentId: "",
         },
-      },
+      ],
       failureReason: {
         date: "",
         time: "",
@@ -334,21 +342,45 @@ export default function page() {
                           {index + 1}
                         </td>
                         <td className="hidden md:table-cell px-2 md:px-6 py-4  text-gray70 whitespace-nowrap ">
-                          <span>{data?.code}</span>
+                          <span>{data?.receiptCode}</span>
                         </td>
                         <td className="px-6 py-4  text-gray70 whitespace-nowrap ">
-                          <span>{data?.productName}</span>
+                          <span>
+                            {
+                              data?.paymentItems[index]?.bill?.billCycle
+                                ?.productName
+                            }
+                          </span>
                         </td>
                         <td className="px-2 md:px-6 py-4  text-gray70 whitespace-nowrap ">
-                          <span>{data?.value}</span>
-                          <span>{data?.unit}</span>
+                          <span>
+                            {data?.paymentItems[index]?.quantity?.value}
+                          </span>
+                          <span>
+                            {data?.paymentItems[index]?.quantity?.unit}
+                          </span>
                         </td>
                         <td className=" space-x-2 px-2 py-4 md:px-6  text-gray70 whitespace-nowrap ">
-                          <span>{data?.requestTime}</span>
-                          <span>{data?.requestDate}</span>
+                          <span>
+                            {
+                              data?.paymentItems[index]?.bill?.billCycle
+                                ?.requestTime
+                            }
+                          </span>
+                          <span>
+                            {
+                              data?.paymentItems[index]?.bill?.billCycle
+                                ?.requestDate
+                            }
+                          </span>
                         </td>
                         <td className="px-6 py-4  text-gray70 whitespace-nowrap ">
-                          <span>{data?.subOrganizationName}</span>
+                          <span>
+                            {
+                              data?.paymentItems[index]?.bill?.billCycle
+                                ?.subOrganizationName
+                            }
+                          </span>
                         </td>
                         <td className="px-6 py-4  text-gray70 whitespace-nowrap ">
                           <span>

@@ -36,14 +36,14 @@ export default function MoreInfoDialog(props) {
                             <div className="w-full md:w-[70%] flex flex-col gap-2">
                                 <div>
                                 {
-                                    props.moreInfoTarget?.billCycle?.productImage !== "" && (
+                                    props.moreInfoTarget?.productImage !== "" && (
                                         <div className="flex justify-center items-center gap-4">
                                             <div>
                                                 <span className="text-[0.9rem] text-gray70"> تصویر محصول :</span>
                                             </div>
                                             <div>
                                                 <div className="w-20 h-20 rounded border border-dashed border-[#D9D9D9]">
-                                                    <img className="object-cover w-full h-full" src={props.moreInfoTarget?.billCycle?.productImage} alt="product image"/>
+                                                    <img className="object-cover w-full h-full" src={props.moreInfoTarget?.productImage} alt="product image"/>
                                                 </div>
                                             </div>
                                         </div>
@@ -56,12 +56,12 @@ export default function MoreInfoDialog(props) {
                                     </div>
                                     <div className="border border-[#D9D9D9]  flex justify-evenly px-4">
                                         <div className="p-2">
-                                            <span className="text-[#29262A] text-[0.9rem]">{props.moreInfoTarget?.billCycle?.productName}</span>
+                                            <span className="text-[#29262A] text-[0.9rem]">{props.moreInfoTarget?.productName}</span>
                                         </div>
                                         <div className="border border-[#D9D9D9]">
                                         </div>
                                         <div className="p-2">
-                                            <span className="text-[#29262A] text-[0.9rem]">{props.moreInfoTarget?.quantity?.value}{props.moreInfoTarget?.quantity?.unit} </span>
+                                            <span className="text-[#29262A] text-[0.9rem]">{props.moreInfoTarget?.value}{props.moreInfoTarget?.unit} </span>
                                         </div>
                                     </div>
                                 </div>
@@ -72,7 +72,7 @@ export default function MoreInfoDialog(props) {
                                     </div>
                                     <div className="border border-[#D9D9D9]   px-4">
                                         <div className="p-2">
-                                            <span className="text-[#29262A] text-[0.9rem]">{props.moreInfoTarget?.billCycle?.code}</span>
+                                            <span className="text-[#29262A] text-[0.9rem]">{props.moreInfoTarget?.code}</span>
                                         </div>
                                         
                                        
@@ -84,7 +84,7 @@ export default function MoreInfoDialog(props) {
                                     </div>
                                     <div className="border border-[#D9D9D9]   px-4">
                                         <div className="p-2">
-                                            <span className="text-[#29262A] text-[0.9rem]">{props.moreInfoTarget?.billCycle?.requestDate}</span>
+                                            <span className="text-[#29262A] text-[0.9rem]">{props.moreInfoTarget?.requestDate}</span>
                                         </div>
                                         
                                        
@@ -99,7 +99,7 @@ export default function MoreInfoDialog(props) {
                                     </div>
                                     <div className="border border-[#D9D9D9]   px-4">
                                         <div className="p-2">
-                                            <span className="text-[#29262A] text-[0.9rem]">{props.moreInfoTarget?.confirmationDate}</span>
+                                            <span className="text-[#29262A] text-[0.9rem]">{props.moreInfoTarget?.failureReason?.date}</span>
                                         </div>
                                         
                                        
@@ -111,7 +111,7 @@ export default function MoreInfoDialog(props) {
                                     </div>
                                     <div className="border border-[#D9D9D9]   px-4">
                                         <div className="p-2">
-                                            <span className="text-[#29262A] text-[0.9rem]">{props.moreInfoTarget?.billCycle?.subOrganizationName}</span>
+                                            <span className="text-[#29262A] text-[0.9rem]">{props.moreInfoTarget?.subOrganizationName}</span>
                                         </div>
                                         
                                        
@@ -125,7 +125,7 @@ export default function MoreInfoDialog(props) {
                                     </div>
                                     <div className="border border-[#D9D9D9]  flex justify-start px-4">
                                         <div className="p-2">
-                                            <span className="text-[#29262A] text-[0.9rem]">{props.moreInfoTarget?.billCycle?.registrar}</span>
+                                            <span className="text-[#29262A] text-[0.9rem]">{props.moreInfoTarget?.registrar}</span>
                                         </div>
                                     </div>
                                 </div>
@@ -135,7 +135,7 @@ export default function MoreInfoDialog(props) {
                                     </div>
                                     <div className="border border-[#D9D9D9]  flex justify-start px-4">
                                         <div className="p-2">
-                                            <span className="text-[#29262A] text-[0.9rem]">{props.moreInfoTarget?.confirmerName}</span>
+                                            <span className="text-[#29262A] text-[0.9rem]">{props.moreInfoTarget?.failureReason?.reporter}</span>
                                         </div>
                                     </div>
                                 </div>
@@ -146,7 +146,7 @@ export default function MoreInfoDialog(props) {
                                     </div>
                                     <div className="border border-[#D9D9D9]  flex justify-start px-4">
                                         <div className="p-2">
-                                            <span className="text-[#29262A] text-[0.9rem]">{props.moreInfoTarget?.billCycle?.description}</span>
+                                            <span className="text-[#29262A] text-[0.9rem]">{props.moreInfoTarget?.description}</span>
                                         </div>
                                     </div>
                                 </div>
@@ -157,7 +157,7 @@ export default function MoreInfoDialog(props) {
                                     </div>
                                     <div className="border border-[#D9D9D9]  flex justify-start px-4">
                                         <div className="p-2">
-                                            <span className="text-[#29262A] text-[0.9rem]">{props.moreInfoTarget?.billCycle?.description}</span>
+                                            <span className="text-[#29262A] text-[0.9rem]">{props.moreInfoTarget?.failureReason?.description}</span>
                                         </div>
                                     </div>
                                 </div>
@@ -172,7 +172,7 @@ export default function MoreInfoDialog(props) {
                                          محصول :
                                     </span>
                                     <span className="text-[#29262A] text-[0.8rem]">
-                                    {props.moreInfoTarget?.billCycle?.productName}
+                                    {props.moreInfoTarget?.productName}
                                     </span>
                                 </div>
                                
@@ -181,7 +181,7 @@ export default function MoreInfoDialog(props) {
                                         مقدار :
                                     </span>
                                     <span className="text-[#29262A] text-[0.8rem]">
-                                    {props.moreInfoTarget?.quantity?.value}{props.moreInfoTarget?.quantity?.unit} 
+                                    {props.moreInfoTarget?.value}{props.moreInfoTarget?.unit} 
                                     </span>
                                 </div>
                                 <div>
@@ -189,7 +189,7 @@ export default function MoreInfoDialog(props) {
                                          کد درخواست :
                                     </span>
                                     <span className="text-[#29262A] text-[0.8rem]">
-                                    {props.moreInfoTarget?.billCycle?.code}
+                                    {props.moreInfoTarget?.code}
                                     </span>
                                 </div>
                                 <div>
@@ -197,7 +197,7 @@ export default function MoreInfoDialog(props) {
                                          تاریخ درخواست :
                                     </span>
                                     <span className="text-[#29262A] text-[0.8rem]">
-                                    {props.moreInfoTarget?.billCycle?.requestDate}
+                                    {props.moreInfoTarget?.requestDate}
                                     </span>
                                 </div>
                                 <div>
@@ -205,7 +205,7 @@ export default function MoreInfoDialog(props) {
                                          تاریخ رد   :
                                     </span>
                                     <span className="text-[#29262A] text-[0.8rem]">
-                                    {props.moreInfoTarget?.confirmationDate}
+                                    {props.moreInfoTarget?.failureReason?.date}
                                     </span>
                                 </div>
                                 <div>
@@ -213,7 +213,7 @@ export default function MoreInfoDialog(props) {
                                           دپارتمان :
                                     </span>
                                     <span className="text-[#29262A] text-[0.8rem]">
-                                    {props.moreInfoTarget?.billCycle?.subOrganizationName}
+                                    {props.moreInfoTarget?.subOrganizationName}
                                     </span>
                                 </div>
                                 
@@ -222,7 +222,7 @@ export default function MoreInfoDialog(props) {
                                         نام درخواست دهنده :
                                     </span>
                                     <span className="text-[#29262A] text-[0.8rem]">
-                                        {props.moreInfoTarget?.billCycle?.registrar}
+                                        {props.moreInfoTarget?.registrar}
                                     </span>
                                 </div>
                                 <div>
@@ -230,7 +230,7 @@ export default function MoreInfoDialog(props) {
                                         نام رد کننده درخواست :
                                     </span>
                                     <span className="text-[#29262A] text-[0.8rem]">
-                                        {props.moreInfoTarget?.confirmerName}
+                                    {props.moreInfoTarget?.failureReason?.reporter}
                                     </span>
                                 </div>
                                 
@@ -239,7 +239,7 @@ export default function MoreInfoDialog(props) {
                                         توضیحات :
                                     </span>
                                     <span className="text-[#29262A] text-[0.8rem]">
-                                        {props.moreInfoTarget?.billCycle?.description}
+                                        {props.moreInfoTarget?.description}
                                     </span>
                                 </div>
                                 
@@ -248,7 +248,7 @@ export default function MoreInfoDialog(props) {
                                             دلیل رد :
                                         </span>
                                         <span className="text-[#29262A] text-[0.8rem]">
-                                            {props.moreInfoTarget?.billCycle?.description}
+                                        {props.moreInfoTarget?.failureReason?.description}
                                         </span>
                                     </div>
                                 

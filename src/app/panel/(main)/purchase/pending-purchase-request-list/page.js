@@ -9,7 +9,7 @@ import {
   Pagination,
   Skeleton,
 } from "@mui/material";
-import { useGetAllPurchaseRequestQuery } from "@/redux/features/purchase-request/PurchaseRequestSlice";
+import { useGetAllPendingPurchaseRequestListQuery } from "@/redux/features/purchase/pending-purchase-request-list/PendingPurchaseRequestListSlice";
 import Link from "next/link";
 import FilterDialog from "@/components/Panel/purchase/PendingPurchaseRequestList/FilterDialog";
 import MoreInfoDialog from "@/components/Panel/purchase/PendingPurchaseRequestList/MoreInfoDialog";
@@ -37,35 +37,15 @@ export default function page() {
   const [filterItem, setFilterItem] = useState("");
 
   const [paymentList, setPaymentList] = useState([]);
-
-  const checkList = (id) => {
-    let checked = false;
-    if (paymentList.find((pay) => pay.productId === id) !== undefined) {
-      checked = true;
-    } else {
-      checked = false;
-    }
-    return checked;
+  const [checkedAll, setCheckedAll] = useState(false);
+  const handleChangeAllCheckbox = (event) => {
+    setCheckedAll(event.target.checked);
   };
-
-  const handleChangeChecked = (event, data) => {
-    checkList(data.id);
-    if (event.target.checked) {
-      const obj = {
-        productId: data.productId,
-      };
-
-      let updateList = [...paymentList];
-      console.log(event.target.checked);
-      updateList.push(obj);
-      setPaymentList(updateList);
-      return true;
-    } else {
-      let updateList = [...paymentList];
-      updateList = updateList.filter((pay) => data.productId !== pay.productId);
-
-      setPaymentList(updateList);
+  const handleChangeCheckbox = (event, id) => {
+    if (event.target.checked && id === event.target.id) {
       return false;
+    } else if (!event.target.checked && id === event.target.id) {
+      return true;
     }
   };
 
@@ -73,7 +53,7 @@ export default function page() {
     data: inventoryData = [],
     isLoading: isDataLoading,
     isError: isDataError,
-  } = useGetAllPurchaseRequestQuery(
+  } = useGetAllPendingPurchaseRequestListQuery(
     { page, sort, filterItem },
     { refetchOnMountOrArgChange: true }
   );
@@ -100,43 +80,24 @@ export default function page() {
   const [moreInfoTarget, setMoreInfoTarget] = useState({
     id: "",
     confirmationDate: "",
-    confirmationTime: "",
     confirmerName: "",
     quantity: {
       unit: "",
       value: "",
     },
-    description: "",
-    status: "IN_PROGRESS",
     billCycle: {
       id: "",
-      requestDate: "",
       requestTime: "",
+      requestDate: "",
       productId: "",
       productName: "",
       productImage: "",
       code: 0,
-      unit: "",
-      value: 0,
       registrar: "",
       description: "",
-      status: "IN_PROGRESS",
       priority: true,
       subOrganizationName: "",
       subOrganizationId: "",
-      organizationId: "",
-      failureReason: {
-        date: "",
-        time: "",
-        description: "",
-        reporter: "",
-      },
-    },
-    failureReason: {
-      date: "",
-      time: "",
-      description: "",
-      reporter: "",
     },
   });
 
@@ -144,43 +105,24 @@ export default function page() {
   const [editInfoTarget, setEditInfoTarget] = useState({
     id: "",
     confirmationDate: "",
-    confirmationTime: "",
     confirmerName: "",
     quantity: {
       unit: "",
       value: "",
     },
-    description: "",
-    status: "IN_PROGRESS",
     billCycle: {
       id: "",
-      requestDate: "",
       requestTime: "",
+      requestDate: "",
       productId: "",
       productName: "",
       productImage: "",
       code: 0,
-      unit: "",
-      value: 0,
       registrar: "",
       description: "",
-      status: "IN_PROGRESS",
       priority: true,
       subOrganizationName: "",
       subOrganizationId: "",
-      organizationId: "",
-      failureReason: {
-        date: "",
-        time: "",
-        description: "",
-        reporter: "",
-      },
-    },
-    failureReason: {
-      date: "",
-      time: "",
-      description: "",
-      reporter: "",
     },
   });
   const handleOpenMoreInfo = (info) => {
@@ -192,43 +134,24 @@ export default function page() {
     setMoreInfoTarget({
       id: "",
       confirmationDate: "",
-      confirmationTime: "",
       confirmerName: "",
       quantity: {
         unit: "",
         value: "",
       },
-      description: "",
-      status: "IN_PROGRESS",
       billCycle: {
         id: "",
-        requestDate: "",
         requestTime: "",
+        requestDate: "",
         productId: "",
         productName: "",
         productImage: "",
         code: 0,
-        unit: "",
-        value: 0,
         registrar: "",
         description: "",
-        status: "IN_PROGRESS",
         priority: true,
         subOrganizationName: "",
         subOrganizationId: "",
-        organizationId: "",
-        failureReason: {
-          date: "",
-          time: "",
-          description: "",
-          reporter: "",
-        },
-      },
-      failureReason: {
-        date: "",
-        time: "",
-        description: "",
-        reporter: "",
       },
     });
     setOpenMoreInfo(false);
@@ -251,43 +174,24 @@ export default function page() {
     setEditInfoTarget({
       id: "",
       confirmationDate: "",
-      confirmationTime: "",
       confirmerName: "",
       quantity: {
         unit: "",
         value: "",
       },
-      description: "",
-      status: "IN_PROGRESS",
       billCycle: {
         id: "",
-        requestDate: "",
         requestTime: "",
+        requestDate: "",
         productId: "",
         productName: "",
         productImage: "",
         code: 0,
-        unit: "",
-        value: 0,
         registrar: "",
         description: "",
-        status: "IN_PROGRESS",
         priority: true,
         subOrganizationName: "",
         subOrganizationId: "",
-        organizationId: "",
-        failureReason: {
-          date: "",
-          time: "",
-          description: "",
-          reporter: "",
-        },
-      },
-      failureReason: {
-        date: "",
-        time: "",
-        description: "",
-        reporter: "",
       },
     });
     setOpenEditInfo(false);
@@ -307,6 +211,11 @@ export default function page() {
           </h2>
         </div>
         <div className="">
+          {
+            <button className="flex hover:cursor-default text-[#9F9F9F] bg-[#F2EDED] disabled items-center border-[#E0E3E0] border px-3 py-2 rounded-full md:rounded">
+              <span className="hidden md:inline">ثبت فاکتور</span>
+            </button>
+          }
           {
             <button
               className="flex  text-mainRed items-center border-mainRed border px-3 py-2 rounded-full md:rounded"
@@ -444,9 +353,12 @@ export default function page() {
                 <tr>
                   <th className="hidden md:table-cell px-6 py-4">
                     <Checkbox
-                      checked={false}
+                      checked={checkedAll}
                       onChange={(e) => {
-                        handleChangeChecked(e);
+                        handleChangeAllCheckbox(e);
+                      }}
+                      style={{
+                        color: "#12D377",
                       }}
                       inputProps={{ "aria-label": "controlled" }}
                     />
@@ -507,29 +419,35 @@ export default function page() {
                       <tr className="table-row border-b">
                         <td className="hidden md:table-cell md:px-6 py-4 px-2  text-gray70 whitespace-nowrap ">
                           <Checkbox
-                            checked={""}
+                            id={data.id}
+                            checked={
+                              console.log(handleChangeCheckbox) || checkedAll
+                            }
                             onClick={(e) => {
-                              handleChangeChecked(e, data);
+                              handleChangeCheckbox(e, data.id);
+                            }}
+                            style={{
+                              color: "#12D377",
                             }}
                             inputProps={{ "aria-label": "controlled" }}
                           />
                         </td>
                         <td className="hidden md:table-cell px-2 md:px-6 py-4  text-gray70 whitespace-nowrap ">
-                          <span>{data?.code}</span>
+                          <span>{data?.billCycle?.code}</span>
                         </td>
                         <td className="px-6 py-4  text-gray70 whitespace-nowrap ">
-                          <span>{data?.productName}</span>
+                          <span>{data?.billCycle?.productName}</span>
                         </td>
                         <td className="px-2 md:px-6 py-4  text-gray70 whitespace-nowrap ">
-                          <span>{data?.value}</span>
-                          <span>{data?.unit}</span>
+                          <span>{data?.quantity?.value}</span>
+                          <span>{data?.quantity?.unit}</span>
                         </td>
                         <td className=" space-x-2 px-2 py-4 md:px-6  text-gray70 whitespace-nowrap ">
-                          <span>{data?.requestTime}</span>
-                          <span>{data?.requestDate}</span>
+                          <span>{data?.billCycle?.requestTime}</span>
+                          <span>{data?.billCycle?.requestDate}</span>
                         </td>
                         <td className="hidden md:flex  md:justify-center px-2 md:px-6 py-4  text-gray70 whitespace-nowrap ">
-                          {data?.priority ? (
+                          {data?.billCycle?.priority ? (
                             <svg
                               xmlns="http://www.w3.org/2000/svg"
                               width="16"
@@ -558,7 +476,7 @@ export default function page() {
                           )}
                         </td>
                         <td className="px-6 py-4  text-gray70 whitespace-nowrap ">
-                          <span>{data?.subOrganizationName}</span>
+                          <span>{data?.billCycle?.subOrganizationName}</span>
                         </td>
 
                         <td

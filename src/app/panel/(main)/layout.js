@@ -561,105 +561,109 @@ export default function RootLayout({ children }) {
                   </div>
                   <div>
                     <Link
-                        href="/panel/products"
-                        className="block py-4 px-2 border-b border-b-1 border-b-solid  border-b-borderGray"
+                      href="/panel/products"
+                      className="block py-4 px-2 border-b border-b-1 border-b-solid  border-b-borderGray"
                     >
-                  <span
-                      className={
-                        pathname === "/panel/products"
+                      <span
+                        className={
+                          pathname === "/panel/products"
                             ? "text-mainRed text-[0.9rem]"
                             : "text-gray9F hover:text-textGray text-[0.9rem]"
-                      }
-                  >
-                    کالا و محصولات
-                  </span>
+                        }
+                      >
+                        کالا و محصولات
+                      </span>
                     </Link>
                   </div>
                   <div>
                     <details className="group py-3 border-b border-b-1 border-b-solid  border-b-borderGray">
                       <summary className="flex items-center justify-between gap-2 p-2 font-medium marker:content-none hover:cursor-pointer">
-                    <span className="text-gray9F group-open:text-textGray text-[0.9rem]">
-                      خرید
-                    </span>
+                        <span className="text-gray9F group-open:text-textGray text-[0.9rem]">
+                          خرید
+                        </span>
                         <svg
-                            className="transition group-open:rotate-90"
-                            xmlns="http://www.w3.org/2000/svg"
-                            width="16"
-                            height="16"
-                            viewBox="0 0 16 16"
-                            fill="none"
+                          className="transition group-open:rotate-90"
+                          xmlns="http://www.w3.org/2000/svg"
+                          width="16"
+                          height="16"
+                          viewBox="0 0 16 16"
+                          fill="none"
                         >
                           <path
-                              d="M10 4L6 8L10 12"
-                              stroke="#9F9F9F"
-                              stroke-linecap="round"
-                              stroke-linejoin="round"
+                            d="M10 4L6 8L10 12"
+                            stroke="#9F9F9F"
+                            stroke-linecap="round"
+                            stroke-linejoin="round"
                           />
                         </svg>
                       </summary>
                       <ul className="flex flex-col gap-1 pr-2">
                         <li>
                           <Link
-                              href="/panel/purchase/purchase-request-list"
-                              className="block py-2 px-5"
+                            href="/panel/purchase/purchase-request-list"
+                            className="block py-2 px-5"
                           >
-                        <span
-                            className={
-                              pathname === "/panel/purchase/purchase-request-list"
+                            <span
+                              className={
+                                pathname ===
+                                "/panel/purchase/purchase-request-list"
                                   ? "text-mainRed text-[0.8rem]"
                                   : "text-gray9F hover:text-textGray text-[0.8rem]"
-                            }
-                        >
-                          لیست درخواست‌های خرید
-                        </span>
+                              }
+                            >
+                              لیست درخواست‌های خرید
+                            </span>
                           </Link>
                         </li>
                         <li>
                           <Link
-                              href="/panel/purchase/pending-purchase-request-list"
-                              className="block py-2 px-5"
+                            href="/panel/purchase/pending-purchase-request-list"
+                            className="block py-2 px-5"
                           >
-                        <span
-                            className={
-                              pathname === "/panel/purchase/pending-purchase-request-list"
+                            <span
+                              className={
+                                pathname ===
+                                "/panel/purchase/pending-purchase-request-list"
                                   ? "text-mainRed text-[0.8rem]"
                                   : "text-gray9F hover:text-textGray text-[0.8rem]"
-                            }
-                        >
-                          صفحه در انتظار خرید
-                        </span>
+                              }
+                            >
+                              صفحه در انتظار خرید
+                            </span>
                           </Link>
                         </li>
                         <li>
                           <Link
-                              href="/panel/purchase/successful-purchase-request-list"
-                              className="block py-2 px-5"
+                            href="/panel/purchase/successful-purchase-request-list"
+                            className="block py-2 px-5"
                           >
-                        <span
-                            className={
-                              pathname === "/panel/purchase/successful-purchase-request-list"
+                            <span
+                              className={
+                                pathname ===
+                                "/panel/purchase/successful-purchase-request-list"
                                   ? "text-mainRed text-[0.8rem]"
                                   : "text-gray9F hover:text-textGray text-[0.8rem]"
-                            }
-                        >
-                          صفحه کالاهای خریداری شده
-                        </span>
+                              }
+                            >
+                              صفحه کالاهای خریداری شده
+                            </span>
                           </Link>
                         </li>
                         <li>
                           <Link
-                              href="/panel/purchase/unsuccessful-purchase-request-list"
-                              className="block py-2 px-5"
+                            href="/panel/purchase/unsuccessful-purchase-request-list"
+                            className="block py-2 px-5"
                           >
-                        <span
-                            className={
-                              pathname === "/panel/purchase/unsuccessful-purchase-request-list"
+                            <span
+                              className={
+                                pathname ===
+                                "/panel/purchase/unsuccessful-purchase-request-list"
                                   ? "text-mainRed text-[0.8rem]"
                                   : "text-gray9F hover:text-textGray text-[0.8rem]"
-                            }
-                        >
-                          صفحه درخواستهای رد شده
-                        </span>
+                              }
+                            >
+                              صفحه درخواستهای رد شده
+                            </span>
                           </Link>
                         </li>
                       </ul>
@@ -694,6 +698,22 @@ export default function RootLayout({ children }) {
                         }
                       >
                         ثبت سازمان
+                      </span>
+                    </Link>
+                  </div>
+                  <div>
+                    <Link
+                      href="/panel/employees"
+                      className="block py-4 px-2 border-b border-b-1 border-b-solid  border-b-borderGray"
+                    >
+                      <span
+                        className={
+                          pathname === "/panel/employees"
+                            ? "text-mainRed text-[0.9rem]"
+                            : "text-gray9F hover:text-textGray text-[0.9rem]"
+                        }
+                      >
+                        کارمندان
                       </span>
                     </Link>
                   </div>
@@ -991,33 +1011,33 @@ export default function RootLayout({ children }) {
                       خرید
                     </span>
                     <svg
-                        className="transition group-open:rotate-90"
-                        xmlns="http://www.w3.org/2000/svg"
-                        width="16"
-                        height="16"
-                        viewBox="0 0 16 16"
-                        fill="none"
+                      className="transition group-open:rotate-90"
+                      xmlns="http://www.w3.org/2000/svg"
+                      width="16"
+                      height="16"
+                      viewBox="0 0 16 16"
+                      fill="none"
                     >
                       <path
-                          d="M10 4L6 8L10 12"
-                          stroke="#9F9F9F"
-                          stroke-linecap="round"
-                          stroke-linejoin="round"
+                        d="M10 4L6 8L10 12"
+                        stroke="#9F9F9F"
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
                       />
                     </svg>
                   </summary>
                   <ul className="flex flex-col gap-1 pr-2">
                     <li>
                       <Link
-                          href="/panel/purchase/purchase-request-list"
-                          className="block py-2 px-5"
+                        href="/panel/purchase/purchase-request-list"
+                        className="block py-2 px-5"
                       >
                         <span
-                            className={
-                              pathname === "/panel/purchase/purchase-request-list"
-                                  ? "text-mainRed text-[0.8rem]"
-                                  : "text-gray9F hover:text-textGray text-[0.8rem]"
-                            }
+                          className={
+                            pathname === "/panel/purchase/purchase-request-list"
+                              ? "text-mainRed text-[0.8rem]"
+                              : "text-gray9F hover:text-textGray text-[0.8rem]"
+                          }
                         >
                           لیست درخواست‌های خرید
                         </span>
@@ -1025,15 +1045,16 @@ export default function RootLayout({ children }) {
                     </li>
                     <li>
                       <Link
-                          href="/panel/purchase/pending-purchase-request-list"
-                          className="block py-2 px-5"
+                        href="/panel/purchase/pending-purchase-request-list"
+                        className="block py-2 px-5"
                       >
                         <span
-                            className={
-                              pathname === "/panel/purchase/pending-purchase-request-list"
-                                  ? "text-mainRed text-[0.8rem]"
-                                  : "text-gray9F hover:text-textGray text-[0.8rem]"
-                            }
+                          className={
+                            pathname ===
+                            "/panel/purchase/pending-purchase-request-list"
+                              ? "text-mainRed text-[0.8rem]"
+                              : "text-gray9F hover:text-textGray text-[0.8rem]"
+                          }
                         >
                           صفحه در انتظار خرید
                         </span>
@@ -1041,15 +1062,16 @@ export default function RootLayout({ children }) {
                     </li>
                     <li>
                       <Link
-                          href="/panel/purchase/successful-purchase-request-list"
-                          className="block py-2 px-5"
+                        href="/panel/purchase/successful-purchase-request-list"
+                        className="block py-2 px-5"
                       >
                         <span
-                            className={
-                              pathname === "/panel/purchase/successful-purchase-request-list"
-                                  ? "text-mainRed text-[0.8rem]"
-                                  : "text-gray9F hover:text-textGray text-[0.8rem]"
-                            }
+                          className={
+                            pathname ===
+                            "/panel/purchase/successful-purchase-request-list"
+                              ? "text-mainRed text-[0.8rem]"
+                              : "text-gray9F hover:text-textGray text-[0.8rem]"
+                          }
                         >
                           صفحه کالاهای خریداری شده
                         </span>
@@ -1057,15 +1079,16 @@ export default function RootLayout({ children }) {
                     </li>
                     <li>
                       <Link
-                          href="/panel/purchase/unsuccessful-purchase-request-list"
-                          className="block py-2 px-5"
+                        href="/panel/purchase/unsuccessful-purchase-request-list"
+                        className="block py-2 px-5"
                       >
                         <span
-                            className={
-                              pathname === "/panel/purchase/unsuccessful-purchase-request-list"
-                                  ? "text-mainRed text-[0.9rem]"
-                                  : "text-gray9F hover:text-textGray text-[0.8rem]"
-                            }
+                          className={
+                            pathname ===
+                            "/panel/purchase/unsuccessful-purchase-request-list"
+                              ? "text-mainRed text-[0.9rem]"
+                              : "text-gray9F hover:text-textGray text-[0.8rem]"
+                          }
                         >
                           صفحه درخواستهای رد شده
                         </span>
@@ -1103,6 +1126,22 @@ export default function RootLayout({ children }) {
                     }
                   >
                     ثبت سازمان
+                  </span>
+                </Link>
+              </div>
+              <div>
+                <Link
+                  href="/panel/employees"
+                  className="block py-4 px-2 border-b border-b-1 border-b-solid  border-b-borderGray"
+                >
+                  <span
+                    className={
+                      pathname === "/panel/employees"
+                        ? "text-mainRed text-[0.9rem]"
+                        : "text-gray9F hover:text-textGray text-[0.9rem]"
+                    }
+                  >
+                    کارمندان
                   </span>
                 </Link>
               </div>

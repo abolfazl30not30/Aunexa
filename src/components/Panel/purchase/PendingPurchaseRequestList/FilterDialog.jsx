@@ -137,25 +137,27 @@ export default function FilterDialog(props) {
     const handleURLSearchParams = (values) =>{
         let params = new URLSearchParams()
         if(values.fromRequestDate){
-            params.set("fromDateRequest",values.fromRequestDate)
+            params.set("fromRequestDate",values.fromRequestDate)
         }
         if(values.toRequestDate){
-            params.set("toDateRequest",values.toRequestDate)
+            params.set("toRequestDate",values.toRequestDate)
         }
         if(values.fromConfirmationDate){
-            params.set("fromDateConfirm",values.fromConfirmationDate)
+            params.set("fromConfirmationDate",values.fromConfirmationDate)
         }
         if(values.toConfirmationDate){
-            params.set("toDateConfirm",values.toConfirmationDate)
+            params.set("toConfirmationDate",values.toConfirmationDate)
         }
         if(values.productId){
             params.set("productId",values.productId)
         }
-        if(values.status){
-            params.set("status",values.status)
+        if(values.subOrganizationId){
+            params.set("subOrganizationId",values.subOrganizationId)
         }
         if(values.priority === true){
             params.set("priority","true")
+        }else{
+            params.set("priority","false")
         }
         return params
     }

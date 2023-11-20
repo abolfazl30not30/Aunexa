@@ -6,11 +6,11 @@ import {
 } from "@mui/material";
 import Dialog from "@mui/material/Dialog";
 import {TailSpin} from "react-loader-spinner";
-import {useDeleteESIMutation} from "@/redux/features/equipment-store/input/ESIapiSlice";
+import { useDeletePendingPurchaseRequestListMutation } from "@/redux/features/purchase/pending-purchase-request-list/PendingPurchaseRequestListSlice";
 
 
 export default function DeleteDialog(props) {
-    const [handleDelete ,{isLoading}] = useDeleteESIMutation()
+    const [handleDelete ,{isLoading}] = useDeletePendingPurchaseRequestListMutation()
     const deleteData = async () =>{
         const res = await handleDelete(props.deleteTargetId)
         props.handleCloseDelete()

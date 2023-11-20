@@ -123,20 +123,18 @@ export default function FilterDialog(props) {
     const handleURLSearchParams = (values) =>{
         let params = new URLSearchParams()
         if(values.fromRequestDate){
-            params.set("fromDateRequest",values.fromRequestDate)
+            params.set("fromRequestDate",values.fromRequestDate)
         }
         if(values.toRequestDate){
-            params.set("toDateRequest",values.toRequestDate)
+            params.set("toRequestDate",values.toRequestDate)
         }
         if(values.productId){
             params.set("productId",values.productId)
         }
-        if(values.status){
-            params.set("status",values.status)
+        if(values.subOrganizationId){
+            params.set("suborganizationId",values.suborganizationId)
         }
-        if(values.priority === true){
-            params.set("priority","true")
-        }
+        
         return params
     }
 
@@ -154,9 +152,6 @@ export default function FilterDialog(props) {
             fromRequestDate: "",
             toRequestDate: "",
             productId:"",
-            status:"",
-            paymentMethod:"",
-            priority: "",
             subOrganizationId:""
         },
 

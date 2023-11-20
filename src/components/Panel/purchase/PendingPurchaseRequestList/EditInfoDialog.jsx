@@ -19,10 +19,7 @@ import {
 } from "@/redux/features/category/CategorySlice";
 import {styled} from "@mui/material/styles";
 import Switch from "@mui/material/Switch";
-import {
-    useSavePurchaseRequestMutation,
-    useUpdatePurchaseRequestMutation
-} from "@/redux/features/purchase-request/PurchaseRequestSlice";
+import { useUpdatePendingPurchaseRequestListMutation } from "@/redux/features/purchase/pending-purchase-request-list/PendingPurchaseRequestListSlice";
 
 const AntSwitch = styled(Switch)(({ theme }) => ({
     width: 35,
@@ -107,16 +104,17 @@ export default function EditInfoDialog(props) {
         getProductList()
         getUnitList()
         formik.setValues({
+            id:props.editInfoTarget?.id,
             unit:props.editInfoTarget?.quantity?.unit,
-            value:props.editInfoTarget?.quantity?.value,
+            value:props.editInfoTarget?.quantity?.value
             
         })
-        handleSetProductInput(props.editInfoTarget?.productId)
-        handleSetUnitInput(props.editInfoTarget?.unit)
+        handleSetProductInput(props.editInfoTarget?.billCycle?.productId)
+        handleSetUnitInput(props.editInfoTarget?.quantity?.unit)
     },[props.openEditInfo])
 
     //submit data
-    const [submitData, { isLoading:isSubmitLoading ,error}] = useUpdatePurchaseRequestMutation()
+    const [submitData, { isLoading:isSubmitLoading ,error}] = useUpdatePendingPurchaseRequestListMutation()
 
     const schema = yup.object().shape({
         
@@ -127,52 +125,18 @@ export default function EditInfoDialog(props) {
 
     const formik = useFormik({
         initialValues: {
-            id: "",
-  confirmationDate:"",
-  confirmationTime: "",
-  confirmerName: "",
-  quantity: {
-    unit: "",
-    value: ""
-  },
-  description:"" ,
-  status: "IN_PROGRESS",
-  billCycle: {
-    id: "",
-    requestDate: "",
-    requestTime:"" ,
-    productId:"" ,
-    productName:"" ,
-    productImage:'' ,
-    code: 0,
-    unit:"" ,
-    value: 0,
-    registrar:"" ,
-    description:"" ,
-    status: "IN_PROGRESS",
-    priority: true,
-    subOrganizationName:"" ,
-    subOrganizationId:"" ,
-    organizationId: "",
-    failureReason: {
-      date:"" ,
-      time:"" ,
-      description:"" ,
-      reporter:"" 
-    },
-  },
-  failureReason: {
-    date: "",
-    time:"" ,
-    description: "",
-    reporter:"" ,
-  },
+           id:"",
+           unit:"",
+           value:"",
+           billCycle:{
+              id:""
+           }
         },
 
         validationSchema: schema,
 
         onSubmit: async (product,helpers) => {
-            let updateProduct = {...product}
+            let updateProduct = {id:props.editInfoTarget?.id,quantity:{unit:formik.values.unit,value:formik.values.value}}
             const userData = await submitData(updateProduct)
             handleReset()
             props.handleCloseEditInfo()

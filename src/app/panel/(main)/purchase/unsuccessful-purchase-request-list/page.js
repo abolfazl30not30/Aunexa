@@ -9,7 +9,7 @@ import {
   Pagination,
   Skeleton,
 } from "@mui/material";
-import { useGetAllPurchaseRequestQuery } from "@/redux/features/purchase-request/PurchaseRequestSlice";
+import { useGetAllUnsuccessfulPurchaseRequestListQuery } from "@/redux/features/purchase/unsuccessful-purchase-request-list/UnsuccessfulPurchaseRequestListSlice";
 import Link from "next/link";
 import FilterDialog from "@/components/Panel/purchase/UnSuccessfulPurchaseRequestList/FilterDialog";
 import { useSelector } from "react-redux";
@@ -37,7 +37,7 @@ export default function page() {
     data: inventoryData = [],
     isLoading: isDataLoading,
     isError: isDataError,
-  } = useGetAllPurchaseRequestQuery(
+  } = useGetAllUnsuccessfulPurchaseRequestListQuery(
     { page, sort, filterItem },
     { refetchOnMountOrArgChange: true }
   );
@@ -53,39 +53,20 @@ export default function page() {
   const [openMoreInfo, setOpenMoreInfo] = useState(false);
   const [moreInfoTarget, setMoreInfoTarget] = useState({
     id: "",
-    confirmationDate: "",
-    confirmationTime: "",
-    confirmerName: "",
-    quantity: {
-      unit: "",
-      value: "",
-    },
+    requestDate: "",
+    requestTime: "",
+    productId: "",
+    productName: "",
+    productImage: "",
+    code: 0,
+    unit: "",
+    value: 0,
+    registrar: "",
     description: "",
-    status: "IN_PROGRESS",
-    billCycle: {
-      id: "",
-      requestDate: "",
-      requestTime: "",
-      productId: "",
-      productName: "",
-      productImage: "",
-      code: 0,
-      unit: "",
-      value: 0,
-      registrar: "",
-      description: "",
-      status: "IN_PROGRESS",
-      priority: true,
-      subOrganizationName: "",
-      subOrganizationId: "",
-      organizationId: "",
-      failureReason: {
-        date: "",
-        time: "",
-        description: "",
-        reporter: "",
-      },
-    },
+
+    subOrganizationName: "",
+    subOrganizationId: "",
+
     failureReason: {
       date: "",
       time: "",
@@ -101,39 +82,20 @@ export default function page() {
   const handleCloseMoreInfo = () => {
     setMoreInfoTarget({
       id: "",
-      confirmationDate: "",
-      confirmationTime: "",
-      confirmerName: "",
-      quantity: {
-        unit: "",
-        value: "",
-      },
+      requestDate: "",
+      requestTime: "",
+      productId: "",
+      productName: "",
+      productImage: "",
+      code: 0,
+      unit: "",
+      value: 0,
+      registrar: "",
       description: "",
-      status: "IN_PROGRESS",
-      billCycle: {
-        id: "",
-        requestDate: "",
-        requestTime: "",
-        productId: "",
-        productName: "",
-        productImage: "",
-        code: 0,
-        unit: "",
-        value: 0,
-        registrar: "",
-        description: "",
-        status: "IN_PROGRESS",
-        priority: true,
-        subOrganizationName: "",
-        subOrganizationId: "",
-        organizationId: "",
-        failureReason: {
-          date: "",
-          time: "",
-          description: "",
-          reporter: "",
-        },
-      },
+
+      subOrganizationName: "",
+      subOrganizationId: "",
+
       failureReason: {
         date: "",
         time: "",
@@ -350,8 +312,8 @@ export default function page() {
                           <span>{data?.subOrganizationName}</span>
                         </td>
                         <td className=" space-x-2 px-2 py-4 md:px-6  text-gray70 whitespace-nowrap ">
-                          <span>{data?.requestTime}</span>
-                          <span>{data?.requestDate}</span>
+                          <span>{data?.failureReason?.time}</span>
+                          <span>{data?.failureReason?.data}</span>
                         </td>
 
                         <td
