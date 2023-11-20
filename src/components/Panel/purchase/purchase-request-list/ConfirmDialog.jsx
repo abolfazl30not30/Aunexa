@@ -73,10 +73,12 @@ export default function ConfirmDialog(props) {
 
         validationSchema: schema,
 
-        onSubmit: async (purchase, helpers) => {
-            let updateProduct = {...props.confirmTarget}
-            updateProduct = {...updateProduct,unit:purchase.unit,value:purchase.vlaue}
-            const userData = await submitData(updateProduct)
+        onSubmit: async (purchase) => {
+            let updatePurchase = {...props.confirmTarget}
+            updatePurchase = {...updatePurchase,unit:purchase.unit}
+            updatePurchase = {...updatePurchase,value:purchase.value}
+            console.log(updatePurchase)
+            const userData = await submitData(updatePurchase)
             handleReset()
             props.handleCloseConfirm()
         },

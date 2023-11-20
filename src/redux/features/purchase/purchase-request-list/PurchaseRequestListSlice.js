@@ -41,6 +41,14 @@ export const PurchaseRequestListSlice  = apiSlice.injectEndpoints({
             }),
             invalidatesTags: ['purchase-request-list']
         }),
+        rejectPurchaseRequestList: builder.mutation({
+            query: (body) => ({
+                url: 'bill/bill-cycle/reject',
+                method: 'PUT',
+                body: body
+            }),
+            invalidatesTags: ['purchase-request-list']
+        }),
     })
 })
 
@@ -50,4 +58,5 @@ export const {
     useUpdatePurchaseRequestListMutation,
     useDeletePurchaseRequestListMutation,
     useAcceptPurchaseRequestListMutation,
+    useRejectPurchaseRequestListMutation,
 } = PurchaseRequestListSlice
