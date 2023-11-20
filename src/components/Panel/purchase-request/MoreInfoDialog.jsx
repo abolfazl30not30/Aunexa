@@ -1,3 +1,4 @@
+
 'use client'
 import React from "react";
 import {
@@ -45,29 +46,7 @@ export default function MoreInfoDialog(props) {
                                         <div className="border border-[#D9D9D9]">
                                         </div>
                                         <div className="p-2">
-                                            <span className="text-[#29262A] text-[0.9rem]">{props.moreInfoTarget?.value}  {props.moreInfoTarget?.unit}</span>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div className="flex flex-col md:flex-row justify-between gap-2">
-                                    <div className="w-full w-1/2 flex flex-col">
-                                        <div className="mb-2">
-                                            <span className="text-[0.9rem] text-gray70 ">کد درخواست</span>
-                                        </div>
-                                        <div className="border border-[#D9D9D9]  flex justify-between px-4">
-                                            <div className="p-2">
-                                                <span className="text-[#29262A] text-[0.9rem]">{props.moreInfoTarget?.code}</span>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div className="w-full w-1/2 flex flex-col">
-                                        <div className="mb-2">
-                                            <span className="text-[0.9rem] text-gray70 ">تاریخ درخواست</span>
-                                        </div>
-                                        <div className="border border-[#D9D9D9]  flex justify-between px-4">
-                                            <div className="p-2">
-                                                <span className="text-[#29262A] text-[0.9rem]">{props.moreInfoTarget?.requestTime}   {props.moreInfoTarget?.requestDate} </span>
-                                            </div>
+                                            <span className="text-[#29262A] text-[0.9rem]">{props.moreInfoTarget?.unit} {props.moreInfoTarget?.value}</span>
                                         </div>
                                     </div>
                                 </div>
@@ -89,21 +68,27 @@ export default function MoreInfoDialog(props) {
                                 </div>
                                 <div className="flex flex-col">
                                     <div className="mb-2">
-                                        <span className="text-[0.9rem] text-gray70 ">دپارتمان</span>
+                                        <span className="text-[0.9rem] text-gray70 ">تاریخ</span>
                                     </div>
                                     <div className="border border-[#D9D9D9]  flex justify-start px-4">
                                         <div className="p-2">
-                                            <span className="text-[#29262A] text-[0.9rem]">{props.moreInfoTarget?.subOrganizationName}</span>
+                                            <span className="text-[#29262A] text-[0.9rem]">{props.moreInfoTarget?.time} {props.moreInfoTarget?.date}</span>
                                         </div>
                                     </div>
                                 </div>
                                 <div className="flex flex-col">
                                     <div className="mb-2">
-                                        <span className="text-[0.9rem] text-gray70 ">نام درخواست دهنده</span>
+                                        <span className="text-[0.9rem] text-gray70 ">وضیعت</span>
                                     </div>
                                     <div className="border border-[#D9D9D9]  flex justify-start px-4">
                                         <div className="p-2">
-                                            <span className="text-[#29262A] text-[0.9rem]">{props.moreInfoTarget?.registrar}</span>
+                                            <span className="text-[#29262A] text-[0.9rem]">
+                                                {props.moreInfoTarget.status === "DONE" ? (<span className="text-[0.8rem] bg-greenBg text-greenText py-1 px-2 rounded-xl">انجام شده</span>) : (
+                                                    props.moreInfoTarget.status === "IN_PROGRESS" ? (<span className="text-[0.8rem] bg-[#EBEBEB] text-gray70 py-1 px-2 rounded-xl">درحال بررسی</span>) : (
+                                                        <span className="text-[0.8rem] bg-orangeBg text-orangeText py-1 px-2 rounded-xl">رد شده</span>
+                                                    )
+                                                )}
+                                            </span>
                                         </div>
                                     </div>
                                 </div>
@@ -155,34 +140,22 @@ export default function MoreInfoDialog(props) {
                                 </div>
                                 <div>
                                     <span className="ml-1 text-gray9F text-[0.8rem]">
-                                        کد درخواست:
+                                        تاریخ :
                                     </span>
                                     <span className="text-[#29262A] text-[0.8rem]">
-                                          {props.moreInfoTarget?.code}
+                                          {props.moreInfoTarget?.time}   {props.moreInfoTarget?.date}
                                     </span>
                                 </div>
                                 <div>
                                     <span className="ml-1 text-gray9F text-[0.8rem]">
-                                        تاریخ درخواست:
+                                        وضعیت :
                                     </span>
                                     <span className="text-[#29262A] text-[0.8rem]">
-                                          {props.moreInfoTarget?.requestTime}  {props.moreInfoTarget?.requestDate}
-                                    </span>
-                                </div>
-                                <div>
-                                    <span className="ml-1 text-gray9F text-[0.8rem]">
-                                        دپارتمان:
-                                    </span>
-                                    <span className="text-[#29262A] text-[0.8rem]">
-                                          {props.moreInfoTarget?.subOrganizationName}
-                                    </span>
-                                </div>
-                                <div>
-                                    <span className="ml-1 text-gray9F text-[0.8rem]">
-                                        نام درخواست دهنده:
-                                    </span>
-                                    <span className="text-[#29262A] text-[0.8rem]">
-                                          {props.moreInfoTarget?.registrar}
+                                        {props.moreInfoTarget.status === "DONE" ? (<span className="text-[0.8rem] bg-greenBg text-greenText py-1 px-2 rounded-xl">انجام شده</span>) : (
+                                            props.moreInfoTarget.status === "IN_PROGRESS" ? (<span className="text-[0.8rem] bg-[#EBEBEB] text-gray70 py-1 px-2 rounded-xl">درحال بررسی</span>) : (
+                                                <span className="text-[0.8rem] bg-orangeBg text-orangeText py-1 px-2 rounded-xl">رد شده</span>
+                                            )
+                                        )}
                                     </span>
                                 </div>
                                 <div>
@@ -199,7 +172,7 @@ export default function MoreInfoDialog(props) {
                             <button onClick={()=>{props.handleOpenDelete(props.moreInfoTarget.id);props.handleCloseMoreInfo()}} className="px-6 py-2 text-[0.8rem] text-mainRed border border-mainRed rounded hover:bg-mainRed hover:text-white">
                                 حذف
                             </button>
-                            <button onClick={()=>{props.handleOpenEditInfo(props.moreInfoTarget);props.handleCloseMoreInfo()}}  className="px-5 py-2 text-[0.8rem] text-[#4087DB] border border-[#4087DB] rounded hover:bg-[#4087DB] hover:text-white">
+                            <button onClick={()=>{props.handleOpenConfirm(props.moreInfoTarget);props.handleCloseMoreInfo()}}  className="px-5 py-2 text-[0.8rem] text-[#4087DB] border border-[#4087DB] rounded hover:bg-[#4087DB] hover:text-white">
                                 ویرایش
                             </button>
                         </div>

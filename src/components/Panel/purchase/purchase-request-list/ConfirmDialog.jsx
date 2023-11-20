@@ -8,11 +8,12 @@ import * as yup from "yup";
 import {useFormik} from "formik";
 import "react-multi-date-picker/styles/colors/red.css"
 import {useLazyGetAllUnitQuery, useLazyGetInventoryBalanceQuery,} from "@/redux/features/category/CategorySlice";
-import {useUpdatePurchaseRequestMutation} from "@/redux/features/purchase-request/PurchaseRequestSlice";
+import {
+    useAcceptPurchaseRequestListMutation
+} from "@/redux/features/purchase/purchase-request-list/PurchaseRequestListSlice";
 
 
 export default function ConfirmDialog(props) {
-
 
     const [getInventoryBalance, {
         data: inventoryBalanceList = [],
@@ -56,7 +57,7 @@ export default function ConfirmDialog(props) {
     }, [props.openConfirm])
 
     //submit data
-    const [submitData, {isLoading: isSubmitLoading, error}] = useUpdatePurchaseRequestMutation()
+    const [submitData, {isLoading: isSubmitLoading, error}] = useAcceptPurchaseRequestListMutation()
 
     const schema = yup.object().shape({
         value: yup.string().required("لطفا مقدار محصول را وارد کنید"),
@@ -66,15 +67,15 @@ export default function ConfirmDialog(props) {
 
     const formik = useFormik({
         initialValues: {
-            id: "",
             value: "",
             unit: "",
         },
 
         validationSchema: schema,
 
-        onSubmit: async (product, helpers) => {
-            let updateProduct = {...product}
+        onSubmit: async (purchase, helpers) => {
+            let updateProduct = {...props.confirmTarget}
+            updateProduct = {...updateProduct,unit:purchase.unit,value:purchase.vlaue}
             const userData = await submitData(updateProduct)
             handleReset()
             props.handleCloseConfirm()

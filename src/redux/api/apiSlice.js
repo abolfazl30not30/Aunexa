@@ -60,6 +60,7 @@ export const apiSlice = createApi({
   baseQuery: baseQueryWithReauth,
   tagTypes: [
     "file",
+    "purchase-request-list",
     "purchase-request",
     "primary-store-input",
     "primary-store-output",
