@@ -4,15 +4,16 @@ import React, {useEffect, useState} from "react";
 
 import {FormControl, InputAdornment, Menu, OutlinedInput, Pagination, Skeleton,} from "@mui/material";
 
-import AddDataDialog from "@/components/Panel/purchase-request/AddDataDialog";
-import FilterDialog from "@/components/Panel/purchase-request/FilterDialog";
-import MoreInfoDialog from "@/components/Panel/purchase-request/MoreInfoDialog";
-import DeleteDialog from "@/components/Panel/purchase-request/DeleteDialog";
 import Link from "next/link";
 
 import {useSelector} from "react-redux";
-import {useGetAllPurchaseRequestQuery} from "@/redux/features/purchase-request/PurchaseRequestSlice";
 import ConfirmDialog from "@/components/Panel/purchase/purchase-request-list/ConfirmDialog";
+import {
+    useGetAllPurchaseRequestListQuery
+} from "@/redux/features/purchase/purchase-request-list/PurchaseRequestListSlice";
+import MoreInfoDialog from "@/components/Panel/purchase/purchase-request-list/MoreInfoDialog";
+import FilterDialog from "@/components/Panel/purchase/purchase-request-list/FilterDialog";
+import RejectionDialog from "@/components/Panel/purchase/purchase-request-list/RejectionDialog";
 
 function PurchaseRequest() {
     let permission =  useSelector((state)=> state.access?.pages?.primaryStoreInput)
@@ -37,6 +38,19 @@ function PurchaseRequest() {
 
     const [openConfirm, setOpenConfirm] = useState(false)
     const [confirmTarget,setConfirmTarget] = useState(
+        {
+            productId:"",
+            machineTag:"",
+            productName:"",
+            value: "",
+            unit: "",
+            priority: false,
+            description:"",
+        }
+    )
+
+    const [openRejection, setOpenRejection] = useState(false)
+    const [rejectionTarget,setRejectionTarget] = useState(
         {
             productId:"",
             machineTag:"",
@@ -119,6 +133,23 @@ function PurchaseRequest() {
         setOpenConfirm(false)
     }
 
+    const handleOpenRejection = (info) =>{
+        setRejectionTarget(info)
+        setOpenRejection(true)
+    }
+
+    const handleCloseRejection = () =>{
+        setRejectionTarget({
+            productId:"",
+            productName:"",
+            value: "",
+            unit: "",
+            priority: false,
+            description:"",
+        })
+        setOpenRejection(false)
+    }
+
     const handleOpenMoreInfoRow = (info)=>{
         if(window.innerWidth <= 768){
             handleOpenMoreInfo(info)
@@ -129,7 +160,7 @@ function PurchaseRequest() {
         setPage(value)
     }
 
-    const {data: inventoryData = [], isLoading: isDataLoading, isError: isDataError} = useGetAllPurchaseRequestQuery({page,sort,filterItem},{ refetchOnMountOrArgChange: true })
+    const {data: inventoryData = [], isLoading: isDataLoading, isError: isDataError} = useGetAllPurchaseRequestListQuery({page,sort,filterItem},{ refetchOnMountOrArgChange: true })
 
     return (
         <>
@@ -355,7 +386,7 @@ function PurchaseRequest() {
 
                                                     }
                                                     {
-                                                            <button onClick={() => {handleOpenDelete(data.id)}}
+                                                            <button onClick={() => {handleOpenRejection(data)}}
                                                                     className="border border-1 border-solid border-[#FE4949] rounded p-[0.4rem] hover:bg-red-100">
                                                                 <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 16 16" fill="none">
                                                                     <path d="M12 4L4 12M4 4L12 12" stroke="#DB3746" stroke-linecap="round" stroke-linejoin="round"/>
@@ -374,11 +405,10 @@ function PurchaseRequest() {
                         <Pagination page={page} count={inventoryData.totalPages} onChange={handlePagination} shape="rounded"/>
                     </div>
                 </section>
-                <AddDataDialog handleCloseAddData={handleCloseAddData} openAddData={openAddData}/>
                 <FilterDialog filterItem={filterItem} setFilterItem={setFilterItem} openFilter={openFilter} handleCloseFilter={handleCloseFilter}/>
                 <MoreInfoDialog handleOpenDelete={handleOpenDelete} handleOpenConfirm={handleOpenConfirm} moreInfoTarget={moreInfoTarget} openMoreInfo={openMoreInfo} handleCloseMoreInfo={handleCloseMoreInfo}/>
-                <DeleteDialog deleteTargetId={deleteTargetId} openDelete={openDelete} handleCloseDelete={handleCloseDelete}/>
                 <ConfirmDialog confirmTarget={confirmTarget} handleCloseConfirm={handleCloseConfirm} openConfirm={openConfirm}/>
+                <RejectionDialog rejectionTarget={rejectionTarget} handleCloseRejection={handleCloseRejection} openRejection={openRejection}/>
             </div>
         </>
     )
