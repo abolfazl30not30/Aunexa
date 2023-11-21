@@ -41,11 +41,16 @@ export default function page() {
   const handleChangeAllCheckbox = (event) => {
     setCheckedAll(event.target.checked);
   };
-  const handleChangeCheckbox = (event, id) => {
-    if (event.target.checked && id === event.target.id) {
-      return false;
-    } else if (!event.target.checked && id === event.target.id) {
-      return true;
+
+
+  const handleChangeChecked = (event, data) => {
+    if (event.target.checked) {
+      const obj = {...data};
+      let updateList = [...paymentList,obj];
+      setPaymentList(updateList);
+    } else {
+      let temp = paymentList.filter((item) => item.id !== data.id);
+      setPaymentList(temp);
     }
   };
 
@@ -212,17 +217,19 @@ export default function page() {
         </div>
         <div className="">
           {
-            <button className="flex hover:cursor-default text-[#9F9F9F] bg-[#F2EDED] disabled items-center border-[#E0E3E0] border px-3 py-2 rounded-full md:rounded">
-              <span className="hidden md:inline">ثبت فاکتور</span>
-            </button>
-          }
-          {
-            <button
-              className="flex  text-mainRed items-center border-mainRed border px-3 py-2 rounded-full md:rounded"
-              onClick={handleOpenRegisterFactor}
-            >
-              <span className="hidden md:inline">ثبت فاکتور</span>
-            </button>
+            paymentList.length !== 0 ? (
+                <button
+                    className="flex  text-mainRed items-center border-mainRed border px-3 py-2 rounded-full md:rounded"
+                    onClick={handleOpenRegisterFactor}
+                >
+                  <span className="hidden md:inline">ثبت فاکتور</span>
+                </button>
+            ) : (
+                <button
+                    className="flex hover:cursor-default text-[#9F9F9F] bg-[#F2EDED] disabled items-center border-[#E0E3E0] border px-3 py-2 rounded-full md:rounded">
+                  <span className="hidden md:inline">ثبت فاکتور</span>
+                </button>
+            )
           }
         </div>
       </header>
@@ -352,13 +359,6 @@ export default function page() {
               <thead className="text-[0.9rem] text-gray80  bg-[#F8F8F8] md:bg-[#F2EDED] ">
                 <tr>
                   <th className="hidden md:table-cell px-6 py-4">
-                    <Checkbox
-                      checked={checkedAll}
-                      onChange={(e) => {
-                        handleChangeAllCheckbox(e);
-                      }}
-                      inputProps={{ "aria-label": "controlled" }}
-                    />
                   </th>
                   <th className="hidden md:table-cell px-2 md:px-6 py-4">
                     کد درخواست
@@ -417,11 +417,9 @@ export default function page() {
                         <td className="hidden md:table-cell md:px-6 py-4 px-2  text-gray70 whitespace-nowrap ">
                           <Checkbox
                             id={data.id}
-                            checked={
-                              console.log(handleChangeCheckbox) || checkedAll
-                            }
+                            checked={paymentList.some((item) => item?.id === data.id)}
                             onClick={(e) => {
-                              handleChangeCheckbox(e, data.id);
+                              handleChangeChecked(e, data);
                             }}
                             inputProps={{ "aria-label": "controlled" }}
                           />
@@ -589,6 +587,7 @@ export default function page() {
         handleCloseFilter={handleCloseFilter}
       />
       <RegisterFactorDialog
+          paymentList={paymentList}
         handleCloseRegisterFactor={handleCloseRegisterFactor}
         openRegisterFactor={openRegisterFactor}
       />

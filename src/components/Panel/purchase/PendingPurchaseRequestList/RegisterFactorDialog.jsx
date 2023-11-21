@@ -1,7 +1,15 @@
 'use client'
 import TextField from "@mui/material/TextField";
 import React, {useEffect, useState} from "react";
-import {Autocomplete, DialogContent, DialogContentText} from "@mui/material";
+import {
+    Autocomplete,
+    DialogContent,
+    DialogContentText, FormControl,
+    InputLabel,
+    MenuItem,
+    OutlinedInput,
+    Select
+} from "@mui/material";
 import Dialog from "@mui/material/Dialog";
 import {TailSpin} from "react-loader-spinner";
 import * as yup from "yup";
@@ -10,11 +18,15 @@ import CircularProgress from '@mui/material/CircularProgress';
 import { useSaveOrganizationMutation } from "@/redux/features/organization/OrganizationSlice";
 import { useLazyGetAllPaymentMethodQuery } from "@/redux/features/category/CategorySlice";
 import { useUploadFileCloudMutation } from "@/redux/features/file/FileSlice";
+import {
+    useSavePendingPurchaseRequestListMutation
+} from "@/redux/features/purchase/pending-purchase-request-list/PendingPurchaseRequestListSlice";
 export default function RegisterFactorDialog(props) {
   
     const [organization,setOrganization] = useState(null)
     const [uploadedImage,setUploadedImage] = useState("")
     const [uploadFile, { isLoading:isLoadingUpload ,error:errorUpload}] = useUploadFileCloudMutation()
+
     const handleUploadImage = async (event) =>{
         let formData = new FormData();
         formData.append('file', event.target.files[0]);
@@ -26,56 +38,85 @@ export default function RegisterFactorDialog(props) {
     const handleDeleteUpload = () =>{
         setUploadedImage("")
     }
-    const [paymentMethod,setPaymentMethod] = useState(null)
-    const [openPaymentMethodList,setOpenPaymentMethodList] = useState(false)
-    const [getPaymentMethodList,{ data : paymentMethodList  = [] , isLoading : isPaymentMethodLoading, isError: paymentMethodIsError }] = useLazyGetAllPaymentMethodQuery()
-    useEffect(()=>{
-        if(openPaymentMethodList){
-            getPaymentMethodList()
-        }
-    },[openPaymentMethodList])
 
+    // const [paymentMethod,setPaymentMethod] = useState(null)
+    // const [openPaymentMethodList,setOpenPaymentMethodList] = useState(false)
+    // const [getPaymentMethodList,{ data : paymentMethodList  = [] , isLoading : isPaymentMethodLoading, isError: paymentMethodIsError }] = useLazyGetAllPaymentMethodQuery()
+    // useEffect(()=>{
+    //     if(openPaymentMethodList){
+    //         getPaymentMethodList()
+    //     }
+    // },[openPaymentMethodList])
+
+    const handlePaymentMethod = (e,item) =>{
+        let tempPaymentItems = [...formik.values.paymentItems];
+        let objIndex = tempPaymentItems.findIndex((payment => payment.bill.id === item.bill.id));
+        console.log(objIndex)
+        tempPaymentItems[objIndex].paymentMethod = e.target.value
+        console.log(tempPaymentItems)
+        formik.setFieldValue("paymentItems",tempPaymentItems)
+    }
 
 
 
     const handleReset = () =>{
         formik.resetForm()
-        setPaymentMethod(null)
         setOrganization(null)
     }
 
-    const [submitData, { isLoading:isSubmitLoading ,error}] = useSaveOrganizationMutation()
+    const [submitData, { isLoading:isSubmitLoading ,error}] = useSavePendingPurchaseRequestListMutation()
     const schema = yup.object().shape({
-        producer: yup.string(),
-        buyerName: yup.string(),
-        paymentMethod: yup.string(),
         receiptCode:yup.string().required("لطفا شماره فاکتور را وارد نمایید ")
-        
     });
+
+    const validate = (values, props) => {
+        const errors = {};
+
+        for (let payment of values.paymentItems){
+            if(payment.paymentMethod === ""){
+                errors.paymentItems = "لطفا شیوه های پرداخت  را انتخاب کنید نمایید";
+            }
+        }
+
+        return errors;
+    };
 
     const formik = useFormik({
         initialValues: {
             producer:"",
             buyerName:"",
-            paymentMethod: "",
+            paymentItems:[],
             receiptCode:"",
             receiptFile:""
-            
         },
-      
-        
 
         validationSchema: schema,
 
+        validate: validate,
+
         onSubmit: async (registerFactor,helpers) => {
+
             let updateRegisterFactor = {...registerFactor,receiptFile:uploadedImage}
-            
             const userData = await submitData(updateRegisterFactor)
             handleReset()
             props.handleCloseRegisterFactor()
         },
     });
 
+
+    useEffect(()=>{
+        if(props.openRegisterFactor){
+            let paymentItems = []
+            for(let bill of props.paymentList ){
+                let obj = {
+                    paymentMethod:"",
+                    bill:bill
+                }
+                paymentItems.push(obj)
+            }
+            formik.setFieldValue("paymentItems",paymentItems)
+        }
+    },[props.openRegisterFactor])
     return (
         <>
             <Dialog
@@ -129,87 +170,115 @@ export default function RegisterFactorDialog(props) {
                                         inputProps={{style: {fontFamily: "__fonts_2f4189,__fonts_Fallback_2f4189", fontSize: "0.8rem"}}}
                                         InputLabelProps={{style: {fontFamily: "__fonts_2f4189,__fonts_Fallback_2f4189"}}}/>
                                 </div>
-                                <div className="border border-gray50 px-4 py-3 gap-4 flex flex-col ">
-                                    <div className="flex items-center gap-2 text-sm">
-                                        <div>
+                                <div className="flex flex-col gap-2">
+                                    {formik.values.paymentItems.map((item)=>(
+                                        <div className="border border-gray50 px-4 py-3 gap-4 flex flex-col ">
+                                            <div className="flex items-center gap-2 text-sm">
+                                                <div>
                                             <span>
                                              کد درخواست خرید :
                                             </span>
-                                        </div>
-                                        <div>
+                                                </div>
+                                                <div>
                                             <span className="text-[#29262A] font-semibold">
-                                                12345678
+                                                {item?.bill?.billCycle?.code}
                                             </span>
-                                        </div>
-                                    </div>
-                                    <div className="flex justify-between gap-4">
-                                    <div className="flex items-center gap-2 text-sm">
-                                        <div>
+                                                </div>
+                                            </div>
+                                            <div className="flex justify-between gap-4">
+                                                <div className="flex items-center gap-2 text-sm">
+                                                    <div>
                                             <span>
                                                نام محصول :
                                             </span>
-                                        </div>
-                                        <div>
+                                                    </div>
+                                                    <div>
                                             <span className="text-[#29262A] font-semibold">
-                                                برنج
+                                                {item?.bill?.billCycle?.productName}
                                             </span>
-                                        </div>
-                                    </div>
-                                    <div className="flex items-center gap-2 text-sm">
-                                        <div>
+                                                    </div>
+                                                </div>
+                                                <div className="flex items-center gap-2 text-sm">
+                                                    <div>
                                             <span>
                                                مقدار :
                                             </span>
-                                        </div>
-                                        <div>
+                                                    </div>
+                                                    <div>
                                             <span className="text-[#29262A] font-semibold">
-                                                دویست کیلوگرم
+                                              {item?.bill?.billCycle?.value} {item?.bill?.billCycle?.unit}
                                             </span>
-                                        </div>
-                                    </div>
-                                    </div>
-                                    <div>
-                                    <Autocomplete
-                                        open={openPaymentMethodList}
-                                        onOpen={() => {
-                                            setOpenPaymentMethodList(true);
-                                        }}
-                                        onClose={() => {
-                                            setOpenPaymentMethodList(false);
-                                        }}
-                                        fullWidth
-                                        clearOnEscape
-                                        disablePortal
-                                        id="combo-box-demo"
-                                        ListboxProps={{
-                                            sx: {fontFamily: "__fonts_2f4189,__fonts_Fallback_2f4189", fontSize: "0.8rem"},
-                                        }}
-                                        options={paymentMethodList}
-                                        getOptionLabel={(option) => option.name}
-                                        value={paymentMethod}
-                                        onChange={(event, newValue) => {
-                                            setPaymentMethod(newValue)
-                                            formik.setFieldValue("paymentMethod", newValue?.name)
-                                        }}
-                                        renderInput={(params) =>
-                                            <TextField
-                                                error={formik.touched.paymentMethod && Boolean(formik.errors.paymentMethod)}
-                                                helperText={formik.touched.paymentMethod && formik.errors.paymentMethod}
-                                                {...params}
-                                                InputProps={{
-                                                    ...params.InputProps,
-                                                    style: {fontFamily: "__fonts_2f4189,__fonts_Fallback_2f4189", fontSize: "0.8rem"},
-                                                    endAdornment:(
-                                                        <React.Fragment>
-                                                            {isPaymentMethodLoading ? <CircularProgress color="inherit" size={20} /> : null}
-                                                            {params.InputProps.endAdornment}
-                                                        </React.Fragment>
-                                                    )
-                                                }}
-                                                placeholder="انواع شیوه پرداخت"
-                                            />}
-                                    />
-                                    </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div>
+                                                <FormControl fullWidth error={formik.touched.paymentItems && Boolean(formik.errors.paymentItems)}>
+                                                    <InputLabel id="demo-simple-select-label" sx={{fontFamily: "__fonts_2f4189,__fonts_Fallback_2f4189", fontSize: "0.8rem",color:"#9F9F9F"}}>شیوه  پرداخت</InputLabel>
+                                                    <Select
+                                                        labelId="demo-simple-select-label"
+                                                        id="demo-simple-select"
+                                                        value={item.paymentMethod}
+                                                        name="status"
+                                                        input={<OutlinedInput sx={{fontFamily: "__fonts_2f4189,__fonts_Fallback_2f4189", fontSize: "0.8rem"}} label="شیوه پرداخت" />}
+                                                        sx={{fontFamily: "__fonts_2f4189,__fonts_Fallback_2f4189", fontSize: "0.8rem"}}
+                                                        onChange={(e)=>{handlePaymentMethod(e,item)}}
+                                                    >
+                                                        <MenuItem value="" sx={{fontFamily: "__fonts_2f4189,__fonts_Fallback_2f4189", fontSize: "0.8rem"}}></MenuItem>
+                                                        <MenuItem value="PARDAKHT_NAGHDI" sx={{fontFamily: "__fonts_2f4189,__fonts_Fallback_2f4189", fontSize: "0.8rem"}}>پرداخت نقدی در محل تحویل</MenuItem>
+                                                        <MenuItem value="PARDAKHT_BANKI" sx={{fontFamily: "__fonts_2f4189,__fonts_Fallback_2f4189", fontSize: "0.8rem"}}>پرداخت با کارت بانکی در محل تحویل</MenuItem>
+                                                        <MenuItem value="PARDAKHT_INTERNETI" sx={{fontFamily: "__fonts_2f4189,__fonts_Fallback_2f4189", fontSize: "0.8rem"}}>پرداخت از طریق درگاه اینترنتی</MenuItem>
+                                                        <MenuItem value="CHEK_MODAT_DAR" sx={{fontFamily: "__fonts_2f4189,__fonts_Fallback_2f4189", fontSize: "0.8rem"}}>چک مدت دار</MenuItem>
+                                                        <MenuItem value="CHEK" sx={{fontFamily: "__fonts_2f4189,__fonts_Fallback_2f4189", fontSize: "0.8rem"}}>چک</MenuItem>
+                                                        <MenuItem value="AGHSATI" sx={{fontFamily: "__fonts_2f4189,__fonts_Fallback_2f4189", fontSize: "0.8rem"}}>اقساطی</MenuItem>
+                                                        <MenuItem value="ETEBARI" sx={{fontFamily: "__fonts_2f4189,__fonts_Fallback_2f4189", fontSize: "0.8rem"}}>اعتباری</MenuItem>
+                                                        <MenuItem value="SAYER" sx={{fontFamily: "__fonts_2f4189,__fonts_Fallback_2f4189", fontSize: "0.8rem"}}>سایر</MenuItem>
+                                                    </Select>
+                                                </FormControl>
+                                            </div>
+                                            {/*<div>*/}
+                                            {/*    <Autocomplete*/}
+                                            {/*        open={openPaymentMethodList}*/}
+                                            {/*        onOpen={() => {*/}
+                                            {/*            setOpenPaymentMethodList(true);*/}
+                                            {/*        }}*/}
+                                            {/*        onClose={() => {*/}
+                                            {/*            setOpenPaymentMethodList(false);*/}
+                                            {/*        }}*/}
+                                            {/*        fullWidth*/}
+                                            {/*        clearOnEscape*/}
+                                            {/*        disablePortal*/}
+                                            {/*        id="combo-box-demo"*/}
+                                            {/*        ListboxProps={{*/}
+                                            {/*            sx: {fontFamily: "__fonts_2f4189,__fonts_Fallback_2f4189", fontSize: "0.8rem"},*/}
+                                            {/*        }}*/}
+                                            {/*        options={paymentMethodList}*/}
+                                            {/*        getOptionLabel={(option) => option.name}*/}
+                                            {/*        value={paymentMethod}*/}
+                                            {/*        onChange={(event, newValue) => {*/}
+                                            {/*            setPaymentMethod(newValue)*/}
+                                            {/*            formik.setFieldValue("paymentMethod", newValue?.name)*/}
+                                            {/*        }}*/}
+                                            {/*        renderInput={(params) =>*/}
+                                            {/*            <TextField*/}
+                                            {/*                error={formik.touched.paymentMethod && Boolean(formik.errors.paymentMethod)}*/}
+                                            {/*                helperText={formik.touched.paymentMethod && formik.errors.paymentMethod}*/}
+                                            {/*                {...params}*/}
+                                            {/*                InputProps={{*/}
+                                            {/*                    ...params.InputProps,*/}
+                                            {/*                    style: {fontFamily: "__fonts_2f4189,__fonts_Fallback_2f4189", fontSize: "0.8rem"},*/}
+                                            {/*                    endAdornment:(*/}
+                                            {/*                        <React.Fragment>*/}
+                                            {/*                            {isPaymentMethodLoading ? <CircularProgress color="inherit" size={20} /> : null}*/}
+                                            {/*                            {params.InputProps.endAdornment}*/}
+                                            {/*                        </React.Fragment>*/}
+                                            {/*                    )*/}
+                                            {/*                }}*/}
+                                            {/*                placeholder="انواع شیوه پرداخت"*/}
+                                            {/*            />}*/}
+                                            {/*    />*/}
+                                            {/*</div>*/}
+                                        </div>))
+                                    }
                                 </div>
                                 <div className="flex justify-between gap-2 items-center border-t pt-4 border-gray50">
                                     <div className="w-[45%]">

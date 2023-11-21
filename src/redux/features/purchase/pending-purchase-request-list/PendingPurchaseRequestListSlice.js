@@ -10,6 +10,14 @@ export const PendingPurchaseRequestListSlice = apiSlice.injectEndpoints({
       }),
       providesTags: ["pending-purchase-request-list"],
     }),
+    savePendingPurchaseRequestList: builder.mutation({
+      query: (body) => ({
+        url: `bill/payment`,
+        method: "POST",
+        body: body,
+      }),
+      invalidatesTags: ["pending-purchase-request-list"],
+    }),
     updatePendingPurchaseRequestList: builder.mutation({
       query: (body) => ({
         url: `bill/bill`,
@@ -31,6 +39,8 @@ export const PendingPurchaseRequestListSlice = apiSlice.injectEndpoints({
 
 export const {
   useGetAllPendingPurchaseRequestListQuery,
+  useSavePendingPurchaseRequestListMutation,
   useUpdatePendingPurchaseRequestListMutation,
   useDeletePendingPurchaseRequestListMutation,
 } = PendingPurchaseRequestListSlice;
+
