@@ -65,8 +65,8 @@ const AntSwitch = styled(Switch)(({ theme }) => ({
 }));
 
 export default function FilterDialog(props) {
-    const [dateFrom,setDateFrom] = useState("")
-    const [dateTo,setDateTo] = useState("")
+    const [fromDate,setfromDate] = useState("")
+    const [toDate,settoDate] = useState("")
 
     const [product,setProduct] = useState(null)
     const [openProductList,setOpenProductList] = useState(false)
@@ -77,37 +77,37 @@ export default function FilterDialog(props) {
         }
     },[openProductList])
 
-    const handleDateFromInput = (value) => {
+    const handlefromDateInput = (value) => {
         if(value){
-            setDateFrom(value)
+            setfromDate(value)
             let month = value?.month < 10 ? ('0' + value?.month) : value?.month;
             let day = value?.day < 10 ? ('0' + value?.day) : value?.day;
             let convertDate = value?.year + '/' + month + '/' + day;
-            formik.setFieldValue("dateFrom", convertDate)
+            formik.setFieldValue("fromDate", convertDate)
         }else {
-            formik.setFieldValue("dateFrom", "")
+            formik.setFieldValue("fromDate", "")
         }
     }
 
-    const handleDateToInput = (value) => {
+    const handletoDateInput = (value) => {
         if(value){
-            setDateTo(value)
+            settoDate(value)
             let month = value?.month < 10 ? ('0' + value?.month) : value?.month;
             let day = value?.day < 10 ? ('0' + value?.day) : value?.day;
             let convertDate = value?.year + '/' + month + '/' + day;
-            formik.setFieldValue("dateTo", convertDate)
+            formik.setFieldValue("toDate", convertDate)
         }else {
-            formik.setFieldValue("dateTo", "")
+            formik.setFieldValue("toDate", "")
         }
     }
 
     const handleURLSearchParams = (values) =>{
         let params = new URLSearchParams()
-        if(values.dateFrom){
-            params.set("fromDate",values.dateFrom)
+        if(values.fromDate){
+            params.set("fromDate",values.fromDate)
         }
-        if(values.dateTo){
-            params.set("toDate",values.dateTo)
+        if(values.toDate){
+            params.set("toDate",values.toDate)
         }
         if(values.productId){
             params.set("productId",values.productId)
@@ -123,15 +123,15 @@ export default function FilterDialog(props) {
 
     const handleResetForm = () =>{
         formik.resetForm()
-        setDateTo("")
-        setDateFrom("")
+        settoDate("")
+        setfromDate("")
         setProduct(null)
     }
     const formik = useFormik({
 
         initialValues: {
-            dateFrom: "",
-            dateTo: "",
+            fromDate: "",
+            toDate: "",
             productId:"",
             status:"",
             priority: "",
@@ -184,9 +184,9 @@ export default function FilterDialog(props) {
                                                 width: "100%"
                                             }}
                                             inputClass={`border border-[#D9D9D9] placeholder-neutral-300 text-gray-900 text-[0.8rem] rounded focus:ring-[#3B82F67F] focus:border-[#3B82F67F] block w-full px-3 py-4`}
-                                            value={formik.values.dateFrom}
+                                            value={formik.values.fromDate}
                                             onChange={(value) => {
-                                              handleDateFromInput(value)
+                                              handlefromDateInput(value)
                                             }}
                                             mapDays={({date}) => {
                                                 let props = {}
@@ -214,8 +214,8 @@ export default function FilterDialog(props) {
                                             locale={persian_fa}>
                                             <button className="px-2 pb-4" onClick={(e) => {
                                                 e.preventDefault()
-                                                setDateFrom("")
-                                                formik.setFieldValue("dateFrom","")
+                                                setfromDate("")
+                                                formik.setFieldValue("fromDate","")
                                             }}>
                                                 ریست
                                             </button>
@@ -232,9 +232,9 @@ export default function FilterDialog(props) {
                                                 width: "100%"
                                             }}
                                             inputClass={`border border-[#D9D9D9] placeholder-neutral-300 text-gray-900 text-[0.8rem] rounded focus:ring-[#3B82F67F] focus:border-[#3B82F67F] block w-full px-3 py-4`}
-                                            value={formik.values.dateTo}
+                                            value={formik.values.toDate}
                                             onChange={(value) => {
-                                                handleDateToInput(value)
+                                                handletoDateInput(value)
                                             }}
                                             mapDays={({date}) => {
                                                 let props = {}
@@ -262,8 +262,8 @@ export default function FilterDialog(props) {
                                             locale={persian_fa}>
                                             <button className="px-2 pb-4" onClick={(e) => {
                                                 e.preventDefault()
-                                                setDateTo("")
-                                                formik.setFieldValue("dateTo","")}}>
+                                                settoDate("")
+                                                formik.setFieldValue("toDate","")}}>
                                                 ریست
                                             </button>
                                         </DatePicker>
@@ -323,7 +323,7 @@ export default function FilterDialog(props) {
                                             sx={{fontFamily: "__fonts_2f4189,__fonts_Fallback_2f4189", fontSize: "0.8rem"}}
                                             onChange={formik.handleChange}
                                         >
-                                            <MenuItem value="" sx={{fontFamily: "__fonts_2f4189,__fonts_Fallback_2f4189", fontSize: "0.8rem"}}></MenuItem>
+                                            <MenuItem value="" sx={{fontFamily: "__fonts_2f4189,__fonts_Fallback_2f4189", fontSize: "0.8rem"}}>همه وضعیت ها</MenuItem>
                                             <MenuItem value="IN_PROGRESS" sx={{fontFamily: "__fonts_2f4189,__fonts_Fallback_2f4189", fontSize: "0.8rem"}}>در حال بررسی</MenuItem>
                                             <MenuItem value="DONE" sx={{fontFamily: "__fonts_2f4189,__fonts_Fallback_2f4189", fontSize: "0.8rem"}}>تایید شده</MenuItem>
                                             <MenuItem value="FAIL" sx={{fontFamily: "__fonts_2f4189,__fonts_Fallback_2f4189", fontSize: "0.8rem"}}>رد شده</MenuItem>

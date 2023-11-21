@@ -63,8 +63,8 @@ const AntSwitch = styled(Switch)(({ theme }) => ({
 }));
 
 export default function FilterDialog(props) {
-    const [fromRequestDate,setFromRequestDate] = useState("")
-    const [toRequestDate,setToRequestDate] = useState("")
+    const [fromDate,setfromDate] = useState("")
+    const [toDate,settoDate] = useState("")
     
     const [subOrganization,setSubOrganization] = useState(null)
     const [openSubOrganizationList,setOpenSubOrganizationList] = useState(false)
@@ -95,44 +95,44 @@ export default function FilterDialog(props) {
         }
     },[openProductList])
 
-    const handleFromRequestDateInput = (value) => {
+    const handlefromDateInput = (value) => {
         if(value){
-            setFromRequestDate(value)
+            setfromDate(value)
             let month = value?.month < 10 ? ('0' + value?.month) : value?.month;
             let day = value?.day < 10 ? ('0' + value?.day) : value?.day;
             let convertDateRequest = value?.year + '/' + month + '/' + day;
-            formik.setFieldValue("fromRequestDate", convertDateRequest)
+            formik.setFieldValue("fromDate", convertDateRequest)
         }else {
-            formik.setFieldValue("fromRequestDate", "")
+            formik.setFieldValue("fromDate", "")
         }
     }
    
 
-    const handleToRequestDateInput = (value) => {
+    const handletoDateInput = (value) => {
         if(value){
-            setToRequestDate(value)
+            settoDate(value)
             let month = value?.month < 10 ? ('0' + value?.month) : value?.month;
             let day = value?.day < 10 ? ('0' + value?.day) : value?.day;
             let convertDateRequest = value?.year + '/' + month + '/' + day;
-            formik.setFieldValue("toRequestDate", convertDateRequest)
+            formik.setFieldValue("toDate", convertDateRequest)
         }else {
-            formik.setFieldValue("toRequestDate", "")
+            formik.setFieldValue("toDate", "")
         }
     }
    
     const handleURLSearchParams = (values) =>{
         let params = new URLSearchParams()
-        if(values.fromRequestDate){
-            params.set("fromRequestDate",values.fromRequestDate)
+        if(values.fromDate){
+            params.set("fromDate",values.fromDate)
         }
-        if(values.toRequestDate){
-            params.set("toRequestDate",values.toRequestDate)
+        if(values.toDate){
+            params.set("toDate",values.toDate)
         }
         if(values.productId){
             params.set("productId",values.productId)
         }
         if(values.subOrganizationId){
-            params.set("suborganizationId",values.suborganizationId)
+            params.set("subOrganizationId",values.subOrganizationId)
         }
         
         return params
@@ -140,8 +140,8 @@ export default function FilterDialog(props) {
 
     const handleResetForm = () =>{
         formik.resetForm()
-        setToRequestDate("")
-        setFromRequestDate("")
+        settoDate("")
+        setfromDate("")
         
         setProduct(null)
         setSubOrganization(null)
@@ -149,15 +149,15 @@ export default function FilterDialog(props) {
     const formik = useFormik({
 
         initialValues: {
-            fromRequestDate: "",
-            toRequestDate: "",
+            fromDate: "",
+            toDate: "",
             productId:"",
             subOrganizationId:""
         },
 
         onSubmit: (values) => {
             let params = handleURLSearchParams(values)
-            handleResetForm()
+            
             props.setFilterItem(params.toString())
             props.handleCloseFilter()
         },
@@ -208,9 +208,9 @@ export default function FilterDialog(props) {
                                                 width: "100%"
                                             }}
                                             inputClass={`border border-[#D9D9D9] placeholder-neutral-300 text-gray-900 text-[0.8rem] rounded focus:ring-[#3B82F67F] focus:border-[#3B82F67F] block w-full px-3 py-4`}
-                                            value={formik.values.fromRequestDate}
+                                            value={formik.values.fromDate}
                                             onChange={(value) => {
-                                              handleFromRequestDateInput(value)
+                                              handlefromDateInput(value)
                                             }}
                                             mapDays={({date}) => {
                                                 let props = {}
@@ -238,8 +238,8 @@ export default function FilterDialog(props) {
                                             locale={persian_fa}>
                                             <button className="px-2 pb-4" onClick={(e) => {
                                                 e.preventDefault()
-                                                setFromRequestDate("")
-                                                formik.setFieldValue("fromRequestDate","")
+                                                setfromDate("")
+                                                formik.setFieldValue("fromDate","")
                                             }}>
                                                 ریست
                                             </button>
@@ -256,9 +256,9 @@ export default function FilterDialog(props) {
                                                 width: "100%"
                                             }}
                                             inputClass={`border border-[#D9D9D9] placeholder-neutral-300 text-gray-900 text-[0.8rem] rounded focus:ring-[#3B82F67F] focus:border-[#3B82F67F] block w-full px-3 py-4`}
-                                            value={formik.values.toRequestDate}
+                                            value={formik.values.toDate}
                                             onChange={(value) => {
-                                                handleToRequestDateInput(value)
+                                                handletoDateInput(value)
                                             }}
                                             mapDays={({date}) => {
                                                 let props = {}
@@ -286,8 +286,8 @@ export default function FilterDialog(props) {
                                             locale={persian_fa}>
                                             <button className="px-2 pb-4" onClick={(e) => {
                                                 e.preventDefault()
-                                                setToRequestDate("")
-                                                formik.setFieldValue("toRequestDate","")}}>
+                                                settoDate("")
+                                                formik.setFieldValue("toDate","")}}>
                                                 ریست
                                             </button>
                                         </DatePicker>
@@ -337,48 +337,47 @@ export default function FilterDialog(props) {
                                 </div>
                                 <div className=" flex flex-col">
                                 <Autocomplete
-                                            open={openSubOrganizationList}
-                                            onOpen={() => {
-                                                setOpenSubOrganizationList(true);
-                                            }}
-                                            onClose={() => {
-                                                setOpenSubOrganizationList(false);
-                                            }}
-                                            fullWidth
-                                            clearOnEscape
-                                            disablePortal
-                                            id="combo-box-demo"
-                                            ListboxProps={{
-                                                sx: {fontFamily: "__fonts_2f4189,__fonts_Fallback_2f4189", fontSize: "0.8rem"},
-                                            }}
-                                            options={subOrganizationList}
-                                            getOptionLabel={(option) => option.name}
-                                            value={subOrganization}
-                                            onChange={(event, newValue) => {
-                                                setSubOrganization(newValue)
-                                                formik.setFieldValue("subOrganizationId", newValue?.id)
-                                                formik.setFieldValue("sourceSubOrganizationName", newValue?.name)
-                                            }}
-                                            renderInput={(params) =>
-                                                <TextField
-                                                    error={formik.touched.subOrganizationId && Boolean(formik.errors.subOrganizationId)}
-                                                    helperText={formik.touched.subOrganizationId && formik.errors.subOrganizationId}
-                                                    {...params}
-                                                    InputProps={{
-                                                        ...params.InputProps,
-                                                        style: {fontFamily: "__fonts_2f4189,__fonts_Fallback_2f4189", fontSize: "0.8rem"},
-                                                        endAdornment: (
-                                                            <React.Fragment>
-                                                                {isSubOrganizationLoading ?
-                                                                    <CircularProgress color="inherit"
-                                                                                      size={20}/> : null}
-                                                                {params.InputProps.endAdornment}
-                                                            </React.Fragment>
-                                                        )
-                                                    }}
-                                                    placeholder="دپارتمان"
-                                                />}
-                                        />
+                                        open={openSubOrganizationList}
+                                        onOpen={() => {
+                                            setOpenSubOrganizationList(true);
+                                        }}
+                                        onClose={() => {
+                                            setOpenSubOrganizationList(false);
+                                        }}
+                                        fullWidth
+                                        clearOnEscape
+                                        disablePortal
+                                        id="combo-box-demo"
+                                        ListboxProps={{
+                                            sx: {fontFamily: "__fonts_2f4189,__fonts_Fallback_2f4189", fontSize: "0.8rem"},
+                                        }}
+                                        options={subOrganizationList}
+                                        getOptionLabel={(option) => option.name}
+                                        value={subOrganization}
+                                        onChange={(event, newValue) => {
+                                            setSubOrganization(newValue)
+                                            formik.setFieldValue("subOrganizationId", newValue?.id)
+                                        }}
+                                        renderInput={(params) =>
+                                            <TextField
+                                                error={formik.touched.subOrganizationId && Boolean(formik.errors.subOrganizationId)}
+                                                helperText={formik.touched.subOrganizationId && formik.errors.subOrganizationId}
+                                                {...params}
+                                                InputProps={{
+                                                    ...params.InputProps,
+                                                    style: {fontFamily: "__fonts_2f4189,__fonts_Fallback_2f4189", fontSize: "0.8rem"},
+                                                    endAdornment: (
+                                                        <React.Fragment>
+                                                            {isSubOrganizationLoading ?
+                                                                <CircularProgress color="inherit"
+                                                                                  size={20}/> : null}
+                                                            {params.InputProps.endAdornment}
+                                                        </React.Fragment>
+                                                    )
+                                                }}
+                                                placeholder="دپارتمان"
+                                            />}
+                                    />
                                 </div>
                                 
                                 {/*

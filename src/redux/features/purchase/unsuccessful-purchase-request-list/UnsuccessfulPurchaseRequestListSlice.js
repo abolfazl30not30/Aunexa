@@ -6,7 +6,7 @@ export const UnsuccessfulPurchaseRequestListSlice = apiSlice.injectEndpoints({
       query: ({ page, sort, filterItem }) => ({
         url: `bill/bill-cycle/filter?status=FAIL&page=${
           page - 1
-        }&size=10&sort=confirmationDate,${sort}&sort=confirmationTime,${sort}&${filterItem}`,
+        }&size=10&sort=requestDate,${sort}&sort=requestTime,${sort}&${filterItem}`,
       }),
       providesTags: ["unsuccessful-purchase-request-list"],
     }),

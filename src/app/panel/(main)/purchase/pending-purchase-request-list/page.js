@@ -357,9 +357,6 @@ export default function page() {
                       onChange={(e) => {
                         handleChangeAllCheckbox(e);
                       }}
-                      style={{
-                        color: "#12D377",
-                      }}
                       inputProps={{ "aria-label": "controlled" }}
                     />
                   </th>
@@ -425,9 +422,6 @@ export default function page() {
                             }
                             onClick={(e) => {
                               handleChangeCheckbox(e, data.id);
-                            }}
-                            style={{
-                              color: "#12D377",
                             }}
                             inputProps={{ "aria-label": "controlled" }}
                           />

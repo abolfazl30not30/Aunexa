@@ -313,7 +313,7 @@ export default function page() {
                         </td>
                         <td className=" space-x-2 px-2 py-4 md:px-6  text-gray70 whitespace-nowrap ">
                           <span>{data?.failureReason?.time}</span>
-                          <span>{data?.failureReason?.data}</span>
+                          <span>{data?.failureReason?.date}</span>
                         </td>
 
                         <td

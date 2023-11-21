@@ -163,7 +163,7 @@ export default function MoreInfoDialog(props) {
                                         </div>
                                     </div>
                                 </div>
-                                <div className="flex flex-col">
+                                {props.moreInfoTarget?.billCycle?.description?(<div className="flex flex-col">
                                     <div className="mb-2">
                                         <span className="text-[0.9rem] text-gray70 ">   توضیحات </span>
                                     </div>
@@ -172,7 +172,7 @@ export default function MoreInfoDialog(props) {
                                             <span className="text-[#29262A] text-[0.9rem]">{props.moreInfoTarget?.billCycle?.description}</span>
                                         </div>
                                     </div>
-                                </div>
+                                </div>):null}
                                
                             </div>
                         </div>
@@ -265,14 +265,14 @@ export default function MoreInfoDialog(props) {
                                         {props.moreInfoTarget?.confirmerName}
                                     </span>
                                 </div>
-                                <div>
+                                {props.moreInfoTarget?.billCycle?.description?(<div>
                                     <span className="ml-1 text-gray9F text-[0.8rem]">
                                         توضیحات :
                                     </span>
                                     <span className="text-[#29262A] text-[0.8rem]">
                                         {props.moreInfoTarget?.billCycle?.description}
                                     </span>
-                                </div>
+                                </div>):null}
                             </div>
                         </div>
                         <div className="md:hidden flex  justify-center mt-5 gap-3">

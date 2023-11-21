@@ -140,7 +140,7 @@ export default function MoreInfoDialog(props) {
                                     </div>
                                 </div>
                                
-                                <div className="flex flex-col">
+                               {props.moreInfoTarget?.description?( <div className="flex flex-col">
                                     <div className="mb-2">
                                         <span className="text-[0.9rem] text-gray70 ">   توضیحات </span>
                                     </div>
@@ -149,7 +149,7 @@ export default function MoreInfoDialog(props) {
                                             <span className="text-[#29262A] text-[0.9rem]">{props.moreInfoTarget?.description}</span>
                                         </div>
                                     </div>
-                                </div>
+                                </div>):null}
                                 
                                     <div className="flex flex-col">
                                     <div className="mb-2">
@@ -234,14 +234,14 @@ export default function MoreInfoDialog(props) {
                                     </span>
                                 </div>
                                 
-                                <div>
+                                {props.moreInfoTarget?.description?(<div>
                                     <span className="ml-1 text-gray9F text-[0.8rem]">
                                         توضیحات :
                                     </span>
                                     <span className="text-[#29262A] text-[0.8rem]">
                                         {props.moreInfoTarget?.description}
                                     </span>
-                                </div>
+                                </div>):null}
                                 
                                     <div>
                                         <span className="ml-1 text-gray9F text-[0.8rem]">

@@ -156,8 +156,6 @@ export default function FilterDialog(props) {
         }
         if(values.priority === true){
             params.set("priority","true")
-        }else{
-            params.set("priority","false")
         }
         return params
     }
@@ -186,7 +184,7 @@ export default function FilterDialog(props) {
 
         onSubmit: (values) => {
             let params = handleURLSearchParams(values)
-            handleResetForm()
+            
             props.setFilterItem(params.toString())
             props.handleCloseFilter()
         },
