@@ -38,14 +38,14 @@ export default function MoreInfoDialog(props) {
                                     <div className="mb-2">
                                         <span className="text-[0.9rem] text-gray70 ">نام ماده</span>
                                     </div>
-                                    <div className="border border-[#D9D9D9]  flex justify-between px-4">
+                                    <div className="border border-[#D9D9D9]  flex justify-evenly px-4">
                                         <div className="p-2">
                                             <span className="text-[#29262A] text-[0.9rem]">{props.moreInfoTarget?.productName}</span>
                                         </div>
                                         <div className="border border-[#D9D9D9]">
                                         </div>
                                         <div className="p-2">
-                                            <span className="text-[#29262A] text-[0.9rem]">{props.moreInfoTarget?.unit} {props.moreInfoTarget?.value}</span>
+                                            <span className="text-[#29262A] text-[0.9rem]">{props.moreInfoTarget?.value}{props.moreInfoTarget?.unit} </span>
                                         </div>
                                     </div>
                                 </div>
@@ -67,7 +67,7 @@ export default function MoreInfoDialog(props) {
                                     <div className="mb-2">
                                         <span className="text-[0.9rem] text-gray70 ">نوع وسیله</span>
                                     </div>
-                                    <div className="border border-[#D9D9D9]  flex justify-between px-4">
+                                    <div className="border border-[#D9D9D9]  flex justify-evenly px-4">
                                         <div className="p-2">
                                             <span className="text-[#29262A] text-[0.9rem]">{props.moreInfoTarget?.machineType}</span>
                                         </div>
@@ -110,7 +110,7 @@ export default function MoreInfoDialog(props) {
                                     </div>
                                     <div className="border border-[#D9D9D9]  flex justify-start px-4">
                                         <div className="p-2">
-                                            <span className="text-[#29262A] text-[0.9rem]">{props.moreInfoTarget?.time} {props.moreInfoTarget?.date}</span>
+                                            <span className="text-[#29262A] text-[0.9rem] "><span>{props.moreInfoTarget?.time}</span> <span className="pr-2">{props.moreInfoTarget?.date}</span></span>
                                         </div>
                                     </div>
                                 </div>
@@ -121,9 +121,10 @@ export default function MoreInfoDialog(props) {
                                     <div className="border border-[#D9D9D9]  flex justify-start px-4">
                                         <div className="p-2">
                                             <span className="text-[#29262A] text-[0.9rem]">
-                                                {props.moreInfoTarget?.status === "CONFIRMED" ? (<span className="text-[0.8rem] bg-greenBg text-greenText py-1 px-2 rounded-xl">تاييد شده</span>) : (
-                                                    props.moreInfoTarget?.status === "UNKNOWN" ? (<span className="text-[0.8rem] bg-[#EBEBEB] text-gray70 py-1 px-2 rounded-xl">نامعلوم</span>) : (
-                                                        <span className="text-[0.8rem] bg-orangeBg text-orangeText py-1 px-2 rounded-xl">مشکل دار</span>
+                                            {props.moreInfoTarget?.status === "CONFIRMED" ? (<span className="text-[0.8rem] bg-greenBg text-greenText py-1 px-2 rounded-xl">تاييد شده</span>) : (
+                                                    props.moreInfoTarget?.status === "TROUBLED" ? (<span className="text-[0.8rem] bg-orangeBg text-orangeText py-1 px-2 rounded-xl">مشکل دار</span>
+                                                   ) : (
+                                                    <span className="text-[0.8rem] bg-[#EBEBEB] text-gray70 py-1 px-2 rounded-xl">نامعلوم</span>
                                                     )
                                                 )}
                                             </span>
@@ -161,7 +162,7 @@ export default function MoreInfoDialog(props) {
                                         مقدار :
                                     </span>
                                     <span className="text-[#29262A] text-[0.8rem]">
-                                        {props.moreInfoTarget?.unit} {props.moreInfoTarget?.value}
+                                    {props.moreInfoTarget?.value} {props.moreInfoTarget?.unit} 
                                     </span>
                                 </div>
                                 <div>
@@ -213,7 +214,7 @@ export default function MoreInfoDialog(props) {
                                         تاریخ :
                                     </span>
                                     <span className="text-[#29262A] text-[0.8rem]">
-                                        {props.moreInfoTarget?.time} {props.moreInfoTarget?.date}
+                                    <span>{props.moreInfoTarget?.time}</span> <span className="pr-2">{props.moreInfoTarget?.date}</span>
                                     </span>
                                 </div>
                                 <div>
@@ -221,21 +222,22 @@ export default function MoreInfoDialog(props) {
                                         وضعیت :
                                     </span>
                                     <span className="text-[#29262A] text-[0.8rem]">
-                                        {props.moreInfoTarget?.status === "CONFIRMED" ? (<span className="text-[0.8rem] bg-greenBg text-greenText py-1 px-2 rounded-xl">تاييد شده</span>) : (
-                                            props.moreInfoTarget?.status === "UNKNOWN" ? (<span className="text-[0.8rem] bg-[#EBEBEB] text-gray70 py-1 px-2 rounded-xl">نامعلوم</span>) : (
-                                                <span className="text-[0.8rem] bg-orangeBg text-orangeText py-1 px-2 rounded-xl">مشکل دار</span>
-                                            )
-                                        )}
+                                    {props.moreInfoTarget?.status === "CONFIRMED" ? (<span className="text-[0.8rem] bg-greenBg text-greenText py-1 px-2 rounded-xl">تاييد شده</span>) : (
+                                                    props.moreInfoTarget?.status === "TROUBLED" ? (<span className="text-[0.8rem] bg-orangeBg text-orangeText py-1 px-2 rounded-xl">مشکل دار</span>
+                                                   ) : (
+                                                    <span className="text-[0.8rem] bg-[#EBEBEB] text-gray70 py-1 px-2 rounded-xl">نامعلوم</span>
+                                                    )
+                                                )}
                                     </span>
                                 </div>
-                                <div>
+                                {props.moreInfoTarget?.description&&<div>
                                     <span className="ml-1 text-gray9F text-[0.8rem]">
                                         توضیحات :
                                     </span>
                                     <span className="text-[#29262A] text-[0.8rem]">
-                                        {props.moreInfoTarget.description}
+                                        {props.moreInfoTarget?.description}
                                     </span>
-                                </div>
+                                </div>}
                             </div>
                         </div>
                         <div className="md:hidden flex  justify-center mt-5 gap-3">

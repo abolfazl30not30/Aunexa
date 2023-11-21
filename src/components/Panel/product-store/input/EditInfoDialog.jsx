@@ -209,7 +209,7 @@ export default function EditInfoDialog(props) {
         validationSchema: schema,
 
         onSubmit: async (product,helpers) => {
-            let updateProduct = {...product}
+            let updateProduct = {...product,type:"PRODUCT"}
 
             if(product.machineTag !== ""){
                 const res = await getVehicleByTag(product.machineTag)

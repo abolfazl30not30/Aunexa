@@ -184,6 +184,7 @@ export default function EditInfoDialog(props) {
             value: "",
             unit: "",
             status:"UNKNOWN",
+            
             expirationDate: "",
             machineTag: "",
             machineCode: "",
@@ -197,7 +198,7 @@ export default function EditInfoDialog(props) {
         validationSchema: schema,
 
         onSubmit: async (product,helpers) => {
-            let updateProduct = {...product}
+            let updateProduct = {...product,type:"PRIMARY"}
 
             if(product.machineTag !== ""){
                 const res = await getVehicleByTag(product.machineTag)

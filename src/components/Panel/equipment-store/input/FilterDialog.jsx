@@ -120,7 +120,7 @@ export default function FilterDialog(props) {
             <Dialog
                 fullWidth={true}
                 open={props.openFilter}
-                onClose={()=>{props.handleCloseFilter();}}
+                onClose={()=>{props.handleCloseFilter();handleResetForm()}}
                 keepMounted
                 aria-describedby="alert-dialog-slide-description"
                 PaperProps={{
@@ -131,7 +131,7 @@ export default function FilterDialog(props) {
                 <DialogContent>
                     <DialogContentText style={{ fontFamily: "__fonts_2f4189,__fonts_Fallback_2f4189" }}>
                         <div className="flex justify-end">
-                            <button onClick={()=>{props.handleCloseFilter();}}>
+                            <button onClick={()=>{props.handleCloseFilter();handleResetForm()}}>
                                 <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 14 14" fill="none">
                                     <path d="M13 1L1 13M1 1L13 13" stroke="black" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
                                 </svg>
@@ -338,7 +338,7 @@ export default function FilterDialog(props) {
                                             sx={{fontFamily: "__fonts_2f4189,__fonts_Fallback_2f4189", fontSize: "0.8rem"}}
                                             onChange={formik.handleChange}
                                         >
-                                            <MenuItem value="" sx={{fontFamily: "__fonts_2f4189,__fonts_Fallback_2f4189", fontSize: "0.8rem"}}></MenuItem>
+                                            <MenuItem value="" sx={{fontFamily: "__fonts_2f4189,__fonts_Fallback_2f4189", fontSize: "0.8rem"}}>همه وضعیت ها</MenuItem>
                                             <MenuItem value="UNKNOWN" sx={{fontFamily: "__fonts_2f4189,__fonts_Fallback_2f4189", fontSize: "0.8rem"}}>نامعلوم</MenuItem>
                                             <MenuItem value="CONFIRMED" sx={{fontFamily: "__fonts_2f4189,__fonts_Fallback_2f4189", fontSize: "0.8rem"}}>تایید شده</MenuItem>
                                             <MenuItem value="TROUBLED" sx={{fontFamily: "__fonts_2f4189,__fonts_Fallback_2f4189", fontSize: "0.8rem"}}>مشکل دار</MenuItem>
