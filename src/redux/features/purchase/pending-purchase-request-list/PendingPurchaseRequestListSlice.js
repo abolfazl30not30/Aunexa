@@ -4,7 +4,7 @@ export const PendingPurchaseRequestListSlice = apiSlice.injectEndpoints({
   endpoints: (builder) => ({
     getAllPendingPurchaseRequestList: builder.query({
       query: ({ page, sort, filterItem }) => ({
-        url: `bill/bill/filter?page=${
+        url: `bill/bill/filter?status=IN_PROGRESS&page=${
           page - 1
         }&size=10&sort=confirmationDate,${sort}&sort=confirmationTime,${sort}&${filterItem}`,
       }),
@@ -43,4 +43,3 @@ export const {
   useUpdatePendingPurchaseRequestListMutation,
   useDeletePendingPurchaseRequestListMutation,
 } = PendingPurchaseRequestListSlice;
-

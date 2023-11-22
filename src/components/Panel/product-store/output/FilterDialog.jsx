@@ -84,8 +84,8 @@ export default function FilterDialog(props) {
         if(values.status){
             params.set("status",values.status)
         }
-        if(values.producer){
-            params.set("producer",values.producer)
+        if(values.buyer){
+            params.set("buyer",values.buyer)
         }
         return params
     }
@@ -104,7 +104,7 @@ export default function FilterDialog(props) {
             productId:"",
             machineId:"",
             status:"",
-            producer: "",
+            buyer: "",
         },
 
         onSubmit: (values) => {
@@ -350,14 +350,14 @@ export default function FilterDialog(props) {
                                         <TextField
                                             fullWidth
                                             type="text"
-                                            name="producer"
-                                            value={formik.values.producer}
+                                            name="buyer"
+                                            value={formik.values.buyer}
                                             onChange={formik.handleChange}
-                                            error={formik.touched.producer && Boolean(formik.errors.producer)}
-                                            helperText={formik.touched.producer && formik.errors.producer}
+                                            error={formik.touched.buyer && Boolean(formik.errors.buyer)}
+                                            helperText={formik.touched.buyer && formik.errors.buyer}
                                             inputProps={{style: {fontFamily: "__fonts_2f4189,__fonts_Fallback_2f4189", fontSize: "0.8rem"}}}
                                             InputLabelProps={{style: {fontFamily: "__fonts_2f4189,__fonts_Fallback_2f4189"}}}
-                                            placeholder="تامین کننده"
+                                            placeholder="خریدار"
                                         />
                                     </div>
 

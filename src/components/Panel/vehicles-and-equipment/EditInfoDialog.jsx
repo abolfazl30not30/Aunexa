@@ -373,6 +373,7 @@ export default function EditInfoDialog(props) {
                                                 <div>
                                                     <FormControl sx={{width: "58px", bgcolor: "#fff"}} size="small">
                                                         <Select
+                                                        sx={{fontFamily: "__fonts_2f4189,__fonts_Fallback_2f4189", fontSize: "0.8rem"}}
                                                             disabled={formik.values.code !== ""}
                                                             name="part3"
                                                             value={tag.part3}
@@ -381,7 +382,7 @@ export default function EditInfoDialog(props) {
                                                             id="demo-select-small">
                                                             {
                                                                 alphabeticalList.map((alpha)=>(
-                                                                    <MenuItem value={alpha.value}>{alpha.value}</MenuItem>
+                                                                    <MenuItem  sx={{fontFamily: "__fonts_2f4189,__fonts_Fallback_2f4189", fontSize: "0.8rem"}} value={alpha.value}>{alpha.value}</MenuItem>
                                                                 ))
                                                             }
                                                         </Select>

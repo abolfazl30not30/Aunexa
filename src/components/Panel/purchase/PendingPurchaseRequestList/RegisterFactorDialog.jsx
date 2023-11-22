@@ -110,7 +110,7 @@ export default function RegisterFactorDialog(props) {
             for(let bill of props.paymentList ){
                 let obj = {
                     paymentMethod:"",
-                    bill:bill
+                    bill:{id:bill.id}
                 }
                 paymentItems.push(obj)
             }
@@ -223,7 +223,7 @@ export default function RegisterFactorDialog(props) {
                                                         sx={{fontFamily: "__fonts_2f4189,__fonts_Fallback_2f4189", fontSize: "0.8rem"}}
                                                         onChange={(e)=>{handlePaymentMethod(e,item)}}
                                                     >
-                                                        <MenuItem value="" sx={{fontFamily: "__fonts_2f4189,__fonts_Fallback_2f4189", fontSize: "0.8rem"}}></MenuItem>
+                                                        
                                                         <MenuItem value="PARDAKHT_NAGHDI" sx={{fontFamily: "__fonts_2f4189,__fonts_Fallback_2f4189", fontSize: "0.8rem"}}>پرداخت نقدی در محل تحویل</MenuItem>
                                                         <MenuItem value="PARDAKHT_BANKI" sx={{fontFamily: "__fonts_2f4189,__fonts_Fallback_2f4189", fontSize: "0.8rem"}}>پرداخت با کارت بانکی در محل تحویل</MenuItem>
                                                         <MenuItem value="PARDAKHT_INTERNETI" sx={{fontFamily: "__fonts_2f4189,__fonts_Fallback_2f4189", fontSize: "0.8rem"}}>پرداخت از طریق درگاه اینترنتی</MenuItem>

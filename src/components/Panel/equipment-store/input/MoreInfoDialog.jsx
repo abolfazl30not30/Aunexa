@@ -164,14 +164,15 @@ export default function MoreInfoDialog(props) {
                                     {props.moreInfoTarget?.value}{props.moreInfoTarget?.unit} 
                                     </span>
                                 </div>
-                                <div>
+                                {props.moreInfoTarget?.expirationDate &&(
+                                    <div>
                                     <span className="ml-1 text-gray9F text-[0.8rem]">
                                         تاریخ انقضا :
                                     </span>
                                     <span className="text-[#29262A] text-[0.8rem]">
                                         {props.moreInfoTarget.expirationDate}
                                     </span>
-                                </div>
+                                </div>)}
                                 <div>
                                     <span className="ml-1 text-gray9F text-[0.8rem]">
                                         نوع وسیله نقلیه :
@@ -180,6 +181,21 @@ export default function MoreInfoDialog(props) {
                                         {props.moreInfoTarget?.machineType}
                                     </span>
                                 </div>
+                                {props.moreInfoTarget?.machineCode&&
+                                <div>
+                                    <span className="ml-1 text-gray9F text-[0.8rem]">
+                                        کد وسیله نقلیه :
+                                    </span>
+                                    <span className="text-[#29262A] text-[0.8rem]">
+                                        {
+                                            props.moreInfoTarget?.machineTag === "" ? (props.moreInfoTarget?.machineCode) : (
+                                                props.moreInfoTarget?.machineTag.slice(2, 5) + "-" + props.moreInfoTarget?.machineTag.slice(5, 7) + " " + props.moreInfoTarget?.machineTag.slice(7, 8) + " " + props.moreInfoTarget?.machineTag.slice(0, 2)
+                                            )
+                                        }
+                                    </span>
+                                </div>
+                                }
+                                {props.moreInfoTarget?.machineTag&&
                                 <div>
                                     <span className="ml-1 text-gray9F text-[0.8rem]">
                                         پلاک وسیله نقلیه :
@@ -192,6 +208,7 @@ export default function MoreInfoDialog(props) {
                                         }
                                     </span>
                                 </div>
+                                }
                                 <div>
                                     <span className="ml-1 text-gray9F text-[0.8rem]">
                                         راننده :

@@ -26,7 +26,7 @@ export default function RejectionDialog(props) {
     const [submitData, { isLoading:isSubmitLoading ,error}] = useRejectPurchaseRequestListMutation()
 
     const schema = yup.object().shape({
-        description: yup.string().required("لطفا مقدار محصول را وارد کنید"),
+        description: yup.string().required("لطفا توضیحات رد درخواست  را وارد کنید"),
     });
 
 

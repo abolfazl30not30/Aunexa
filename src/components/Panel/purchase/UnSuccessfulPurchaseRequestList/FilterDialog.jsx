@@ -169,7 +169,7 @@ export default function FilterDialog(props) {
             <Dialog
                 fullWidth={true}
                 open={props.openFilter}
-                onClose={()=>{props.handleCloseFilter();handleResetForm()}}
+                onClose={()=>{props.handleCloseFilter();}}
                 keepMounted
                 aria-describedby="alert-dialog-slide-description"
                 PaperProps={{
@@ -180,7 +180,7 @@ export default function FilterDialog(props) {
                 <DialogContent>
                     <DialogContentText style={{ fontFamily: "__fonts_2f4189,__fonts_Fallback_2f4189" }}>
                         <div className="flex justify-end">
-                            <button onClick={()=>{props.handleCloseFilter(); handleResetForm()}}>
+                            <button onClick={()=>{props.handleCloseFilter(); }}>
                                 <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 14 14" fill="none">
                                     <path d="M13 1L1 13M1 1L13 13" stroke="black" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
                                 </svg>

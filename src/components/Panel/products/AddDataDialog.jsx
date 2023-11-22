@@ -146,11 +146,11 @@ export default function AddDataDialog(props) {
                 aria-describedby="alert-dialog-slide-description"
                 PaperProps={{
                     style: {
-                        fontFamily: "IRANYekan",
+                        fontFamily: "__fonts_2f4189,__fonts_Fallback_2f4189",
                     },
                 }}>
                 <DialogContent>
-                    <DialogContentText style={{fontFamily: "IRANYekan"}}>
+                    <DialogContentText  style={{fontFamily: "__fonts_2f4189,__fonts_Fallback_2f4189"}}>
                         <div className="flex justify-end">
                             <button onClick={()=>{props.handleCloseAddData();handleReset()}}>
                                 <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 14 14"
@@ -217,8 +217,8 @@ export default function AddDataDialog(props) {
                                         onChange={formik.handleChange}
                                         error={formik.touched.persianName && Boolean(formik.errors.persianName)}
                                         helperText={formik.touched.persianName && formik.errors.persianName}
-                                        inputProps={{style: {fontFamily: "IRANYekan", fontSize: "0.8rem"}}}
-                                        InputLabelProps={{style: {fontFamily: "IRANYekan"}}}/>
+                                        inputProps={{style: {fontFamily: "__fonts_2f4189,__fonts_Fallback_2f4189", fontSize: "0.8rem"}}}
+                                            InputLabelProps={{style: {fontFamily: "__fonts_2f4189,__fonts_Fallback_2f4189"}}}/>
                                 </div>
                                 <div>
                                     <TextField
@@ -230,8 +230,8 @@ export default function AddDataDialog(props) {
                                         onChange={formik.handleChange}
                                         error={formik.touched.englishName && Boolean(formik.errors.englishName)}
                                         helperText={formik.touched.englishName && formik.errors.englishName}
-                                        inputProps={{style: {fontFamily: "IRANYekan", fontSize: "0.8rem"}}}
-                                        InputLabelProps={{style: {fontFamily: "IRANYekan"}}}/>
+                                        inputProps={{style: {fontFamily: "__fonts_2f4189,__fonts_Fallback_2f4189", fontSize: "0.8rem"}}}
+                                            InputLabelProps={{style: {fontFamily: "__fonts_2f4189,__fonts_Fallback_2f4189"}}}/>
                                 </div>
                                 <div className={"flex flex-col md:flex-row gap-5 md:gap-1 justify-between"}>
                                     <div className="w-full md:w-1/2">
@@ -245,8 +245,8 @@ export default function AddDataDialog(props) {
                                             onChange={formik.handleChange}
                                             error={formik.touched.abbreviation && Boolean(formik.errors.abbreviation)}
                                             helperText={formik.touched.abbreviation && formik.errors.abbreviation}
-                                            inputProps={{style: {fontFamily: "IRANYekan", fontSize: "0.8rem"}}}
-                                            InputLabelProps={{style: {fontFamily: "IRANYekan"}}}/>
+                                            inputProps={{style: {fontFamily: "__fonts_2f4189,__fonts_Fallback_2f4189", fontSize: "0.8rem"}}}
+                                            InputLabelProps={{style: {fontFamily: "__fonts_2f4189,__fonts_Fallback_2f4189"}}}/>
                                     </div>
                                     <div className="w-full md:w-1/2">
                                         <TextField
@@ -258,25 +258,25 @@ export default function AddDataDialog(props) {
                                             onChange={formik.handleChange}
                                             error={formik.touched.code && Boolean(formik.errors.code)}
                                             helperText={formik.touched.code && formik.errors.code}
-                                            inputProps={{style: {fontFamily: "IRANYekan", fontSize: "0.8rem"}}}
-                                            InputLabelProps={{style: {fontFamily: "IRANYekan"}}}/>
+                                            inputProps={{style: {fontFamily: "__fonts_2f4189,__fonts_Fallback_2f4189", fontSize: "0.8rem"}}}
+                                            InputLabelProps={{style: {fontFamily: "__fonts_2f4189,__fonts_Fallback_2f4189"}}}/>
                                     </div>
                                 </div>
                                 <div>
                                     <FormControl fullWidth error={formik.touched.type && Boolean(formik.errors.type)}>
-                                        <InputLabel id="demo-simple-select-label" sx={{fontFamily: "IRANYekan", fontSize: "0.8rem",color:"#9F9F9F"}}>نوع محصول </InputLabel>
+                                        <InputLabel id="demo-simple-select-label" sx={{fontFamily: "__fonts_2f4189,__fonts_Fallback_2f4189", fontSize: "0.8rem",color:"#9F9F9F"}}>نوع محصول </InputLabel>
                                         <Select
                                             labelId="demo-simple-select-label"
                                             id="demo-simple-select"
                                             value={formik.values.type}
                                             name="type"
-                                            input={<OutlinedInput sx={{fontFamily: "IRANYekan", fontSize: "0.8rem"}} label="نوع محصول" />}
-                                            sx={{fontFamily: "IRANYekan", fontSize: "0.8rem"}}
+                                            input={<OutlinedInput sx={{fontFamily: "__fonts_2f4189,__fonts_Fallback_2f4189", fontSize: "0.8rem"}} label="نوع محصول" />}
+                                            sx={{fontFamily: "__fonts_2f4189,__fonts_Fallback_2f4189", fontSize: "0.8rem"}}
                                             onChange={formik.handleChange}>
-                                            <MenuItem value="PRIMARY" sx={{fontFamily: "IRANYekan", fontSize: "0.8rem"}}>ماده اولیه</MenuItem>
-                                            <MenuItem value="EQUIPMENT" sx={{fontFamily: "IRANYekan", fontSize: "0.8rem"}}>تجهیزات</MenuItem>
-                                            <MenuItem value="PRODUCED" sx={{fontFamily: "IRANYekan", fontSize: "0.8rem"}}>تولیدی</MenuItem>
-                                            <MenuItem value="OTHER" sx={{fontFamily: "IRANYekan", fontSize: "0.8rem"}}>سایر</MenuItem>
+                                            <MenuItem value="PRIMARY" sx={{fontFamily: "__fonts_2f4189,__fonts_Fallback_2f4189", fontSize: "0.8rem"}}>ماده اولیه</MenuItem>
+                                            <MenuItem value="EQUIPMENT" sx={{fontFamily: "__fonts_2f4189,__fonts_Fallback_2f4189", fontSize: "0.8rem"}}>تجهیزات</MenuItem>
+                                            <MenuItem value="PRODUCED" sx={{fontFamily: "__fonts_2f4189,__fonts_Fallback_2f4189", fontSize: "0.8rem"}}>تولیدی</MenuItem>
+                                            <MenuItem value="OTHER" sx={{fontFamily: "__fonts_2f4189,__fonts_Fallback_2f4189", fontSize: "0.8rem"}}>سایر</MenuItem>
                                         </Select>
                                     </FormControl>
                                 </div>
@@ -293,7 +293,7 @@ export default function AddDataDialog(props) {
                                         disablePortal
                                         id="combo-box-demo"
                                         ListboxProps={{
-                                            sx: {fontFamily: "IRANYekan", fontSize: "0.8rem"},
+                                            sx: {fontFamily: "__fonts_2f4189,__fonts_Fallback_2f4189", fontSize: "0.8rem"},
                                         }}
                                         options={unitList}
                                         getOptionLabel={(option) => option.persianName}
@@ -309,7 +309,7 @@ export default function AddDataDialog(props) {
                                                 helperText={formik.touched.defaultUnit && formik.errors.defaultUnit}
                                                 InputProps={{
                                                     ...params.InputProps,
-                                                    style: {fontFamily: "IRANYekan", fontSize: "0.8rem"}
+                                                    style: {fontFamily: "__fonts_2f4189,__fonts_Fallback_2f4189", fontSize: "0.8rem"},
                                                 }}
                                                 placeholder="واحد پیش فرض"
                                             />}/>

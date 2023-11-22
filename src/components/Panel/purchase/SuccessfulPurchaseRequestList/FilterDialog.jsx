@@ -135,7 +135,7 @@ export default function FilterDialog(props) {
             params.set("status",values.status)
         }
         if(values.subOrganizationId){
-            params.set("subOrganizationId",values,subOrganizationId)
+            params.set("subOrganizationId",values.subOrganizationId)
         }if(values.paymentMethod){
             params.set("paymentMethod",values.paymentMethod)
         }if(values.status){
@@ -165,7 +165,7 @@ export default function FilterDialog(props) {
 
         onSubmit: (values) => {
             let params = handleURLSearchParams(values)
-            handleResetForm()
+            
             props.setFilterItem(params.toString())
             props.handleCloseFilter()
         },
@@ -177,7 +177,7 @@ export default function FilterDialog(props) {
             <Dialog
                 fullWidth={true}
                 open={props.openFilter}
-                onClose={()=>{props.handleCloseFilter();handleResetForm()}}
+                onClose={()=>{props.handleCloseFilter();}}
                 keepMounted
                 aria-describedby="alert-dialog-slide-description"
                 PaperProps={{
@@ -188,7 +188,7 @@ export default function FilterDialog(props) {
                 <DialogContent>
                     <DialogContentText style={{ fontFamily: "__fonts_2f4189,__fonts_Fallback_2f4189" }}>
                         <div className="flex justify-end">
-                            <button onClick={()=>{props.handleCloseFilter(); handleResetForm()}}>
+                            <button onClick={()=>{props.handleCloseFilter(); }}>
                                 <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 14 14" fill="none">
                                     <path d="M13 1L1 13M1 1L13 13" stroke="black" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
                                 </svg>
@@ -365,7 +365,7 @@ export default function FilterDialog(props) {
                                             onChange={(event, newValue) => {
                                                 setSubOrganization(newValue)
                                                 formik.setFieldValue("subOrganizationId", newValue?.id)
-                                                formik.setFieldValue("sourceSubOrganizationName", newValue?.name)
+                                                
                                             }}
                                             renderInput={(params) =>
                                                 <TextField
@@ -389,46 +389,30 @@ export default function FilterDialog(props) {
                                         />
                                 </div>
                                 <div className=" flex flex-col">
-                                <Autocomplete
-                                        open={openPaymentMethodList}
-                                        onOpen={() => {
-                                            setOpenPaymentMethodList(true);
-                                        }}
-                                        onClose={() => {
-                                            setOpenPaymentMethodList(false);
-                                        }}
-                                        fullWidth
-                                        clearOnEscape
-                                        disablePortal
-                                        id="combo-box-demo"
-                                        ListboxProps={{
-                                            sx: {fontFamily: "__fonts_2f4189,__fonts_Fallback_2f4189", fontSize: "0.8rem"},
-                                        }}
-                                        options={paymentMethodList}
-                                        getOptionLabel={(option) => option.name}
-                                        value={paymentMethod}
-                                        onChange={(event, newValue) => {
-                                            setPaymentMethod(newValue)
-                                            formik.setFieldValue("paymentMethod", newValue?.name)
-                                        }}
-                                        renderInput={(params) =>
-                                            <TextField
-                                                error={formik.touched.paymentMethod && Boolean(formik.errors.paymentMethod)}
-                                                helperText={formik.touched.paymentMethod && formik.errors.paymentMethod}
-                                                {...params}
-                                                InputProps={{
-                                                    ...params.InputProps,
-                                                    style: {fontFamily: "__fonts_2f4189,__fonts_Fallback_2f4189", fontSize: "0.8rem"},
-                                                    endAdornment:(
-                                                        <React.Fragment>
-                                                            {isPaymentMethodLoading ? <CircularProgress color="inherit" size={20} /> : null}
-                                                            {params.InputProps.endAdornment}
-                                                        </React.Fragment>
-                                                    )
-                                                }}
-                                                placeholder="شیوه پرداخت"
-                                            />}
-                                    />
+                                <FormControl fullWidth >
+                                                    <InputLabel id="demo-simple-select-label" sx={{fontFamily: "__fonts_2f4189,__fonts_Fallback_2f4189", fontSize: "0.8rem",color:"#9F9F9F"}}>شیوه  پرداخت</InputLabel>
+                                                    <Select
+                                                        labelId="demo-simple-select-label"
+                                                        id="demo-simple-select"
+                                                        value={formik.values.paymentMethod}
+                                                        onChange={formik.handleChange}
+                                                       
+                                                        name="paymentMethod"
+                                                        input={<OutlinedInput sx={{fontFamily: "__fonts_2f4189,__fonts_Fallback_2f4189", fontSize: "0.8rem"}} label="شیوه پرداخت" />}
+                                                        sx={{fontFamily: "__fonts_2f4189,__fonts_Fallback_2f4189", fontSize: "0.8rem"}}
+                                                        
+                                                    >
+                                                        <MenuItem value="" sx={{fontFamily: "__fonts_2f4189,__fonts_Fallback_2f4189", fontSize: "0.8rem"}}>همه شیوه ها</MenuItem>
+                                                        <MenuItem value="PARDAKHT_NAGHDI" sx={{fontFamily: "__fonts_2f4189,__fonts_Fallback_2f4189", fontSize: "0.8rem"}}>پرداخت نقدی در محل تحویل</MenuItem>
+                                                        <MenuItem value="PARDAKHT_BANKI" sx={{fontFamily: "__fonts_2f4189,__fonts_Fallback_2f4189", fontSize: "0.8rem"}}>پرداخت با کارت بانکی در محل تحویل</MenuItem>
+                                                        <MenuItem value="PARDAKHT_INTERNETI" sx={{fontFamily: "__fonts_2f4189,__fonts_Fallback_2f4189", fontSize: "0.8rem"}}>پرداخت از طریق درگاه اینترنتی</MenuItem>
+                                                        <MenuItem value="CHEK_MODAT_DAR" sx={{fontFamily: "__fonts_2f4189,__fonts_Fallback_2f4189", fontSize: "0.8rem"}}>چک مدت دار</MenuItem>
+                                                        <MenuItem value="CHEK" sx={{fontFamily: "__fonts_2f4189,__fonts_Fallback_2f4189", fontSize: "0.8rem"}}>چک</MenuItem>
+                                                        <MenuItem value="AGHSATI" sx={{fontFamily: "__fonts_2f4189,__fonts_Fallback_2f4189", fontSize: "0.8rem"}}>اقساطی</MenuItem>
+                                                        <MenuItem value="ETEBARI" sx={{fontFamily: "__fonts_2f4189,__fonts_Fallback_2f4189", fontSize: "0.8rem"}}>اعتباری</MenuItem>
+                                                        <MenuItem value="SAYER" sx={{fontFamily: "__fonts_2f4189,__fonts_Fallback_2f4189", fontSize: "0.8rem"}}>سایر</MenuItem>
+                                                    </Select>
+                                                </FormControl>
                                     
                                 </div>
                                 <div className=" flex flex-col">

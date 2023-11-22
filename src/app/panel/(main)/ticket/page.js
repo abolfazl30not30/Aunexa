@@ -308,7 +308,9 @@ function Ticket() {
                                   className="hidden md:flex gap-2 md:px-10 px-2  py-4 justify-center text-gray70 whitespace-nowrap "
                                 >
                                   <Link
-                                    href={`/panel/ticket/chat-page/${data.id}`}
+                                    href={{
+                                      pathname: `/panel/ticket/chat-page/id=${data.id}&&status=${data.status}&&ticketNumber=${data.ticketNumber}`,
+                                    }}
                                     className="border border-1 border-solid border-[#6C8DFF] rounded p-[0.4rem] hover:bg-blue-100"
                                   >
                                     <svg
@@ -382,7 +384,7 @@ function Ticket() {
                                   className="hidden md:flex gap-2 md:px-10 px-2  py-4 justify-center text-gray70 whitespace-nowrap "
                                 >
                                   <Link
-                                    href={"/"}
+                                    href={`/panel/ticket/chat-page/id=${data.id}&&status=${data.status}&&ticketNumber=${data.ticketNumber}`}
                                     className="border border-1 border-solid border-[#6C8DFF] rounded p-[0.4rem] hover:bg-blue-100"
                                   >
                                     <svg

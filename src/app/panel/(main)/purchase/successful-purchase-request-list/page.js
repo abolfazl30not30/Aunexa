@@ -336,110 +336,89 @@ export default function page() {
                         </td>
                       </tr>
                     ))
-                  : inventoryData?.content?.map((data, index) => (
-                      <tr className="table-row border-b">
-                        <td className="hidden md:table-cell md:px-6 py-4 px-2  text-gray70 whitespace-nowrap ">
-                          {index + 1}
-                        </td>
-                        <td className="hidden md:table-cell px-2 md:px-6 py-4  text-gray70 whitespace-nowrap ">
-                          <span>{data?.receiptCode}</span>
-                        </td>
-                        <td className="px-6 py-4  text-gray70 whitespace-nowrap ">
-                          <span>
-                            {
-                              data?.paymentItems[index]?.bill?.billCycle
-                                ?.productName
-                            }
-                          </span>
-                        </td>
-                        <td className="px-2 md:px-6 py-4  text-gray70 whitespace-nowrap ">
-                          <span>
-                            {data?.paymentItems[index]?.quantity?.value}
-                          </span>
-                          <span>
-                            {data?.paymentItems[index]?.quantity?.unit}
-                          </span>
-                        </td>
-                        <td className=" space-x-2 px-2 py-4 md:px-6  text-gray70 whitespace-nowrap ">
-                          <span>
-                            {
-                              data?.paymentItems[index]?.bill?.billCycle
-                                ?.requestTime
-                            }
-                          </span>
-                          <span>
-                            {
-                              data?.paymentItems[index]?.bill?.billCycle
-                                ?.requestDate
-                            }
-                          </span>
-                        </td>
-                        <td className="px-6 py-4  text-gray70 whitespace-nowrap ">
-                          <span>
-                            {
-                              data?.paymentItems[index]?.bill?.billCycle
-                                ?.subOrganizationName
-                            }
-                          </span>
-                        </td>
-                        <td className="px-6 py-4  text-gray70 whitespace-nowrap ">
-                          <span>
-                            {/*data.status === "answered" ? (
-                                    <span className="text-[0.8rem] bg-greenBg text-greenText py-1 px-2 rounded-xl">
-                                        تایید شده
-                                    </span>
-                                  ) : data.status === "Initialize" ? (
-                                    <span className="text-[0.8rem] text-gray70 bg-[#EBEBEB]  py-1 px-2 rounded-xl">
-                                      در انتظار تایید
-                                    </span>
-                                  ) : data.status === "inProgress" ? (
-                                    <span className=" text-[0.8rem] bg-[#ffe9d4] text-[#e95a18] py-1 px-2 rounded-xl">
-                                        رد شده
-                                    </span>
-                                  ) : null*/}
-                          </span>
-                        </td>
-
-                        <td
-                          scope="row"
-                          className="hidden md:flex gap-2 px-6 py-4 justify-center text-gray70 whitespace-nowrap "
-                        >
-                          <button
-                            onClick={() => {
-                              handleOpenMoreInfo(data);
-                            }}
-                            className="border border-1 border-solid border-gray70 rounded p-[0.4rem] hover:bg-neutral-100"
+                  : inventoryData?.content?.map((data, index) =>
+                      data?.paymentItems?.map((item) => (
+                        <tr className="table-row border-b">
+                          <td className="hidden md:table-cell md:px-6 py-4 px-2  text-gray70 whitespace-nowrap ">
+                            {index + 1}
+                          </td>
+                          <td className="hidden md:table-cell px-2 md:px-6 py-4  text-gray70 whitespace-nowrap ">
+                            <span>{data?.receiptCode}</span>
+                          </td>
+                          <td className="px-6 py-4  text-gray70 whitespace-nowrap ">
+                            <span>{item?.bill?.billCycle?.productName}</span>
+                          </td>
+                          <td className="px-2 md:px-6 py-4  text-gray70 whitespace-nowrap ">
+                            <span>{item?.bill?.quantity?.value}</span>
+                            <span>{item?.bill?.quantity?.unit}</span>
+                          </td>
+                          <td className=" space-x-2 px-2 py-4 md:px-6  text-gray70 whitespace-nowrap ">
+                            <span>{item?.bill?.billCycle?.requestTime}</span>
+                            <span>{item?.bill?.billCycle?.requestDate}</span>
+                          </td>
+                          <td className="px-6 py-4  text-gray70 whitespace-nowrap ">
+                            <span>
+                              {item?.bill?.billCycle?.subOrganizationName}
+                            </span>
+                          </td>
+                          <td className="px-6 py-4  text-gray70 whitespace-nowrap ">
+                            <span>
+                              {data.status === "DONE" ? (
+                                <span className="text-[0.8rem] bg-greenBg text-greenText py-1 px-2 rounded-xl">
+                                  تایید شده
+                                </span>
+                              ) : data.status === "IN_PROGRESS" ? (
+                                <span className="text-[0.8rem] text-gray70 bg-[#EBEBEB]  py-1 px-2 rounded-xl">
+                                  در انتظار تایید
+                                </span>
+                              ) : data.status === "FAIL" ? (
+                                <span className=" text-[0.8rem] bg-[#ffe9d4] text-[#e95a18] py-1 px-2 rounded-xl">
+                                  رد شده
+                                </span>
+                              ) : null}
+                            </span>
+                          </td>
+                          <td
+                            scope="row"
+                            className="hidden md:flex gap-2 px-6 py-4 justify-center text-gray70 whitespace-nowrap "
                           >
-                            <svg
-                              xmlns="http://www.w3.org/2000/svg"
-                              width="18"
-                              height="18"
-                              viewBox="0 0 18 18"
-                              fill="none"
+                            <button
+                              onClick={() => {
+                                handleOpenMoreInfo(data);
+                              }}
+                              className="border border-1 border-solid border-gray70 rounded p-[0.4rem] hover:bg-neutral-100"
                             >
-                              <path
-                                d="M9 4.56442V4.55554"
-                                stroke="#797979"
-                                stroke-linecap="round"
-                                stroke-linejoin="round"
-                              />
-                              <path
-                                d="M9 13.4445V7.22223"
-                                stroke="#797979"
-                                stroke-linecap="round"
-                                stroke-linejoin="round"
-                              />
-                              <path
-                                d="M9 17C13.4183 17 17 13.4183 17 9C17 4.58172 13.4183 1 9 1C4.58172 1 1 4.58172 1 9C1 13.4183 4.58172 17 9 17Z"
-                                stroke="#797979"
-                                stroke-linecap="round"
-                                stroke-linejoin="round"
-                              />
-                            </svg>
-                          </button>
-                        </td>
-                      </tr>
-                    ))}
+                              <svg
+                                xmlns="http://www.w3.org/2000/svg"
+                                width="18"
+                                height="18"
+                                viewBox="0 0 18 18"
+                                fill="none"
+                              >
+                                <path
+                                  d="M9 4.56442V4.55554"
+                                  stroke="#797979"
+                                  stroke-linecap="round"
+                                  stroke-linejoin="round"
+                                />
+                                <path
+                                  d="M9 13.4445V7.22223"
+                                  stroke="#797979"
+                                  stroke-linecap="round"
+                                  stroke-linejoin="round"
+                                />
+                                <path
+                                  d="M9 17C13.4183 17 17 13.4183 17 9C17 4.58172 13.4183 1 9 1C4.58172 1 1 4.58172 1 9C1 13.4183 4.58172 17 9 17Z"
+                                  stroke="#797979"
+                                  stroke-linecap="round"
+                                  stroke-linejoin="round"
+                                />
+                              </svg>
+                            </button>
+                          </td>
+                        </tr>
+                      ))
+                    )}
               </tbody>
             </table>
           </div>
