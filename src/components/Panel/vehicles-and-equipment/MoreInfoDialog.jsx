@@ -39,7 +39,7 @@ export default function MoreInfoDialog(props) {
                                     <div className="mb-2">
                                         <span className="text-[0.9rem] text-gray70 ">نوع وسیله</span>
                                     </div>
-                                    <div className="border border-[#D9D9D9]  flex justify-between px-4">
+                                    <div className="border border-[#D9D9D9]  flex justify-evenly px-4">
                                         <div className="p-2">
                                             <span className="text-[#29262A] text-[0.9rem]">{props.moreInfoTarget?.type}</span>
                                         </div>
@@ -56,6 +56,7 @@ export default function MoreInfoDialog(props) {
                                         </div>
                                     </div>
                                 </div>
+                               {props.moreInfoTarget.gpsURL &&
                                 <div className="flex flex-col">
                                     <div className="mb-2">
                                         <span className="text-[0.9rem] text-gray70 ">API جی پی اس</span>
@@ -66,6 +67,7 @@ export default function MoreInfoDialog(props) {
                                         </div>
                                     </div>
                                 </div>
+}
 
                                 <div className="flex flex-col">
                                     <div className="mb-2">
@@ -119,26 +121,47 @@ export default function MoreInfoDialog(props) {
                                         {props.moreInfoTarget?.type}
                                     </span>
                                 </div>
+                                {props.moreInfoTarget?.code&&
+                                <div>
+                                    <span className="ml-1 text-gray9F text-[0.8rem]">
+                                        کد وسیله نقلیه :
+                                    </span>
+                                    
+                                            <span className="text-[#29262A] text-[0.9rem]">
+                                                {
+                                                    props.moreInfoTarget?.tag === "" ? (props.moreInfoTarget?.code) : (
+                                                        props.moreInfoTarget?.tag.slice(2, 5) + "-" + props.moreInfoTarget?.tag.slice(5, 7) + " " + props.moreInfoTarget?.tag.slice(7, 8) + " " + props.moreInfoTarget?.tag.slice(0, 2)
+                                                    )
+                                                }
+                                            </span>
+                                        
+                                </div>
+                                }
+                                {props.moreInfoTarget?.tag&&
                                 <div>
                                     <span className="ml-1 text-gray9F text-[0.8rem]">
                                         پلاک وسیله نقلیه :
                                     </span>
-                                    <span className="text-[#29262A] text-[0.8rem]">
-                                        {
-                                            props.moreInfoTarget?.tag === "" ? (props.moreInfoTarget?.code) : (
-                                                props.moreInfoTarget?.tag.slice(2, 5) + "-" + props.moreInfoTarget?.tag.slice(5, 7) + " " + props.moreInfoTarget?.tag.slice(7, 8) + " " + props.moreInfoTarget?.tag.slice(0, 2)
-                                            )
-                                        }
-                                    </span>
+                                    
+                                            <span className="text-[#29262A] text-[0.9rem]">
+                                                {
+                                                    props.moreInfoTarget?.tag === "" ? (props.moreInfoTarget?.code) : (
+                                                        props.moreInfoTarget?.tag.slice(2, 5) + "-" + props.moreInfoTarget?.tag.slice(5, 7) + " " + props.moreInfoTarget?.tag.slice(7, 8) + " " + props.moreInfoTarget?.tag.slice(0, 2)
+                                                    )
+                                                }
+                                            </span>
+                                        
                                 </div>
+                                }
+                                {props.moreInfoTarget.gpsURL &&
                                 <div>
                                     <span className="ml-1 text-gray9F text-[0.8rem]">
-                                        : API جی پی اس
+                                        API جی پی اس :    
                                     </span>
                                     <span className="text-[#29262A] text-[0.8rem]">
                                         {props.moreInfoTarget.hasGps ? (props.moreInfoTarget.gpsURL) : ("وسیله داری جی پی اس نمی باشد")}
                                     </span>
-                                </div>
+                                </div>}
                                 <div>
                                     <span className="ml-1 text-gray9F text-[0.8rem]">
                                         وضعیت :
@@ -159,6 +182,7 @@ export default function MoreInfoDialog(props) {
                                         {props.moreInfoTarget.subOrganizationName}
                                     </span>
                                 </div>
+                               {props.moreInfoTarget.purchaseDate&&
                                 <div>
                                     <span className="ml-1 text-gray9F text-[0.8rem]">
                                         تاریخ خرید :
@@ -166,7 +190,7 @@ export default function MoreInfoDialog(props) {
                                     <span className="text-[#29262A] text-[0.8rem]">
                                         {props.moreInfoTarget.purchaseDate}
                                     </span>
-                                </div>
+                                </div>}
                             </div>
                         </div>
                         <div className="md:hidden flex  justify-center mt-5 gap-3">

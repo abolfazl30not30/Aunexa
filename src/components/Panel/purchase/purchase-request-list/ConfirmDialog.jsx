@@ -8,11 +8,12 @@ import * as yup from "yup";
 import {useFormik} from "formik";
 import "react-multi-date-picker/styles/colors/red.css"
 import {useLazyGetAllUnitQuery, useLazyGetInventoryBalanceQuery,} from "@/redux/features/category/CategorySlice";
-import {useUpdatePurchaseRequestMutation} from "@/redux/features/purchase-request/PurchaseRequestSlice";
+import {
+    useAcceptPurchaseRequestListMutation
+} from "@/redux/features/purchase/purchase-request-list/PurchaseRequestListSlice";
 
 
 export default function ConfirmDialog(props) {
-
 
     const [getInventoryBalance, {
         data: inventoryBalanceList = [],
@@ -56,7 +57,7 @@ export default function ConfirmDialog(props) {
     }, [props.openConfirm])
 
     //submit data
-    const [submitData, {isLoading: isSubmitLoading, error}] = useUpdatePurchaseRequestMutation()
+    const [submitData, {isLoading: isSubmitLoading, error}] = useAcceptPurchaseRequestListMutation()
 
     const schema = yup.object().shape({
         value: yup.string().required("لطفا مقدار محصول را وارد کنید"),
@@ -66,19 +67,18 @@ export default function ConfirmDialog(props) {
 
     const formik = useFormik({
         initialValues: {
-            id: "",
             value: "",
             unit: "",
-            priority: false,
-            description: "",
-            productImage: ""
         },
 
         validationSchema: schema,
 
-        onSubmit: async (product, helpers) => {
-            let updateProduct = {...product}
-            const userData = await submitData(updateProduct)
+        onSubmit: async (purchase) => {
+            let updatePurchase = {...props.confirmTarget}
+            updatePurchase = {...updatePurchase,unit:purchase.unit}
+            updatePurchase = {...updatePurchase,value:purchase.value}
+            console.log(updatePurchase)
+            const userData = await submitData(updatePurchase)
             handleReset()
             props.handleCloseConfirm()
         },
@@ -124,18 +124,19 @@ export default function ConfirmDialog(props) {
                                     <span className="text-gray70 text-[0.8rem]">لیست موجودی محصول در انبارها</span>
                                 </div>
                                 {
-                                    inventoryBalanceList.content.map((product)=>(
+                                    inventoryBalanceList?.content?.map((product) => (
                                         <div className="border border-[#D9D9D9]  flex justify-between px-4">
                                             <div className="p-2">
-                                        <span
-                                            className="text-[#29262A] text-[0.9rem]"> <span className="text-mainRed">{product.quantity.value}</span>از این محصول در <span className="text-mainRed">{product.subOrganizationInfo.subOrganizationName}</span> موجود است</span>
-
+                                                <span className="text-[#29262A] text-[0.8rem]"> <span
+                                                    className="text-mainRed">{product?.value} {product?.unit}</span>  از این محصول در <span
+                                                    className="text-mainRed">{product.subOrganizationInfo.subOrganizationName}</span> موجود است</span>
                                             </div>
                                         </div>
                                     ))
                                 }
                             </div>
                         </div>
+
 
                         <form className="flex justify-center " onSubmit={formik.handleSubmit} method="POST">
                             <div className="flex flex-col justify-center w-[90%] md:w-[75%] gap-2">

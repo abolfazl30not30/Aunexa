@@ -18,11 +18,11 @@ export default function MoreInfoDialog(props) {
                 aria-describedby="alert-dialog-slide-description"
                 PaperProps={{
                     style: {
-                        fontFamily: "IRANYekan",
+                        fontFamily: "__fonts_2f4189,__fonts_Fallback_2f4189",
                     },
                 }}>
                 <DialogContent>
-                    <DialogContentText style={{ fontFamily: "IRANYekan" }}>
+                    <DialogContentText style={{ fontFamily: "__fonts_2f4189,__fonts_Fallback_2f4189" }}>
                         <div className="flex justify-end">
                             <button onClick={props.handleCloseMoreInfo}>
                                 <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 14 14" fill="none">
@@ -155,6 +155,7 @@ export default function MoreInfoDialog(props) {
                                         {props.moreInfoTarget?.persianName}
                                     </span>
                                 </div>
+                                {props.moreInfoTarget?.englishName&&
                                 <div>
                                     <span className="ml-1 text-gray9F text-[0.8rem]">
                                         نام انگلیسی :
@@ -163,6 +164,8 @@ export default function MoreInfoDialog(props) {
                                         {props.moreInfoTarget?.englishName}
                                     </span>
                                 </div>
+                                }
+                                {props.moreInfoTarget?.abbreviation&&
                                 <div>
                                     <span className="ml-1 text-gray9F text-[0.8rem]">
                                         مخفف :
@@ -171,6 +174,8 @@ export default function MoreInfoDialog(props) {
                                         {props.moreInfoTarget?.abbreviation}
                                     </span>
                                 </div>
+                                }
+                                {props.moreInfoTarget?.code&&
                                 <div>
                                     <span className="ml-1 text-gray9F text-[0.8rem]">
                                         کدمحصول :
@@ -179,6 +184,7 @@ export default function MoreInfoDialog(props) {
                                         {props.moreInfoTarget?.code}
                                     </span>
                                 </div>
+                                }
                                 <div>
                                     <span className="ml-1 text-gray9F text-[0.8rem]">
                                         نوع محصول :

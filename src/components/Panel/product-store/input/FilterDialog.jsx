@@ -100,6 +100,8 @@ export default function FilterDialog(props) {
         }
         if(values.buyer){
             params.set("buyer",values.buyer)
+        }if(values.sourceSubOrganizationId){
+            params.set("sourceSubOrganizationId",values.sourceSubOrganizationId)
         }
         return params
     }
@@ -119,7 +121,7 @@ export default function FilterDialog(props) {
             productId:"",
             machineId:"",
             status:"",
-            destinationSubOrganizationId: "",
+            sourceSubOrganizationId: "",
         },
 
         onSubmit: (values) => {
@@ -353,7 +355,7 @@ export default function FilterDialog(props) {
                                             sx={{fontFamily: "__fonts_2f4189,__fonts_Fallback_2f4189", fontSize: "0.8rem"}}
                                             onChange={formik.handleChange}
                                         >
-                                            <MenuItem value="" sx={{fontFamily: "__fonts_2f4189,__fonts_Fallback_2f4189", fontSize: "0.8rem"}}></MenuItem>
+                                            <MenuItem value="" sx={{fontFamily: "__fonts_2f4189,__fonts_Fallback_2f4189", fontSize: "0.8rem"}}>همه وضعیت ها</MenuItem>
                                             <MenuItem value="UNKNOWN" sx={{fontFamily: "__fonts_2f4189,__fonts_Fallback_2f4189", fontSize: "0.8rem"}}>نامعلوم</MenuItem>
                                             <MenuItem value="CONFIRMED" sx={{fontFamily: "__fonts_2f4189,__fonts_Fallback_2f4189", fontSize: "0.8rem"}}>تایید شده</MenuItem>
                                             <MenuItem value="TROUBLED" sx={{fontFamily: "__fonts_2f4189,__fonts_Fallback_2f4189", fontSize: "0.8rem"}}>مشکل دار</MenuItem>
@@ -381,12 +383,12 @@ export default function FilterDialog(props) {
                                         value={subOrganization}
                                         onChange={(event, newValue) => {
                                             setSubOrganization(newValue)
-                                            formik.setFieldValue("destinationSubOrganizationId", newValue?.id)
+                                            formik.setFieldValue("sourceSubOrganizationId", newValue?.id)
                                         }}
                                         renderInput={(params) =>
                                             <TextField
-                                                error={formik.touched.destinationSubOrganizationId && Boolean(formik.errors.destinationSubOrganizationId)}
-                                                helperText={formik.touched.destinationSubOrganizationId && formik.errors.destinationSubOrganizationId}
+                                                error={formik.touched.sourceSubOrganizationId && Boolean(formik.errors.sourceSubOrganizationId)}
+                                                helperText={formik.touched.sourceSubOrganizationId && formik.errors.sourceSubOrganizationId}
                                                 {...params}
                                                 InputProps={{
                                                     ...params.InputProps,

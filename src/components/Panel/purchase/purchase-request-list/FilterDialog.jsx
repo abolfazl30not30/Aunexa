@@ -17,7 +17,11 @@ import persian_fa from "react-date-object/locales/persian_fa";
 import DatePicker from "react-multi-date-picker";
 import "react-multi-date-picker/styles/colors/red.css"
 import CircularProgress from "@mui/material/CircularProgress";
-import {useLazyGetAllProductQuery, useLazyGetAllVehicleQuery} from "@/redux/features/category/CategorySlice";
+import {
+    useLazyGetAllProductQuery,
+    useLazyGetAllSubOrganizationQuery,
+    useLazyGetAllVehicleQuery
+} from "@/redux/features/category/CategorySlice";
 import {useEffect} from "react";
 import {styled} from "@mui/material/styles";
 import Switch from "@mui/material/Switch";
@@ -77,6 +81,15 @@ export default function FilterDialog(props) {
         }
     },[openProductList])
 
+    const [subOrganization,setSubOrganization] = useState(null)
+    const [openSubOrganizationList,setOpenSubOrganizationList] = useState(false)
+    const [getSubOrganizationList,{ data : subOrganizationList  = [] , isLoading : isSubOrganizationLoading, isError: isSubOrganizationError }] = useLazyGetAllSubOrganizationQuery()
+    useEffect(()=>{
+        if(openSubOrganizationList){
+            getSubOrganizationList()
+        }
+    },[openSubOrganizationList])
+
     const handleDateFromInput = (value) => {
         if(value){
             setDateFrom(value)
@@ -112,8 +125,8 @@ export default function FilterDialog(props) {
         if(values.productId){
             params.set("productId",values.productId)
         }
-        if(values.status){
-            params.set("status",values.status)
+        if(values.subOrganizationId){
+            params.set("subOrganizationId",values.subOrganizationId)
         }
         if(values.priority === true){
             params.set("priority","true")
@@ -125,6 +138,7 @@ export default function FilterDialog(props) {
         formik.resetForm()
         setDateTo("")
         setDateFrom("")
+        setSubOrganization(null)
         setProduct(null)
     }
     const formik = useFormik({
@@ -133,7 +147,7 @@ export default function FilterDialog(props) {
             dateFrom: "",
             dateTo: "",
             productId:"",
-            status:"",
+            subOrganizationId:"",
             priority: "",
         },
 
@@ -312,23 +326,48 @@ export default function FilterDialog(props) {
                                     />
                                 </div>
                                 <div className=" flex flex-col">
-                                    <FormControl fullWidth>
-                                        <InputLabel id="demo-simple-select-label" sx={{fontFamily: "__fonts_2f4189,__fonts_Fallback_2f4189", fontSize: "0.8rem",color:"#9F9F9F"}}>وضعیت</InputLabel>
-                                        <Select
-                                            labelId="demo-simple-select-label"
-                                            id="demo-simple-select"
-                                            value={formik.values.status}
-                                            name="status"
-                                            input={<OutlinedInput sx={{fontFamily: "__fonts_2f4189,__fonts_Fallback_2f4189", fontSize: "0.8rem"}} label="وضعیت" />}
-                                            sx={{fontFamily: "__fonts_2f4189,__fonts_Fallback_2f4189", fontSize: "0.8rem"}}
-                                            onChange={formik.handleChange}
-                                        >
-                                            <MenuItem value="" sx={{fontFamily: "__fonts_2f4189,__fonts_Fallback_2f4189", fontSize: "0.8rem"}}></MenuItem>
-                                            <MenuItem value="IN_PROGRESS" sx={{fontFamily: "__fonts_2f4189,__fonts_Fallback_2f4189", fontSize: "0.8rem"}}>در حال بررسی</MenuItem>
-                                            <MenuItem value="DONE" sx={{fontFamily: "__fonts_2f4189,__fonts_Fallback_2f4189", fontSize: "0.8rem"}}>تایید شده</MenuItem>
-                                            <MenuItem value="FAIL" sx={{fontFamily: "__fonts_2f4189,__fonts_Fallback_2f4189", fontSize: "0.8rem"}}>رد شده</MenuItem>
-                                        </Select>
-                                    </FormControl>
+                                    <Autocomplete
+                                        open={openSubOrganizationList}
+                                        onOpen={() => {
+                                            setOpenSubOrganizationList(true);
+                                        }}
+                                        onClose={() => {
+                                            setOpenSubOrganizationList(false);
+                                        }}
+                                        fullWidth
+                                        clearOnEscape
+                                        disablePortal
+                                        id="combo-box-demo"
+                                        ListboxProps={{
+                                            sx: {fontFamily: "__fonts_2f4189,__fonts_Fallback_2f4189", fontSize: "0.8rem"},
+                                        }}
+                                        options={subOrganizationList}
+                                        getOptionLabel={(option) => option.name}
+                                        value={subOrganization}
+                                        onChange={(event, newValue) => {
+                                            setSubOrganization(newValue)
+                                            formik.setFieldValue("subOrganizationId", newValue?.id)
+                                        }}
+                                        renderInput={(params) =>
+                                            <TextField
+                                                error={formik.touched.subOrganizationId && Boolean(formik.errors.subOrganizationId)}
+                                                helperText={formik.touched.subOrganizationId && formik.errors.subOrganizationId}
+                                                {...params}
+                                                InputProps={{
+                                                    ...params.InputProps,
+                                                    style: {fontFamily: "__fonts_2f4189,__fonts_Fallback_2f4189", fontSize: "0.8rem"},
+                                                    endAdornment: (
+                                                        <React.Fragment>
+                                                            {isSubOrganizationLoading ?
+                                                                <CircularProgress color="inherit"
+                                                                                  size={20}/> : null}
+                                                            {params.InputProps.endAdornment}
+                                                        </React.Fragment>
+                                                    )
+                                                }}
+                                                placeholder="دپارتمان"
+                                            />}
+                                    />
                                 </div>
                                 <div>
                                     <div className="flex flex-col">

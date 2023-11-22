@@ -1,3 +1,4 @@
+
 'use client'
 import React from "react";
 import {
@@ -38,14 +39,14 @@ export default function MoreInfoDialog(props) {
                                     <div className="mb-2">
                                         <span className="text-[0.9rem] text-gray70 ">نام محصول</span>
                                     </div>
-                                    <div className="border border-[#D9D9D9]  flex justify-between px-4">
+                                    <div className="border border-[#D9D9D9]  flex justify-evenly px-4">
                                         <div className="p-2">
                                             <span className="text-[#29262A] text-[0.9rem]">{props.moreInfoTarget?.productName}</span>
                                         </div>
                                         <div className="border border-[#D9D9D9]">
                                         </div>
                                         <div className="p-2">
-                                            <span className="text-[#29262A] text-[0.9rem]">{props.moreInfoTarget?.unit} {props.moreInfoTarget?.value}</span>
+                                            <span className="text-[#29262A] text-[0.9rem]">{props.moreInfoTarget?.value}{props.moreInfoTarget?.unit}</span>
                                         </div>
                                     </div>
                                 </div>
@@ -71,7 +72,14 @@ export default function MoreInfoDialog(props) {
                                     </div>
                                     <div className="border border-[#D9D9D9]  flex justify-start px-4">
                                         <div className="p-2">
-                                            <span className="text-[#29262A] text-[0.9rem]">{props.moreInfoTarget?.time} {props.moreInfoTarget?.date}</span>
+                                            <span className="text-[#29262A] text-[0.9rem] space-x-2">
+                                                <span>
+                                                    {props.moreInfoTarget?.requestTime}
+                                                </span> 
+                                                <span>
+                                                    {props.moreInfoTarget?.requestDate}
+                                                </span>
+                                            </span>
                                         </div>
                                     </div>
                                 </div>
@@ -122,7 +130,7 @@ export default function MoreInfoDialog(props) {
                                         مقدار :
                                     </span>
                                     <span className="text-[#29262A] text-[0.8rem]">
-                                        {props.moreInfoTarget?.unit} {props.moreInfoTarget?.value}
+                                    {props.moreInfoTarget?.value}{props.moreInfoTarget?.unit}
                                     </span>
                                 </div>
                                 <div>
@@ -141,9 +149,14 @@ export default function MoreInfoDialog(props) {
                                     <span className="ml-1 text-gray9F text-[0.8rem]">
                                         تاریخ :
                                     </span>
-                                    <span className="text-[#29262A] text-[0.8rem]">
-                                          {props.moreInfoTarget?.time}   {props.moreInfoTarget?.date}
-                                    </span>
+                                    <span className="text-[#29262A] text-[0.8rem] space-x-2">
+                                                <span>
+                                                    {props.moreInfoTarget?.requestTime}
+                                                </span> 
+                                                <span>
+                                                    {props.moreInfoTarget?.requestDate}
+                                                </span>
+                                            </span>
                                 </div>
                                 <div>
                                     <span className="ml-1 text-gray9F text-[0.8rem]">
@@ -157,14 +170,17 @@ export default function MoreInfoDialog(props) {
                                         )}
                                     </span>
                                 </div>
-                                <div>
+                                {props.moreInfoTarget?.description?(
+                                    <div>
                                     <span className="ml-1 text-gray9F text-[0.8rem]">
                                         توضیحات :
                                     </span>
                                     <span className="text-[#29262A] text-[0.8rem]">
-                                        {props.moreInfoTarget.description}
+                                        {props.moreInfoTarget?.description}
                                     </span>
                                 </div>
+                                ):null}
+                                
                             </div>
                         </div>
                         <div className="md:hidden flex  justify-center mt-5 gap-3">

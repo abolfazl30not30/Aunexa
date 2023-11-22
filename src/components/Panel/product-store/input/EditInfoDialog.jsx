@@ -199,6 +199,7 @@ export default function EditInfoDialog(props) {
             machineTag: "",
             machineCode: "",
             driverName: "",
+            sourceOrganizationId:"",
             sourceSubOrganizationId: "",
             sourceSubOrganizationName: "",
             description: "",
@@ -209,7 +210,7 @@ export default function EditInfoDialog(props) {
         validationSchema: schema,
 
         onSubmit: async (product,helpers) => {
-            let updateProduct = {...product}
+            let updateProduct = {...product,type:"PRODUCT"}
 
             if(product.machineTag !== ""){
                 const res = await getVehicleByTag(product.machineTag)
@@ -288,6 +289,8 @@ export default function EditInfoDialog(props) {
             machineType:props.editInfoTarget?.machineType,
             driverName: props.editInfoTarget?.driverName,
             sourceSubOrganizationId: props.editInfoTarget?.sourceSubOrganizationId,
+            sourceOrganizationId: props.editInfoTarget?.sourceOrganizationId,
+            sourceSubOrganizationName: props.editInfoTarget?.sourceSubOrganizationName,
             description:props.editInfoTarget?.description
         })
         handleSetProductInput(props.editInfoTarget?.productId)
@@ -487,6 +490,7 @@ export default function EditInfoDialog(props) {
                                                 <div>
                                                     <FormControl sx={{width: "58px", bgcolor: "#fff"}} size="small">
                                                         <Select
+                                                        sx={{fontFamily: "__fonts_2f4189,__fonts_Fallback_2f4189", fontSize: "0.8rem"}}
                                                             disabled={formik.values.machineCode !== ""}
                                                             name="part3"
                                                             value={machineTag.part3}
@@ -495,7 +499,7 @@ export default function EditInfoDialog(props) {
                                                             id="demo-select-small">
                                                             {
                                                                 alphabeticalList.map((alpha)=>(
-                                                                    <MenuItem value={alpha.value}>{alpha.value}</MenuItem>
+                                                                    <MenuItem  sx={{fontFamily: "__fonts_2f4189,__fonts_Fallback_2f4189", fontSize: "0.8rem"}} value={alpha.value}>{alpha.value}</MenuItem>
                                                                 ))
                                                             }
                                                         </Select>

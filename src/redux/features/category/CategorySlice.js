@@ -27,7 +27,12 @@ export const CategorySlice = apiSlice.injectEndpoints({
       providesTags: ["category"],
     }),
     getInventoryBalance: builder.query({
-      query: (productId) => `inventory/store-balance/filter?productId=${productId}`,
+      query: (productId) =>
+        `inventory/store-balance/filter?productId=${productId}`,
+      providesTags: ["category"],
+    }),
+    getAllPaymentMethod: builder.query({
+      query: () => "bill/payment-method/find-all",
       providesTags: ["category"],
     }),
   }),
@@ -40,5 +45,6 @@ export const {
   useLazyGetAllVehicleQuery,
   useLazyGetAllSubOrganizationQuery,
   useLazyGetAllRoleQuery,
-  useLazyGetInventoryBalanceQuery
+  useLazyGetAllPaymentMethodQuery,
+  useLazyGetInventoryBalanceQuery,
 } = CategorySlice;

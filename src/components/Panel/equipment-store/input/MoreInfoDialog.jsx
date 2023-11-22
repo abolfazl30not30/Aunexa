@@ -38,14 +38,14 @@ export default function MoreInfoDialog(props) {
                                     <div className="mb-2">
                                         <span className="text-[0.9rem] text-gray70 ">نام ماده</span>
                                     </div>
-                                    <div className="border border-[#D9D9D9]  flex justify-between px-4">
+                                    <div className="border border-[#D9D9D9]  flex justify-evenly px-4">
                                         <div className="p-2">
                                             <span className="text-[#29262A] text-[0.9rem]">{props.moreInfoTarget?.productName}</span>
                                         </div>
                                         <div className="border border-[#D9D9D9]">
                                         </div>
                                         <div className="p-2">
-                                            <span className="text-[#29262A] text-[0.9rem]">{props.moreInfoTarget?.unit} {props.moreInfoTarget?.value}</span>
+                                            <span className="text-[#29262A] text-[0.9rem]">{props.moreInfoTarget?.value}{props.moreInfoTarget?.unit} </span>
                                         </div>
                                     </div>
                                 </div>
@@ -67,7 +67,7 @@ export default function MoreInfoDialog(props) {
                                     <div className="mb-2">
                                         <span className="text-[0.9rem] text-gray70 ">نوع وسیله</span>
                                     </div>
-                                    <div className="border border-[#D9D9D9]  flex justify-between px-4">
+                                    <div className="border border-[#D9D9D9]  flex justify-evenly px-4">
                                         <div className="p-2">
                                             <span className="text-[#29262A] text-[0.9rem]">{props.moreInfoTarget?.machineType}</span>
                                         </div>
@@ -110,7 +110,7 @@ export default function MoreInfoDialog(props) {
                                     </div>
                                     <div className="border border-[#D9D9D9]  flex justify-start px-4">
                                         <div className="p-2">
-                                            <span className="text-[#29262A] text-[0.9rem]">{props.moreInfoTarget?.time} {props.moreInfoTarget?.date}</span>
+                                            <span className="text-[#29262A] text-[0.9rem]"><span>{props.moreInfoTarget?.time}</span> <span className="pr-2">{props.moreInfoTarget?.date}</span></span>
                                         </div>
                                     </div>
                                 </div>
@@ -161,17 +161,18 @@ export default function MoreInfoDialog(props) {
                                         مقدار :
                                     </span>
                                     <span className="text-[#29262A] text-[0.8rem]">
-                                        {props.moreInfoTarget?.unit} {props.moreInfoTarget?.value}
+                                    {props.moreInfoTarget?.value}{props.moreInfoTarget?.unit} 
                                     </span>
                                 </div>
-                                <div>
+                                {props.moreInfoTarget?.expirationDate &&(
+                                    <div>
                                     <span className="ml-1 text-gray9F text-[0.8rem]">
                                         تاریخ انقضا :
                                     </span>
                                     <span className="text-[#29262A] text-[0.8rem]">
                                         {props.moreInfoTarget.expirationDate}
                                     </span>
-                                </div>
+                                </div>)}
                                 <div>
                                     <span className="ml-1 text-gray9F text-[0.8rem]">
                                         نوع وسیله نقلیه :
@@ -180,6 +181,21 @@ export default function MoreInfoDialog(props) {
                                         {props.moreInfoTarget?.machineType}
                                     </span>
                                 </div>
+                                {props.moreInfoTarget?.machineCode&&
+                                <div>
+                                    <span className="ml-1 text-gray9F text-[0.8rem]">
+                                        کد وسیله نقلیه :
+                                    </span>
+                                    <span className="text-[#29262A] text-[0.8rem]">
+                                        {
+                                            props.moreInfoTarget?.machineTag === "" ? (props.moreInfoTarget?.machineCode) : (
+                                                props.moreInfoTarget?.machineTag.slice(2, 5) + "-" + props.moreInfoTarget?.machineTag.slice(5, 7) + " " + props.moreInfoTarget?.machineTag.slice(7, 8) + " " + props.moreInfoTarget?.machineTag.slice(0, 2)
+                                            )
+                                        }
+                                    </span>
+                                </div>
+                                }
+                                {props.moreInfoTarget?.machineTag&&
                                 <div>
                                     <span className="ml-1 text-gray9F text-[0.8rem]">
                                         پلاک وسیله نقلیه :
@@ -192,6 +208,7 @@ export default function MoreInfoDialog(props) {
                                         }
                                     </span>
                                 </div>
+                                }
                                 <div>
                                     <span className="ml-1 text-gray9F text-[0.8rem]">
                                         راننده :
@@ -213,7 +230,7 @@ export default function MoreInfoDialog(props) {
                                         تاریخ :
                                     </span>
                                     <span className="text-[#29262A] text-[0.8rem]">
-                                        {props.moreInfoTarget?.time} {props.moreInfoTarget?.date}
+                                    <span>{props.moreInfoTarget?.time}</span> <span className="pr-2">{props.moreInfoTarget?.date}</span>
                                     </span>
                                 </div>
                                 <div>
@@ -228,14 +245,15 @@ export default function MoreInfoDialog(props) {
                                         )}
                                     </span>
                                 </div>
-                                <div>
+                               {props.moreInfoTarget.description&& 
+                               <div>
                                     <span className="ml-1 text-gray9F text-[0.8rem]">
                                         توضیحات :
                                     </span>
                                     <span className="text-[#29262A] text-[0.8rem]">
                                         {props.moreInfoTarget.description}
                                     </span>
-                                </div>
+                                </div>}
                             </div>
                         </div>
                         <div className="md:hidden flex  justify-center mt-5 gap-3">
