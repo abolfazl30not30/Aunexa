@@ -2,9 +2,9 @@
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 import { logOut, setAccessToken } from "./authSlice";
 import axios from "axios";
-//http://194.33.125.112:32190
+//https://auth.prod.vipsoftware1.com
 const baseQuery = fetchBaseQuery({
-  baseUrl: "http://194.33.125.112:32190/",
+  baseUrl: "https://auth.prod.vipsoftware1.com/",
   prepareHeaders: (headers, { getState }) => {
     const token = getState().auth.accessToken;
     if (token) {
@@ -25,7 +25,7 @@ const login = async () => {
   };
 
   return await axios.post(
-    "http://194.33.125.112:32190/oauth2/token",
+    "https://auth.prod.vipsoftware1.com/oauth2/token",
     formData,
     {
       headers: {
