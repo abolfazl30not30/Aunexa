@@ -2,10 +2,10 @@
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 import { logOut, setAccessToken } from "./authSlice";
 import axios from "axios";
-//https://gateway.prod.vipsoftware1.com
+//http://gateway:9192
 
 const baseQuery = fetchBaseQuery({
-  baseUrl: "https://gateway.prod.vipsoftware1.com/api/v1/",
+  baseUrl: "http://gateway:9192/api/v1/",
   prepareHeaders: (headers, { getState }) => {
     const token = getState().auth.accessToken;
     if (token) {
