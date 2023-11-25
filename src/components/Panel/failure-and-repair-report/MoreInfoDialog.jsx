@@ -40,38 +40,36 @@ export default function MoreInfoDialog(props) {
                                     </div>
                                     <div className="border border-[#D9D9D9]  flex justify-evenly px-4">
                                         <div className="p-2">
-                                            <span className="text-[#29262A] text-[0.9rem]">{props.moreInfoTarget?.machineType}</span>
+                                            <span className="text-[#29262A] text-[0.9rem]">{props.moreInfoTarget?.type}</span>
                                         </div>
-                                        <div className="border border-[#D9D9D9]">
-                                        </div>
-                                        <div className="p-2 ">
-                                            <span className="text-[#29262A] text-[0.9rem]">
-                                              
-                                            </span>
-                                        </div>
+                                        
                                     </div>
                                 </div>
                                 <div className="flex justify-between">
+                                    {props.moreInfoTarget?.tag && 
                                     <div className="w-[45%]">
                                     <div className="mb-2">
                                         <span className="text-[0.9rem] text-gray70 ">پلاک وسیله </span>
                                     </div>
                                     <div className="border border-[#D9D9D9]  flex justify-start px-4">
                                         <div className="p-2">
-                                            <span className="text-[#29262A] text-[0.9rem]">{props.moreInfoTarget?.driverName}</span>
+                                            <span className="text-[#29262A] text-[0.9rem]">{props.moreInfoTarget?.tag}</span>
                                         </div>
                                     </div>
                                     </div>
+                                    }
+                                    {props.moreInfoTarget?.code && 
                                     <div className="w-[45%]">
                                     <div className="mb-2">
                                         <span className="text-[0.9rem] text-gray70 ">کد وسیله</span>
                                     </div>
                                     <div className="border border-[#D9D9D9]  flex justify-start px-4">
                                         <div className="p-2">
-                                            <span className="text-[#29262A] text-[0.9rem]">{props.moreInfoTarget?.driverName}</span>
+                                            <span className="text-[#29262A] text-[0.9rem]">{props.moreInfoTarget?.code}</span>
                                         </div>
                                     </div>
                                     </div>
+                                    }
                                 </div>
                                 <div className="flex justify-between">
                                     <div className="w-[45%]">
@@ -90,7 +88,7 @@ export default function MoreInfoDialog(props) {
                                     </div>
                                     <div className="border border-[#D9D9D9]  flex justify-start px-4">
                                         <div className="p-2">
-                                            <span className="text-[#29262A] text-[0.9rem]">{props.moreInfoTarget?.driverName}</span>
+                                            <span className="text-[#29262A] text-[0.9rem]">{props.moreInfoTarget?.subOrganizationName}</span>
                                         </div>
                                     </div>
                                     </div>
@@ -112,7 +110,7 @@ export default function MoreInfoDialog(props) {
                                     </div>
                                     <div className="border border-[#D9D9D9]  flex justify-start px-4">
                                         <div className="p-2">
-                                            <span className="text-[#29262A] text-[0.9rem]">{props.moreInfoTarget?.driverName}</span>
+                                            <span className="text-[#29262A] text-[0.9rem]">{props.moreInfoTarget?.status}</span>
                                         </div>
                                     </div>
                                     </div>
@@ -125,7 +123,7 @@ export default function MoreInfoDialog(props) {
                                             </div>
                                             <div className="border border-[#D9D9D9]  flex justify-start px-4">
                                                 <div className="p-2">
-                                                    <span className="text-[#29262A] text-[0.9rem]">{props.moreInfoTarget.description}</span>
+                                                    <span className="text-[#29262A] text-[0.9rem]">{props.moreInfoTarget?.description}</span>
                                                 </div>
                                             </div>
                                         </div>
