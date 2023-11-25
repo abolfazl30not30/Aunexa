@@ -528,21 +528,80 @@ export default function RootLayout({ children }) {
                     </details>
                   </div>
                   <div>
-                    <Link
-                      href="/panel/vehicles-and-equipment"
-                      className="block py-4 px-2 border-b border-b-1 border-b-solid  border-b-borderGray"
-                    >
-                      <span
-                        className={
-                          pathname === "/panel/vehicles-and-equipment"
-                            ? "text-mainRed text-[0.9rem]"
-                            : "text-gray9F hover:text-textGray text-[0.9rem]"
-                        }
-                      >
-                        وسایل و تجهیزات
-                      </span>
-                    </Link>
+                    <details className="group py-3 border-b border-b-1 border-b-solid  border-b-borderGray">
+                      <summary className="flex items-center justify-between gap-2 p-2 font-medium marker:content-none hover:cursor-pointer">
+                        <span className="text-gray9F group-open:text-textGray text-[0.9rem]">
+                          وسایل و تجهیزات
+                        </span>
+                        <svg
+                          className="transition group-open:rotate-90"
+                          xmlns="http://www.w3.org/2000/svg"
+                          width="16"
+                          height="16"
+                          viewBox="0 0 16 16"
+                          fill="none"
+                        >
+                          <path
+                            d="M10 4L6 8L10 12"
+                            stroke="#9F9F9F"
+                            stroke-linecap="round"
+                            stroke-linejoin="round"
+                          />
+                        </svg>
+                      </summary>
+                      <ul className="flex flex-col gap-1 pr-2">
+                        <li>
+                          <Link
+                            href="/panel/vehicles-and-equipment"
+                            className="block py-2 px-5"
+                          >
+                            <span
+                              className={
+                                pathname === "/panel/vehicles-and-equipment"
+                                  ? "text-mainRed text-[0.9rem]"
+                                  : "text-gray9F hover:text-textGray text-[0.9rem]"
+                              }
+                            >
+                              وسایل و تجهیزات
+                            </span>
+                          </Link>
+                        </li>
+                        <li>
+                          <Link
+                            href="/panel/failure-and-repair-report"
+                            className="block py-2 px-5"
+                          >
+                            <span
+                              className={
+                                pathname === "/panel/failure-and-repair-report"
+                                  ? "text-mainRed text-[0.9rem]"
+                                  : "text-gray9F hover:text-textGray text-[0.9rem]"
+                              }
+                            >
+                              گزارش خرابی و تعمیرات
+                            </span>
+                          </Link>
+                        </li>
+                        <li>
+                          <Link
+                            href="/panel/history-of-reports"
+                            className="block py-2 px-5"
+                          >
+                            <span
+                              className={
+                                pathname === "/panel/history-of-reports"
+                                  ? "text-mainRed text-[0.9rem]"
+                                  : "text-gray9F hover:text-textGray text-[0.9rem]"
+                              }
+                            >
+                              سابقه گزارشات
+                            </span>
+                          </Link>
+                        </li>
+                      </ul>
+                    </details>
                   </div>
+
                   <div>
                     <Link
                       href="/panel/purchase-request"
@@ -957,21 +1016,80 @@ export default function RootLayout({ children }) {
                 </details>
               </div>
               <div>
-                <Link
-                  href="/panel/vehicles-and-equipment"
-                  className="block py-4 px-2 border-b border-b-1 border-b-solid  border-b-borderGray"
-                >
-                  <span
-                    className={
-                      pathname === "/panel/vehicles-and-equipment"
-                        ? "text-mainRed text-[0.9rem]"
-                        : "text-gray9F hover:text-textGray text-[0.9rem]"
-                    }
-                  >
-                    وسایل و تجهیزات
-                  </span>
-                </Link>
+                <details className="group py-3 border-b border-b-1 border-b-solid  border-b-borderGray">
+                  <summary className="flex items-center justify-between gap-2 p-2 font-medium marker:content-none hover:cursor-pointer">
+                    <span className="text-gray9F group-open:text-textGray text-[0.9rem]">
+                      وسایل و تجیزات
+                    </span>
+                    <svg
+                      className="transition group-open:rotate-90"
+                      xmlns="http://www.w3.org/2000/svg"
+                      width="16"
+                      height="16"
+                      viewBox="0 0 16 16"
+                      fill="none"
+                    >
+                      <path
+                        d="M10 4L6 8L10 12"
+                        stroke="#9F9F9F"
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                      />
+                    </svg>
+                  </summary>
+                  <ul className="flex flex-col gap-1 pr-2">
+                    <li>
+                      <Link
+                        href="/panel/vehicles-and-equipment"
+                        className="block py-2 px-5"
+                      >
+                        <span
+                          className={
+                            pathname === "/panel/vehicles-and-equipment"
+                              ? "text-mainRed text-[0.9rem]"
+                              : "text-gray9F hover:text-textGray text-[0.9rem]"
+                          }
+                        >
+                          وسایل و تجهیزات
+                        </span>
+                      </Link>
+                    </li>
+                    <li>
+                      <Link
+                        href="/panel/failure-and-repair-report"
+                        className="block py-2 px-5"
+                      >
+                        <span
+                          className={
+                            pathname === "/panel/failure-and-repair-report"
+                              ? "text-mainRed text-[0.9rem]"
+                              : "text-gray9F hover:text-textGray text-[0.9rem]"
+                          }
+                        >
+                          گزارش خرابی و تعمیرات
+                        </span>
+                      </Link>
+                    </li>
+                    <li>
+                      <Link
+                        href="/panel/history-of-reports"
+                        className="block py-2 px-5"
+                      >
+                        <span
+                          className={
+                            pathname === "/panel/history-of-reports"
+                              ? "text-mainRed text-[0.9rem]"
+                              : "text-gray9F hover:text-textGray text-[0.9rem]"
+                          }
+                        >
+                          سابقه گزارشات
+                        </span>
+                      </Link>
+                    </li>
+                  </ul>
+                </details>
               </div>
+
               <div>
                 <Link
                   href="/panel/purchase-request"

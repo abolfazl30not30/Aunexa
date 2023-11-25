@@ -301,7 +301,7 @@ export default function AddDataDialog(props) {
                                         <div className="plate w-full md:w-[47%] flex items-center pl-4">
                                             <div>
                                                 <div className="w-[55px] h-full pt-3  pl-1 pr-3">
-                                                    <input disabled={formik.values.code !== ""} name="part1"
+                                                    <input  name="part1"
                                                            onChange={handleTag} value={tag.part1}
                                                            type="text" placeholder="55" maxLength="2"
                                                            className="w-full h-full placeholder-neutral-300 text-center rounded"/>
@@ -309,7 +309,7 @@ export default function AddDataDialog(props) {
                                             </div>
                                             <div className="flex">
                                                 <div className="w-[60px] h-full py-1 pl-1 pr-3 h-full">
-                                                    <input disabled={formik.values.code !== ""} name="part2"
+                                                    <input  name="part2"
                                                            onChange={handleTag} value={tag.part2}
                                                            type="text" placeholder="555" maxLength="3"
                                                            className="w-full h-full placeholder-neutral-300 text-center rounded"/>
@@ -318,7 +318,7 @@ export default function AddDataDialog(props) {
                                                     <FormControl sx={{width: "58px", bgcolor: "#fff"}} size="small">
                                                         <Select
                                                         sx={{fontFamily: "__fonts_2f4189,__fonts_Fallback_2f4189", fontSize: "0.8rem"}}
-                                                            disabled={formik.values.code !== ""}
+                                                            
                                                             name="part3"
                                                             value={tag.part3}
                                                             onChange={handleTag}
@@ -333,7 +333,7 @@ export default function AddDataDialog(props) {
                                                     </FormControl>
                                                 </div>
                                                 <div className="w-[50px] h-full py-1 pl-2 pr-1 h-full">
-                                                    <input disabled={formik.values.code !== ""} name="part4"
+                                                    <input  name="part4"
                                                            onChange={handleTag} value={tag.part4}
                                                            type="text" placeholder="55" maxLength="2"
                                                            className="w-full h-full placeholder-neutral-300 text-center rounded"/>
@@ -347,7 +347,7 @@ export default function AddDataDialog(props) {
                                         </div>
                                         <div className="w-full md:w-[47%]">
                                             <TextField
-                                                disabled={formik.values.tag !== ""}
+                                                
                                                 fullWidth
                                                 placeholder="کد وسیله نقلیه(اجباری)"
                                                 type="text"
