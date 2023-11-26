@@ -6,12 +6,11 @@ export const HistoryOfReportsSlice = apiSlice.injectEndpoints({
       query: ({ page, sort, filterItem }) => ({
         url: `vehicle/machine-report/filter?page=${
           page - 1
-        }&size=10&sort=date,${sort}&${filterItem}`,
+        }&size=10&sort=date,${sort}&sort=time,${sort}&${filterItem}`,
       }),
       providesTags: ["history-of-reports"],
     }),
   }),
 });
 
-export const { useGetAllHistoryOfReportsQuery } =
-    HistoryOfReportsSlice;
+export const { useGetAllHistoryOfReportsQuery } = HistoryOfReportsSlice;

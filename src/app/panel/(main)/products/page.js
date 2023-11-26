@@ -417,7 +417,7 @@ function vehiclesAndEquipment() {
                     <th className="hidden md:table-cell px-2 md:px-6 px-6 py-4">
                       کد
                     </th>
-                    <th className="hidden md:table-cell px-2 md:px-6 px-6 py-4">
+                    <th className="table-cell px-2 md:px-6 px-6 py-4">
                       <span>منقضی شونده</span>
                     </th>
                     <th className="px-6 py-4">نوع محصول</th>
@@ -447,13 +447,7 @@ function vehiclesAndEquipment() {
                               sx={{ fontSize: "1rem" }}
                             />
                           </td>
-                          <td className="px-2 md:px-6 py-2  text-gray70 whitespace-nowrap ">
-                            <Skeleton
-                              variant="text"
-                              sx={{ fontSize: "1rem" }}
-                            />
-                          </td>
-                          <td className="hidden md:table-cell px-6 py-4  text-gray70 whitespace-nowrap ">
+                          <td className="md:table-cell hidden px-2 md:px-6 py-2  text-gray70 whitespace-nowrap ">
                             <Skeleton
                               variant="text"
                               sx={{ fontSize: "1rem" }}
@@ -468,6 +462,13 @@ function vehiclesAndEquipment() {
                               />
                             </div>
                           </td>
+                          <td className="table-cell px-6 py-4  text-gray70 whitespace-nowrap ">
+                            <Skeleton
+                              variant="text"
+                              sx={{ fontSize: "1rem" }}
+                            />
+                          </td>
+
                           <td
                             scope="row"
                             className="hidden md:flex gap-2 px-6 py-4 justify-center text-gray70 whitespace-nowrap "
@@ -519,7 +520,7 @@ function vehiclesAndEquipment() {
                           </td>
                           <td
                             scope="row"
-                            className="hidden md:flex px-2 md:px-6 py-4  md:justify-center  text-gray70 whitespace-nowrap "
+                            className="flex px-2 md:px-6 py-4  justify-center  text-gray70 whitespace-nowrap "
                           >
                             {data?.isExpirable ? (
                               <svg

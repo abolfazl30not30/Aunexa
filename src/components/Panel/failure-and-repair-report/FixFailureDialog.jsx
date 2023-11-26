@@ -88,6 +88,7 @@ export default function FixFailureDialog(props) {
                                     </div>
                                 </div>
                                 <div className="flex justify-between">
+                                    {props.fixTarget?.machine?.tag &&
                                     <div className="w-[45%]">
                                     <div className="mb-2">
                                         <span className="text-[0.9rem] text-gray70 ">پلاک وسیله </span>
@@ -98,6 +99,7 @@ export default function FixFailureDialog(props) {
                                         </div>
                                     </div>
                                     </div>
+                                    }
                                     <div className="w-[45%]">
                                     <div className="mb-2">
                                         <span className="text-[0.9rem] text-gray70 "> کد وسیله</span>
@@ -179,111 +181,88 @@ export default function FixFailureDialog(props) {
                             <div className="w-full md:w-[70%] flex flex-col gap-3">
                                 <div>
                                     <span className="ml-1 text-gray9F text-[0.8rem]">
-                                        نام محصول :
+                                        نوع وسیله :
                                     </span>
                                     <span className="text-[#29262A] text-[0.8rem]">
-                                       {props.fixTarget?.productName}
+                                    {props.fixTarget?.machine?.type}
                                     </span>
                                 </div>
+                                {props.fixTarget?.machine?.tag &&
                                 <div>
                                     <span className="ml-1 text-gray9F text-[0.8rem]">
-                                        مقدار :
+                                        پلاک وسیله :
                                     </span>
                                     <span className="text-[#29262A] text-[0.8rem]">
-                                        {props.fixTarget?.value}{props.fixTarget?.unit} 
+                                    {props.fixTarget?.machine?.tag.slice(2, 5) + "-" + props.fixTarget?.machine?.tag.slice(5, 7) + " " + props.fixTarget?.machine?.tag.slice(7, 8) + " " + props.fixTarget?.machine?.tag.slice(0, 2)}
                                     </span>
                                 </div>
-                                {props.fixTarget.expirationDate&&
+                                      }
+                                {props.fixTarget?.machine?.code&&
                                 <div>
                                     <span className="ml-1 text-gray9F text-[0.8rem]">
-                                        تاریخ انقضا :
+                                        کد وسیله :
                                     </span>
                                     <span className="text-[#29262A] text-[0.8rem]">
-                                        {props.fixTarget.expirationDate}
+                                        {props.fixTarget?.machine?.code}
                                     </span>
                                 </div>
                                  }
                                 <div>
                                     <span className="ml-1 text-gray9F text-[0.8rem]">
-                                        نوع وسیله نقلیه :
+                                        شاخص  عملکرد :
                                     </span>
                                     <span className="text-[#29262A] text-[0.8rem]">
-                                        {props.fixTarget?.machineType}
+                                    {"متن پیش فرض"}
                                     </span>
                                 </div>
-                                {props.fixTarget?.machineCode&&
+                                {props.fixTarget?.machine?.subOrganizationName&&
                                 <div>
                                     <span className="ml-1 text-gray9F text-[0.8rem]">
-                                        کد وسیله نقلیه :
+                                          دپارتمان :
                                     </span>
                                     <span className="text-[#29262A] text-[0.8rem]">
-                                        {
-                                            props.fixTarget?.machineTag === "" ? (props.fixTarget?.machineCode) : (
-                                                props.fixTarget?.machineTag.slice(2, 5) + "-" + props.fixTarget?.machineTag.slice(5, 7) + " " + props.fixTarget?.machineTag.slice(7, 8) + " " + props.fixTarget?.machineTag.slice(0, 2)
-                                            )
-                                        }
+                                    {props.fixTarget?.machine?.subOrganizationName}
                                     </span>
                                 </div>
                                 }
-                                {props.fixTarget?.machineTag&&
+                                {props.fixTarget?.date&&
                                 <div>
                                     <span className="ml-1 text-gray9F text-[0.8rem]">
-                                        پلاک وسیله نقلیه :
+                                        تاریخ خرابی  :
                                     </span>
                                     <span className="text-[#29262A] text-[0.8rem]">
-                                        {
-                                            props.fixTarget?.machineTag === "" ? (props.fixTarget?.machineCode) : (
-                                                props.fixTarget?.machineTag.slice(2, 5) + "-" + props.fixTarget?.machineTag.slice(5, 7) + " " + props.fixTarget?.machineTag.slice(7, 8) + " " + props.fixTarget?.machineTag.slice(0, 2)
-                                            )
-                                        }
+                                    {props.fixTarget?.date}
                                     </span>
                                 </div>
                                 }
-                                <div>
-                                    <span className="ml-1 text-gray9F text-[0.8rem]">
-                                        راننده :
-                                    </span>
-                                    <span className="text-[#29262A] text-[0.8rem]">
-                                        {props.fixTarget?.driverName}
-                                    </span>
-                                </div>
-                                <div>
-                                    <span className="ml-1 text-gray9F text-[0.8rem]">
-                                        از دپارتمان :
-                                    </span>
-                                    <span className="text-[#29262A] text-[0.8rem]">
-                                        {props.fixTarget?.sourceSubOrganizationName}
-                                    </span>
-                                </div>
-                                <div>
-                                    <span className="ml-1 text-gray9F text-[0.8rem]">
-                                        تاریخ :
-                                    </span>
-                                    <span className="text-[#29262A] text-[0.8rem]">
-                                    <span>{props.fixTarget?.time}</span> <span className="pr-2">{props.fixTarget?.date}</span>
-                                    </span>
-                                </div>
                                 <div>
                                     <span className="ml-1 text-gray9F text-[0.8rem]">
                                         وضعیت :
                                     </span>
                                     <span className="text-[#29262A] text-[0.8rem]">
-                                        {props.fixTarget?.status === "CONFIRMED" ? (<span className="text-[0.8rem] bg-greenBg text-greenText py-1 px-2 rounded-xl">تاييد شده</span>) : (
-                                            props.fixTarget?.status === "UNKNOWN" ? (<span className="text-[0.8rem] bg-[#EBEBEB] text-gray70 py-1 px-2 rounded-xl">نامعلوم</span>) : (
-                                                <span className="text-[0.8rem] bg-orangeBg text-orangeText py-1 px-2 rounded-xl">خراب</span>
-                                            )
-                                        )}
+                                    {props.fixTarget?.status==="BROKEN"?"خراب":null}
                                     </span>
                                 </div>
-                                {props.fixTarget?.description&&
                                 <div>
-                                    <span className="ml-1 text-gray9F text-[0.8rem]">
+                                    <span className="text-xs">
                                         توضیحات :
                                     </span>
-                                    <span className="text-[#29262A] text-[0.8rem]">
-                                        {props.fixTarget.description}
-                                    </span>
-                                </div>}
+                                </div>
+                                <div className="  flex justify-start ">
+                                    <TextField
+                                multiline
+                                rows={3}
+                                        fullWidth
+                                        placeholder=" توضیحات (اجباری) "
+                                        type="text"
+                                        name="description"
+                                        value={formik.values.description}
+                                        onChange={formik.handleChange}
+                                        error={formik.touched.description && Boolean(formik.errors.description)}
+                                        helperText={formik.touched.description && formik.errors.description}
+                                        inputProps={{style: {fontFamily: "__fonts_2f4189,__fonts_Fallback_2f4189", fontSize: "0.8rem"}}}
+                                            InputLabelProps={{style: {fontFamily: "__fonts_2f4189,__fonts_Fallback_2f4189"}}}/>
+                                    </div>
                             </div>
                         </div>
                         <div className="flex justify-center mt-10 gap-4">

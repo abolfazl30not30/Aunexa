@@ -554,7 +554,7 @@ function PurchaseRequest() {
           handleCloseFilter={handleCloseFilter}
         />
         <MoreInfoDialog
-          handleOpenDelete={handleOpenDelete}
+          handleOpenRejection={handleOpenRejection}
           handleOpenConfirm={handleOpenConfirm}
           moreInfoTarget={moreInfoTarget}
           openMoreInfo={openMoreInfo}

@@ -42,11 +42,10 @@ export default function page() {
     setCheckedAll(event.target.checked);
   };
 
-
   const handleChangeChecked = (event, data) => {
     if (event.target.checked) {
-      const obj = {...data};
-      let updateList = [...paymentList,obj];
+      const obj = { ...data };
+      let updateList = [...paymentList, obj];
       setPaymentList(updateList);
     } else {
       let temp = paymentList.filter((item) => item.id !== data.id);
@@ -207,6 +206,15 @@ export default function page() {
       handleOpenMoreInfo(info);
     }
   };
+  const [searchValue, setSearchValue] = useState("");
+  const [filterType, setFilterType] = useState("code");
+
+  const handleSearchBox = (e) => {
+    setSearchValue(e.target.value);
+    let params = new URLSearchParams();
+    params.set(filterType, e.target.value);
+    setFilterItem(params.toString());
+  };
   return (
     <div>
       <header className="flex justify-between items-center text-[0.9rem] bg-white py-6 px-5 md:px-10">
@@ -216,45 +224,107 @@ export default function page() {
           </h2>
         </div>
         <div className="">
-          {
-            paymentList.length !== 0 ? (
-                <button
-                    className="flex  text-mainRed items-center border-mainRed border px-3 py-2 rounded-full md:rounded"
-                    onClick={handleOpenRegisterFactor}
-                >
-                  <span className="hidden md:inline">ثبت فاکتور</span>
-                </button>
-            ) : (
-                <button
-                    className="flex hover:cursor-default text-[#9F9F9F] bg-[#F2EDED] disabled items-center border-[#E0E3E0] border px-3 py-2 rounded-full md:rounded">
-                  <span className="hidden md:inline">ثبت فاکتور</span>
-                </button>
-            )
-          }
+          {paymentList.length !== 0 ? (
+            <button
+              className="flex  text-mainRed items-center border-mainRed border px-3 py-2 rounded-full md:rounded"
+              onClick={handleOpenRegisterFactor}
+            >
+              <span className="hidden md:inline">ثبت فاکتور</span>
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                width="24"
+                height="24"
+                viewBox="0 0 24 24"
+                fill="none"
+              >
+                <path
+                  d="M7 12H17"
+                  stroke="#DB3746"
+                  stroke-width="2"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                />
+                <path
+                  d="M12 7V17"
+                  stroke="#DB3746"
+                  stroke-width="2"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                />
+              </svg>
+            </button>
+          ) : (
+            <button className="flex hover:cursor-default  text-[#9F9F9F] bg-[#F2EDED] disabled items-center border-[#E0E3E0] border px-3 py-2 rounded-full md:rounded">
+              <span className="hidden md:inline">ثبت فاکتور</span>
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                width="24"
+                height="24"
+                viewBox="0 0 24 24"
+                fill="none"
+              >
+                <path
+                  d="M7 12H17"
+                  stroke="#9F9F9F"
+                  stroke-width="2"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                />
+                <path
+                  d="M12 7V17"
+                  stroke="#9F9F9F"
+                  stroke-width="2"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                />
+              </svg>
+            </button>
+          )}
         </div>
       </header>
       <section className="py-4 md:px-8 mt-5 bg-white h-[50rem]">
-        <div className="px-4 flex justify-end">
-          {/*<div className="w-[50%] md:w-[37%]">*/}
-          {/*    <FormControl fullWidth>*/}
-          {/*        <OutlinedInput*/}
-          {/*            size="small"*/}
-          {/*            sx={{py: "0.2rem"}}*/}
-          {/*            placeholder="جستوجو..."*/}
-          {/*            id="outlined-adornment-amount"*/}
-          {/*            inputProps={{style: {fontFamily: "__fonts_2f4189,__fonts_Fallback_2f4189", fontSize: "0.9rem"}}}*/}
-          {/*            startAdornment={<InputAdornment position="start">*/}
-          {/*                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"*/}
-          {/*                     viewBox="0 0 24 24" fill="none">*/}
-          {/*                    <path*/}
-          {/*                        d="M21 21L16.65 16.65M11 6C13.7614 6 16 8.23858 16 11M19 11C19 15.4183 15.4183 19 11 19C6.58172 19 3 15.4183 3 11C3 6.58172 6.58172 3 11 3C15.4183 3 19 6.58172 19 11Z"*/}
-          {/*                        stroke="#9F9F9F" stroke-width="1.5" stroke-linecap="round"*/}
-          {/*                        stroke-linejoin="round"/>*/}
-          {/*                </svg>*/}
-          {/*            </InputAdornment>}*/}
-          {/*        />*/}
-          {/*    </FormControl>*/}
-          {/*</div>*/}
+        <div className="px-4 flex justify-between">
+          <div className="xl:w-1/4 md:w-1/3">
+            <FormControl fullWidth>
+              <OutlinedInput
+                value={searchValue}
+                onChange={handleSearchBox}
+                className=""
+                size="small"
+                sx={{
+                  py: "0.2rem",
+                  borderRadius: 0,
+                }}
+                placeholder="جست و جو کد درخواست"
+                id="outlined-adornment-amount"
+                inputProps={{
+                  style: {
+                    fontFamily: "__fonts_2f4189,__fonts_Fallback_2f4189",
+                    fontSize: "0.9rem",
+                  },
+                }}
+                startAdornment={
+                  <InputAdornment position="start">
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      width="24"
+                      height="24"
+                      viewBox="0 0 24 24"
+                      fill="none"
+                    >
+                      <path
+                        d="M21 21L16.65 16.65M11 6C13.7614 6 16 8.23858 16 11M19 11C19 15.4183 15.4183 19 11 19C6.58172 19 3 15.4183 3 11C3 6.58172 6.58172 3 11 3C15.4183 3 19 6.58172 19 11Z"
+                        stroke="#9F9F9F"
+                        stroke-width="1.5"
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                      />
+                    </svg>
+                  </InputAdornment>
+                }
+              />
+            </FormControl>
+          </div>
           <div className="flex gap-3">
             <button
               onClick={handleOpenFilter}
@@ -358,12 +428,11 @@ export default function page() {
             <table className=" w-full table-auto overflow-scroll border-collapse border-spacing-0 text-sm text-center text-gray70  ">
               <thead className="text-[0.9rem] text-gray80  bg-[#F8F8F8] md:bg-[#F2EDED] ">
                 <tr>
-                  <th className="hidden md:table-cell px-6 py-4">
-                  </th>
+                  <th className="table-cell px-6 py-4"></th>
                   <th className="hidden md:table-cell px-2 md:px-6 py-4">
                     کد درخواست
                   </th>
-                  <th className="px-2 md:px-6 px-6 py-4">محصول</th>
+                  <th className="px-2 md:px-6 px-6 py-4 ">محصول</th>
                   <th className="px-2 md:px-6 px-6 py-4">مقدار</th>
                   <th className="px-2 md:px-6 px-6 py-4">تاریخ</th>
 
@@ -413,11 +482,18 @@ export default function page() {
                       </tr>
                     ))
                   : inventoryData?.content?.map((data, index) => (
-                      <tr className="table-row border-b">
-                        <td className="hidden md:table-cell md:px-6 py-4 px-2  text-gray70 whitespace-nowrap ">
+                      <tr
+                        onClick={() => {
+                          handleOpenMoreInfoRow(data);
+                        }}
+                        className="table-row border-b"
+                      >
+                        <td className="table-cell md:px-6 py-4 px-2  text-gray70 whitespace-nowrap ">
                           <Checkbox
                             id={data.id}
-                            checked={paymentList.some((item) => item?.id === data.id)}
+                            checked={paymentList.some(
+                              (item) => item?.id === data.id
+                            )}
                             onClick={(e) => {
                               handleChangeChecked(e, data);
                             }}
@@ -438,7 +514,7 @@ export default function page() {
                           <span>{data?.billCycle?.requestTime}</span>
                           <span>{data?.billCycle?.requestDate}</span>
                         </td>
-                        <td className="hidden md:flex  md:justify-center px-2 md:px-6 py-4  text-gray70 whitespace-nowrap ">
+                        <td className="flex justify-center px-6 md:py-4 py-8  text-gray70 whitespace-nowrap ">
                           {data?.billCycle?.priority ? (
                             <svg
                               xmlns="http://www.w3.org/2000/svg"
@@ -467,7 +543,7 @@ export default function page() {
                             </svg>
                           )}
                         </td>
-                        <td className="px-6 py-4  text-gray70 whitespace-nowrap ">
+                        <td className="px-6 py-4 md:table-cell hidden text-gray70 whitespace-nowrap ">
                           <span>{data?.billCycle?.subOrganizationName}</span>
                         </td>
 
@@ -587,7 +663,7 @@ export default function page() {
         handleCloseFilter={handleCloseFilter}
       />
       <RegisterFactorDialog
-          paymentList={paymentList}
+        paymentList={paymentList}
         handleCloseRegisterFactor={handleCloseRegisterFactor}
         openRegisterFactor={openRegisterFactor}
       />

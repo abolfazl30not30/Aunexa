@@ -313,9 +313,9 @@ function PurchaseRequest() {
                     </th>
                     <th className="px-2 md:px-6 px-6 py-4">محصول</th>
                     <th className="px-2 md:px-6 px-6 py-4">مقدار</th>
-                    <th className="hidden md:table-cell px-6 py-4">فوری</th>
+                    <th className="table-cell px-6 py-4">فوری</th>
                     <th className="px-2 md:px-6 px-6 py-4">
-                      <span className="hidden md:inline">وضعیت</span>
+                      <span className="inline">وضعیت</span>
                     </th>
                     <th className="hidden md:table-cell px-6 py-4">عملیات</th>
                   </tr>
@@ -410,7 +410,7 @@ function PurchaseRequest() {
                           <td className="px-2 md:px-6 py-4  text-gray70 whitespace-nowrap ">
                             {data?.value} {data?.unit}
                           </td>
-                          <td className="hidden md:flex  md:justify-center px-2 md:px-6 py-4  text-gray70 whitespace-nowrap ">
+                          <td className="flex  justify-center px-2 md:px-6 py-4  text-gray70 whitespace-nowrap ">
                             {data?.priority ? (
                               <svg
                                 xmlns="http://www.w3.org/2000/svg"

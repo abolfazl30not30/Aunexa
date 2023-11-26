@@ -84,16 +84,16 @@ export default function page({ params }) {
   });
   return (
     <div>
-      <header className="flex justify-between items-center text-[0.9rem] bg-white py-6 md:px-10 px-2 ">
+      <header className="flex justify-between items-center text-[0.9rem] bg-white py-6 lg:px-10 sm:px-8 px-6  ">
         <div className="">
-          <h2 className="font-[800] items-center flex gap-2 text-[0.9rem] md:text-[1.1rem]">
+          <h2 className="font-[800] sm:items-center flex sm:flex-row flex-col gap-2 text-[0.9rem] lg:text-[1.1rem]">
             مکالمه با بخش فنی
             <div className="flex items-end gap-2">
-              &#40;
+              <span className="sm:inline hidden">&#40;</span>
               <h3 className="">شماره تیکت :</h3>
               <span className="">{param.slice(endOfStatus + 21)}</span>
             </div>
-            &#41;
+            <span className="sm:inline hidden">&#41;</span>
           </h2>
         </div>
         <div>
@@ -117,7 +117,7 @@ export default function page({ params }) {
           </Link>
         </div>
       </header>
-      <section className="py-4 md:px-10 mt-5 bg-white h-[53rem] flex flex-col justify-between ">
+      <section className="py-4 lg:px-10 px-5 mt-5 bg-white h-[53rem] flex flex-col justify-between ">
         <Scrollbars
           autoHide
           ref={scrollbars}
@@ -129,8 +129,8 @@ export default function page({ params }) {
           renderThumbVertical={renderThumbVertical}
           renderTrackVertical={renderTrackVertical}
         >
-          <div className="flex flex-col gap-2 py-6 px-4 ">
-            <div className="w-1/3 ">
+          <div className="flex flex-col gap-2 lg:py-6 lg:px-4 py-4 px-2 ">
+            <div className="xl:w-1/3 lg:w-2/5 md:w-3/4 sm:w-3/5 w-7/8 ">
               <div className="bg-[#29262A] rounded-lg rounded-tr-none px-3 py-2 space-y-3 text-white">
                 <div>
                   <span>سارا ولی زاده :</span>
@@ -156,7 +156,7 @@ export default function page({ params }) {
                 </div>
               </div>
             </div>
-            <div className="w-1/3 self-end">
+            <div className="xl:w-1/3 lg:w-2/5 md:w-3/4 sm:w-3/5 w-7/8 self-end">
               <div className=" space-y-3 rounded-lg rounded-tl-none bg-[#F2EDED] px-3 py-2 text-[#29262A]">
                 <div>
                   <span>پشتیبانی :</span>

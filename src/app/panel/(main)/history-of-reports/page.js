@@ -17,7 +17,7 @@ import { boolean } from "yup";
 import FixFailureDialog from "@/components/Panel/failure-and-repair-report/FixFailureDialog";
 import FilterDialog from "@/components/Panel/history-of-reports/FilterDialog";
 import MoreInfoDialog from "@/components/Panel/history-of-reports/MoreInfoDialog";
-import {useGetAllHistoryOfReportsQuery} from "@/redux/features/history-of-reports/HistoryOfReportsSlice";
+import { useGetAllHistoryOfReportsQuery } from "@/redux/features/history-of-reports/HistoryOfReportsSlice";
 
 function vehiclesAndEquipment() {
   const [searchValue, setSearchValue] = useState("");
@@ -40,7 +40,6 @@ function vehiclesAndEquipment() {
   let permission = useSelector(
     (state) => state.access?.pages?.primaryStoreInput
   );
-
 
   const [page, setPage] = useState(1);
   const [sort, setSort] = useState("desc");
@@ -130,48 +129,7 @@ function vehiclesAndEquipment() {
           </div>
         </header>
         <section className="py-4 md:px-8 mt-5 bg-white ">
-          <div className="px-4 flex justify-between">
-            <div className="">
-              <FormControl fullWidth>
-                <OutlinedInput
-                  value={searchValue}
-                  onChange={handleSearchBox}
-                  className=""
-                  size="small"
-                  sx={{
-                    py: "0.2rem",
-                    borderRadius: 0,
-                  }}
-                  placeholder="جستوجو..."
-                  id="outlined-adornment-amount"
-                  inputProps={{
-                    style: {
-                      fontFamily: "__fonts_2f4189,__fonts_Fallback_2f4189",
-                      fontSize: "0.9rem",
-                    },
-                  }}
-                  startAdornment={
-                    <InputAdornment position="start">
-                      <svg
-                        xmlns="http://www.w3.org/2000/svg"
-                        width="24"
-                        height="24"
-                        viewBox="0 0 24 24"
-                        fill="none"
-                      >
-                        <path
-                          d="M21 21L16.65 16.65M11 6C13.7614 6 16 8.23858 16 11M19 11C19 15.4183 15.4183 19 11 19C6.58172 19 3 15.4183 3 11C3 6.58172 6.58172 3 11 3C15.4183 3 19 6.58172 19 11Z"
-                          stroke="#9F9F9F"
-                          stroke-width="1.5"
-                          stroke-linecap="round"
-                          stroke-linejoin="round"
-                        />
-                      </svg>
-                    </InputAdornment>
-                  }
-                />
-              </FormControl>
-            </div>
+          <div className="px-4 flex justify-end">
             <div className="flex gap-3">
               <button
                 onClick={handleOpenFilter}
@@ -277,10 +235,13 @@ function vehiclesAndEquipment() {
                     <th className="hidden md:table-cell px-6 py-4">#</th>
                     <th className="px-2 md:px-6 py-4">وسیله و پلاک</th>
                     <th className="px-2 md:px-6 px-6 py-4">دپارتمان</th>
-                    <th className="px-2 md:px-6 px-6 py-4"> تاریخ خرابی / تعمیر</th>
+                    <th className="px-2 md:px-6 px-6 py-4">
+                      {" "}
+                      تاریخ خرابی / تعمیر
+                    </th>
                     <th className="hidden md:table-cell px-6 py-4">توضیحات</th>
                     <th className="px-2 md:px-6 px-6 py-4">
-                      <span className="hidden md:inline">وضعیت</span>
+                      <span className="inline">وضعیت</span>
                     </th>
                     <th className="hidden md:table-cell px-6 py-4">عملیات</th>
                   </tr>

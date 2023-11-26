@@ -105,6 +105,11 @@ export default function page() {
     });
     setOpenMoreInfo(false);
   };
+  const handleOpenMoreInfoRow = (info) => {
+    if (window.innerWidth <= 768) {
+      handleOpenMoreInfo(info);
+    }
+  };
   return (
     <div>
       <header className="flex  items-center text-[0.9rem] bg-white py-6 px-5 md:px-10">
@@ -240,14 +245,14 @@ export default function page() {
               <thead className="text-[0.9rem] text-gray80  bg-[#F8F8F8] md:bg-[#F2EDED] ">
                 <tr>
                   <th className="hidden md:table-cell px-6 py-4">#</th>
-                  <th className="hidden md:table-cell px-2 md:px-6 py-4">
-                    کد درخواست
-                  </th>
+                  <th className="table-cell px-2 md:px-6 py-4">کد درخواست</th>
                   <th className="px-2 md:px-6 px-6 py-4">محصول</th>
                   <th className="px-2 md:px-6 px-6 py-4">مقدار</th>
-                  <th className="px-2 md:px-6 px-6 py-4">تاریخ درخواست</th>
+                  <th className="px-2 hidden md:table-cell md:px-6 px-6 py-4">
+                    تاریخ درخواست
+                  </th>
 
-                  <th className="hidden md:table-cell px-6 py-4">دپارتمان</th>
+                  <th className="table-cell px-6 py-4">دپارتمان</th>
                   <th className="hidden md:table-cell px-6 py-4">
                     تاریخ رد درخواست
                   </th>
@@ -290,11 +295,16 @@ export default function page() {
                       </tr>
                     ))
                   : inventoryData?.content?.map((data, index) => (
-                      <tr className="table-row border-b">
+                      <tr
+                        onClick={() => {
+                          handleOpenMoreInfoRow(data);
+                        }}
+                        className="table-row border-b"
+                      >
                         <td className="hidden md:table-cell md:px-6 py-4 px-2  text-gray70 whitespace-nowrap ">
                           {index + 1}
                         </td>
-                        <td className="hidden md:table-cell px-2 md:px-6 py-4  text-gray70 whitespace-nowrap ">
+                        <td className="table-cell px-2 md:px-6 py-4  text-gray70 whitespace-nowrap ">
                           <span>{data?.code}</span>
                         </td>
                         <td className="px-6 py-4  text-gray70 whitespace-nowrap ">
@@ -304,14 +314,14 @@ export default function page() {
                           <span>{data?.value}</span>
                           <span>{data?.unit}</span>
                         </td>
-                        <td className=" space-x-2 px-2 py-4 md:px-6  text-gray70 whitespace-nowrap ">
+                        <td className=" space-x-2 px-2 py-4 md:px-6 md:table-cell hidden text-gray70 whitespace-nowrap ">
                           <span>{data?.requestTime}</span>
                           <span>{data?.requestDate}</span>
                         </td>
                         <td className="px-6 py-4  text-gray70 whitespace-nowrap ">
                           <span>{data?.subOrganizationName}</span>
                         </td>
-                        <td className=" space-x-2 px-2 py-4 md:px-6  text-gray70 whitespace-nowrap ">
+                        <td className=" space-x-2 px-2 py-4 md:px-6 md:table-cell hidden text-gray70 whitespace-nowrap ">
                           <span>{data?.failureReason?.time}</span>
                           <span>{data?.failureReason?.date}</span>
                         </td>

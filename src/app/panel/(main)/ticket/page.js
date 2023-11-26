@@ -173,11 +173,13 @@ function Ticket() {
                         <th className="hidden md:table-cell md:px-10 px-2  py-4">
                           #
                         </th>
-                        <th className="px-2 md:px-10   py-4">شماره تیکت</th>
-                        <th className="hidden md:table-cell md:px-10 px-2  py-4">
+                        <th className="px-2 md:px-10 hidden md:table-cell  py-4">
+                          شماره تیکت
+                        </th>
+                        <th className="table-cell md:px-10 px-2  py-4">
                           موضوع تیکت
                         </th>
-                        <th className="hidden md:table-cell md:px-10 px-2  py-4">
+                        <th className="table-cell md:px-10 px-2  py-4">
                           دپارتمان
                         </th>
                         <th className="hidden md:table-cell md:px-10 px-2  py-4">
@@ -186,10 +188,10 @@ function Ticket() {
                         <th className="hidden md:table-cell md:px-10 px-2  py-4">
                           تاریخ آخرین پیام
                         </th>
-                        <th className="hidden md:table-cell md:px-10 px-2  py-4">
+                        <th className="table-cell md:px-10 px-2  py-4">
                           وضعیت
                         </th>
-                        <th className="hidden md:table-cell md:px-10 px-2  py-4">
+                        <th className="table-cell md:px-10 px-2  py-4">
                           عملیات
                         </th>
                       </tr>
@@ -273,7 +275,7 @@ function Ticket() {
                                 <td className="hidden md:table-cell md:px-10 px-2  py-4  text-gray70 whitespace-nowrap ">
                                   {index + 1}
                                 </td>
-                                <td className="px-2 md:px-10   py-4  text-gray70 whitespace-nowrap ">
+                                <td className="px-2 md:px-10  md:table-cell  hidden py-4  text-gray70 whitespace-nowrap ">
                                   {data.ticketNumber}
                                 </td>
                                 <td className="px-2 md:px-10   py-4  text-gray70 whitespace-nowrap ">
@@ -282,10 +284,10 @@ function Ticket() {
                                 <td className="px-2 md:px-10   py-4  text-gray70 whitespace-nowrap ">
                                   {data?.targetDepartmentName}
                                 </td>
-                                <td className="px-2 md:px-10   py-4  text-gray70 whitespace-nowrap ">
+                                <td className="px-2 md:px-10  md:table-cell hidden py-4  text-gray70 whitespace-nowrap ">
                                   {data.sourceDepartmentName}
                                 </td>
-                                <td className="px-2 md:px-10   py-4 flex gap-2 justify-center items-center text-gray70 whitespace-nowrap ">
+                                <td className="px-2 md:px-10 md:flex  hidden  py-4 gap-2 justify-center items-center text-gray70 whitespace-nowrap ">
                                   <span>{data.updateAt}</span>
                                 </td>
                                 <td className="px-2 md:px-6 py-4  text-gray70 whitespace-nowrap ">
@@ -305,7 +307,7 @@ function Ticket() {
                                 </td>
                                 <td
                                   scope="row"
-                                  className="hidden md:flex gap-2 md:px-10 px-2  py-4 justify-center text-gray70 whitespace-nowrap "
+                                  className="flex gap-2 md:px-10 px-2  py-4 justify-center text-gray70 whitespace-nowrap "
                                 >
                                   <Link
                                     href={{
@@ -357,7 +359,7 @@ function Ticket() {
                                 <td className="hidden md:table-cell md:px-10 px-2  py-4  text-gray70 whitespace-nowrap ">
                                   {index + 1}
                                 </td>
-                                <td className="px-2 md:px-10   py-4  text-gray70 whitespace-nowrap ">
+                                <td className="px-2 md:px-10  hidden md:table-cell py-4  text-gray70 whitespace-nowrap ">
                                   {data.ticketNumber}
                                 </td>
                                 <td className="px-2 md:px-10   py-4  text-gray70 whitespace-nowrap ">
@@ -366,10 +368,10 @@ function Ticket() {
                                 <td className="px-2 md:px-10   py-4  text-gray70 whitespace-nowrap ">
                                   {data?.targetDepartmentName}
                                 </td>
-                                <td className="px-2 md:px-10   py-4  text-gray70 whitespace-nowrap ">
+                                <td className="px-2 md:px-10 hidden md:table-cell  py-4  text-gray70 whitespace-nowrap ">
                                   {data.sourceDepartmentName}
                                 </td>
-                                <td className="px-2 md:px-10   py-4 flex gap-2 justify-center items-center text-gray70 whitespace-nowrap ">
+                                <td className="px-2 md:px-10 hidden md:table-cell  py-4 flex gap-2 justify-center items-center text-gray70 whitespace-nowrap ">
                                   <span>{data.updateAt}</span>
                                 </td>
                                 <td className="px-2 md:px-6 py-4  text-gray70 whitespace-nowrap ">
@@ -381,7 +383,7 @@ function Ticket() {
                                 </td>
                                 <td
                                   scope="row"
-                                  className="hidden md:flex gap-2 md:px-10 px-2  py-4 justify-center text-gray70 whitespace-nowrap "
+                                  className="flex gap-2 md:px-10 px-2  py-4 justify-center text-gray70 whitespace-nowrap "
                                 >
                                   <Link
                                     href={`/panel/ticket/chat-page/id=${data.id}&&status=${data.status}&&ticketNumber=${data.ticketNumber}`}

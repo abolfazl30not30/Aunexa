@@ -98,6 +98,11 @@ export default function page() {
       reporter: "",
     },
   });
+  const handleOpenMoreInfoRow = (info) => {
+    if (window.innerWidth <= 768) {
+      handleOpenMoreInfo(info);
+    }
+  };
   const handleOpenMoreInfo = (info) => {
     setMoreInfoTarget(info);
     setOpenMoreInfo(true);
@@ -292,12 +297,12 @@ export default function page() {
                   </th>
                   <th className="px-2 md:px-6 px-6 py-4">محصول</th>
                   <th className="px-2 md:px-6 px-6 py-4">مقدار</th>
-                  <th className="px-2 md:px-6 px-6 py-4">تاریخ خرید</th>
-
-                  <th className="hidden md:table-cell px-6 py-4">دپارتمان</th>
-                  <th className="hidden md:table-cell px-6 py-4">
-                    وضعیت فاکتور
+                  <th className=" hidden md:table-cell px-2 md:px-6 px-6 py-4">
+                    تاریخ خرید
                   </th>
+
+                  <th className="table-cell px-6 py-4">دپارتمان</th>
+                  <th className="table-cell px-6 py-4">وضعیت فاکتور</th>
                   <th className="hidden md:table-cell px-6 py-4">عملیات</th>
                 </tr>
               </thead>
@@ -337,7 +342,12 @@ export default function page() {
                       </tr>
                     ))
                   : inventoryData?.content?.map((data, index) => (
-                      <tr className="table-row border-b">
+                      <tr
+                        onClick={() => {
+                          handleOpenMoreInfoRow(data);
+                        }}
+                        className="table-row border-b"
+                      >
                         <td className="hidden md:table-cell md:px-6 py-4 px-2  text-gray70 whitespace-nowrap ">
                           {index + 1}
                         </td>
@@ -351,7 +361,7 @@ export default function page() {
                           <span>{data?.bill?.quantity?.value}</span>
                           <span>{data?.bill?.quantity?.unit}</span>
                         </td>
-                        <td className=" space-x-2 px-2 py-4 md:px-6  text-gray70 whitespace-nowrap ">
+                        <td className=" space-x-2 px-2 py-4 md:px-6 md:table-cell hidden text-gray70 whitespace-nowrap ">
                           <span>{data?.bill?.billCycle?.requestTime}</span>
                           <span>{data?.bill?.billCycle?.requestDate}</span>
                         </td>

@@ -337,7 +337,7 @@ function primaryStoreInput() {
                     </th>
                     <th className="hidden md:table-cell px-6 py-4">تاریخ</th>
                     <th className="px-2 md:px-6 px-6 py-4">
-                      <span className="hidden md:inline">وضعیت</span>
+                      <span className="inline">وضعیت</span>
                     </th>
                     <th className="hidden md:table-cell px-6 py-4">عملیات</th>
                   </tr>

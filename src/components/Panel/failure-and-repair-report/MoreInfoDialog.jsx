@@ -100,7 +100,7 @@ export default function MoreInfoDialog(props) {
                                     </div>
                                     <div className="border border-[#D9D9D9]  flex justify-start px-4">
                                         <div className="p-2">
-                                            <span className="text-[#29262A] text-[0.9rem]"><span className="pr-2">{props.moreInfoTarget?.date}</span><span>{props.moreInfoTarget?.time}</span></span>
+                                            <span className="text-[#29262A] text-[0.9rem]"><span className="pr-2">{props.moreInfoTarget?.date}</span></span>
                                         </div>
                                     </div>
                                     </div>
@@ -181,7 +181,7 @@ export default function MoreInfoDialog(props) {
                                         تاریخ خرابی :
                                     </span>
                                     <span className="text-[#29262A] text-[0.8rem]">
-                                    <span className="pr-2">{props.moreInfoTarget?.machine?.date}</span> <span >{props.moreInfoTarget?.machine?.time}</span>
+                                    <span >{props.moreInfoTarget?.date}</span> 
                                     </span>
                                 </div>
                                 <div>
@@ -203,7 +203,12 @@ export default function MoreInfoDialog(props) {
                                 </div>
                             </div>
                         </div>
-                       
+                        <div className="md:hidden flex  justify-center mt-5 gap-3">
+                            
+                            <button onClick={()=>{props.handleOpenFix(props.moreInfoTarget);props.handleCloseMoreInfo()}}  className="px-5 py-2 text-[0.8rem] text-[#4087DB] border border-[#4087DB] rounded hover:bg-[#4087DB] hover:text-white">
+                                رفع خرابی
+                            </button>
+                        </div>
                     </DialogContentText>
                 </DialogContent>
             </Dialog>
