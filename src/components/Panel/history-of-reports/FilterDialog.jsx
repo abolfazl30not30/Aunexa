@@ -90,15 +90,13 @@ export default function FilterDialog(props) {
             params.set("toDate",values.dateTo)
         }
         if(values.machineId){
-            params.set("machineId",values.machineId)
+            params.set("machine.id",values.machineId)
         }
         if(values.status){
             params.set("status",values.status)
         }
-        if(values.buyer){
-            params.set("buyer",values.buyer)
-        }if(values.sourceSubOrganizationId){
-            params.set("sourceSubOrganizationId",values.sourceSubOrganizationId)
+        if(values.subOrganizationId){
+            params.set("subOrganizationId",values.subOrganizationId)
         }
         return params
     }
@@ -108,6 +106,7 @@ export default function FilterDialog(props) {
         setDateTo("")
         setDateFrom("")
         setProduct(null)
+        setVehicle(null)
         setSubOrganization(null)
     }
     const formik = useFormik({
