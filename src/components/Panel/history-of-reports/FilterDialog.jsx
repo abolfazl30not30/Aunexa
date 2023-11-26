@@ -90,7 +90,7 @@ export default function FilterDialog(props) {
             params.set("toDate",values.dateTo)
         }
         if(values.machineId){
-            params.set("machine.id",values.machineId)
+            params.set("machineId",values.machineId)
         }
         if(values.status){
             params.set("status",values.status)
@@ -358,9 +358,8 @@ export default function FilterDialog(props) {
                                         sx={{fontFamily: "__fonts_2f4189,__fonts_Fallback_2f4189", fontSize: "0.8rem"}}
                                         onChange={formik.handleChange}>
                                         <MenuItem value="" sx={{fontFamily: "__fonts_2f4189,__fonts_Fallback_2f4189", fontSize: "0.8rem"}}>همه وضعیت ها</MenuItem>
-                                        <MenuItem value="AVAILABLE" sx={{fontFamily: "__fonts_2f4189,__fonts_Fallback_2f4189", fontSize: "0.8rem"}}>در دسترس</MenuItem>
-                                        <MenuItem value="IN_USE" sx={{fontFamily: "__fonts_2f4189,__fonts_Fallback_2f4189", fontSize: "0.8rem"}}>درحال استفاده</MenuItem>
-                                        <MenuItem value="DESTROYED" sx={{fontFamily: "__fonts_2f4189,__fonts_Fallback_2f4189", fontSize: "0.8rem"}}>مشکل دار</MenuItem>
+                                        <MenuItem value="AVAILABLE" sx={{fontFamily: "__fonts_2f4189,__fonts_Fallback_2f4189", fontSize: "0.8rem"}}>رفع خرابی</MenuItem>
+                                        <MenuItem value="BROKEN" sx={{fontFamily: "__fonts_2f4189,__fonts_Fallback_2f4189", fontSize: "0.8rem"}}>گزارش خرابی</MenuItem>
                                     </Select>
                                     <FormHelperText>{formik.touched.status && formik.errors.status}</FormHelperText>
                                 </FormControl>
