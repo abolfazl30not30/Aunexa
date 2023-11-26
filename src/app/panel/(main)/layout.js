@@ -1413,7 +1413,7 @@ export default function RootLayout({ children }) {
               </div>
               <div>
                 <Link
-                  href="http://auth.vipsoftware1.com/logout"
+                  href="https://auth.prod.vipsoftware1.com/logout"
                   className="block py-4 px-2 border-b border-b-1 border-b-solid  border-b-borderGray"
                 >
                   <span className="text-gray9F hover:text-textGray text-[0.9rem]">
