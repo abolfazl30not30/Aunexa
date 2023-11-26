@@ -13,6 +13,7 @@ import {
     InputAdornment,
     textField,
     Select,
+    Box
 } from "@mui/material";
 import Dialog from "@mui/material/Dialog";
 import {TailSpin} from "react-loader-spinner";
@@ -47,11 +48,8 @@ export default function AddDataDialog(props) {
 
     const formik = useFormik({
         initialValues: {
-            
             id:"",
             description: "",
-            
-            
         },
 
         validationSchema: schema,
@@ -59,7 +57,7 @@ export default function AddDataDialog(props) {
         
 
         onSubmit: async (vehicle, helpers) => {
-            let updateVehicle = {...vehicle,status:"BROKEN"}
+            let updateVehicle = {description:vehicle.description,status:"BROKEN",machine:{id:vehicle.id}}
             const userData = await submitData(updateVehicle)
             handleReset()
             props.handleCloseAddData()
@@ -119,6 +117,11 @@ export default function AddDataDialog(props) {
                                         }}
                                         options={vehicleList}
                                         getOptionLabel={(option) =>option.code===""?option.tag.slice(2, 5)+ "-" +option.tag.slice(5, 7) + "  " + option.tag.slice(7, 8) + "  " +option.tag.slice(0, 2) +" "+option.type:option.code +" "+ option.type}
+                                        renderOption={(props, option) => (
+                                            <Box component="li"  {...props}>
+                                                <span>{option.code===""?option.tag.slice(2, 5) + "-" + option.tag.slice(5, 7) + " " + option.tag.slice(7, 8) + " " + option.tag.slice(0, 2):option.code}</span>  <span className="pr-4">{option.type}</span> 
+                                            </Box>
+                                        )}
                                         value={vehicle}
                                         onChange={(event, newValue) => {
                                             

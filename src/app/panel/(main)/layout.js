@@ -729,6 +729,64 @@ export default function RootLayout({ children }) {
                     </details>
                   </div>
                   <div>
+                    <details className="group py-3 border-b border-b-1 border-b-solid  border-b-borderGray">
+                      <summary className="flex items-center justify-between gap-2 p-2 font-medium marker:content-none hover:cursor-pointer">
+                        <span className="text-gray9F group-open:text-textGray text-[0.9rem]">
+                          فاکتور
+                        </span>
+                        <svg
+                          className="transition group-open:rotate-90"
+                          xmlns="http://www.w3.org/2000/svg"
+                          width="16"
+                          height="16"
+                          viewBox="0 0 16 16"
+                          fill="none"
+                        >
+                          <path
+                            d="M10 4L6 8L10 12"
+                            stroke="#9F9F9F"
+                            stroke-linecap="round"
+                            stroke-linejoin="round"
+                          />
+                        </svg>
+                      </summary>
+                      <ul className="flex flex-col gap-1 pr-2">
+                        <li>
+                          <Link
+                            href="/panel/invoice/sales-invoice"
+                            className="block py-2 px-5"
+                          >
+                            <span
+                              className={
+                                pathname === "/panel/invoice/sales-invoice"
+                                  ? "text-mainRed text-[0.8rem]"
+                                  : "text-gray9F hover:text-textGray text-[0.8rem]"
+                              }
+                            >
+                              فاکتور فروش
+                            </span>
+                          </Link>
+                        </li>
+                        <li>
+                          <Link
+                            href="/panel/invoice/purchase-invoice"
+                            className="block py-2 px-5"
+                          >
+                            <span
+                              className={
+                                pathname === "/panel/invoice/purchase-invoice"
+                                  ? "text-mainRed text-[0.8rem]"
+                                  : "text-gray9F hover:text-textGray text-[0.8rem]"
+                              }
+                            >
+                              فاکتور خرید
+                            </span>
+                          </Link>
+                        </li>
+                      </ul>
+                    </details>
+                  </div>
+                  <div>
                     <Link
                       href="/panel/ticket"
                       className="block py-4 px-2 border-b border-b-1 border-b-solid  border-b-borderGray"
@@ -1209,6 +1267,64 @@ export default function RootLayout({ children }) {
                           }
                         >
                           صفحه درخواستهای رد شده
+                        </span>
+                      </Link>
+                    </li>
+                  </ul>
+                </details>
+              </div>
+              <div>
+                <details className="group py-3 border-b border-b-1 border-b-solid  border-b-borderGray">
+                  <summary className="flex items-center justify-between gap-2 p-2 font-medium marker:content-none hover:cursor-pointer">
+                    <span className="text-gray9F group-open:text-textGray text-[0.9rem]">
+                      فاکتور
+                    </span>
+                    <svg
+                      className="transition group-open:rotate-90"
+                      xmlns="http://www.w3.org/2000/svg"
+                      width="16"
+                      height="16"
+                      viewBox="0 0 16 16"
+                      fill="none"
+                    >
+                      <path
+                        d="M10 4L6 8L10 12"
+                        stroke="#9F9F9F"
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                      />
+                    </svg>
+                  </summary>
+                  <ul className="flex flex-col gap-1 pr-2">
+                    <li>
+                      <Link
+                        href="/panel/invoice/sales-invoice"
+                        className="block py-2 px-5"
+                      >
+                        <span
+                          className={
+                            pathname === "/panel/invoice/sales-invoice"
+                              ? "text-mainRed text-[0.9rem]"
+                              : "text-gray9F hover:text-textGray text-[0.8rem]"
+                          }
+                        >
+                          فاکتور فروش
+                        </span>
+                      </Link>
+                    </li>
+                    <li>
+                      <Link
+                        href="/panel/invoice/purchase-invoice"
+                        className="block py-2 px-5"
+                      >
+                        <span
+                          className={
+                            pathname === "/panel/invoice/purchase-invoice"
+                              ? "text-mainRed text-[0.8rem]"
+                              : "text-gray9F hover:text-textGray text-[0.8rem]"
+                          }
+                        >
+                          فاکتور خرید
                         </span>
                       </Link>
                     </li>
