@@ -6,7 +6,7 @@ export const SuccessfulPurchaseRequestListSlice = apiSlice.injectEndpoints({
       query: ({ page, sort, filterItem }) => ({
         url: `bill/payment-item/filter/general?page=${
           page - 1
-        }&size=10&sort=purchaseDate,${sort}&sort=purchaseTime,${sort}&${filterItem}`,
+        }&size=10&sort=payment.purchaseDate,${sort}&sort=payment.purchaseTime,${sort}&${filterItem}`,
       }),
       providesTags: ["successful-purchase-request-list"],
     }),

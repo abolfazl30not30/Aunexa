@@ -4,9 +4,9 @@ export const FailureAndRepairReportSlice = apiSlice.injectEndpoints({
   endpoints: (builder) => ({
     getAllFailureVehicles: builder.query({
       query: ({ page, sort, filterItem }) => ({
-        url: `vehicle/machine/filter?status=DESTROYED&page=${
+        url: `vehicle/machine-report/filter/latest?page=${
           page - 1
-        }&size=10&sort=purchaseDate,${sort}&${filterItem}`,
+        }&size=10&sort=date&sort=time,${sort}&${filterItem}`,
       }),
       providesTags: ["failure-vehicle"],
     }),

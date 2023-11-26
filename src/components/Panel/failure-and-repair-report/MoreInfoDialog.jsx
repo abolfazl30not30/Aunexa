@@ -40,32 +40,32 @@ export default function MoreInfoDialog(props) {
                                     </div>
                                     <div className="border border-[#D9D9D9]  flex justify-evenly px-4">
                                         <div className="p-2">
-                                            <span className="text-[#29262A] text-[0.9rem]">{props.moreInfoTarget?.type}</span>
+                                            <span className="text-[#29262A] text-[0.9rem]">{props.moreInfoTarget?.machine?.type}</span>
                                         </div>
                                         
                                     </div>
                                 </div>
                                 <div className="flex justify-between">
-                                    {props.moreInfoTarget?.tag && 
+                                    {props.moreInfoTarget?.machine?.tag && 
                                     <div className="w-[45%]">
                                     <div className="mb-2">
                                         <span className="text-[0.9rem] text-gray70 ">پلاک وسیله </span>
                                     </div>
                                     <div className="border border-[#D9D9D9]  flex justify-start px-4">
                                         <div className="p-2">
-                                            <span className="text-[#29262A] text-[0.9rem]">{props.moreInfoTarget?.tag}</span>
+                                            <span className="text-[#29262A] text-[0.9rem]">{props.moreInfoTarget?.machine?.tag.slice(2, 5) + "-" + props.moreInfoTarget?.machine?.tag.slice(5, 7) + " " + props.moreInfoTarget?.machine?.tag.slice(7, 8) + " " + props.moreInfoTarget?.machine?.tag.slice(0, 2)}</span>
                                         </div>
                                     </div>
                                     </div>
                                     }
-                                    {props.moreInfoTarget?.code && 
+                                    {props.moreInfoTarget?.machine?.code && 
                                     <div className="w-[45%]">
                                     <div className="mb-2">
                                         <span className="text-[0.9rem] text-gray70 ">کد وسیله</span>
                                     </div>
                                     <div className="border border-[#D9D9D9]  flex justify-start px-4">
                                         <div className="p-2">
-                                            <span className="text-[#29262A] text-[0.9rem]">{props.moreInfoTarget?.code}</span>
+                                            <span className="text-[#29262A] text-[0.9rem]">{props.moreInfoTarget?.machine?.code}</span>
                                         </div>
                                     </div>
                                     </div>
@@ -78,7 +78,7 @@ export default function MoreInfoDialog(props) {
                                     </div>
                                     <div className="border border-[#D9D9D9]  flex justify-start px-4">
                                         <div className="p-2">
-                                            <span className="text-[#29262A] text-[0.9rem]">{props.moreInfoTarget?.driverName}</span>
+                                            <span className="text-[#29262A] text-[0.9rem]">{"متن پیش فرض"}</span>
                                         </div>
                                     </div>
                                     </div>
@@ -88,7 +88,7 @@ export default function MoreInfoDialog(props) {
                                     </div>
                                     <div className="border border-[#D9D9D9]  flex justify-start px-4">
                                         <div className="p-2">
-                                            <span className="text-[#29262A] text-[0.9rem]">{props.moreInfoTarget?.subOrganizationName}</span>
+                                            <span className="text-[#29262A] text-[0.9rem]">{props.moreInfoTarget?.machine?.subOrganizationName}</span>
                                         </div>
                                     </div>
                                     </div>
@@ -100,7 +100,7 @@ export default function MoreInfoDialog(props) {
                                     </div>
                                     <div className="border border-[#D9D9D9]  flex justify-start px-4">
                                         <div className="p-2">
-                                            <span className="text-[#29262A] text-[0.9rem]">{props.moreInfoTarget?.driverName}</span>
+                                            <span className="text-[#29262A] text-[0.9rem]"><span className="pr-2">{props.moreInfoTarget?.date}</span><span>{props.moreInfoTarget?.time}</span></span>
                                         </div>
                                     </div>
                                     </div>
@@ -110,7 +110,7 @@ export default function MoreInfoDialog(props) {
                                     </div>
                                     <div className="border border-[#D9D9D9]  flex justify-start px-4">
                                         <div className="p-2">
-                                            <span className="text-[#29262A] text-[0.9rem]">{props.moreInfoTarget?.status}</span>
+                                            <span className="text-[#29262A] text-[0.9rem]">{props.moreInfoTarget?.status==="BROKEN"?"خراب":null}</span>
                                         </div>
                                     </div>
                                     </div>
@@ -138,7 +138,7 @@ export default function MoreInfoDialog(props) {
                                         نوع وسیله :
                                     </span>
                                     <span className="text-[#29262A] text-[0.8rem]">
-                                       {props.moreInfoTarget?.productName}
+                                    {props.moreInfoTarget?.machine?.type}
                                     </span>
                                 </div>
                                 <div>
@@ -146,11 +146,7 @@ export default function MoreInfoDialog(props) {
                                         کد وسیله نقلیه :
                                     </span>
                                     <span className="text-[#29262A] text-[0.8rem]">
-                                        {/*
-                                            props.moreInfoTarget?.machineTag === "" ? (props.moreInfoTarget?.machineCode) : (
-                                                props.moreInfoTarget?.machineTag.slice(2, 5) + "-" + props.moreInfoTarget?.machineTag.slice(5, 7) + " " + props.moreInfoTarget?.machineTag.slice(7, 8) + " " + props.moreInfoTarget?.machineTag.slice(0, 2)
-                                            )
-                                            */}
+                                    {props.moreInfoTarget?.machine?.code}
                                     </span>
                                 </div>
                                 
@@ -160,11 +156,7 @@ export default function MoreInfoDialog(props) {
                                         پلاک وسیله نقلیه :
                                     </span>
                                     <span className="text-[#29262A] text-[0.8rem]">
-                                        {/*
-                                            props.moreInfoTarget?.machineTag === "" ? (props.moreInfoTarget?.machineCode) : (
-                                                props.moreInfoTarget?.machineTag.slice(2, 5) + "-" + props.moreInfoTarget?.machineTag.slice(5, 7) + " " + props.moreInfoTarget?.machineTag.slice(7, 8) + " " + props.moreInfoTarget?.machineTag.slice(0, 2)
-                                            )
-                                            */}
+                                    {props.moreInfoTarget?.machine?.tag.slice(2, 5) + "-" + props.moreInfoTarget?.machine?.tag.slice(5, 7) + " " + props.moreInfoTarget?.machine?.tag.slice(7, 8) + " " + props.moreInfoTarget?.machine?.tag.slice(0, 2)}
                                     </span>
                                 </div>
                                 
@@ -173,7 +165,7 @@ export default function MoreInfoDialog(props) {
                                         شاخص عملکرد :
                                     </span>
                                     <span className="text-[#29262A] text-[0.8rem]">
-                                        {props.moreInfoTarget?.driverName}
+                                        {"متن پیش فرض"}
                                     </span>
                                 </div>
                                 <div>
@@ -181,7 +173,7 @@ export default function MoreInfoDialog(props) {
                                          دپارتمان :
                                     </span>
                                     <span className="text-[#29262A] text-[0.8rem]">
-                                        {props.moreInfoTarget?.sourceSubOrganizationName}
+                                        {props.moreInfoTarget?.machine?.subOrganizationName}
                                     </span>
                                 </div>
                                 <div>
@@ -189,7 +181,7 @@ export default function MoreInfoDialog(props) {
                                         تاریخ خرابی :
                                     </span>
                                     <span className="text-[#29262A] text-[0.8rem]">
-                                    <span>{props.moreInfoTarget?.time}</span> <span className="pr-2">{props.moreInfoTarget?.date}</span>
+                                    <span className="pr-2">{props.moreInfoTarget?.machine?.date}</span> <span >{props.moreInfoTarget?.machine?.time}</span>
                                     </span>
                                 </div>
                                 <div>
@@ -197,11 +189,7 @@ export default function MoreInfoDialog(props) {
                                         وضعیت :
                                     </span>
                                     <span className="text-[#29262A] text-[0.8rem]">
-                                        {/*props.moreInfoTarget?.status === "CONFIRMED" ? (<span className="text-[0.8rem] bg-greenBg text-greenText py-1 px-2 rounded-xl">تاييد شده</span>) : (
-                                            props.moreInfoTarget?.status === "UNKNOWN" ? (<span className="text-[0.8rem] bg-[#EBEBEB] text-gray70 py-1 px-2 rounded-xl">نامعلوم</span>) : (
-                                                <span className="text-[0.8rem] bg-orangeBg text-orangeText py-1 px-2 rounded-xl">خراب</span>
-                                            )
-                                            )*/}
+                                    {props.moreInfoTarget?.status==="BROKEN"?"خراب":null}
                                     </span>
                                 </div>
                                 

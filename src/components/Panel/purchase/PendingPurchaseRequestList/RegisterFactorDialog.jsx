@@ -105,12 +105,13 @@ export default function RegisterFactorDialog(props) {
 
 
     useEffect(()=>{
+        console.log(props.paymentList)
         if(props.openRegisterFactor){
             let paymentItems = []
             for(let bill of props.paymentList ){
                 let obj = {
                     paymentMethod:"",
-                    bill:{id:bill.id}
+                    bill:{...bill}
                 }
                 paymentItems.push(obj)
             }

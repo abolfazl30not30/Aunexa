@@ -11,27 +11,115 @@ import {
   Skeleton,
 } from "@mui/material";
 
-import AddDataDialog from "@/components/Panel/failure-and-repair-report/AddDataDialog";
-import FilterDialog from "@/components/Panel/failure-and-repair-report/FilterDialog";
-import MoreInfoDialog from "@/components/Panel/failure-and-repair-report/MoreInfoDialog";
+import FilterDialog from "@/components/Panel/invoice/purchase-invoice/FilterDialog";
+import MoreInfoDialog from "@/components/Panel/invoice/purchase-invoice/MoreInfoDialog";
+import RejectionDialog from "@/components/Panel/invoice/purchase-invoice/RejectionDialog";
+import ConfirmDialog from "@/components/Panel/invoice/purchase-invoice/ConfirmDialog";
 
 import Link from "next/link";
 
 import { useSelector } from "react-redux";
 import { boolean } from "yup";
-import { useGetAllFailureVehiclesQuery } from "@/redux/features/failure-and-repair-report/FailureAndRepairReportSlice";
-import FixFailureDialog from "@/components/Panel/failure-and-repair-report/FixFailureDialog";
+import { useGetAllPurchaseInvoiceQuery } from "@/redux/features/invoice/purchase-invoice/PurchaseInvoiceSlice";
+import EditConfirmInvoiceInfoDialog from "@/components/Panel/invoice/purchase-invoice/EditConfirmInvoiceInfoDialog";
+import EditRejectionInvoiceInfoDialog from "@/components/Panel/invoice/purchase-invoice/EditRejectionInvoiceInfoDialog";
 
-function FailureAndRepairReport() {
-  const [searchValue, setSearchValue] = useState("");
-  const [filterType, setFilterType] = useState("persianName");
-  const handleFilterType = (e) => {
-    setFilterType(e.target.value);
-    let params = new URLSearchParams();
-    params.set(e.target.value, "");
-    setFilterItem(params.toString());
-    setSearchValue("");
+function PurchaseInvoice() {
+  const [openEditConfirmInvoiceInfo, setOpenEditConfirmInvoiceInfo] =
+    useState(false);
+  const [editConfirmInvoiceInfoTarget, setEditConfirmInvoiceInfoTarget] =
+    useState({
+      productId: "",
+      productName: "",
+      value: "",
+      unit: "",
+      status: "",
+      expirationDate: "",
+      machineTag: "",
+      machineCode: "",
+      driverName: "",
+      producer: "",
+      description: "",
+    });
+  const handleOpenEditConfirmInvoiceInfo = (info) => {
+    setEditConfirmInvoiceInfoTarget(info);
+    setOpenEditConfirmInvoiceInfo(true);
   };
+  const handleCloseEditConfirmInvoiceInfo = () => {
+    setEditConfirmInvoiceInfoTarget({
+      productId: "",
+      productName: "",
+      value: "",
+      unit: "",
+      status: "",
+      expirationDate: "",
+      machineTag: "",
+      machineCode: "",
+      driverName: "",
+      producer: "",
+      description: "",
+    });
+    setOpenEditConfirmInvoiceInfo(false);
+  };
+
+  const [openEditRejectionInvoiceInfo, setOpenEditRejectionInvoiceInfo] =
+    useState(false);
+  const [editRejectionInvoiceInfoTarget, setEditRejectionInvoiceInfoTarget] =
+    useState({ id: "" });
+  const handleOpenEditRejectionInvoiceInfo = (info) => {
+    setEditRejectionInvoiceInfoTarget(info);
+    setOpenEditRejectionInvoiceInfo(true);
+  };
+  const handleCloseEditRejectionInvoiceInfo = () => {
+    setEditRejectionInvoiceInfoTarget({ id: "" });
+    setOpenEditRejectionInvoiceInfo(false);
+  };
+
+  const [openConfirm, setOpenConfirm] = useState(false);
+  const [confirmTarget, setConfirmTarget] = useState({
+    id: "",
+  });
+
+  const [openRejection, setOpenRejection] = useState(false);
+  const [rejectionTarget, setRejectionTarget] = useState({
+    productId: "",
+    machineTag: "",
+    productName: "",
+    value: "",
+    unit: "",
+    priority: false,
+    description: "",
+  });
+  const handleOpenConfirm = (info) => {
+    setConfirmTarget(info);
+    setOpenConfirm(true);
+  };
+  const handleCloseConfirm = () => {
+    setConfirmTarget({
+      id: "",
+    });
+    setOpenConfirm(false);
+  };
+
+  const handleOpenRejection = (info) => {
+    setRejectionTarget(info);
+    setOpenRejection(true);
+  };
+
+  const handleCloseRejection = () => {
+    setRejectionTarget({
+      productId: "",
+      productName: "",
+      value: "",
+      unit: "",
+      priority: false,
+      description: "",
+    });
+    setOpenRejection(false);
+  };
+
+  const [searchValue, setSearchValue] = useState("");
+  const [filterType, setFilterType] = useState("receiptCode");
 
   const handleSearchBox = (e) => {
     setSearchValue(e.target.value);
@@ -44,36 +132,8 @@ function FailureAndRepairReport() {
     (state) => state.access?.pages?.primaryStoreInput
   );
 
-  const [openFix, setOpenFix] = useState(false);
-  const [fixTarget, setFixTarget] = useState({
-    type: "",
-    tag: "",
-    code: "",
-
-    status: "",
-    subOrganizationId: "",
-    subOrganizationName: "",
-    purchaseDate: "",
-  });
-  const handleOpenFix = (info) => {
-    setFixTarget(info);
-    setOpenFix(true);
-  };
-
-  const handleCloseFix = () => {
-    setFixTarget({
-      type: "",
-      tag: "",
-      status: "",
-      subOrganizationId: "",
-      subOrganizationName: "",
-    });
-    setOpenFix(false);
-  };
-
   const [page, setPage] = useState(1);
   const [sort, setSort] = useState("desc");
-  const [openAddData, setOpenAddData] = useState(false);
 
   const [openMoreInfo, setOpenMoreInfo] = useState(false);
   const [moreInfoTarget, setMoreInfoTarget] = useState({
@@ -95,13 +155,6 @@ function FailureAndRepairReport() {
   };
   const handleCloseSortMenu = () => {
     setAnchorElSort(null);
-  };
-
-  const handleOpenAddData = () => {
-    setOpenAddData(true);
-  };
-  const handleCloseAddData = () => {
-    setOpenAddData(false);
   };
 
   const handleOpenFilter = () => {
@@ -144,7 +197,7 @@ function FailureAndRepairReport() {
     data: inventoryData = [],
     isLoading: isDataLoading,
     isError: isDataError,
-  } = useGetAllFailureVehiclesQuery(
+  } = useGetAllPurchaseInvoiceQuery(
     { page, sort, filterItem },
     { refetchOnMountOrArgChange: true }
   );
@@ -154,46 +207,16 @@ function FailureAndRepairReport() {
   return (
     <>
       <div>
-        <header className="flex justify-between items-center text-[0.9rem] bg-white py-6 px-5 md:px-10">
+        <header className=" text-[0.9rem] bg-white py-6 px-5 md:px-10">
           <div className="">
             <h2 className="font-[800] text-[0.9rem] md:text-[1.1rem]">
-              گزارش خرابی و تعمیرات
+              فاکتور خرید
             </h2>
-          </div>
-          <div className="">
-            <button
-              className="flex bg-mainRed text-white items-center text- px-3 py-2 rounded-full md:rounded"
-              onClick={handleOpenAddData}
-            >
-              <span className="hidden md:inline">ثبت خرابی</span>
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                width="24"
-                height="24"
-                viewBox="0 0 24 24"
-                fill="none"
-              >
-                <path
-                  d="M7 12H17"
-                  stroke="white"
-                  stroke-width="2"
-                  stroke-linecap="round"
-                  stroke-linejoin="round"
-                />
-                <path
-                  d="M12 7V17"
-                  stroke="white"
-                  stroke-width="2"
-                  stroke-linecap="round"
-                  stroke-linejoin="round"
-                />
-              </svg>
-            </button>
           </div>
         </header>
         <section className="py-4 md:px-8 mt-5 bg-white h-[50rem]">
           <div className="px-4 flex justify-between">
-            <div className="">
+            <div className="xl:w-1/4 md:w-1/3">
               <FormControl fullWidth>
                 <OutlinedInput
                   value={searchValue}
@@ -204,7 +227,7 @@ function FailureAndRepairReport() {
                     py: "0.2rem",
                     borderRadius: 0,
                   }}
-                  placeholder="جستوجو..."
+                  placeholder="جست و جو شماره فاکتور"
                   id="outlined-adornment-amount"
                   inputProps={{
                     style: {
@@ -338,10 +361,10 @@ function FailureAndRepairReport() {
                 <thead className="text-[0.9rem] text-gray80  bg-[#F8F8F8] md:bg-[#F2EDED] ">
                   <tr>
                     <th className="hidden md:table-cell px-6 py-4">#</th>
-                    <th className="px-2 md:px-6 py-4">وسیله و پلاک</th>
+                    <th className="px-2 md:px-6 py-4">شماره فاکتور</th>
                     <th className="px-2 md:px-6 px-6 py-4">دپارتمان</th>
-                    <th className="px-2 md:px-6 px-6 py-4">تاریخ خرابی</th>
-                    <th className="hidden md:table-cell px-6 py-4">توضیحات</th>
+                    <th className="px-2 md:px-6 px-6 py-4">تاریخ خرید</th>
+
                     <th className="px-2 md:px-6 px-6 py-4">
                       <span className="hidden md:inline">وضعیت</span>
                     </th>
@@ -376,12 +399,7 @@ function FailureAndRepairReport() {
                               sx={{ fontSize: "1rem" }}
                             />
                           </td>
-                          <td className="hidden md:table-cell px-6 py-4  text-gray70 whitespace-nowrap ">
-                            <Skeleton
-                              variant="text"
-                              sx={{ fontSize: "1rem" }}
-                            />
-                          </td>
+
                           <td className="px-2 md:px-6 py-4  text-gray70 whitespace-nowrap ">
                             <div className="flex justify-center">
                               <Skeleton
@@ -419,41 +437,31 @@ function FailureAndRepairReport() {
                             {index + 1}
                           </td>
                           <td className="px-2 md:px-6 py-4  text-gray70 whitespace-nowrap ">
-                            <div>{data?.machine?.type}</div>
-                            <div className="mt-1 text-gray9F text-[0.75rem]">
-                              {data?.machine?.code === ""
-                                ? data?.machine?.tag?.slice(2, 5) +
-                                  "-" +
-                                  data?.machine?.tag?.slice(5, 7) +
-                                  " " +
-                                  data?.machine?.tag?.slice(7, 8) +
-                                  " " +
-                                  data?.machine?.tag?.slice(0, 2)
-                                : data?.machine?.code}
-                            </div>
+                            <div>{data?.receiptCode}</div>
                           </td>
                           <td className="px-2 md:px-6 py-4 flex justify-center  text-gray70 whitespace-nowrap ">
-                            {data?.machine?.subOrganizationName}
+                            {
+                              data?.paymentItems[0]?.bill?.billCycle
+                                ?.subOrganizationName
+                            }
                           </td>
                           <td className="px-2 md:px-6 py-2  text-gray70 whitespace-nowrap ">
-                            <span className="pr-2">{data?.date}</span>
-                            <span>{data?.time}</span>
+                            <span className="pr-2">{data?.purchaseDate}</span>
+                            <span>{data?.purchaseTime}</span>
                           </td>
-                          <td className="hidden md:table-cell px-6 py-4  text-gray70 whitespace-nowrap ">
-                            {data?.description}
-                          </td>
+
                           <td className="px-2 md:px-6 py-4  text-gray70 whitespace-nowrap ">
-                            {data.status === "IN_USE" ? (
-                              <span className="text-[0.8rem] bg-[#D5EAFF] text-[#2492FF] py-1 px-2 rounded-xl">
-                                در حال استفاده
-                              </span>
-                            ) : data.status === "AVAILABLE" ? (
+                            {data.status === "DONE" ? (
                               <span className="text-[0.8rem] bg-greenBg text-greenText py-1 px-2 rounded-xl">
-                                دردسترس
+                                تاييد شده
+                              </span>
+                            ) : data.status === "FAIL" ? (
+                              <span className="text-[0.8rem] bg-orangeBg text-orangeText py-1 px-2 rounded-xl">
+                                رد شده
                               </span>
                             ) : (
-                              <span className="text-[0.8rem] bg-orangeBg text-orangeText py-1 px-2 rounded-xl">
-                                خراب
+                              <span className="text-[0.8rem] bg-[#EBEBEB] text-gray70 py-1 px-2 rounded-xl">
+                                در انتظار تایید
                               </span>
                             )}
                           </td>
@@ -461,10 +469,33 @@ function FailureAndRepairReport() {
                             scope="row"
                             className="hidden md:flex gap-2 px-6 py-4 justify-center text-gray70 whitespace-nowrap "
                           >
-                            {
+                            {data.status === "IN_PROGRESS" && (
                               <button
                                 onClick={() => {
-                                  handleOpenFix(data);
+                                  handleOpenConfirm(data);
+                                }}
+                                className="border border-1 border-solid border-[#12D377] rounded p-[0.4rem] hover:bg-green-100"
+                              >
+                                <svg
+                                  xmlns="http://www.w3.org/2000/svg"
+                                  width="16"
+                                  height="16"
+                                  viewBox="0 0 16 16"
+                                  fill="none"
+                                >
+                                  <path
+                                    d="M13.3337 4L6.00033 11.3333L2.66699 8"
+                                    stroke="#12D377"
+                                    stroke-linecap="round"
+                                    stroke-linejoin="round"
+                                  />
+                                </svg>
+                              </button>
+                            )}
+                            {data.status === "IN_PROGRESS" && (
+                              <button
+                                onClick={() => {
+                                  handleOpenRejection(data);
                                 }}
                                 className="border border-1 border-solid border-[#FE4949] rounded p-[0.4rem] hover:bg-red-100"
                               >
@@ -476,16 +507,82 @@ function FailureAndRepairReport() {
                                   fill="none"
                                 >
                                   <path
-                                    d="M11.6721 7.28437H11.6719C11.5973 7.28437 11.5257 7.28208 11.4566 7.27705L11.4566 7.27702L11.4517 7.27671C10.6351 7.22527 9.62425 7.38441 8.98838 8.14745L8.98836 8.14748L3.77946 14.3992C3.77941 14.3993 3.77936 14.3993 3.77931 14.3994C3.61412 14.597 3.40961 14.758 3.17879 14.8723C2.9479 14.9865 2.69575 15.0515 2.43838 15.063C2.18101 15.0745 1.92408 15.0322 1.68393 14.939C1.44377 14.8457 1.22567 14.7035 1.0435 14.5213C0.861339 14.3391 0.719099 14.121 0.625843 13.8809C0.532587 13.6407 0.490359 13.3838 0.501846 13.1264C0.513333 12.8691 0.578284 12.6169 0.692563 12.386C0.806785 12.1553 0.967784 11.9508 1.16532 11.7856C1.16542 11.7855 1.16552 11.7854 1.16562 11.7854L7.41734 6.57646L7.41737 6.57644C8.18041 5.94057 8.33955 4.92974 8.28811 4.11311L8.28804 4.11203C8.25205 3.55987 8.35172 3.00729 8.57833 2.5025C8.80495 1.9977 9.15163 1.55602 9.58815 1.21598C10.0247 0.875938 10.5378 0.647866 11.0827 0.551658C11.5614 0.467135 12.0519 0.486645 12.521 0.607907L10.3177 2.80956C10.1924 2.93101 10.1054 3.08653 10.0674 3.25697C10.029 3.42966 10.0427 3.60988 10.1068 3.7748L10.1066 3.77486L10.1116 3.78672C10.4268 4.53982 11.026 5.13837 11.7795 5.45263L11.7795 5.45277L11.791 5.45725C11.9558 5.52125 12.1359 5.53486 12.3085 5.49636C12.4787 5.45838 12.634 5.3714 12.7553 5.24622L14.9569 3.0446C15.0735 3.49588 15.0959 3.96709 15.0221 4.42874C14.9376 4.95676 14.7294 5.45731 14.4146 5.88955C14.0998 6.32179 13.6873 6.67346 13.2106 6.91587C12.734 7.15828 12.2068 7.28455 11.6721 7.28437Z"
+                                    d="M12 4L4 12M4 4L12 12"
                                     stroke="#DB3746"
-                                  />
-                                  <path
-                                    d="M11.2963 9.56927L11.2963 9.5694L11.308 9.57013C11.4292 9.57771 11.5512 9.58148 11.6739 9.58148C11.7575 9.58148 11.8413 9.57975 11.9249 9.57612L15.0112 12.6624C15.3229 12.9741 15.498 13.3969 15.498 13.8377C15.498 14.2786 15.3229 14.7014 15.0112 15.0131C14.6995 15.3248 14.2767 15.5 13.8358 15.5C13.395 15.5 12.9722 15.3248 12.6604 15.0131L9.16964 11.5223L10.7434 9.63329C10.7527 9.62856 10.7713 9.62017 10.8028 9.61042C10.9638 9.56893 11.1307 9.55501 11.2963 9.56927ZM3.82331 3.10244V3.30955L3.96976 3.456L5.60849 5.09473L5.04586 5.56346L3.45408 3.97168L3.30763 3.82523H3.10053H2.03802L0.608398 0.9643L0.962958 0.609741L3.82331 2.03908V3.10244Z"
-                                    stroke="#DB3746"
+                                    stroke-linecap="round"
+                                    stroke-linejoin="round"
                                   />
                                 </svg>
                               </button>
-                            }
+                            )}
+                            {data.status === "DONE" && (
+                              <button
+                                onClick={() => {
+                                  handleOpenEditConfirmInvoiceInfo(data);
+                                }}
+                                className="border border-1 border-solid border-[#2492FF] rounded p-[0.4rem] hover:bg-blue-100"
+                              >
+                                <svg
+                                  xmlns="http://www.w3.org/2000/svg"
+                                  width="16"
+                                  height="16"
+                                  viewBox="0 0 16 16"
+                                  fill="none"
+                                >
+                                  <g clip-path="url(#clip0_197_250)">
+                                    <path
+                                      d="M7.3335 2.66666H4.5335C3.41339 2.66666 2.85334 2.66666 2.42552 2.88464C2.04919 3.07639 1.74323 3.38235 1.55148 3.75867C1.3335 4.1865 1.3335 4.74655 1.3335 5.86666V11.4667C1.3335 12.5868 1.3335 13.1468 1.55148 13.5746C1.74323 13.951 2.04919 14.2569 2.42552 14.4487C2.85334 14.6667 3.41339 14.6667 4.5335 14.6667H10.1335C11.2536 14.6667 11.8137 14.6667 12.2415 14.4487C12.6178 14.2569 12.9238 13.951 13.1155 13.5746C13.3335 13.1468 13.3335 12.5868 13.3335 11.4667V8.66666M5.33348 10.6667H6.44984C6.77596 10.6667 6.93902 10.6667 7.09247 10.6298C7.22852 10.5972 7.35858 10.5433 7.47788 10.4702C7.61243 10.3877 7.72773 10.2724 7.95833 10.0418L14.3335 3.66666C14.8858 3.11437 14.8858 2.21894 14.3335 1.66666C13.7812 1.11437 12.8858 1.11437 12.3335 1.66665L5.95832 8.04182C5.72772 8.27242 5.61241 8.38772 5.52996 8.52228C5.45685 8.64157 5.40298 8.77163 5.37032 8.90768C5.33348 9.06113 5.33348 9.22419 5.33348 9.55031V10.6667Z"
+                                      stroke="#2492FF"
+                                      stroke-linecap="round"
+                                      stroke-linejoin="round"
+                                    />
+                                  </g>
+                                  <defs>
+                                    <clipPath id="clip0_197_250">
+                                      <rect
+                                        width="16"
+                                        height="16"
+                                        fill="white"
+                                      />
+                                    </clipPath>
+                                  </defs>
+                                </svg>
+                              </button>
+                            )}
+                            {data.status === "FAIL" && (
+                              <button
+                                onClick={() => {
+                                  handleOpenEditRejectionInvoiceInfo(data);
+                                }}
+                                className="border border-1 border-solid border-[#2492FF] rounded p-[0.4rem] hover:bg-blue-100"
+                              >
+                                <svg
+                                  xmlns="http://www.w3.org/2000/svg"
+                                  width="16"
+                                  height="16"
+                                  viewBox="0 0 16 16"
+                                  fill="none"
+                                >
+                                  <g clip-path="url(#clip0_197_250)">
+                                    <path
+                                      d="M7.3335 2.66666H4.5335C3.41339 2.66666 2.85334 2.66666 2.42552 2.88464C2.04919 3.07639 1.74323 3.38235 1.55148 3.75867C1.3335 4.1865 1.3335 4.74655 1.3335 5.86666V11.4667C1.3335 12.5868 1.3335 13.1468 1.55148 13.5746C1.74323 13.951 2.04919 14.2569 2.42552 14.4487C2.85334 14.6667 3.41339 14.6667 4.5335 14.6667H10.1335C11.2536 14.6667 11.8137 14.6667 12.2415 14.4487C12.6178 14.2569 12.9238 13.951 13.1155 13.5746C13.3335 13.1468 13.3335 12.5868 13.3335 11.4667V8.66666M5.33348 10.6667H6.44984C6.77596 10.6667 6.93902 10.6667 7.09247 10.6298C7.22852 10.5972 7.35858 10.5433 7.47788 10.4702C7.61243 10.3877 7.72773 10.2724 7.95833 10.0418L14.3335 3.66666C14.8858 3.11437 14.8858 2.21894 14.3335 1.66666C13.7812 1.11437 12.8858 1.11437 12.3335 1.66665L5.95832 8.04182C5.72772 8.27242 5.61241 8.38772 5.52996 8.52228C5.45685 8.64157 5.40298 8.77163 5.37032 8.90768C5.33348 9.06113 5.33348 9.22419 5.33348 9.55031V10.6667Z"
+                                      stroke="#2492FF"
+                                      stroke-linecap="round"
+                                      stroke-linejoin="round"
+                                    />
+                                  </g>
+                                  <defs>
+                                    <clipPath id="clip0_197_250">
+                                      <rect
+                                        width="16"
+                                        height="16"
+                                        fill="white"
+                                      />
+                                    </clipPath>
+                                  </defs>
+                                </svg>
+                              </button>
+                            )}
                             <button
                               onClick={() => {
                                 handleOpenMoreInfo(data);
@@ -538,10 +635,7 @@ function FailureAndRepairReport() {
             />
           </div>
         </section>
-        <AddDataDialog
-          handleCloseAddData={handleCloseAddData}
-          openAddData={openAddData}
-        />
+
         <FilterDialog
           filterItem={filterItem}
           setFilterItem={setFilterItem}
@@ -552,15 +646,38 @@ function FailureAndRepairReport() {
           moreInfoTarget={moreInfoTarget}
           openMoreInfo={openMoreInfo}
           handleCloseMoreInfo={handleCloseMoreInfo}
+          handleOpenRejection={handleOpenRejection}
+          handleOpenConfirm={handleOpenConfirm}
+          handleOpenEditConfirmInvoiceInfo={handleOpenEditConfirmInvoiceInfo}
+          handleOpenEditRejectionInvoiceInfo={
+            handleOpenEditRejectionInvoiceInfo
+          }
         />
-        <FixFailureDialog
-          fixTarget={fixTarget}
-          openFix={openFix}
-          handleCloseFix={handleCloseFix}
+        <EditConfirmInvoiceInfoDialog
+          editConfirmInvoiceInfoTarget={editConfirmInvoiceInfoTarget}
+          handleCloseEditConfirmInvoiceInfo={handleCloseEditConfirmInvoiceInfo}
+          openEditConfirmInvoiceInfo={openEditConfirmInvoiceInfo}
+        />
+        <EditRejectionInvoiceInfoDialog
+          editRejectionInvoiceInfoTarget={editRejectionInvoiceInfoTarget}
+          handleCloseEditRejectionInvoiceInfo={
+            handleCloseEditRejectionInvoiceInfo
+          }
+          openEditRejectionInvoiceInfo={openEditRejectionInvoiceInfo}
+        />
+        <ConfirmDialog
+          confirmTarget={confirmTarget}
+          handleCloseConfirm={handleCloseConfirm}
+          openConfirm={openConfirm}
+        />
+        <RejectionDialog
+          rejectionTarget={rejectionTarget}
+          handleCloseRejection={handleCloseRejection}
+          openRejection={openRejection}
         />
       </div>
     </>
   );
 }
 
-export default FailureAndRepairReport;
+export default PurchaseInvoice;

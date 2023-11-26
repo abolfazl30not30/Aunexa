@@ -2,12 +2,51 @@
 'use client'
 import React from "react";
 import {
+    TextField,
     DialogContent,
     DialogContentText,
+    
 } from "@mui/material";
+import {TailSpin} from "react-loader-spinner";
 import Dialog from "@mui/material/Dialog";
+import * as yup from "yup";
+import {useFormik} from "formik";
+import { useSaveFailureVehiclesMutation } from "@/redux/features/failure-and-repair-report/FailureAndRepairReportSlice";
 
 export default function FixFailureDialog(props) {
+    const handleReset = () => {
+        formik.resetForm()
+        setVehicle(null)
+        
+    }
+  const [submitData, {isLoading: isSubmitLoading, error}] = useSaveFailureVehiclesMutation()
+  const schema = yup.object().shape({
+        description: yup.string().required("لطفا توضیحات را وارد کنید"),
+      
+  });
+
+  const formik = useFormik({
+      initialValues: {
+          
+          
+          description: "",
+          
+          
+          
+      },
+
+      validationSchema: schema,
+
+      
+
+      onSubmit: async (vehicle, helpers) => {
+          let updateVehicle = {status:"AVAILABLE",machine:{id:props.fixTarget.machine.id},description:vehicle.description}
+          const userData = await submitData(updateVehicle)
+          props.handleCloseFix()
+          handleReset()
+          
+      },
+  });
     return(
         <>
             <Dialog
@@ -23,6 +62,7 @@ export default function FixFailureDialog(props) {
                 }}>
                 <DialogContent>
                     <DialogContentText style={{ fontFamily: "__fonts_2f4189,__fonts_Fallback_2f4189" }}>
+                    <form  onSubmit={formik.handleSubmit} method="POST">
                         <div className="flex justify-end">
                             <button onClick={props.handleCloseFix}>
                                 <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 14 14" fill="none">
@@ -41,79 +81,98 @@ export default function FixFailureDialog(props) {
                                     <div className="mb-2">
                                         <span className="text-[0.9rem] text-gray70 ">نوع وسیله</span>
                                     </div>
-                                    <div className="border border-[#D9D9D9]  flex justify-evenly px-4">
+                                    <div className="border border-[#D9D9D9] bg-[#F2EDED] flex justify-evenly px-4">
                                         <div className="p-2">
-                                            <span className="text-[#29262A] text-[0.9rem]">{props.fixTarget?.machineType}</span>
-                                        </div>
-                                        <div className="border border-[#D9D9D9]">
-                                        </div>
-                                        <div className="p-2 ">
-                                            <span className="text-[#29262A] text-[0.9rem]">
-                                              
-                                            </span>
+                                            <span className="text-[#29262A] text-[0.9rem]">{props.fixTarget?.machine?.type}</span>
                                         </div>
                                     </div>
                                 </div>
-                                <div className="flex flex-col">
+                                <div className="flex justify-between">
+                                    <div className="w-[45%]">
                                     <div className="mb-2">
-                                        <span className="text-[0.9rem] text-gray70 ">نام راننده</span>
+                                        <span className="text-[0.9rem] text-gray70 ">پلاک وسیله </span>
                                     </div>
-                                    <div className="border border-[#D9D9D9]  flex justify-start px-4">
+                                    <div className="border border-[#D9D9D9] bg-[#F2EDED] flex justify-start px-4">
                                         <div className="p-2">
-                                            <span className="text-[#29262A] text-[0.9rem]">{props.fixTarget?.driverName}</span>
+                                            <span className="text-[#29262A] text-[0.9rem]">{props.fixTarget?.machine?.tag.slice(2, 5) + "-" + props.fixTarget?.machine?.tag.slice(5, 7) + " " + props.fixTarget?.machine?.tag.slice(7, 8) + " " + props.fixTarget?.machine?.tag.slice(0, 2)}</span>
                                         </div>
                                     </div>
-                                </div>
-                                <div className="flex flex-col">
+                                    </div>
+                                    <div className="w-[45%]">
                                     <div className="mb-2">
-                                        <span className="text-[0.9rem] text-gray70 ">از دپارتمان</span>
+                                        <span className="text-[0.9rem] text-gray70 "> کد وسیله</span>
                                     </div>
-                                    <div className="border border-[#D9D9D9]  flex justify-start px-4">
+                                    <div className="border border-[#D9D9D9] bg-[#F2EDED] flex justify-start px-4">
                                         <div className="p-2">
-                                            <span className="text-[#29262A] text-[0.9rem]">{props.fixTarget?.sourceSubOrganizationName}</span>
+                                            <span className="text-[#29262A] text-[0.9rem]">{props.fixTarget?.machine?.code}</span>
                                         </div>
                                     </div>
+                                    </div>
                                 </div>
-                                <div className="flex flex-col">
+                                <div className="flex justify-between">
+                                    <div className="w-[45%]">
                                     <div className="mb-2">
-                                        <span className="text-[0.9rem] text-gray70 ">تاریخ</span>
+                                        <span className="text-[0.9rem] text-gray70 "> شاخص عملکرد </span>
                                     </div>
-                                    <div className="border border-[#D9D9D9]  flex justify-start px-4">
+                                    <div className="border border-[#D9D9D9] bg-[#F2EDED] flex justify-start px-4">
                                         <div className="p-2">
-                                            <span className="text-[#29262A] text-[0.9rem]"><span>{props.fixTarget?.time}</span> <span className="pr-2">{props.fixTarget?.date}</span></span>
+                                            <span className="text-[#29262A] text-[0.9rem]">{"متن پیش فرض"}</span>
                                         </div>
                                     </div>
-                                </div>
-                                <div className="flex flex-col">
+                                    </div>
+                                    <div className="w-[45%]">
                                     <div className="mb-2">
-                                        <span className="text-[0.9rem] text-gray70 ">وضیعت</span>
+                                        <span className="text-[0.9rem] text-gray70 ">  دپارتمان</span>
                                     </div>
-                                    <div className="border border-[#D9D9D9]  flex justify-start px-4">
+                                    <div className="border border-[#D9D9D9] bg-[#F2EDED] flex justify-start px-4">
                                         <div className="p-2">
-                                            <span className="text-[#29262A] text-[0.9rem]">
-                                                {props.fixTarget?.status === "CONFIRMED" ? (<span className="text-[0.8rem] bg-greenBg text-greenText py-1 px-2 rounded-xl">تاييد شده</span>) : (
-                                                    props.fixTarget?.status === "UNKNOWN" ? (<span className="text-[0.8rem] bg-[#EBEBEB] text-gray70 py-1 px-2 rounded-xl">نامعلوم</span>) : (
-                                                        <span className="text-[0.8rem] bg-orangeBg text-orangeText py-1 px-2 rounded-xl"> خراب</span>
-                                                    )
-                                                )}
-                                            </span>
+                                            <span className="text-[#29262A] text-[0.9rem]">{props.fixTarget?.machine?.subOrganizationName}</span>
                                         </div>
+                                    </div>
                                     </div>
                                 </div>
-                                {
-                                    props.fixTarget.description && (
-                                        <div className="flex flex-col">
-                                            <div className="mb-2">
-                                                <span className="text-[0.9rem] text-gray70 ">توضیحات</span>
-                                            </div>
-                                            <div className="border border-[#D9D9D9]  flex justify-start px-4">
-                                                <div className="p-2">
-                                                    <span className="text-[#29262A] text-[0.9rem]">{props.fixTarget.description}</span>
-                                                </div>
-                                            </div>
+                                <div className="flex justify-between">
+                                    <div className="w-[45%]">
+                                    <div className="mb-2">
+                                        <span className="text-[0.9rem] text-gray70 "> تاریخ خرابی </span>
+                                    </div>
+                                    <div className="border border-[#D9D9D9] bg-[#F2EDED] flex justify-start px-4">
+                                        <div className="p-2">
+                                            <span  className="text-[#29262A] text-[0.9rem]">{props.fixTarget?.date}</span>
                                         </div>
-                                    )
-                                }
+                                    </div>
+                                    </div>
+                                    <div className="w-[45%]">
+                                    <div className="mb-2">
+                                        <span className="text-[0.9rem] text-gray70 ">  وضعیت</span>
+                                    </div>
+                                    <div className="border border-[#D9D9D9] bg-[#F2EDED] flex justify-start px-4">
+                                        <div className="p-2">
+                                            <span className="text-[#29262A] text-[0.9rem]">{props.fixTarget?.status==="BROKEN"?"خراب":null}</span>
+                                        </div>
+                                    </div>
+                                    </div>
+                                </div>
+                                <div className="">
+                                    <div className="mb-2">
+                                        <span className="text-[0.9rem] text-gray70 ">توضیحات</span>
+                                    </div>
+                                    <div className="  flex justify-start ">
+                                    <TextField
+                                multiline
+                                rows={3}
+                                        fullWidth
+                                        placeholder=" توضیحات (اجباری) "
+                                        type="text"
+                                        name="description"
+                                        value={formik.values.description}
+                                        onChange={formik.handleChange}
+                                        error={formik.touched.description && Boolean(formik.errors.description)}
+                                        helperText={formik.touched.description && formik.errors.description}
+                                        inputProps={{style: {fontFamily: "__fonts_2f4189,__fonts_Fallback_2f4189", fontSize: "0.8rem"}}}
+                                            InputLabelProps={{style: {fontFamily: "__fonts_2f4189,__fonts_Fallback_2f4189"}}}/>
+                                    </div>
+                                    </div>
                             </div>
                         </div>
                         <div className="md:hidden flex justify-center">
@@ -227,14 +286,33 @@ export default function FixFailureDialog(props) {
                                 </div>}
                             </div>
                         </div>
-                        <div className="md:hidden flex  justify-center mt-5 gap-3">
-                            <button onClick={()=>{props.handleOpenDelete(props.fixTarget.id);props.handleCloseFix()}} className="px-6 py-2 text-[0.8rem] text-mainRed border border-mainRed rounded hover:bg-mainRed hover:text-white">
-                                حذف
-                            </button>
-                            <button onClick={()=>{props.handleOpenEditInfo(props.fixTarget);props.handleCloseFix()}}  className="px-5 py-2 text-[0.8rem] text-[#4087DB] border border-[#4087DB] rounded hover:bg-[#4087DB] hover:text-white">
-                                ویرایش
-                            </button>
+                        <div className="flex justify-center mt-10 gap-4">
+                        
+                            <div className="">
+                                <button onClick={props.handleCloseFix} className="px-6   text-[0.8rem]  rounded-[0.5rem] py-3  hover:opacity-80 font-bold  border border-gray70 text-gray70">انصراف</button>
+                            </div>
+                            <div className="w-1/5">
+                                    {
+                                        isSubmitLoading ? (<button disabled type="submit"
+                                                                   className="hidden text-[0.8rem] flex gap-3 items-center justify-center w-full rounded-[0.5rem] py-3  border border-solid border-1 border-neutral-400 font-bold text-textGray bg-neutral-200">
+                                            <TailSpin
+                                                
+                                                color="#4E4E4E"
+                                                ariaLabel="tail-spin-loading"
+                                                radius="1"
+                                                wrapperStyle={{}}
+                                                wrapperClass=""
+                                                visible={true}/>
+                                            تایید
+                                        </button>) : (
+                                            <button type="submit"
+                                                    className="w-full rounded-[0.5rem] py-3  text-[0.8rem] hover:opacity-80 font-bold  bg-mainRed text-white">تایید
+                                            </button>
+                                        )
+                                    }
+                                </div>
                         </div>
+                        </form>
                     </DialogContentText>
                 </DialogContent>
             </Dialog>
