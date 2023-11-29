@@ -11,7 +11,7 @@ import EditIndividualRelationshipInfoDialog from "./EditIndividualRelationshipDi
 import persian from "react-date-object/calendars/persian";
 import persian_fa from "react-date-object/locales/persian_fa";
 import DatePicker,{DateObject} from "react-multi-date-picker";
-import { useLazyGetAllRoleQuery } from "@/redux/features/category/CategorySlice";
+import { useLazyGetAllRoleListQuery } from "@/redux/features/category/CategoryRoleSlice";
 import CircularProgress from '@mui/material/CircularProgress';
 
 export default function EditIndividualInfoDialog(props) {
@@ -30,7 +30,7 @@ export default function EditIndividualInfoDialog(props) {
     
     const [role,setRole] = useState(null)
     const [openRoleList,setOpenRoleList] = useState(false)
-    const [getRoleList,{ data : roleList  = [] , isLoading : isRoleLoading, isError: roleIsError }] = useLazyGetAllRoleQuery()
+    const [getRoleList,{ data : roleList  = [] , isLoading : isRoleLoading, isError: roleIsError }] = useLazyGetAllRoleListQuery()
     useEffect(()=>{
         if(openRoleList){
             getRoleList()
@@ -346,17 +346,17 @@ export default function EditIndividualInfoDialog(props) {
                                             sx: {fontFamily: "__fonts_2f4189,__fonts_Fallback_2f4189", fontSize: "0.8rem"},
                                         }}
                                         options={roleList}
-                                        getOptionLabel={(option) => option.persianName}
+                                        getOptionLabel={(option) => option.role}
                                         value={role}
                                         onChange={(event, newValue) => {
                                             setRole(newValue)
-                                            formik.setFieldValue("roleId", newValue?.id)
-                                            formik.setFieldValue("roleName", newValue?.persianName)
+                                            formik.setFieldValue("role", newValue?.role)
+                                            
                                         }}
                                         renderInput={(params) =>
                                             <TextField
-                                                error={formik.touched.roleId && Boolean(formik.errors.roleId)}
-                                                helperText={formik.touched.roleId && formik.errors.roleId}
+                                                error={formik.touched.role && Boolean(formik.errors.role)}
+                                                helperText={formik.touched.role && formik.errors.role}
                                                 {...params}
                                                 InputProps={{
                                                     ...params.InputProps,

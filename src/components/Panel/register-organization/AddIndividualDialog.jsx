@@ -49,7 +49,7 @@ export default function AddIndividualDialog(props) {
     birthDate: yup.date().required("لطفا تاریخ تولد را وارد کنید"),
     fatherName: yup.string("لطفا نام پدر را درست وارد نمایید").required("لطفا نام پدر را وارد نمایید"),
     gender: yup.string().required("لطفا جنسیت را وارد نمایید"),
-    role: yup.string(),
+    role: yup.string().required("لطفا نقش را وارد نمایید"),
     originalPhoneNumber: yup.string().required("لطفا شماره همراه را وارد نمایید").min(11, "تعداد رقم وارد شده کم می باشد").max(11, "تعداد رقم وارد شده زیاد می باشد"),
     anotherPhoneNumber: yup.string().required("لطفا شماره همراه را وارد نمایید").min(11, "تعداد رقم وارد شده کم می باشد").max(11, "تعداد رقم وارد شده زیاد می باشد"),
     telephoneNumber: yup.string().required("لطفا تلفن ثابت خود را وارد کنید را وارد نمایید").min(11, "لطفا شماره تلفن ثابت خود را به همراه کد استان وارد کنید برای مثال برای تهران 021").max(11, "تعداد رقم وارد شده زیاد می باشد"),

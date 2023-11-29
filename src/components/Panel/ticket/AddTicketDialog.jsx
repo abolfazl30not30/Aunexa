@@ -61,8 +61,8 @@ export default function AddTicketDialog(props) {
             const userData = await submitData(updateTiket)
             handleReset()
             props.handleCloseAddTicket()
-            history.pushState({ ticketInfo: userData }, "", pathname + "/chat-page"+`/${userData.data.id}&${userData.data.ticketNumber}`);
-            router.push(`${userData.data.id}&${userData.data.ticketNumber}`);
+            history.pushState({ ticketInfo: userData }, "", pathname + "/chat-page"+`/${userData.data.ticketNumber}`);
+            router.push(`${userData.data.ticketNumber}`);
             
             
         },

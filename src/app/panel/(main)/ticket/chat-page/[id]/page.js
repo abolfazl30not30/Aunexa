@@ -4,6 +4,7 @@ import Box from "@mui/material/Box";
 import TextField from "@mui/material/TextField";
 import { useRef } from "react";
 import { Scrollbars } from "react-custom-scrollbars";
+import { Skeleton } from "@mui/material";
 import { useRouter, usePathname } from "next/navigation";
 import { useEffect, useState } from "react";
 import ArrowBackIosIcon from "@mui/icons-material/ArrowBackIos";
@@ -12,10 +13,13 @@ import * as yup from "yup";
 import { useFormik } from "formik";
 import { useSaveChatMutation } from "@/redux/features/ticket/ChatSlice";
 import { ConstructionOutlined } from "@mui/icons-material";
+import { TailSpin } from "react-loader-spinner";
+import { useGetAllChatsQuery } from "@/redux/features/ticket/ChatSlice";
 export default function page({ params }) {
   const router = useRouter();
 
   const pathname = usePathname();
+  console.log(pathname);
   const scrollbars = useRef(null);
   const renderView = ({ style, ...reset }) => {
     const customStyle = {
@@ -55,6 +59,11 @@ export default function page({ params }) {
     };
     return <div style={{ ...style, ...thumbStyle }} {...reset} />;
   };
+  let startOfTicketNumber = pathname.indexOf("chatpage/");
+  console.log(startOfTicketNumber);
+  let lengthOfPathname = pathname.length;
+  let ticketNumber = pathname.slice(startOfTicketNumber + 25, lengthOfPathname);
+
   let param = params.id;
   let endOfId = param.indexOf("%26%26status");
   let ticketId = param.slice(5, endOfId);
@@ -65,7 +74,6 @@ export default function page({ params }) {
 
   const [submitData, { isLoading: isSubmitLoading, error }] =
     useSaveChatMutation();
-  const schema = yup.object().shape({});
 
   const formik = useFormik({
     initialValues: {
@@ -74,14 +82,19 @@ export default function page({ params }) {
       type: "TEXT",
     },
 
-    validationSchema: schema,
-
     onSubmit: async (chat, helpers) => {
       let updateChat = { ...chat, ticketId: ticketId };
       const userData = await submitData(updateChat);
+      console.log(userData);
       handleReset();
     },
   });
+  const {
+    data: chatData = [],
+    isLoading: isDataLoading,
+    isError: isDataError,
+  } = useGetAllChatsQuery({ ticketId }, { refetchOnMountOrArgChange: true });
+  let senderNameOfTicket = chatData[0]?.senderName;
   return (
     <div>
       <header className="flex justify-between items-center text-[0.9rem] bg-white py-6 lg:px-10 sm:px-8 px-6  ">
@@ -91,7 +104,11 @@ export default function page({ params }) {
             <div className="flex items-end gap-2">
               <span className="sm:inline hidden">&#40;</span>
               <h3 className="">شماره تیکت :</h3>
-              <span className="">{param.slice(endOfStatus + 21)}</span>
+              <span className="">
+                {pathname.includes("ticketNumber")
+                  ? param.slice(endOfStatus + 21)
+                  : ticketNumber}
+              </span>
             </div>
             <span className="sm:inline hidden">&#41;</span>
           </h2>
@@ -130,81 +147,115 @@ export default function page({ params }) {
           renderTrackVertical={renderTrackVertical}
         >
           <div className="flex flex-col gap-2 lg:py-6 lg:px-4 py-4 px-2 ">
-            <div className="xl:w-1/3 lg:w-2/5 md:w-3/4 sm:w-3/5 w-7/8 ">
-              <div className="bg-[#29262A] rounded-lg rounded-tr-none px-3 py-2 space-y-3 text-white">
-                <div>
-                  <span>سارا ولی زاده :</span>
-                </div>
-                <div>
-                  <p className="text-sm leading-6">
-                    لورم ایپسوم متن ساختگی با تولید سادگی نامفهوم از صنعت چاپ و
-                    با استفاده از طراحان گرافیک است. چاپگرها و متون بلکه روزنامه
-                    و مجله در ستون و سطرآنچنان که لازم است و برای شرایط فعلی
-                    تکنولوژی مورد نیاز و کاربردهای متنوع با هدف بهبود ابزارهای
-                    کاربردی می باشد. کتابهای زیادی در شصت و سه درصد گذشته، حال و
-                    آینده شناخت فراوان جامعه و متخصصان را می طلبد تا با نرم
-                    افزارها شناخت بیشتری
-                  </p>
-                </div>
-                <div className="flex items-center gap-2 text-[#9F9F9F] text-xs">
-                  <div>
-                    <span>یکشنبه 1402/05/13</span>
+            {chatData?.map((data, index) => (
+              <div>
+                {data.senderName === senderNameOfTicket ? (
+                  <div className="xl:w-1/3 lg:w-2/5 md:w-3/4 sm:w-3/5 w-7/8 ">
+                    <div className="bg-[#29262A] rounded-lg rounded-tr-none px-3 py-2 space-y-3 text-white">
+                      <div>
+                        <span> {data?.senderName}</span>
+                      </div>
+                      <div>
+                        <p className="text-sm leading-6">{data?.value}</p>
+                      </div>
+                      <div className="flex items-center gap-2 text-[#9F9F9F] text-xs">
+                        <div>
+                          <span>{data?.date}</span>
+                        </div>
+                        <div>
+                          <span>{data?.time}</span>
+                        </div>
+                      </div>
+                    </div>
                   </div>
-                  <div>
-                    <span>10:07</span>
+                ) : (
+                  <div className="xl:w-1/3 lg:w-2/5 md:w-3/4 sm:w-3/5 w-7/8 self-end">
+                    <div className=" space-y-3 rounded-lg rounded-tl-none bg-[#F2EDED] px-3 py-2 text-[#29262A]">
+                      <div>
+                        <span>پشتیبانی :</span>
+                      </div>
+                      <div>
+                        <p className="text-sm leading-6">سلام</p>
+                      </div>
+                      <div className="flex items-center gap-2 text-[#9F9F9F] text-xs">
+                        <div>
+                          <span>یکشنبه 1402/05/13</span>
+                        </div>
+                        <div>
+                          <span>10:07</span>
+                        </div>
+                      </div>
+                    </div>
                   </div>
-                </div>
+                )}
               </div>
-            </div>
-            <div className="xl:w-1/3 lg:w-2/5 md:w-3/4 sm:w-3/5 w-7/8 self-end">
-              <div className=" space-y-3 rounded-lg rounded-tl-none bg-[#F2EDED] px-3 py-2 text-[#29262A]">
-                <div>
-                  <span>پشتیبانی :</span>
-                </div>
-                <div>
-                  <p className="text-sm leading-6">سلام</p>
-                </div>
-                <div className="flex items-center gap-2 text-[#9F9F9F] text-xs">
-                  <div>
-                    <span>یکشنبه 1402/05/13</span>
-                  </div>
-                  <div>
-                    <span>10:07</span>
-                  </div>
-                </div>
-              </div>
-            </div>
+            ))}
           </div>
         </Scrollbars>
         {param.slice(endOfId + 15, endOfStatus) !== "closed" ? (
-          <Box
-            component="form"
-            sx={{
-              "& > :not(style)": { m: 1 },
-              fontFamily: "__fonts_2f4189,__fonts_Fallback_2f4189",
-            }}
-            noValidate
-            autoComplete="off"
-            className="flex "
+          <form
+            className=" flex justify-between gap-2 mx-2"
+            onSubmit={formik.handleSubmit}
+            method="POST"
           >
-            <button disabled={true} className="self-start pt-1">
-              <div className="bg-[#DB3746] rounded-full p-3 ">
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  width="20"
-                  height="20"
-                  viewBox="0 0 20 20"
-                  fill="none"
-                >
-                  <path
-                    d="M0.904896 0.0661742C0.797235 0.0122522 0.676291 -0.00942299 0.556605 0.00375452C0.436919 0.016932 0.323587 0.0644013 0.230237 0.140455C0.136887 0.216508 0.0674922 0.317907 0.0303978 0.43246C-0.0066965 0.547013 -0.00991173 0.669843 0.0211391 0.78618L1.89365 7.80873C1.92459 7.92454 1.98818 8.029 2.07683 8.10967C2.16548 8.19035 2.27546 8.24383 2.39366 8.26374L10.9625 9.69125C11.3112 9.75 11.3112 10.25 10.9625 10.3088L2.39491 11.7363C2.27648 11.756 2.16623 11.8093 2.07734 11.89C1.98845 11.9707 1.92468 12.0753 1.89365 12.1913L0.0211391 19.2138C-0.00991173 19.3302 -0.0066965 19.453 0.0303978 19.5675C0.0674922 19.6821 0.136887 19.7835 0.230237 19.8595C0.323587 19.9356 0.436919 19.9831 0.556605 19.9962C0.676291 20.0094 0.797235 19.9878 0.904896 19.9338L19.655 10.5588C19.7587 10.5068 19.8459 10.427 19.9068 10.3283C19.9677 10.2297 20 10.116 20 10C20 9.88403 19.9677 9.77035 19.9068 9.67167C19.8459 9.57299 19.7587 9.49321 19.655 9.44125L0.904896 0.0661742Z"
-                    fill="white"
+            <div>
+              {isSubmitLoading ? (
+                <button disabled type="submit">
+                  <TailSpin
+                    height="20"
+                    width="20"
+                    color="#4E4E4E"
+                    ariaLabel="tail-spin-loading"
+                    radius="1"
+                    wrapperStyle={{}}
+                    wrapperClass=""
+                    visible={true}
                   />
-                </svg>
-              </div>
-            </button>
+                  <svg
+                    disabled
+                    type="submit"
+                    xmlns="http://www.w3.org/2000/svg"
+                    width="20"
+                    height="20"
+                    viewBox="0 0 20 20"
+                    fill="none"
+                  >
+                    <path
+                      d="M0.904896 0.0661742C0.797235 0.0122522 0.676291 -0.00942299 0.556605 0.00375452C0.436919 0.016932 0.323587 0.0644013 0.230237 0.140455C0.136887 0.216508 0.0674922 0.317907 0.0303978 0.43246C-0.0066965 0.547013 -0.00991173 0.669843 0.0211391 0.78618L1.89365 7.80873C1.92459 7.92454 1.98818 8.029 2.07683 8.10967C2.16548 8.19035 2.27546 8.24383 2.39366 8.26374L10.9625 9.69125C11.3112 9.75 11.3112 10.25 10.9625 10.3088L2.39491 11.7363C2.27648 11.756 2.16623 11.8093 2.07734 11.89C1.98845 11.9707 1.92468 12.0753 1.89365 12.1913L0.0211391 19.2138C-0.00991173 19.3302 -0.0066965 19.453 0.0303978 19.5675C0.0674922 19.6821 0.136887 19.7835 0.230237 19.8595C0.323587 19.9356 0.436919 19.9831 0.556605 19.9962C0.676291 20.0094 0.797235 19.9878 0.904896 19.9338L19.655 10.5588C19.7587 10.5068 19.8459 10.427 19.9068 10.3283C19.9677 10.2297 20 10.116 20 10C20 9.88403 19.9677 9.77035 19.9068 9.67167C19.8459 9.57299 19.7587 9.49321 19.655 9.44125L0.904896 0.0661742Z"
+                      fill="white"
+                    />
+                  </svg>
+                </button>
+              ) : (
+                <button
+                  disabled={formik.values.value === "" ? true : false}
+                  type="submit"
+                  className="w-full p-4 rounded-full font-bold  bg-mainRed text-white"
+                >
+                  <svg
+                    disabled
+                    type="submit"
+                    xmlns="http://www.w3.org/2000/svg"
+                    width="20"
+                    height="20"
+                    viewBox="0 0 20 20"
+                    fill="none"
+                  >
+                    <path
+                      d="M0.904896 0.0661742C0.797235 0.0122522 0.676291 -0.00942299 0.556605 0.00375452C0.436919 0.016932 0.323587 0.0644013 0.230237 0.140455C0.136887 0.216508 0.0674922 0.317907 0.0303978 0.43246C-0.0066965 0.547013 -0.00991173 0.669843 0.0211391 0.78618L1.89365 7.80873C1.92459 7.92454 1.98818 8.029 2.07683 8.10967C2.16548 8.19035 2.27546 8.24383 2.39366 8.26374L10.9625 9.69125C11.3112 9.75 11.3112 10.25 10.9625 10.3088L2.39491 11.7363C2.27648 11.756 2.16623 11.8093 2.07734 11.89C1.98845 11.9707 1.92468 12.0753 1.89365 12.1913L0.0211391 19.2138C-0.00991173 19.3302 -0.0066965 19.453 0.0303978 19.5675C0.0674922 19.6821 0.136887 19.7835 0.230237 19.8595C0.323587 19.9356 0.436919 19.9831 0.556605 19.9962C0.676291 20.0094 0.797235 19.9878 0.904896 19.9338L19.655 10.5588C19.7587 10.5068 19.8459 10.427 19.9068 10.3283C19.9677 10.2297 20 10.116 20 10C20 9.88403 19.9677 9.77035 19.9068 9.67167C19.8459 9.57299 19.7587 9.49321 19.655 9.44125L0.904896 0.0661742Z"
+                      fill="white"
+                    />
+                  </svg>
+                </button>
+              )}
+            </div>
+
             <div className="w-full space-y-3">
               <TextField
+                value={formik.values.value}
+                onChange={formik.handleChange}
+                type="text"
+                name="value"
                 inputProps={{
                   style: {
                     fontFamily: "__fonts_2f4189,__fonts_Fallback_2f4189",
@@ -246,7 +297,7 @@ export default function page({ params }) {
                 </span>
               </div>
             </div>
-          </Box>
+          </form>
         ) : null}
       </section>
     </div>

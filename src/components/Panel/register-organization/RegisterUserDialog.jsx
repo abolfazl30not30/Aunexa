@@ -5,11 +5,66 @@ import {
     DialogContentText,
 } from "@mui/material";
 import Dialog from "@mui/material/Dialog";
+import * as yup from "yup";
+import { useFormik } from "formik";
+import { useSaveRegisterIndividualMutation } from "@/redux/features/organization/individual/RegisterIndividualSlice";
+import { useUpdateIndividualMutation } from "@/redux/features/organization/individual/IndividualSlice";
 
 export default function RegisterUserDialog(props) {
-    
+    const [submitData, { isLoading: isSubmitLoading, error }] = useSaveRegisterIndividualMutation()
+    const [submitDataUpdateIndividual, { isLoading: isSubmitLoadingIndividual, errorIndividual }] = useUpdateIndividualMutation()
+    const formik = useFormik({
+      initialValues: {
+        
+  
+      },
+      onSubmit: async (person, helpers) => {
+       
+        let updatePerson = { 
+            code: props.codeRequest,
+            username: props.registerIndividualTarget.nationalCode,
+            password: props.registerIndividualTarget.nationalCode,
+            role: props.registerIndividualTarget.role,
+            name: props.registerIndividualTarget.fullName,
+            phoneNumber: props.registerIndividualTarget.originalPhoneNumber,
+            subOrganizationId: props.registerIndividualTarget.subOrganizationId,
+            subOrganizationName: props.registerIndividualTarget.subOrganizationName,
+            organizationId: props.registerIndividualTarget.organizationId,
+            profile: "12345",
+            cLevel: false
+        }
+        const userData = await submitData(updatePerson)
+       
+              let updateIndividual = { 
+                id:props.registerIndividualTarget?.id,
+                fullName: props.registerIndividualTarget?.fullName,
+                nationalCode: props.registerIndividualTarget?.nationalCode,
+                personalCode: props.registerIndividualTarget?.personalCode,
+                birthDate: props.registerIndividualTarget?.birthDate,
+                fatherName: props.registerIndividualTarget?.fatherName,
+                gender: props.registerIndividualTarget?.gender,
+                roleId: props.registerIndividualTarget?.roleId,
+                originalPhoneNumber: props.registerIndividualTarget?.originalPhoneNumber,
+                anotherPhoneNumber: props.registerIndividualTarget?.anotherPhoneNumber,
+                telephoneNumber: props.registerIndividualTarget?.telephoneNumber,
+                education: props.registerIndividualTarget?.education,
+                email: props.registerIndividualTarget?.email,
+                address: props.registerIndividualTarget?.address,
+                cLevel:props.registerIndividualTarget?.cLevel,
+                register:true
+              }
+             const individual = await submitDataUpdateIndividual(updateIndividual)
+            
+        
+        props.handleCloseRegisterIndividual()
+       
+        
+      },
+    });
+
     return(
         <>
+        
             <Dialog
                 fullWidth={true}
                 open={props.openRegisterIndividual}
@@ -27,6 +82,7 @@ export default function RegisterUserDialog(props) {
                                     <path d="M13 1L1 13M1 1L13 13" stroke="black" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
                                 </svg>
                             </button>
+                            
                         </div>
                         <div className="flex justify-center mb-5">
                             <h3 className="text-[1.1rem]">ثبت به عنوان کاربر</h3>
@@ -170,10 +226,13 @@ export default function RegisterUserDialog(props) {
                         </div>
                         
                         <div className=" flex  justify-center mt-5 gap-3">
-                            
-                            <button onClick={()=>{props.handleCloseRegisterIndividual()}}  className="px-5 py-2 text-[0.8rem] text-[#12D377] border border-[#12D377] rounded hover:bg-[#12D377] hover:text-white">
+                        <form  onSubmit={formik.handleSubmit} method="POST">
+                            {isSubmitLoading ? (<button type="submit" disabled  className="px-5 py-2 text-[0.8rem] text-[#4087DB] border border-[#4087DB] rounded hover:bg-[#4087DB] hover:text-white">
                                 ثبت کاربر
-                            </button>
+                            </button>):(<button type="submit"   className="px-5 py-2 text-[0.8rem] text-[#4087DB] border border-[#4087DB] rounded hover:bg-[#4087DB] hover:text-white">
+                                ثبت کاربر
+                            </button>)}
+                            </form>
                             <button onClick={()=>{props.handleCloseRegisterIndividual()}} className="px-6 py-2 text-[0.8rem] text-mainRed border border-mainRed rounded hover:bg-mainRed hover:text-white">
                                 انصراف
                             </button>
