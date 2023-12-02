@@ -6,11 +6,11 @@ import {
 } from "@mui/material";
 import Dialog from "@mui/material/Dialog";
 import {TailSpin} from "react-loader-spinner";
-import { useDeletePendingPurchaseRequestListMutation } from "@/redux/features/purchase/pending-purchase-request-list/PendingPurchaseRequestListSlice";
+import { useDeleteSalesMutation } from "@/redux/features/sales/SalesSlice";
 
 
 export default function DeleteDialog(props) {
-    const [handleDelete ,{isLoading}] = useDeletePendingPurchaseRequestListMutation()
+    const [handleDelete ,{isLoading}] = useDeleteSalesMutation()
     const deleteData = async () =>{
         const res = await handleDelete(props.deleteTargetId)
         props.handleCloseDelete()

@@ -22,10 +22,9 @@ import {
     useLazyGetAllUnitQuery
 } from "@/redux/features/category/CategorySlice";
 import { useUploadFileCloudMutation } from "@/redux/features/file/FileSlice";
-import {
-    useSavePendingPurchaseRequestListMutation
-} from "@/redux/features/purchase/pending-purchase-request-list/PendingPurchaseRequestListSlice";
+import { useSaveSalesMutation } from "@/redux/features/sales/SalesSlice";
 import AddProduct from "@/components/Panel/sales/AddProduct";
+import { Box } from "@material-ui/core";
 export default function RegisterFactorDialog(props) {
 
     const [openAddProduct,setOpenAddProduct] = useState(false)
@@ -83,14 +82,14 @@ export default function RegisterFactorDialog(props) {
     //     }
     // },[openPaymentMethodList])
 
-    const handlePaymentMethod = (e,item) =>{
-        let tempPaymentItems = [...formik.values.paymentItems];
-        let objIndex = tempPaymentItems.findIndex((payment => payment.bill.id === item.bill.id));
-        console.log(objIndex)
-        tempPaymentItems[objIndex].paymentMethod = e.target.value
-        console.log(tempPaymentItems)
-        formik.setFieldValue("paymentItems",tempPaymentItems)
-    }
+    // const handlePaymentMethod = (e,item) =>{
+    //     let tempPaymentItems = [...formik.values.paymentItems];
+    //     let objIndex = tempPaymentItems.findIndex((payment => payment.bill.id === item.bill.id));
+    //     console.log(objIndex)
+    //     tempPaymentItems[objIndex].paymentMethod = e.target.value
+    //     console.log(tempPaymentItems)
+    //     formik.setFieldValue("paymentItems",tempPaymentItems)
+    // }
 
 
 
@@ -99,65 +98,47 @@ export default function RegisterFactorDialog(props) {
         setOrganization(null)
     }
 
-    const [submitData, { isLoading:isSubmitLoading ,error}] = useSavePendingPurchaseRequestListMutation()
+    const [submitData, { isLoading:isSubmitLoading ,error}] = useSaveSalesMutation()
     const schema = yup.object().shape({
-        receiptCode:yup.string().required("لطفا شماره فاکتور را وارد نمایید ")
+        receiptCode:yup.string().required("لطفا شماره فاکتور را وارد نمایید "),
+        customer:yup.string().required("لطفا نام مشتری را وارد نمایید "),
+        
+       
     });
 
-    const validate = (values, props) => {
-        const errors = {};
-
-        for (let payment of values.paymentItems){
-            if(payment.paymentMethod === ""){
-                errors.paymentItems = "لطفا شیوه های پرداخت  را انتخاب کنید نمایید";
-            }
-        }
-
-        return errors;
-    };
+    
 
     const formik = useFormik({
         initialValues: {
             customer:"",
             invoiceItems:[],
             receiptCode:"",
-            receiptFile:""
+            receiptFile:"",
+            description:""
         },
 
         validationSchema: schema,
 
-        validate: validate,
+        
 
         onSubmit: async (registerFactor,helpers) => {
-
-            let updateRegisterFactor = {...registerFactor,receiptFile:uploadedImage}
+            
+            let updateRegisterFactor = {...registerFactor,receiptFile:uploadedImage,invoiceItems:invoiceItemInput}
             const userData = await submitData(updateRegisterFactor)
             handleReset()
             props.handleCloseRegisterFactor()
+            setInvoiceItemInput([])
         },
     });
 
-    useEffect(()=>{
-        console.log(props.paymentList)
-        if(props.openRegisterFactor){
-            let paymentItems = []
-            for(let bill of props.paymentList ){
-                let obj = {
-                    paymentMethod:"",
-                    bill:{...bill}
-                }
-                paymentItems.push(obj)
-            }
-            formik.setFieldValue("paymentItems",paymentItems)
-        }
-    },[props.openRegisterFactor])
+    
     return (
         <>
             <Dialog
                 fullWidth={true}
                 open={props.openRegisterFactor}
                 keepMounted
-                onClose={()=>{props.handleCloseRegisterFactor();handleReset()}}
+                onClose={()=>{props.handleCloseRegisterFactor();handleReset();setInvoiceItemInput([])}}
                 aria-describedby="alert-dialog-slide-description"
                 PaperProps={{
                     style: {fontFamily: "__fonts_2f4189,__fonts_Fallback_2f4189"}
@@ -165,7 +146,7 @@ export default function RegisterFactorDialog(props) {
                 <DialogContent>
                     <DialogContentText style={{fontFamily: "__fonts_2f4189,__fonts_Fallback_2f4189"}}>
                         <div className="flex justify-end">
-                            <button onClick={()=>{props.handleCloseRegisterFactor();handleReset()}}>
+                            <button onClick={()=>{props.handleCloseRegisterFactor();handleReset();setInvoiceItemInput([])}}>
                                 <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 14 14"
                                      fill="none">
                                     <path d="M13 1L1 13M1 1L13 13" stroke="black" stroke-width="2"
@@ -183,11 +164,11 @@ export default function RegisterFactorDialog(props) {
                                         fullWidth
                                         placeholder="مشتری (اجباری)"
                                         type="text"
-                                        name="buyerName"
-                                        value={formik.values.buyerName}
+                                        name="customer"
+                                        value={formik.values.customer}
                                         onChange={formik.handleChange}
-                                        error={formik.touched.buyerName && Boolean(formik.errors.buyerName)}
-                                        helperText={formik.touched.buyerName && formik.errors.buyerName}
+                                        error={formik.touched.customer && Boolean(formik.errors.customer)}
+                                        helperText={formik.touched.customer && formik.errors.customer}
                                         inputProps={{style: {fontFamily: "__fonts_2f4189,__fonts_Fallback_2f4189", fontSize: "0.8rem"}}}
                                         InputLabelProps={{style: {fontFamily: "__fonts_2f4189,__fonts_Fallback_2f4189"}}}/>
                                 </div>
@@ -195,6 +176,7 @@ export default function RegisterFactorDialog(props) {
                                     <div>
                                         <span className="px-2 text-[0.8rem]">لیست محصولات</span>
                                     </div>
+                                    
                                     {invoiceItemInput.map((item)=>(
                                         <div className="border border-gray50 px-4 py-3 gap-4 flex flex-col ">
 
@@ -210,7 +192,8 @@ export default function RegisterFactorDialog(props) {
                                             </div>
                                             <div className="flex items-center gap-2 text-sm">
                                                 <div><span>شیوه پرداخت :</span></div>
-                                                <div><span className="text-[#29262A] font-semibold">{item?.paymentMethod}</span></div>
+                                                <div><span className="text-[#29262A] font-semibold">{item?.paymentMethod==="PARDAKHT_NAGHDI"?"پرداخت نقدی در محل تحویل":item?.paymentMethod==="PARDAKHT_BANKI"?"پرداخت با کارت بانکی در محل تحویل":item?.paymentMethod==="PARDAKHT_INTERNETI"?"پرداخت از طریق درگاه اینترنتی":item?.paymentMethod==="CHEK_MODAT_DAR"?"چک مدت دار":item?.paymentMethod==="CHEK"?"چک":item?.paymentMethod==="AGHSATI"?"اقساطی":item?.paymentMethod==="ETEBARI"?"اعتباری":item?.paymentMethod==="SAYER"?"سایر":null}
+                                    </span></div>
                                             </div>
                                         </div>
                                     ))}
@@ -306,9 +289,20 @@ export default function RegisterFactorDialog(props) {
                                     </div>
                                     
                                 </div>
+                                <div className="border-b pb-3 border-gray50">
+                                    <TextField
+                                        fullWidth
+                                        placeholder="توضیحات "
+                                        type="text"
+                                        name="description"
+                                        value={formik.values.description}
+                                        onChange={formik.handleChange}
+                                        inputProps={{style: {fontFamily: "__fonts_2f4189,__fonts_Fallback_2f4189", fontSize: "0.8rem"}}}
+                                        InputLabelProps={{style: {fontFamily: "__fonts_2f4189,__fonts_Fallback_2f4189"}}}/>
+                                </div>
                                 <div className="flex justify-center gap-5 mt-4">
                                 <div className="w-1/3 flex items-center justify-center border border-neutral-400 font-bold rounded-[0.5rem]">
-                                        <button onClick={()=>{props.handleCloseRegisterFactor(),handleReset() }} className=" py-3 w-full">انصراف</button>
+                                        <button onClick={()=>{props.handleCloseRegisterFactor(),handleReset();setInvoiceItemInput([]) }} className=" py-3 w-full">انصراف</button>
                                     </div>
                                     <div className="w-1/3">
                                     {

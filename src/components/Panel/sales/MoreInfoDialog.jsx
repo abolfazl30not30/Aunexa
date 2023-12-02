@@ -29,147 +29,74 @@ export default function MoreInfoDialog(props) {
                                 </svg>
                             </button>
                         </div>
+                        
                         <div className="flex justify-center mb-5">
                             <h3 className="text-[1.1rem]">جزییات</h3>
                         </div>
                         <div className="hidden md:flex md:justify-center mb-4">
                             <div className="w-full md:w-[70%] flex flex-col gap-2">
-                                <div>
-                                {
-                                    props.moreInfoTarget?.billCycle?.productImage !== "" && (
-                                        <div className="flex justify-center items-center gap-4">
-                                            <div>
-                                                <span className="text-[0.9rem] text-gray70"> تصویر محصول :</span>
-                                            </div>
-                                            <div>
-                                                <div className="w-20 h-20 rounded border border-dashed border-[#D9D9D9]">
-                                                    <img className="object-cover w-full h-full" src={props.moreInfoTarget?.billCycle?.productImage} alt="product image"/>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    )
-                                }
-                                </div>
+                               
+                             
                                 <div className="flex flex-col">
                                     <div className="mb-2">
-                                        <span className="text-[0.9rem] text-gray70 "> محصول</span>
-                                    </div>
-                                    <div className="border border-[#D9D9D9]  flex justify-evenly px-4">
-                                        <div className="p-2">
-                                            <span className="text-[#29262A] text-[0.9rem]">{props.moreInfoTarget?.billCycle?.productName}</span>
-                                        </div>
-                                        <div className="border border-[#D9D9D9]">
-                                        </div>
-                                        <div className="p-2">
-                                            <span className="text-[#29262A] text-[0.9rem]">{props.moreInfoTarget?.quantity?.value}{props.moreInfoTarget?.quantity?.unit} </span>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div className="flex flex-col">
-                                    <div className="mb-2">
-                                        <span className="text-[0.9rem] text-gray70 "> کد درخواست </span>
+                                        <span className="text-[0.9rem] text-gray70 "> شماره فاکتور  </span>
                                     </div>
                                     <div className="border border-[#D9D9D9]   px-4">
                                         <div className="p-2">
-                                            <span className="text-[#29262A] text-[0.9rem]">{props.moreInfoTarget?.billCycle?.code}</span>
+                                            <span className="text-[#29262A] text-[0.9rem]">{props.moreInfoTarget?.receiptCode}</span>
                                         </div>
                                         
                                        
                                     </div>
                                 </div>
-                                <div className="flex justify-between items-center gap-2">
-                                    <div className="w-[45%]">
+                                <div >
+                                    <div >
                                     <div className="mb-2">
-                                        <span className="text-[0.9rem] text-gray70 "> تاریخ درخواست </span>
+                                        <span className="text-[0.9rem] text-gray70 "> تاریخ فروش </span>
                                     </div>
                                     <div className="border border-[#D9D9D9]   px-4">
                                         <div className="p-2">
-                                            <span className="text-[#29262A] text-[0.9rem]">{props.moreInfoTarget?.billCycle?.requestDate}</span>
+                                            <span className="text-[#29262A] text-[0.9rem]">{props.moreInfoTarget?.salesDate}</span>
                                         </div>
                                         
                                        
                                     </div>
                                     </div>
-                                    <div className="w-[45%]">
-                                    <div className="mb-2">
-                                        <span className="text-[0.9rem] text-gray70 "> تاریخ تایید </span>
-                                    </div>
-                                    <div className="border border-[#D9D9D9]   px-4">
-                                        <div className="p-2">
-                                            <span className="text-[#29262A] text-[0.9rem]">{props.moreInfoTarget?.confirmationDate}</span>
-                                        </div>
-                                        
-                                       
-                                    </div>
-                                    </div>
+                                    
                                 </div>
-                                <div className="flex items-center gap-2 justify-between">
-                                   <div className="w-[45%]">
+                                <div >
+                                   <div  >
                                    <div className="mb-2">
                                         <span className="text-[0.9rem] text-gray70 ">  دپارتمان </span>
                                     </div>
                                     <div className="border border-[#D9D9D9]   px-4">
                                         <div className="p-2">
-                                            <span className="text-[#29262A] text-[0.9rem]">{props.moreInfoTarget?.billCycle?.subOrganizationName}</span>
+                                            <span className="text-[#29262A] text-[0.9rem]">{"props.moreInfoTarget?.invoiceItems[0]?.subOrganizationInfo?.subOrganizationName"}</span>
                                         </div>
                                         
                                        
                                     </div>
                                    </div>
-                                   <div className="w-[45%]">
-                                   <div className="mb-2">
-                                        <span className="text-[0.9rem] text-gray70 "> فوری </span>
-                                    </div>
-                                    <div className="border border-[#D9D9D9]  flex justify-start px-4">
-                                        <div className="p-2">
-                                            <span className="text-[#29262A] text-[0.9rem]">
-                                                {props.moreInfoTarget?.billCycle?.priority ? (
-                                                    <div className="flex items-center gap-2">
-                                                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 16 16" fill="none">
-                                                            <circle cx="8" cy="8" r="7.5" fill="#DB3746" stroke="#DB3746"/>
-                                                        </svg>
-                                                        <span>فوری</span>
-                                                    </div>
-                                                ):(
-                                                    <div className="flex items-center gap-2">
-                                                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 16 16" fill="none">
-                                                            <circle cx="8" cy="8" r="8" fill="#D9D9D9"/>
-                                                        </svg>
-                                                        <span>غیر فوری</span>
-                                                    </div>
-                                                )}
-                                            </span>
-                                        </div>
-                                    </div>
-                                   </div>
+                                   
                                 </div>
                                 <div className="flex flex-col">
                                     <div className="mb-2">
-                                        <span className="text-[0.9rem] text-gray70 ">نام درخواست دهنده</span>
+                                        <span className="text-[0.9rem] text-gray70 ">نام مسئول فروش </span>
                                     </div>
                                     <div className="border border-[#D9D9D9]  flex justify-start px-4">
                                         <div className="p-2">
-                                            <span className="text-[#29262A] text-[0.9rem]">{props.moreInfoTarget?.billCycle?.registrar}</span>
+                                            <span className="text-[#29262A] text-[0.9rem]">{props.moreInfoTarget?.sellerName}</span>
                                         </div>
                                     </div>
                                 </div>
-                                <div className="flex flex-col">
-                                    <div className="mb-2">
-                                        <span className="text-[0.9rem] text-gray70 ">نام تایید کننده درخواست </span>
-                                    </div>
-                                    <div className="border border-[#D9D9D9]  flex justify-start px-4">
-                                        <div className="p-2">
-                                            <span className="text-[#29262A] text-[0.9rem]">{props.moreInfoTarget?.confirmerName}</span>
-                                        </div>
-                                    </div>
-                                </div>
-                                {props.moreInfoTarget?.billCycle?.description?(<div className="flex flex-col">
+                                
+                                {props.moreInfoTarget?.description?(<div className="flex flex-col">
                                     <div className="mb-2">
                                         <span className="text-[0.9rem] text-gray70 ">   توضیحات </span>
                                     </div>
                                     <div className="border border-[#D9D9D9]  flex justify-start px-4">
                                         <div className="p-2">
-                                            <span className="text-[#29262A] text-[0.9rem]">{props.moreInfoTarget?.billCycle?.description}</span>
+                                            <span className="text-[#29262A] text-[0.9rem]">{props.moreInfoTarget?.description}</span>
                                         </div>
                                     </div>
                                 </div>):null}
@@ -178,99 +105,48 @@ export default function MoreInfoDialog(props) {
                         </div>
                         <div className="md:hidden flex justify-center">
                             <div className="w-full md:w-[70%] flex flex-col gap-3 ">
+                                
                                 <div>
                                     <span className="ml-1 text-gray9F text-[0.8rem]">
-                                         محصول :
+                                         شماره فاکتور :
                                     </span>
                                     <span className="text-[#29262A] text-[0.8rem]">
-                                    {props.moreInfoTarget?.billCycle?.productName}
-                                    </span>
-                                </div>
-                               
-                                <div>
-                                    <span className="ml-1 text-gray9F text-[0.8rem]">
-                                        مقدار :
-                                    </span>
-                                    <span className="text-[#29262A] text-[0.8rem]">
-                                    {props.moreInfoTarget?.quantity?.value}{props.moreInfoTarget?.quantity?.unit} 
+                                    {props.moreInfoTarget?.receiptCode}
                                     </span>
                                 </div>
                                 <div>
                                     <span className="ml-1 text-gray9F text-[0.8rem]">
-                                         کد درخواست :
+                                         تاریخ فروش :
                                     </span>
                                     <span className="text-[#29262A] text-[0.8rem]">
-                                    {props.moreInfoTarget?.billCycle?.code}
+                                    {props.moreInfoTarget?.salesDate}
                                     </span>
                                 </div>
-                                <div>
-                                    <span className="ml-1 text-gray9F text-[0.8rem]">
-                                         تاریخ درخواست :
-                                    </span>
-                                    <span className="text-[#29262A] text-[0.8rem]">
-                                    {props.moreInfoTarget?.billCycle?.requestDate}
-                                    </span>
-                                </div>
-                                <div>
-                                    <span className="ml-1 text-gray9F text-[0.8rem]">
-                                         تاریخ تایید :
-                                    </span>
-                                    <span className="text-[#29262A] text-[0.8rem]">
-                                    {props.moreInfoTarget?.confirmationDate}
-                                    </span>
-                                </div>
+                              
                                 <div>
                                     <span className="ml-1 text-gray9F text-[0.8rem]">
                                           دپارتمان :
                                     </span>
                                     <span className="text-[#29262A] text-[0.8rem]">
-                                    {props.moreInfoTarget?.billCycle?.subOrganizationName}
+                                    {"props.moreInfoTarget?.invoiceItems[0]?.subOrganizationInfo?.subOrganizationName"}
                                     </span>
                                 </div>
-                                <div className="flex items-center gap-2">
-                                    <span className="ml-1 text-gray9F text-[0.8rem]">
-                                           فوری :
-                                    </span>
-                                    <span className="text-[#29262A] text-[0.8rem]">
-                                        {props.moreInfoTarget?.billCycle?.priority ? (
-                                            <div className="flex items-center gap-2">
-                                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 16 16" fill="none">
-                                                <circle cx="8" cy="8" r="7.5" fill="#DB3746" stroke="#DB3746"/>
-                                            </svg>
-                                            <span>فوری</span>
-                                        </div>
-                                        ):(
-                                            <div className="flex items-center gap-2">
-                                                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 16 16" fill="none">
-                                                            <circle cx="8" cy="8" r="8" fill="#D9D9D9"/>
-                                                        </svg>
-                                                        <span>غیر فوری</span>
-                                                    </div>
-                                        )}
-                                    </span>
-                                </div>
+                                
                                 <div>
                                     <span className="ml-1 text-gray9F text-[0.8rem]">
-                                        نام درخواست دهنده :
+                                        نام مسئول فروش :
                                     </span>
                                     <span className="text-[#29262A] text-[0.8rem]">
-                                        {props.moreInfoTarget?.billCycle?.registrar}
+                                        {props.moreInfoTarget?.sellerName}
                                     </span>
                                 </div>
-                                <div>
-                                    <span className="ml-1 text-gray9F text-[0.8rem]">
-                                        نام تایید کننده درخواست :
-                                    </span>
-                                    <span className="text-[#29262A] text-[0.8rem]">
-                                        {props.moreInfoTarget?.confirmerName}
-                                    </span>
-                                </div>
-                                {props.moreInfoTarget?.billCycle?.description?(<div>
+                               
+                                {props.moreInfoTarget?.description?(<div>
                                     <span className="ml-1 text-gray9F text-[0.8rem]">
                                         توضیحات :
                                     </span>
                                     <span className="text-[#29262A] text-[0.8rem]">
-                                        {props.moreInfoTarget?.billCycle?.description}
+                                        {props.moreInfoTarget?.description}
                                     </span>
                                 </div>):null}
                             </div>

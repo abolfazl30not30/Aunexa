@@ -52,28 +52,28 @@ export default function AddProduct(props) {
         }
     }, [openUnitList])
 
-    const [organization, setOrganization] = useState(null)
-    const [uploadedImage, setUploadedImage] = useState("")
-    const [uploadFile, {isLoading: isLoadingUpload, error: errorUpload}] = useUploadFileCloudMutation()
-    const [invoiceItemInput, setInvoiceItemInput] = useState([
-        {
-            productId: "",
-            productName: "",
-            productImage: "",
-        }
-    ])
+   
+    // const [uploadedImage, setUploadedImage] = useState("")
+    // const [uploadFile, {isLoading: isLoadingUpload, error: errorUpload}] = useUploadFileCloudMutation()
+    // const [invoiceItemInput, setInvoiceItemInput] = useState([
+    //     {
+    //         productId: "",
+    //         productName: "",
+    //         productImage: "",
+    //     }
+    // ])
 
-    const handleUploadImage = async (event) => {
-        let formData = new FormData();
-        formData.append('file', event.target.files[0]);
-        const res = await uploadFile(formData)
-        if (res.data) {
-            setUploadedImage(res.data?.fileUrl)
-        }
-    }
-    const handleDeleteUpload = () => {
-        setUploadedImage("")
-    }
+    // const handleUploadImage = async (event) => {
+    //     let formData = new FormData();
+    //     formData.append('file', event.target.files[0]);
+    //     const res = await uploadFile(formData)
+    //     if (res.data) {
+    //         setUploadedImage(res.data?.fileUrl)
+    //     }
+    // }
+    // const handleDeleteUpload = () => {
+    //     setUploadedImage("")
+    // }
 
 
 
