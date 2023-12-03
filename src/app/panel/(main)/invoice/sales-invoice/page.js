@@ -585,10 +585,8 @@ function PurchaseInvoice() {
                             )}
                             <button
                               onClick={() => {
-                                handleOpenMoreInfo(data);
-                              }}
-                              className="border border-1 border-solid border-gray70 rounded p-[0.4rem] hover:bg-neutral-100"
-                            >
+                                handleOpenMoreInfo(data);}}
+                              className="border border-1 border-solid border-gray70 rounded p-[0.4rem] hover:bg-neutral-100">
                               <svg
                                 xmlns="http://www.w3.org/2000/svg"
                                 width="18"
