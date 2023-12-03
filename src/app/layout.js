@@ -44,6 +44,27 @@ const fonts = localFont({
 export default function RootLayout({children}) {
     return (
         <html lang="en" className={fonts.className}>
+        <head>
+            <link
+                rel="apple-touch-icon"
+                sizes="180x180"
+                href="/mainIcons/apple-touch-icon.png"
+            />
+            <link
+                rel="icon"
+                type="image/png"
+                sizes="198x198"
+                href="/mainIcons/icons198.png"
+            />
+            <link
+                rel="icon"
+                type="image/png"
+                sizes="32x32"
+                href="/mainIcons/icons32.png"
+            />
+            <link rel="manifest" href={"/manifest.json"} />
+            <meta name={"theme-color"} content={"#ffffff"}/>
+        </head>
         <body>
         <Provider store={store}>
             {children}
