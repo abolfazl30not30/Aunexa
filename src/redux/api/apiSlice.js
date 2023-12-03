@@ -5,7 +5,7 @@ import axios from "axios";
 //https://gateway.prod.vipsoftware1.com
 
 const baseQuery = fetchBaseQuery({
-  baseUrl: "https://gateway.vipsoftware1.com/api/v1/",
+  baseUrl: "https://gateway.prod.vipsoftware1.com/api/v1/",
   prepareHeaders: (headers, { getState }) => {
     const token = getState().auth.accessToken;
     if (token) {
@@ -27,7 +27,7 @@ const login = async () => {
   };
 
   return await axios.post(
-    "https://auth.vipsoftware1.com/oauth2/token",
+    "https://auth.prod.vipsoftware1.com/oauth2/token",
     formData,
     {
       headers: {
