@@ -71,10 +71,8 @@ export default function MoreInfoDialog(props) {
                                     </div>
                                     <div className="border border-[#D9D9D9]   px-4">
                                         <div className="p-2">
-                                            <span className="text-[#29262A] text-[0.9rem]">{"props.moreInfoTarget?.invoiceItems[0]?.subOrganizationInfo?.subOrganizationName"}</span>
+                                            <span className="text-[#29262A] text-[0.9rem]">{}</span>
                                         </div>
-                                        
-                                       
                                     </div>
                                    </div>
                                    
@@ -92,7 +90,7 @@ export default function MoreInfoDialog(props) {
                                 
                                 {props.moreInfoTarget?.description?(<div className="flex flex-col">
                                     <div className="mb-2">
-                                        <span className="text-[0.9rem] text-gray70 ">   توضیحات </span>
+                                        <span className="text-[0.9rem] text-gray70 "> توضیحات </span>
                                     </div>
                                     <div className="border border-[#D9D9D9]  flex justify-start px-4">
                                         <div className="p-2">
@@ -128,7 +126,7 @@ export default function MoreInfoDialog(props) {
                                           دپارتمان :
                                     </span>
                                     <span className="text-[#29262A] text-[0.8rem]">
-                                    {"props.moreInfoTarget?.invoiceItems[0]?.subOrganizationInfo?.subOrganizationName"}
+                                    {}
                                     </span>
                                 </div>
                                 

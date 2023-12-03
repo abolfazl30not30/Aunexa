@@ -807,11 +807,11 @@ export default function page() {
                                         }}
                                         className="flex gap-2 items-center w-1/5"
                                       >
-                                        <span>{itemIndex + 1}</span>
-                                        <span className="text-[#4E4E4E] pr-2 ">
+                                        <span className="text-[0.8rem]">{itemIndex + 1}</span>
+                                        <span className="text-[0.8rem] text-[#4E4E4E] pr-2 ">
                                           نام محصول :
                                         </span>
-                                        <span className=" text-sm">
+                                        <span className=" text-[0.8rem]">
                                           {item.productName}
                                         </span>
                                       </Typography>
@@ -822,10 +822,10 @@ export default function page() {
                                         }}
                                         className="w-1/5 flex gap-2 items-center"
                                       >
-                                        <span className="text-[#4E4E4E]">
+                                        <span className="text-[0.8rem] text-[#4E4E4E]">
                                           مقدار:
                                         </span>
-                                        <span className=" text-sm">
+                                        <span className="text-[0.8rem]">
                                           {item?.quantity?.value}
                                           {item?.quantity?.unit}
                                         </span>
@@ -837,10 +837,10 @@ export default function page() {
                                         }}
                                         className="w-1/2 flex gap-2 items-center"
                                       >
-                                        <span className="text-[#4E4E4E]">
+                                        <span className="text-[0.8rem] text-[#4E4E4E]">
                                           روش پرداخت:
                                         </span>
-                                        <span className=" text-sm">
+                                        <span className="text-[0.8rem]">
                                           {item?.paymentMethod ===
                                           "PARDAKHT_NAGHDI"
                                             ? "پرداخت نقدی در محل تحویل"
