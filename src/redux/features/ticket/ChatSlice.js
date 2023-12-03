@@ -4,14 +4,14 @@ export const chatSlice = apiSlice.injectEndpoints({
   endpoints: (builder) => ({
     getAllChats: builder.query({
       query: ({ ticketId }) => ({
-        url: `message/find-all/${ticketId}`,
+        url: `party/message/find-all/${ticketId}`,
       }),
       providesTags: ["ticket"],
     }),
 
     saveChat: builder.mutation({
       query: (body) => ({
-        url: "message",
+        url: "party/message",
         method: "POST",
         body: body,
       }),
