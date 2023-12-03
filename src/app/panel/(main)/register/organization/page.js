@@ -14,6 +14,8 @@ import {
 import Accordion from "@mui/material/Accordion";
 import AccordionDetails from "@mui/material/AccordionDetails";
 import AccordionSummary from "@mui/material/AccordionSummary";
+import * as yup from "yup";
+import { useFormik } from "formik";
 import Typography from "@mui/material/Typography";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import AddOrganizationDialog from "@/components/Panel/register-organization/AddOrganizationDialog";
@@ -29,10 +31,10 @@ import { useGetAllOrganizationQuery } from "@/redux/features/organization/Organi
 import { useSelector } from "react-redux";
 import RegisterUserDialog from "@/components/Panel/register-organization/RegisterUserDialog";
 import UnregisterUserDialog from "@/components/Panel/register-organization/UnregisterUserDialog";
-
+import { useSaveCodeMutation } from "@/redux/features/organization/individual/RegisterIndividualSlice";
 export default function registerOrganization() {
   /* search bar */
-  const [filterItem, setFilterItem] = useState();
+
   const [filter, setFilter] = useState("organization");
   /* search bar */
   const [expanded, setExpanded] = React.useState(false);
@@ -181,9 +183,20 @@ export default function registerOrganization() {
     email: "",
     address: "",
     cLevel: "",
+    code: "",
+    userName: "",
+    password: "",
+    name: "",
+    phoneNumber: "",
+    subOrganizationName: "",
+    subOrganizationId: "",
+    organizationId: "",
+    profile: "",
   });
-  const handleOpenRegisterIndividual = (info) => {
+
+  const handleOpenRegisterIndividual = (info, code) => {
     setRegisterIndividualTarget(info);
+    setCodeRequest(code);
     setOpenRegisterIndividual(true);
   };
 
@@ -203,6 +216,15 @@ export default function registerOrganization() {
       email: "",
       address: "",
       cLevel: "",
+      code: "",
+      userName: "",
+      password: "",
+      name: "",
+      phoneNumber: "",
+      subOrganizationName: "",
+      subOrganizationId: "",
+      organizationId: "",
+      profile: "",
     });
     setOpenRegisterIndividual(false);
   };
@@ -360,7 +382,23 @@ export default function registerOrganization() {
     editIndividualRelationshipInfoTarget;
     setOpenEditIndividualRelationshipInfo(false);
   };
+  const [filterItem, setFilterItem] = useState("organization");
+  const [searchValue, setSearchValue] = useState("");
+  const [filterType, setFilterType] = useState("organization");
+  const handleFilterType = (e) => {
+    setFilterType(e.target.value);
+    let params = new URLSearchParams();
+    params.set(e.target.value, "");
+    setFilterItem(params.toString());
+    setSearchValue("");
+  };
 
+  const handleSearchBox = (e) => {
+    setSearchValue(e.target.value);
+    let params = new URLSearchParams();
+    params.set(filterType, e.target.value);
+    setFilterItem(params.toString());
+  };
   const {
     data: organizationList = [],
     isLoading: isDataLoading,
@@ -389,6 +427,7 @@ export default function registerOrganization() {
       },
     ],
   });
+  const [codeRequest, setCodeRequest] = useState("");
   const [openAddIndividualRelationship, setOpenAddIndividualRelationship] =
     useState(false);
   const handleOpenAddIndividualRelationship = (individualId) => {
@@ -399,6 +438,24 @@ export default function registerOrganization() {
     setOpenAddIndividualRelationship(false);
   };
 
+  const [submitData, { isLoading: isSubmitLoading, error }] =
+    useSaveCodeMutation();
+  const formik = useFormik({
+    initialValues: {},
+
+    onSubmit: async (vehicle, helpers) => {
+      let updateVehicle = {
+        client_id: "msc_application",
+        Authorization_validation:
+          "Basic " +
+          Buffer.from("msc_application" + ":" + "ytp%!wK$7sEN)cCP").toString(
+            "base64"
+          ),
+      };
+      const userData = await submitData(updateVehicle);
+      setCodeRequest(userData.error.data);
+    },
+  });
   return (
     <div>
       <header className="flex justify-between items-center text-[0.9rem] bg-white py-6 px-10">
@@ -407,20 +464,19 @@ export default function registerOrganization() {
             ثبت سازمان
           </h2>
         </div>
-        <div className="w-[70%] md:w-[50%] flex ">
+        <div className="w-full md:w-[50%] flex ">
           <div className="grow">
             <FormControl fullWidth>
               <OutlinedInput
-                onKeyUp={(event) => {
-                  setFilterItem(event.target.value);
-                }}
+                value={searchValue}
+                onChange={handleSearchBox}
                 className=""
                 size="small"
                 sx={{
                   py: "0.2rem",
                   borderRadius: 0,
                 }}
-                placeholder="جست و جو"
+                placeholder="جستوجو..."
                 id="outlined-adornment-amount"
                 inputProps={{
                   style: {
@@ -450,7 +506,7 @@ export default function registerOrganization() {
               />
             </FormControl>
           </div>
-          <div className={"w-[20%]"}>
+          <div className={"w-[40%] md:w-[20%]"}>
             <div>
               <FormControl fullWidth size="small">
                 <InputLabel
@@ -467,7 +523,7 @@ export default function registerOrganization() {
                   style={{ height: "2.8rem" }}
                   labelId="demo-simple-select-label"
                   id="demo-simple-select"
-                  value={filter}
+                  value={filterType}
                   name="type"
                   input={
                     <OutlinedInput
@@ -482,9 +538,7 @@ export default function registerOrganization() {
                     fontFamily: "__fonts_2f4189,__fonts_Fallback_2f4189",
                     fontSize: "0.8rem",
                   }}
-                  onChange={(e) => {
-                    setFilter(e.target.value);
-                  }}
+                  onChange={handleFilterType}
                 >
                   <MenuItem
                     value="organization"
@@ -885,52 +939,93 @@ export default function registerOrganization() {
                                               </span>
                                             </Typography>
                                             <div className="hidden md:flex gap-2 px-6  justify-center text-gray70 whitespace-nowrap ">
-                                              <button
-                                                className="border  border-[#FE4949] rounded p-[0.4rem] hover:bg-[#f8dfdf]"
-                                                onClick={() => {
-                                                  handleOpenUnregisterIndividual(
-                                                    individual
-                                                  );
-                                                }}
-                                              >
-                                                <svg
-                                                  xmlns="http://www.w3.org/2000/svg"
-                                                  width="18"
-                                                  height="18"
-                                                  viewBox="0 0 16 16"
-                                                  fill="none"
-                                                >
-                                                  <path
-                                                    d="M12 4L4 12M4 4L12 12"
-                                                    stroke="#DB3746"
-                                                    stroke-linecap="round"
-                                                    stroke-linejoin="round"
-                                                  />
-                                                </svg>
-                                              </button>
-                                              <button
-                                                className="border  border-[#12D377] rounded p-[0.4rem] hover:bg-[#e9fcf3]"
-                                                onClick={() => {
-                                                  handleOpenRegisterIndividual(
-                                                    individual
-                                                  );
-                                                }}
-                                              >
-                                                <svg
-                                                  xmlns="http://www.w3.org/2000/svg"
-                                                  width="18"
-                                                  height="18"
-                                                  viewBox="0 0 16 16"
-                                                  fill="none"
-                                                >
-                                                  <path
-                                                    d="M13.3337 4L6.00033 11.3333L2.66699 8"
-                                                    stroke="#12D377"
-                                                    stroke-linecap="round"
-                                                    stroke-linejoin="round"
-                                                  />
-                                                </svg>
-                                              </button>
+                                              {!individual.register ? (
+                                                <div className="flex gap-2">
+                                                  {/*
+                                                  <button
+                                                    className="border  border-[#FE4949] rounded p-[0.4rem] hover:bg-[#f8dfdf]"
+                                                    onClick={() => {
+                                                      handleOpenUnregisterIndividual(
+                                                        individual
+                                                      );
+                                                    }}
+                                                  >
+                                                    <svg
+                                                      xmlns="http://www.w3.org/2000/svg"
+                                                      width="18"
+                                                      height="18"
+                                                      viewBox="0 0 16 16"
+                                                      fill="none"
+                                                    >
+                                                      <path
+                                                        d="M12 4L4 12M4 4L12 12"
+                                                        stroke="#DB3746"
+                                                        stroke-linecap="round"
+                                                        stroke-linejoin="round"
+                                                      />
+                                                    </svg>
+                                                  </button> */}
+                                                  <form
+                                                    onSubmit={
+                                                      formik.handleSubmit
+                                                    }
+                                                    method="POST"
+                                                  >
+                                                    {isSubmitLoading ? (
+                                                      <button
+                                                        type="submit"
+                                                        disabled
+                                                        className="border  border-[#12D377] rounded p-[0.4rem] hover:bg-[#e9fcf3]"
+                                                      >
+                                                        <svg
+                                                          xmlns="http://www.w3.org/2000/svg"
+                                                          width="18"
+                                                          height="18"
+                                                          viewBox="0 0 16 16"
+                                                          fill="none"
+                                                        >
+                                                          <path
+                                                            d="M13.3337 4L6.00033 11.3333L2.66699 8"
+                                                            stroke="#12D377"
+                                                            stroke-linecap="round"
+                                                            stroke-linejoin="round"
+                                                          />
+                                                        </svg>
+                                                      </button>
+                                                    ) : (
+                                                      <button
+                                                        onClick={() => {
+                                                          handleOpenRegisterIndividual(
+                                                            individual,
+                                                            codeRequest
+                                                          );
+                                                          console.log(
+                                                            individual
+                                                          );
+                                                        }}
+                                                        type="submit"
+                                                        className="border  border-[#12D377] rounded p-[0.4rem] hover:bg-[#e9fcf3]"
+                                                      >
+                                                        <svg
+                                                          xmlns="http://www.w3.org/2000/svg"
+                                                          width="18"
+                                                          height="18"
+                                                          viewBox="0 0 16 16"
+                                                          fill="none"
+                                                        >
+                                                          <path
+                                                            d="M13.3337 4L6.00033 11.3333L2.66699 8"
+                                                            stroke="#12D377"
+                                                            stroke-linecap="round"
+                                                            stroke-linejoin="round"
+                                                          />
+                                                        </svg>
+                                                      </button>
+                                                    )}
+                                                  </form>
+                                                </div>
+                                              ) : null}
+
                                               <button
                                                 onClick={() => {
                                                   handleOpenMoreInfoIndividual(
@@ -1109,6 +1204,7 @@ export default function registerOrganization() {
         }
       />
       <RegisterUserDialog
+        codeRequest={codeRequest}
         registerIndividualTarget={registerIndividualTarget}
         openRegisterIndividual={openRegisterIndividual}
         handleCloseRegisterIndividual={handleCloseRegisterIndividual}

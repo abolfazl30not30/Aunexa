@@ -155,14 +155,16 @@ function Ticket() {
                         onClick={() => {
                           setOpenTicket(false);
                         }}
-                        label="تیکت های باز"
+                        label={<span className="font-sans">تیکت های باز</span>}
                         value="تیکت های باز"
                       />
                       <Tab
                         onClick={() => {
                           setOpenTicket(true);
                         }}
-                        label="بسته شده"
+                        label={
+                          <span className="font-sans">تیکت های بسته شده</span>
+                        }
                         value="بسته شده"
                       />
                     </TabList>
