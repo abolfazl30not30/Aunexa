@@ -71,7 +71,7 @@ export default function MoreInfoDialog(props) {
                                     </div>
                                     <div className="border border-[#D9D9D9]   px-4">
                                         <div className="p-2">
-                                            <span className="text-[#29262A] text-[0.9rem]">{}</span>
+                                            <span className="text-[#29262A] text-[0.9rem]">{props.moreInfoTarget?.subOrganizationInfo?.subOrganizationName}</span>
                                         </div>
                                     </div>
                                    </div>
@@ -126,7 +126,7 @@ export default function MoreInfoDialog(props) {
                                           دپارتمان :
                                     </span>
                                     <span className="text-[#29262A] text-[0.8rem]">
-                                    {}
+                                    {props.moreInfoTarget?.subOrganizationInfo?.subOrganizationName}
                                     </span>
                                 </div>
                                 

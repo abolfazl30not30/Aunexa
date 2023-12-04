@@ -159,7 +159,7 @@ export default function EditInfoDialog(props) {
         validationSchema: schema,
 
         onSubmit: async (product,helpers) => {
-            let updateProduct = {id:props.editInfoTarget?.id,receiptFile:uploadedImage}
+            let updateProduct = {...product,id:props.editInfoTarget?.id,receiptFile:uploadedImage}
             const userData = await submitData(updateProduct)
             handleReset()
             props.handleCloseEditInfo()

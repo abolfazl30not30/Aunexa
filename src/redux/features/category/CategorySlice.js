@@ -35,6 +35,10 @@ export const CategorySlice = apiSlice.injectEndpoints({
       query: () => "bill/payment-method/find-all",
       providesTags: ["category"],
     }),
+    getAllCustomer: builder.query({
+      query: () => "bill/invoice/customer/find-all",
+      providesTags: ["category"],
+    }),
   }),
 });
 
@@ -45,6 +49,7 @@ export const {
   useLazyGetAllVehicleQuery,
   useLazyGetAllSubOrganizationQuery,
   useLazyGetAllRoleQuery,
+  useLazyGetAllCustomerQuery,
   useLazyGetAllPaymentMethodQuery,
   useLazyGetInventoryBalanceQuery,
 } = CategorySlice;

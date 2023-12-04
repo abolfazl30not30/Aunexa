@@ -269,7 +269,7 @@ export default function RootLayout({ children }) {
                       </span>
                     </Link>
                     <Link
-                      href="https://auth.prod.vipsoftware1.com/logout"
+                      href="https://auth.vipsoftware1.com/logout"
                       className="flex gap-2 py-3 px-4 hover:bg-neutral-100 border-t border-t-[#D9D9D9]"
                     >
                       <div>
@@ -730,13 +730,18 @@ export default function RootLayout({ children }) {
                   </div>
                   <div>
                     <Link
-                        href="/panel/sales"
-                        className="block py-4 px-2 border-b border-b-1 border-b-solid  border-b-borderGray"><span
-                      className={
-                        pathname === "/panel/sales"
+                      href="/panel/sales"
+                      className="block py-4 px-2 border-b border-b-1 border-b-solid  border-b-borderGray"
+                    >
+                      <span
+                        className={
+                          pathname === "/panel/sales"
                             ? "text-mainRed text-[0.9rem]"
-                            : "text-gray9F hover:text-textGray text-[0.9rem]"}>
-                       فروش</span>
+                            : "text-gray9F hover:text-textGray text-[0.9rem]"
+                        }
+                      >
+                        فروش
+                      </span>
                     </Link>
                   </div>
                   <div>
@@ -879,7 +884,7 @@ export default function RootLayout({ children }) {
                   </div>
                   <div>
                     <Link
-                      href="https://auth.prod.vipsoftware1.com/logout"
+                      href="https://auth.vipsoftware1.com/logout"
                       className="block py-4 px-2 border-b border-b-1 border-b-solid  border-b-borderGray"
                     >
                       <span className="text-gray9F hover:text-textGray text-[0.9rem]">
@@ -1286,15 +1291,15 @@ export default function RootLayout({ children }) {
               </div>
               <div>
                 <Link
-                    href="/panel/sales"
-                    className="block py-4 px-2 border-b border-b-1 border-b-solid  border-b-borderGray"
+                  href="/panel/sales"
+                  className="block py-4 px-2 border-b border-b-1 border-b-solid  border-b-borderGray"
                 >
                   <span
-                      className={
-                        pathname === "/panel/sales"
-                            ? "text-mainRed text-[0.9rem]"
-                            : "text-gray9F hover:text-textGray text-[0.9rem]"
-                      }
+                    className={
+                      pathname === "/panel/sales"
+                        ? "text-mainRed text-[0.9rem]"
+                        : "text-gray9F hover:text-textGray text-[0.9rem]"
+                    }
                   >
                     فروش
                   </span>
@@ -1440,7 +1445,7 @@ export default function RootLayout({ children }) {
               </div>
               <div>
                 <Link
-                  href="https://auth.prod.vipsoftware1.com/logout"
+                  href="https://auth.vipsoftware1.com/logout"
                   className="block py-4 px-2 border-b border-b-1 border-b-solid  border-b-borderGray"
                 >
                   <span className="text-gray9F hover:text-textGray text-[0.9rem]">

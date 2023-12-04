@@ -10,6 +10,9 @@ body {
 .table-body tr:nth-child(even){
     background-color: #F8F8F8 !important;
 }
+.table-body .sales-table-row:nth-child(even){
+    background-color: #F8F8F8 !important;
+}
 .div-body > .MuiPaper-root:nth-child(even){
     background-color: #F8F8F8 !important;
     
@@ -27,6 +30,7 @@ body {
     background-color: #DB3746 !important;
     color: white;
 }
+
 .plate{
     background-image: url("/car-plate-default.svg");
     background-size: 100% 100%;

@@ -24,6 +24,7 @@ import Switch from "@mui/material/Switch";
 import {
     useLazyGetAllSubOrganizationQuery
  } from "@/redux/features/category/CategorySlice";
+ import { useLazyGetAllCustomerQuery } from "@/redux/features/category/CategorySlice";
 
 const AntSwitch = styled(Switch)(({ theme }) => ({
     width: 35,
@@ -88,7 +89,14 @@ export default function FilterDialog(props) {
         }
     },[openProductList])
 
-
+    const [customer,setCustomer] = useState(null)
+    const [openCustomerList,setOpenCustomerList] = useState(false)
+    const [getCustomerList,{ data : CustomerList  = [] , isLoading : isCustomerLoading, isError: customerIsError }] = useLazyGetAllCustomerQuery()
+    useEffect(()=>{
+        if(openCustomerList){
+            getCustomerList()
+        }
+    },[openCustomerList])
    
 
 
@@ -391,21 +399,46 @@ export default function FilterDialog(props) {
                                         />
                                 </div>
                                 <div className="">
-                                        <TextField
-                                            fullWidth
-                                            placeholder="مشتری "
-                                            type="text"
-                                            name="customer"
-                                            value={formik.values.customer}
-                                            onChange={formik.handleChange}
-                                           
-                                            inputProps={{
-                                                style: {
-                                                    fontFamily: "__fonts_2f4189,__fonts_Fallback_2f4189",
-                                                    fontSize: "0.8rem"
-                                                }
-                                            }}
-                                            InputLabelProps={{style: {fontFamily: "__fonts_2f4189,__fonts_Fallback_2f4189"}}}/>
+                                <Autocomplete
+                                        open={openCustomerList}
+                                        onOpen={() => {
+                                            setOpenCustomerList(true);
+                                        }}
+                                        onClose={() => {
+                                            setOpenCustomerList(false);
+                                        }}
+                                        fullWidth
+                                        clearOnEscape
+                                        disablePortal
+                                        id="combo-box-demo"
+                                        ListboxProps={{
+                                            sx: {fontFamily: "__fonts_2f4189,__fonts_Fallback_2f4189", fontSize: "0.8rem"},
+                                        }}
+                                        options={CustomerList}
+                                        getOptionLabel={(option) => option}
+                                        value={customer}
+                                        onChange={(event, newValue) => {
+                                            setCustomer(newValue)
+                                            formik.setFieldValue("customer", newValue)
+                                        }}
+                                        renderInput={(params) =>
+                                            <TextField
+                                                error={formik.touched.customer && Boolean(formik.errors.customer)}
+                                                helperText={formik.touched.customer && formik.errors.customer}
+                                                {...params}
+                                                InputProps={{
+                                                    ...params.InputProps,
+                                                    style: {fontFamily: "__fonts_2f4189,__fonts_Fallback_2f4189", fontSize: "0.8rem"},
+                                                    endAdornment:(
+                                                        <React.Fragment>
+                                                            {isCustomerLoading ? <CircularProgress color="inherit" size={20} /> : null}
+                                                            {params.InputProps.endAdornment}
+                                                        </React.Fragment>
+                                                    )
+                                                }}
+                                                placeholder="نام مشتری"
+                                            />}
+                                    />
                                     </div>
                                 {/*
                                 <div className=" flex flex-col">

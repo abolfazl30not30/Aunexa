@@ -8,7 +8,7 @@ import * as yup from "yup";
 import {useFormik} from "formik";
 import "react-multi-date-picker/styles/colors/red.css"
 
-import { useAcceptPurchaseInvoiceMutation } from "@/redux/features/invoice/purchase-invoice/PurchaseInvoiceSlice";
+import { useAcceptSalesInvoiceMutation } from "@/redux/features/invoice/sales-invoice/SalesInvoiceSlice";
 
 
 export default function ConfirmDialog(props) {
@@ -26,7 +26,7 @@ export default function ConfirmDialog(props) {
     }, [props.openConfirm])
 
     //submit data
-    const [submitData, {isLoading: isSubmitLoading, error}] = useAcceptPurchaseInvoiceMutation()
+    const [submitData, {isLoading: isSubmitLoading, error}] = useAcceptSalesInvoiceMutation()
 
    
 

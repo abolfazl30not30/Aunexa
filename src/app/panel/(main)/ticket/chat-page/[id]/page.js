@@ -146,14 +146,14 @@ export default function page({ params }) {
           renderThumbVertical={renderThumbVertical}
           renderTrackVertical={renderTrackVertical}
         >
-          <div className="flex flex-col gap-2 lg:py-6 lg:px-4 py-4 px-2 ">
+          <div>
             {chatData?.map((data, index) => (
-              <div>
+              <div className="flex flex-col gap-2  lg:px-4 py-2 px-2 ">
                 {data.senderName === senderNameOfTicket ? (
                   <div className="xl:w-1/3 lg:w-2/5 md:w-3/4 sm:w-3/5 w-7/8 ">
                     <div className="bg-[#29262A] rounded-lg rounded-tr-none px-3 py-2 space-y-3 text-white">
                       <div>
-                        <span> {data?.senderName}</span>
+                        <span> {data?.senderName} :</span>
                       </div>
                       <div>
                         <p className="text-sm leading-6">{data?.value}</p>
@@ -172,17 +172,17 @@ export default function page({ params }) {
                   <div className="xl:w-1/3 lg:w-2/5 md:w-3/4 sm:w-3/5 w-7/8 self-end">
                     <div className=" space-y-3 rounded-lg rounded-tl-none bg-[#F2EDED] px-3 py-2 text-[#29262A]">
                       <div>
-                        <span>پشتیبانی :</span>
+                        <span>{data?.senderName} :</span>
                       </div>
                       <div>
-                        <p className="text-sm leading-6">سلام</p>
+                        <p className="text-sm leading-6">{data?.value}</p>
                       </div>
                       <div className="flex items-center gap-2 text-[#9F9F9F] text-xs">
                         <div>
-                          <span>یکشنبه 1402/05/13</span>
+                          <span>{data?.date}</span>
                         </div>
                         <div>
-                          <span>10:07</span>
+                          <span>{data?.time}</span>
                         </div>
                       </div>
                     </div>

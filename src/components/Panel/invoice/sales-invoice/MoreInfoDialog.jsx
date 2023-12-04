@@ -37,11 +37,11 @@ export default function MoreInfoDialog(props) {
                             <div className="w-full md:w-[70%] flex flex-col gap-2">
                                 <div className="flex flex-col">
                                     <div className="mb-2">
-                                        <span className="text-[0.9rem] text-gray70 ">مسئول خرید</span>
+                                        <span className="text-[0.9rem] text-gray70 ">مسئول فروش</span>
                                     </div>
                                     <div className="border border-[#D9D9D9]  flex  px-4">
                                         <div className="p-2">
-                                            <span className="text-[#29262A] text-[0.9rem]">{props.moreInfoTarget?.buyerName}</span>
+                                            <span className="text-[#29262A] text-[0.9rem]">{props.moreInfoTarget?.sellerName}</span>
                                         </div>
                                        
                                     </div>
@@ -49,44 +49,34 @@ export default function MoreInfoDialog(props) {
                                 <div className="flex flex-col md:flex-row justify-between gap-2 border-b border-[#D9D9D9] pb-6">
                                     <div className="w-full  flex flex-col">
                                         <div className="mb-2">
-                                            <span className="text-[0.9rem] text-gray70 "> تامین کننده</span>
+                                            <span className="text-[0.9rem] text-gray70 ">  مشتری</span>
                                         </div>
                                         <div className="border border-[#D9D9D9]  flex justify-between px-4">
                                             <div className="p-2">
-                                                <span className="text-[#29262A] text-[0.9rem]">{props.moreInfoTarget?.producer}</span>
+                                                <span className="text-[#29262A] text-[0.9rem]">{props.moreInfoTarget?.customer}</span>
                                             </div>
                                         </div>
                                     </div>
                                     
                                 </div>
                                 <div className="flex flex-col gap-2 pt-4 border-b border-[#D9D9D9] pb-6">
-                                    {props.moreInfoTarget?.paymentItems?.map((item,index)=>(
+                                    {props.moreInfoTarget?.invoiceItems?.map((item,index)=>(
                                         <div className="border border-gray50 px-4 py-3 gap-4 flex flex-col ">
+                                            <div className="flex justify-between gap-2 items-center">
                                             <div className="flex items-center gap-2 text-sm">
                                                 <div>
                                             <span>
-                                             کد درخواست خرید :
+                                               نام محصول :
                                             </span>
                                                 </div>
                                                 <div>
                                             <span className="text-[#29262A] font-semibold">
-                                                {item?.bill?.billCycle?.code}
+                                                {item?.productName}
                                             </span>
                                                 </div>
                                             </div>
                                             <div className="flex justify-between gap-4">
-                                                <div className="flex items-center gap-2 text-sm">
-                                                    <div>
-                                            <span>
-                                               نام محصول :
-                                            </span>
-                                                    </div>
-                                                    <div>
-                                            <span className="text-[#29262A] font-semibold">
-                                                {item?.bill?.billCycle?.productName}
-                                            </span>
-                                                    </div>
-                                                </div>
+                                              
                                                 <div className="flex items-center gap-2 text-sm">
                                                     <div>
                                             <span>
@@ -95,16 +85,17 @@ export default function MoreInfoDialog(props) {
                                                     </div>
                                                     <div>
                                             <span className="text-[#29262A] font-semibold">
-                                              {item?.bill?.billCycle?.value} {item?.bill?.billCycle?.unit}
+                                              {item?.quantity?.value} {item?.quantity?.unit}
                                             </span>
                                                     </div>
                                                 </div>
                                             </div>
-                                            <div className="flex flex-col">
-                                    <div className="mb-2">
-                                        <span className="text-[0.9rem] text-gray70 ">شیوه پرداخت</span>
+                                            </div>
+                                            <div className="flex items-center">
+                                    <div className="">
+                                        <span className="text-[0.9rem] text-gray70 ">شیوه پرداخت:</span>
                                     </div>
-                                    <div className="border border-[#D9D9D9]  flex  px-4">
+                                    <div className="  flex  ">
                                         <div className="p-2">
                                             <span className="text-[#29262A] text-[0.9rem]">{item?.paymentMethod==="PARDAKHT_NAGHDI"?"پرداخت نقدی در محل تحویل":item?.paymentMethod==="PARDAKHT_BANKI"?"پرداخت با کارت بانکی در محل تحویل":item?.paymentMethod==="PARDAKHT_INTERNETI"?"پرداخت از طریق درگاه اینترنتی":item?.paymentMethod==="CHEK_MODAT_DAR"?"چک مدت دار":item?.paymentMethod==="CHEK"?"چک":item?.paymentMethod==="AGHSATI"?"اقساطی":item?.paymentMethod==="ETEBARI"?"اعتباری":item?.paymentMethod==="SAYER"?"سایر":null}
                                    </span>
@@ -116,7 +107,18 @@ export default function MoreInfoDialog(props) {
                                         </div>))
                                     }
                                 </div>
-                                <div className="flex flex-col md:flex-row justify-between gap-2  pb-6">
+                                {props.moreInfoTarget?.description!=="" &&<div className="flex flex-col">
+                                    <div className="mb-2">
+                                        <span className="text-[0.9rem] text-gray70 ">توضیحات </span>
+                                    </div>
+                                    <div className="border border-[#D9D9D9]  flex  px-4">
+                                        <div className="p-2">
+                                            <span className="text-[#29262A] text-[0.9rem]">{props.moreInfoTarget?.description}</span>
+                                        </div>
+                                       
+                                    </div>
+                                </div>}
+                                <div className="flex flex-col md:flex-row justify-between gap-2  ">
                                     <div className="w-1/2  flex flex-col">
                                         <div className="mb-2">
                                             <span className="text-[0.9rem] text-gray70 "> شماره فاکتور </span>
@@ -140,43 +142,49 @@ export default function MoreInfoDialog(props) {
                                     
                                 </div>
                                 
-                                
+                               
+                                {props.moreInfoTarget?.status==="FAIL"?
+                                <div className="flex flex-col">
+                                <div className="mb-2">
+                                    <span className="text-[0.9rem] text-gray70 ">جرئیات رد </span>
+                                </div>
+                                <div className="border border-[#D9D9D9]  flex  px-4">
+                                    <div className="p-2">
+                                        <span className="text-[#29262A] text-[0.9rem]">{props.moreInfoTarget?.failureReason?.description}</span>
+                                    </div>
+                                   
+                                </div>
+                            </div>:null}
                             </div>
+                           
                         </div>
                         <div className="md:hidden flex justify-center">
                             <div className="w-full md:w-[70%] flex flex-col gap-3">
                                 <div>
                                     <span className="ml-1 text-gray9F text-[0.8rem]">
-                                         مسئول خرید :
+                                         مسئول فروش :
                                     </span>
                                     <span className="text-[#29262A] text-[0.8rem]">
-                                       {props.moreInfoTarget?.buyerName}
+                                       {props.moreInfoTarget?.sellerName}
                                     </span>
                                 </div>
                                 <div>
                                     <span className="ml-1 text-gray9F text-[0.8rem]">
-                                        تامین کننده :
+                                         مشتری :
                                     </span>
                                     <span className="text-[#29262A] text-[0.8rem]">
-                                    {props.moreInfoTarget?.producer}  
+                                    {props.moreInfoTarget?.customer}  
                                     </span>
                                 </div>
-                                {props.moreInfoTarget?.paymentItems?.map((item)=>(
+                                {props.moreInfoTarget?.invoiceItems?.map((item)=>(
                                <div className="border-r flex flex-col gap-2 text-[0.8rem] border-dashed pr-3 border-black py-1 my-2">
-                               <div>
-                                    <span className="ml-1 text-gray9F text-[0.8rem]">
-                                         کد درخواست خرید :
-                                    </span>
-                                    <span className="text-[#29262A] text-[0.8rem]">
-                                       {item?.bill?.billCycle?.code}
-                                    </span>
-                                </div>
+                             
                                 <div>
                                     <span className="ml-1 text-gray9F text-[0.8rem]">
                                           نام محصول :
                                     </span>
                                     <span className="text-[#29262A] text-[0.8rem]">
-                                       {item?.bill?.billCycle?.productName}
+                                       {item?.productName}
                                     </span>
                                 </div>
                                 <div>
@@ -184,7 +192,7 @@ export default function MoreInfoDialog(props) {
                                           مقدار :
                                     </span>
                                     <span className="text-[#29262A] text-[0.8rem]">
-                                    {item?.bill?.billCycle?.value} {item?.bill?.billCycle?.unit}
+                                    {item?.quantity?.value} {item?.quantity?.unit}
                                     </span>
                                 </div>
                                 <div>

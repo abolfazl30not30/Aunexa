@@ -69,8 +69,8 @@ const AntSwitch = styled(Switch)(({ theme }) => ({
 }));
 
 export default function FilterDialog(props) {
-    const [fromPurchaseDate,setFromPurchaseDate] = useState("")
-    const [toPurchaseDate,setToPurchaseDate] = useState("")
+    const [fromSalesDate,setFromSalesDate] = useState("")
+    const [toSalesDate,setToSalesDate] = useState("")
 
    
 
@@ -83,37 +83,37 @@ export default function FilterDialog(props) {
         }
     },[openSubOrganizationList])
 
-    const handleFromPurchaseDateInput = (value) => {
+    const handleFromSalesDateInput = (value) => {
         if(value){
-            setFromPurchaseDate(value)
+            setFromSalesDate(value)
             let month = value?.month < 10 ? ('0' + value?.month) : value?.month;
             let day = value?.day < 10 ? ('0' + value?.day) : value?.day;
             let convertDate = value?.year + '/' + month + '/' + day;
-            formik.setFieldValue("fromPurchaseDate", convertDate)
+            formik.setFieldValue("fromSalesDate", convertDate)
         }else {
-            formik.setFieldValue("fromPurchaseDate", "")
+            formik.setFieldValue("fromSalesDate", "")
         }
     }
 
-    const handleToPurchaseDateInput = (value) => {
+    const handleToSalesDateInput = (value) => {
         if(value){
-            setToPurchaseDate(value)
+            setToSalesDate(value)
             let month = value?.month < 10 ? ('0' + value?.month) : value?.month;
             let day = value?.day < 10 ? ('0' + value?.day) : value?.day;
             let convertDate = value?.year + '/' + month + '/' + day;
-            formik.setFieldValue("toPurchaseDate", convertDate)
+            formik.setFieldValue("toSalesDate", convertDate)
         }else {
-            formik.setFieldValue("toPurchaseDate", "")
+            formik.setFieldValue("toSalesDate", "")
         }
     }
 
     const handleURLSearchParams = (values) =>{
         let params = new URLSearchParams()
-        if(values.fromPurchaseDate){
-            params.set("fromPurchaseDate",values.fromPurchaseDate)
+        if(values.fromSalesDate){
+            params.set("fromSalesDate",values.fromSalesDate)
         }
-        if(values.toPurchaseDate){
-            params.set("toPurchaseDate",values.toPurchaseDate)
+        if(values.toSalesDate){
+            params.set("toSalesDate",values.toSalesDate)
         }
         if(values.status){
             params.set("status",values.status)
@@ -127,16 +127,16 @@ export default function FilterDialog(props) {
 
     const handleResetForm = () =>{
         formik.resetForm()
-        setToPurchaseDate("")
-        setFromPurchaseDate("")
+        setToSalesDate("")
+        setFromSalesDate("")
         setSubOrganization(null)
         setProduct(null)
     }
     const formik = useFormik({
 
         initialValues: {
-            fromPurchaseDate: "",
-            toPurchaseDate: "",
+            fromSalesDate: "",
+            toSalesDate: "",
            status:"",
             subOrganizationId:"",
             
@@ -191,9 +191,9 @@ export default function FilterDialog(props) {
                                                 width: "100%"
                                             }}
                                             inputClass={`border border-[#D9D9D9] placeholder-neutral-300 text-gray-900 text-[0.8rem] rounded focus:ring-[#3B82F67F] focus:border-[#3B82F67F] block w-full px-3 py-4`}
-                                            value={formik.values.fromPurchaseDate}
+                                            value={formik.values.fromSalesDate}
                                             onChange={(value) => {
-                                              handleFromPurchaseDateInput(value)
+                                              handleFromSalesDateInput(value)
                                             }}
                                             mapDays={({date}) => {
                                                 let props = {}
@@ -221,8 +221,8 @@ export default function FilterDialog(props) {
                                             locale={persian_fa}>
                                             <button className="px-2 pb-4" onClick={(e) => {
                                                 e.preventDefault()
-                                                setFromPurchaseDate("")
-                                                formik.setFieldValue("fromPurchaseDate","")
+                                                setFromSalesDate("")
+                                                formik.setFieldValue("fromSalesDate","")
                                             }}>
                                                 ریست
                                             </button>
@@ -239,9 +239,9 @@ export default function FilterDialog(props) {
                                                 width: "100%"
                                             }}
                                             inputClass={`border border-[#D9D9D9] placeholder-neutral-300 text-gray-900 text-[0.8rem] rounded focus:ring-[#3B82F67F] focus:border-[#3B82F67F] block w-full px-3 py-4`}
-                                            value={formik.values.toPurchaseDate}
+                                            value={formik.values.toSalesDate}
                                             onChange={(value) => {
-                                                handleToPurchaseDateInput(value)
+                                                handleToSalesDateInput(value)
                                             }}
                                             mapDays={({date}) => {
                                                 let props = {}
@@ -269,8 +269,8 @@ export default function FilterDialog(props) {
                                             locale={persian_fa}>
                                             <button className="px-2 pb-4" onClick={(e) => {
                                                 e.preventDefault()
-                                                setToPurchaseDate("")
-                                                formik.setFieldValue("toPurchaseDate","")}}>
+                                                setToSalesDate("")
+                                                formik.setFieldValue("toSalesDate","")}}>
                                                 ریست
                                             </button>
                                         </DatePicker>

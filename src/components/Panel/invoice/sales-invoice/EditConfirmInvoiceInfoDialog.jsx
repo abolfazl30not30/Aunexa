@@ -10,7 +10,7 @@ import {TailSpin} from "react-loader-spinner";
 import * as yup from "yup";
 import {useFormik} from "formik";
 import "react-multi-date-picker/styles/colors/red.css"
-import { useRejectPurchaseInvoiceMutation } from "@/redux/features/invoice/purchase-invoice/PurchaseInvoiceSlice";
+import { useRejectSalesInvoiceMutation } from "@/redux/features/invoice/sales-invoice/SalesInvoiceSlice";
 
 export default function EditConfirmInvoiceInfoDialog(props) {
    
@@ -19,7 +19,7 @@ export default function EditConfirmInvoiceInfoDialog(props) {
     }
 
     //submit data
-    const [submitData, { isLoading:isSubmitLoading ,error}] = useRejectPurchaseInvoiceMutation()
+    const [submitData, { isLoading:isSubmitLoading ,error}] = useRejectSalesInvoiceMutation()
 
     const schema = yup.object().shape({
         description: yup.string().required("لطفا توضیحات رد فاکتور  را وارد کنید"),
@@ -69,7 +69,7 @@ export default function EditConfirmInvoiceInfoDialog(props) {
                             </button>
                         </div>
                         <div className="flex justify-center mb-7">
-                            <h3 className="text-[1.1rem]">رد فاکتور خرید</h3>
+                            <h3 className="text-[1.1rem]">رد فاکتور فروش</h3>
                         </div>
 
                         <form className="flex justify-center " onSubmit={formik.handleSubmit} method="POST">

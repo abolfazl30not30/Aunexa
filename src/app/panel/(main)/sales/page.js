@@ -593,7 +593,7 @@ export default function page() {
                     ))
                   : inventoryData?.content?.map((data, index) => (
                       <Accordion
-                        className="justify-between"
+                        className="justify-between sales-table-row"
                         onChange={handleChangeInvoiceList(
                           `panel${data.id + index}`
                         )}
@@ -602,11 +602,11 @@ export default function page() {
                           aria-controls="panelbh-content"
                           id="panelbh-header"
                         >
-                          <tr
+                          <div
                             onClick={() => {
                               handleOpenMoreInfoRow(data);
                             }}
-                            className=" w-full flex justify-between items-center"
+                            className=" w-full flex justify-between items-center "
                           >
                             <td className="hidden md:table-cell px-2 md:px-6 py-4  text-gray70 whitespace-nowrap ">
                               <span>{index + 1}</span>
@@ -661,10 +661,7 @@ export default function page() {
                                 دپارتمان :
                               </span>
                               <span>
-                                {
-                                  data?.invoiceItems[0]?.subOrganizationInfo
-                                    ?.subOrganizationName
-                                }
+                                {data?.subOrganizationInfo?.subOrganizationName}
                               </span>
                             </td>
 
@@ -705,7 +702,7 @@ export default function page() {
                                   />
                                 </svg>
                               </button>
-                              {
+                              {data.status == "IN_PROGRESS" && (
                                 <button
                                   onClick={() => {
                                     handleOpenEditInfo(data);
@@ -738,8 +735,8 @@ export default function page() {
                                     </defs>
                                   </svg>
                                 </button>
-                              }
-                              {
+                              )}
+                              {data.status === "IN_PROGRESS" && (
                                 <button
                                   onClick={() => {
                                     handleOpenDelete(data.id);
@@ -761,7 +758,7 @@ export default function page() {
                                     />
                                   </svg>
                                 </button>
-                              }
+                              )}
                               <button
                                 onClick={() => {
                                   handleChangeInvoiceList(
@@ -791,7 +788,7 @@ export default function page() {
                                 </svg>
                               </button>
                             </td>
-                          </tr>
+                          </div>
                         </AccordionSummary>
                         <AccordionDetails className="">
                           <div className=" px-32 w-full">
@@ -799,7 +796,7 @@ export default function page() {
                               <table className=" w-full overflow-scroll  border-collapse border-spacing-0 text-sm text-center text-gray70  ">
                                 <tbody className="">
                                   {data?.invoiceItems.map((item, itemIndex) => (
-                                    <tr className="flex justify-between my-1 items-center pr-1">
+                                    <div className="flex justify-between my-1 items-center pr-1">
                                       <Typography
                                         sx={{
                                           fontFamily:
@@ -807,7 +804,9 @@ export default function page() {
                                         }}
                                         className="flex gap-2 items-center w-1/5"
                                       >
-                                        <span className="text-[0.8rem]">{itemIndex + 1}</span>
+                                        <span className="text-[0.8rem]">
+                                          {itemIndex + 1}
+                                        </span>
                                         <span className="text-[0.8rem] text-[#4E4E4E] pr-2 ">
                                           نام محصول :
                                         </span>
@@ -865,7 +864,7 @@ export default function page() {
                                         </span>
                                       </Typography>
                                       <div className="hidden md:flex gap-2 px-6  justify-center text-gray70 whitespace-nowrap ">
-                                        {
+                                        {data.status === "IN_PROGRESS" && (
                                           <button
                                             onClick={() => {
                                               handleOpenEditItemInfo(item);
@@ -898,8 +897,8 @@ export default function page() {
                                               </defs>
                                             </svg>
                                           </button>
-                                        }
-                                        {
+                                        )}
+                                        {data.status === "IN_PROGRESS" && (
                                           <button
                                             onClick={() => {
                                               handleOpenDeleteItem(item.id);
@@ -921,9 +920,9 @@ export default function page() {
                                               />
                                             </svg>
                                           </button>
-                                        }
+                                        )}
                                       </div>
-                                    </tr>
+                                    </div>
                                   ))}
                                 </tbody>
                               </table>

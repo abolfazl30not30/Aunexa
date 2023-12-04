@@ -5,6 +5,11 @@ import {
     Autocomplete,
     DialogContent,
     DialogContentText,
+    FormControl,
+    InputLabel,
+    Select,
+    OutlinedInput,
+    MenuItem
 } from "@mui/material";
 import Dialog from "@mui/material/Dialog";
 import {TailSpin} from "react-loader-spinner";
@@ -20,6 +25,7 @@ import {
 import {styled} from "@mui/material/styles";
 import Switch from "@mui/material/Switch";
 import { useUpdateSalesItemMutation } from "@/redux/features/sales/SalesSlice";
+
 
 
 const AntSwitch = styled(Switch)(({ theme }) => ({
@@ -92,7 +98,36 @@ export default function EditItemInfoDialog(props) {
         setUnit(null)
         
     }
+    const schema = yup.object().shape({
+        
+        value: yup.string().required("لطفا مقدار محصول را وارد کنید"),
+        unit: yup.string().required("لطفا واحد محصول را وارد کنید"),
+        productId: yup.string().required("لطفا نام محصول را وارد کنید"),
+        paymentMethod: yup.string().required("لطفا شیوه پرداخت  را وارد کنید"),
+        
+       
+   });
+   const formik = useFormik({
+    initialValues: {
+       id:"",
+       unit:"",
+       value:"",
+       paymentMethod:"",
+       productId: "",
+       productName:"",
+       productImage:""
+      
+    },
 
+    validationSchema: schema,
+
+    onSubmit: async (product,helpers) => {
+        let updateProduct = {...product,quantity:{unit:formik.values.unit,value:formik.values.value},productImage:props.editInfoItemTarget?.imageURL}
+        const userData = await submitData(updateProduct)
+        handleReset()
+        props.handleCloseEditItemInfo()
+    },
+});
     const handleSetProductInput = (id) =>{
         const product = productList.filter((product)=> product.id === id)
         setProduct(product[0])
@@ -108,13 +143,14 @@ export default function EditItemInfoDialog(props) {
         formik.setValues({
             id:props.editInfoItemTarget?.id,
             productId: props.editInfoItemTarget?.productId,
-            productName:props.editInfoItemTarget?.productName,
             unit:props.editInfoItemTarget?.quantity?.unit,
             value:props.editInfoItemTarget?.quantity?.value,
+            paymentMethod:props.editInfoItemTarget?.paymentMethod,
+            productName:props.editInfoItemTarget?.productName
             
             
         })
-        handleSetProductInput(props.editInfoItemTarget?.billCycle?.productId)
+        handleSetProductInput(props.editInfoItemTarget?.productId)
         handleSetUnitInput(props.editInfoItemTarget?.quantity?.unit)
         
     },[props.openEditItemInfo])
@@ -122,36 +158,10 @@ export default function EditItemInfoDialog(props) {
     //submit data
     const [submitData, { isLoading:isSubmitLoading ,error}] = useUpdateSalesItemMutation()
 
-    const schema = yup.object().shape({
-        
-         value: yup.string().required("لطفا مقدار محصول را وارد کنید"),
-         unit: yup.string().required("لطفا واحد محصول را وارد کنید"),
-         productId: yup.string().required("لطفا نام محصول را وارد کنید"),
-         paymentMethod: yup.string().required("لطفا شیوه پرداخت  را وارد کنید"),
-         
-        
-    });
+    
 
 
-    const formik = useFormik({
-        initialValues: {
-           id:"",
-           unit:"",
-           value:"",
-           paymentMethod:"",
-           productId: "",
-          
-        },
-
-        validationSchema: schema,
-
-        onSubmit: async (product,helpers) => {
-            let updateProduct = {id:props.editInfoItemTarget?.id}
-            const userData = await submitData(updateProduct)
-            handleReset()
-            props.handleCloseEditItemInfo()
-        },
-    });
+    
 
     return (
         <>
@@ -272,6 +282,65 @@ export default function EditItemInfoDialog(props) {
                                                     placeholder="واحد"
                                                 />}/>
                                     </div>
+                                </div>
+                                <div>
+                                <FormControl fullWidth
+                                                 error={formik.touched.paymentMethod && Boolean(formik.errors.paymentMethod)}>
+                                        <InputLabel id="demo-simple-select-label" sx={{
+                                            fontFamily: "__fonts_2f4189,__fonts_Fallback_2f4189",
+                                            fontSize: "0.8rem",
+                                            color: "#9F9F9F"
+                                        }}>شیوه پرداخت</InputLabel>
+                                        <Select
+                                            labelId="demo-simple-select-label"
+                                            id="demo-simple-select"
+                                            value={formik.values.paymentMethod}
+                                            onChange={formik.handleChange}
+                                            name="paymentMethod"
+                                            input={<OutlinedInput sx={{
+                                                fontFamily: "__fonts_2f4189,__fonts_Fallback_2f4189",
+                                                fontSize: "0.8rem"
+                                            }} label="شیوه پرداخت"/>}
+                                            sx={{
+                                                fontFamily: "__fonts_2f4189,__fonts_Fallback_2f4189",
+                                                fontSize: "0.8rem"
+                                            }}
+                                        >
+
+                                            <MenuItem value="PARDAKHT_NAGHDI" sx={{
+                                                fontFamily: "__fonts_2f4189,__fonts_Fallback_2f4189",
+                                                fontSize: "0.8rem"
+                                            }}>پرداخت نقدی در محل تحویل</MenuItem>
+                                            <MenuItem value="PARDAKHT_BANKI" sx={{
+                                                fontFamily: "__fonts_2f4189,__fonts_Fallback_2f4189",
+                                                fontSize: "0.8rem"
+                                            }}>پرداخت با کارت بانکی در محل تحویل</MenuItem>
+                                            <MenuItem value="PARDAKHT_INTERNETI" sx={{
+                                                fontFamily: "__fonts_2f4189,__fonts_Fallback_2f4189",
+                                                fontSize: "0.8rem"
+                                            }}>پرداخت از طریق درگاه اینترنتی</MenuItem>
+                                            <MenuItem value="CHEK_MODAT_DAR" sx={{
+                                                fontFamily: "__fonts_2f4189,__fonts_Fallback_2f4189",
+                                                fontSize: "0.8rem"
+                                            }}>چک مدت دار</MenuItem>
+                                            <MenuItem value="CHEK" sx={{
+                                                fontFamily: "__fonts_2f4189,__fonts_Fallback_2f4189",
+                                                fontSize: "0.8rem"
+                                            }}>چک</MenuItem>
+                                            <MenuItem value="AGHSATI" sx={{
+                                                fontFamily: "__fonts_2f4189,__fonts_Fallback_2f4189",
+                                                fontSize: "0.8rem"
+                                            }}>اقساطی</MenuItem>
+                                            <MenuItem value="ETEBARI" sx={{
+                                                fontFamily: "__fonts_2f4189,__fonts_Fallback_2f4189",
+                                                fontSize: "0.8rem"
+                                            }}>اعتباری</MenuItem>
+                                            <MenuItem value="SAYER" sx={{
+                                                fontFamily: "__fonts_2f4189,__fonts_Fallback_2f4189",
+                                                fontSize: "0.8rem"
+                                            }}>سایر</MenuItem>
+                                        </Select>
+                                    </FormControl>
                                 </div>
                                 
                                 

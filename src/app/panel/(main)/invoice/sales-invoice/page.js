@@ -11,20 +11,20 @@ import {
   Skeleton,
 } from "@mui/material";
 
-import FilterDialog from "@/components/Panel/invoice/purchase-invoice/FilterDialog";
-import MoreInfoDialog from "@/components/Panel/invoice/purchase-invoice/MoreInfoDialog";
-import RejectionDialog from "@/components/Panel/invoice/purchase-invoice/RejectionDialog";
-import ConfirmDialog from "@/components/Panel/invoice/purchase-invoice/ConfirmDialog";
+import FilterDialog from "@/components/Panel/invoice/sales-invoice/FilterDialog";
+import MoreInfoDialog from "@/components/Panel/invoice/sales-invoice/MoreInfoDialog";
+import RejectionDialog from "@/components/Panel/invoice/sales-invoice/RejectionDialog";
+import ConfirmDialog from "@/components/Panel/invoice/sales-invoice/ConfirmDialog";
 
 import Link from "next/link";
 
 import { useSelector } from "react-redux";
 import { boolean } from "yup";
-import { useGetAllPurchaseInvoiceQuery } from "@/redux/features/invoice/purchase-invoice/PurchaseInvoiceSlice";
-import EditConfirmInvoiceInfoDialog from "@/components/Panel/invoice/purchase-invoice/EditConfirmInvoiceInfoDialog";
-import EditRejectionInvoiceInfoDialog from "@/components/Panel/invoice/purchase-invoice/EditRejectionInvoiceInfoDialog";
+import { useGetAllSalesInvoiceQuery } from "@/redux/features/invoice/sales-invoice/SalesInvoiceSlice";
+import EditConfirmInvoiceInfoDialog from "@/components/Panel/invoice/sales-invoice/EditConfirmInvoiceInfoDialog";
+import EditRejectionInvoiceInfoDialog from "@/components/Panel/invoice/sales-invoice/EditRejectionInvoiceInfoDialog";
 
-function PurchaseInvoice() {
+function SalesInvoice() {
   const [openEditConfirmInvoiceInfo, setOpenEditConfirmInvoiceInfo] =
     useState(false);
   const [editConfirmInvoiceInfoTarget, setEditConfirmInvoiceInfoTarget] =
@@ -197,7 +197,7 @@ function PurchaseInvoice() {
     data: inventoryData = [],
     isLoading: isDataLoading,
     isError: isDataError,
-  } = useGetAllPurchaseInvoiceQuery(
+  } = useGetAllSalesInvoiceQuery(
     { page, sort, filterItem },
     { refetchOnMountOrArgChange: true }
   );
@@ -210,7 +210,7 @@ function PurchaseInvoice() {
         <header className=" text-[0.9rem] bg-white py-6 px-5 md:px-10">
           <div className="">
             <h2 className="font-[800] text-[0.9rem] md:text-[1.1rem]">
-              فاکتور خرید
+              فاکتور فروش
             </h2>
           </div>
         </header>
@@ -363,7 +363,7 @@ function PurchaseInvoice() {
                     <th className="hidden md:table-cell px-6 py-4">#</th>
                     <th className="px-2 md:px-6 py-4">شماره فاکتور</th>
                     <th className="px-2 md:px-6 px-6 py-4">دپارتمان</th>
-                    <th className="px-2 md:px-6 px-6 py-4">تاریخ خرید</th>
+                    <th className="px-2 md:px-6 px-6 py-4">تاریخ فروش</th>
 
                     <th className="px-2 md:px-6 px-6 py-4">
                       <span className="inline">وضعیت</span>
@@ -440,14 +440,11 @@ function PurchaseInvoice() {
                             <div>{data?.receiptCode}</div>
                           </td>
                           <td className="px-2 md:px-6 py-4 flex justify-center  text-gray70 whitespace-nowrap ">
-                            {
-                              data?.paymentItems[0]?.bill?.billCycle
-                                ?.subOrganizationName
-                            }
+                            {data?.subOrganizationInfo?.subOrganizationName}
                           </td>
                           <td className="px-2 md:px-6 py-2  text-gray70 whitespace-nowrap ">
-                            <span className="pr-2">{data?.purchaseDate}</span>
-                            <span>{data?.purchaseTime}</span>
+                            <span className="pr-2">{data?.salesDate}</span>
+                            <span>{data?.salesTime}</span>
                           </td>
 
                           <td className="px-2 md:px-6 py-4  text-gray70 whitespace-nowrap ">
@@ -585,8 +582,10 @@ function PurchaseInvoice() {
                             )}
                             <button
                               onClick={() => {
-                                handleOpenMoreInfo(data);}}
-                              className="border border-1 border-solid border-gray70 rounded p-[0.4rem] hover:bg-neutral-100">
+                                handleOpenMoreInfo(data);
+                              }}
+                              className="border border-1 border-solid border-gray70 rounded p-[0.4rem] hover:bg-neutral-100"
+                            >
                               <svg
                                 xmlns="http://www.w3.org/2000/svg"
                                 width="18"
@@ -678,4 +677,4 @@ function PurchaseInvoice() {
   );
 }
 
-export default PurchaseInvoice;
+export default SalesInvoice;

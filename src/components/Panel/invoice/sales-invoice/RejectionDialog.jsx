@@ -11,7 +11,7 @@ import * as yup from "yup";
 import {useFormik} from "formik";
 import "react-multi-date-picker/styles/colors/red.css"
 
-import { useRejectPurchaseInvoiceMutation } from "@/redux/features/invoice/purchase-invoice/PurchaseInvoiceSlice";
+import { useRejectSalesInvoiceMutation } from "@/redux/features/invoice/sales-invoice/SalesInvoiceSlice";
 
 export default function RejectionDialog(props) {
     const handleReset = () =>{
@@ -19,7 +19,7 @@ export default function RejectionDialog(props) {
     }
 
     //submit data
-    const [submitData, { isLoading:isSubmitLoading ,error}] = useRejectPurchaseInvoiceMutation()
+    const [submitData, { isLoading:isSubmitLoading ,error}] = useRejectSalesInvoiceMutation()
 
     const schema = yup.object().shape({
         description: yup.string().required("لطفا توضیحات رد فاکتور  را وارد کنید"),
@@ -28,13 +28,14 @@ export default function RejectionDialog(props) {
 
     const formik = useFormik({
         initialValues: {
+            id:"",
             description:"",
         },
 
         validationSchema: schema,
 
         onSubmit: async (invoice,helpers) => {
-            let updateProduct = {...props.rejectionTarget}
+            let updateProduct = {id:props.rejectionTarget?.id}
             let failureReason = {
                 description:invoice.description
             }
@@ -69,7 +70,7 @@ export default function RejectionDialog(props) {
                             </button>
                         </div>
                         <div className="flex justify-center mb-7">
-                            <h3 className="text-[1.1rem]">رد فاکتور خرید</h3>
+                            <h3 className="text-[1.1rem]">رد فاکتور فروش</h3>
                         </div>
 
                         <form className="flex justify-center " onSubmit={formik.handleSubmit} method="POST">
