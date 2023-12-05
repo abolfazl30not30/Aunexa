@@ -32,7 +32,6 @@ function FailureAndRepairReport() {
     type: "",
     tag: "",
     code: "",
-
     status: "",
     subOrganizationId: "",
     subOrganizationName: "",

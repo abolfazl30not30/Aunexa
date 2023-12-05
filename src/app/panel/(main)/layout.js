@@ -269,7 +269,7 @@ export default function RootLayout({ children }) {
                       </span>
                     </Link>
                     <Link
-                      href="https://auth.prod.vipsoftware1.com/logout"
+                      href="https://auth.vipsoftware1.com/logout"
                       className="flex gap-2 py-3 px-4 hover:bg-neutral-100 border-t border-t-[#D9D9D9]"
                     >
                       <div>
@@ -638,6 +638,64 @@ export default function RootLayout({ children }) {
                     <details className="group py-3 border-b border-b-1 border-b-solid  border-b-borderGray">
                       <summary className="flex items-center justify-between gap-2 p-2 font-medium marker:content-none hover:cursor-pointer">
                         <span className="text-gray9F group-open:text-textGray text-[0.9rem]">
+                          تولید
+                        </span>
+                        <svg
+                            className="transition group-open:rotate-90"
+                            xmlns="http://www.w3.org/2000/svg"
+                            width="16"
+                            height="16"
+                            viewBox="0 0 16 16"
+                            fill="none"
+                        >
+                          <path
+                              d="M10 4L6 8L10 12"
+                              stroke="#9F9F9F"
+                              stroke-linecap="round"
+                              stroke-linejoin="round"
+                          />
+                        </svg>
+                      </summary>
+                      <ul className="flex flex-col gap-1 pr-2">
+                        <li>
+                          <Link
+                              href="/panel/production/input"
+                              className="block py-2 px-5"
+                          >
+                            <span
+                                className={
+                                  pathname === "/panel/production/input"
+                                      ? "text-mainRed text-[0.9rem]"
+                                      : "text-gray9F hover:text-textGray text-[0.9rem]"
+                                }
+                            >
+                              بخش ورودی
+                            </span>
+                          </Link>
+                        </li>
+                        <li>
+                          <Link
+                              href="/panel/production/output"
+                              className="block py-2 px-5"
+                          >
+                            <span
+                                className={
+                                  pathname === "/panel/production/output"
+                                      ? "text-mainRed text-[0.9rem]"
+                                      : "text-gray9F hover:text-textGray text-[0.9rem]"
+                                }
+                            >
+                              بخش خروجی
+                            </span>
+                          </Link>
+                        </li>
+                      </ul>
+                    </details>
+                  </div>
+                  <div>
+                    <details className="group py-3 border-b border-b-1 border-b-solid  border-b-borderGray">
+                      <summary className="flex items-center justify-between gap-2 p-2 font-medium marker:content-none hover:cursor-pointer">
+                        <span className="text-gray9F group-open:text-textGray text-[0.9rem]">
                           خرید
                         </span>
                         <svg
@@ -884,7 +942,7 @@ export default function RootLayout({ children }) {
                   </div>
                   <div>
                     <Link
-                      href="https://auth.prod.vipsoftware1.com/logout"
+                      href="https://auth.vipsoftware1.com/logout"
                       className="block py-4 px-2 border-b border-b-1 border-b-solid  border-b-borderGray"
                     >
                       <span className="text-gray9F hover:text-textGray text-[0.9rem]">
@@ -1199,6 +1257,63 @@ export default function RootLayout({ children }) {
               <div>
                 <details className="group py-3 border-b border-b-1 border-b-solid  border-b-borderGray">
                   <summary className="flex items-center justify-between gap-2 p-2 font-medium marker:content-none hover:cursor-pointer">
+                        <span className="text-gray9F group-open:text-textGray text-[0.9rem]">
+                          تولید
+                        </span>
+                    <svg
+                        className="transition group-open:rotate-90"
+                        xmlns="http://www.w3.org/2000/svg"
+                        width="16"
+                        height="16"
+                        viewBox="0 0 16 16"
+                        fill="none"
+                    >
+                      <path
+                          d="M10 4L6 8L10 12"
+                          stroke="#9F9F9F"
+                          stroke-linecap="round"
+                          stroke-linejoin="round"
+                      />
+                    </svg>
+                  </summary>
+                  <ul className="flex flex-col gap-1 pr-2">
+                    <li>
+                      <Link
+                          href="/panel/production/input"
+                          className="block py-2 px-5"
+                      >
+                            <span
+                                className={
+                                  pathname === "/panel/production/input"
+                                      ? "text-mainRed text-[0.9rem]"
+                                      : "text-gray9F hover:text-textGray text-[0.9rem]"
+                                }
+                            >
+                              بخش ورودی
+                            </span>
+                      </Link>
+                    </li>
+                    <li>
+                      <Link
+                          href="/panel/production/output"
+                          className="block py-2 px-5"
+                      >
+                            <span
+                                className={
+                                  pathname === "/panel/production/output"
+                                      ? "text-mainRed text-[0.9rem]"
+                                      : "text-gray9F hover:text-textGray text-[0.9rem]"
+                                }>
+                              بخش خروجی
+                            </span>
+                      </Link>
+                    </li>
+                  </ul>
+                </details>
+              </div>
+              <div>
+                <details className="group py-3 border-b border-b-1 border-b-solid  border-b-borderGray">
+                  <summary className="flex items-center justify-between gap-2 p-2 font-medium marker:content-none hover:cursor-pointer">
                     <span className="text-gray9F group-open:text-textGray text-[0.9rem]">
                       خرید
                     </span>
@@ -1445,7 +1560,7 @@ export default function RootLayout({ children }) {
               </div>
               <div>
                 <Link
-                  href="https://auth.prod.vipsoftware1.com/logout"
+                  href="https://auth.vipsoftware1.com/logout"
                   className="block py-4 px-2 border-b border-b-1 border-b-solid  border-b-borderGray"
                 >
                   <span className="text-gray9F hover:text-textGray text-[0.9rem]">
