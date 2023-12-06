@@ -29,7 +29,7 @@ import {
     useLazyGetOneVehiclesByCodeQuery,
     useLazyGetOneVehiclesByTagQuery
 } from "@/redux/features/vehicles-and-equipment/VehiclesAndEquipmentSlice";
-
+import { useSaveProductionInputMutation } from "@/redux/features/production/input/ProductionInputSlice";
 
 export default function AddDataDialog(props) {
 
@@ -74,7 +74,7 @@ export default function AddDataDialog(props) {
     }
 
     //submit data
-    const [submitData, { isLoading:isSubmitLoading ,error}] = useSavePSIMutation()
+    const [submitData, { isLoading:isSubmitLoading ,error}] = useSaveProductionInputMutation()
 
     const schema = yup.object().shape({
         productId: yup.string().required("لطفا نام محصول را وارد کنید"),
@@ -240,9 +240,9 @@ export default function AddDataDialog(props) {
                                         ListboxProps={{
                                             sx: {fontFamily: "__fonts_2f4189,__fonts_Fallback_2f4189", fontSize: "0.8rem"},
                                         }}
-                                        options={productList}
+                                        options={ProducedProductList}
                                         getOptionLabel={(option) => option.persianName}
-                                        value={product}
+                                        value={producedProduct}
                                         onChange={(event, newValue) => {
                                             setProducedProduct(newValue)
                                             formik.setFieldValue("producedProductId", newValue?.id)

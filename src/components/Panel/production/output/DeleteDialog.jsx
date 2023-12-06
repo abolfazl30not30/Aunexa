@@ -6,12 +6,12 @@ import {
 } from "@mui/material";
 import Dialog from "@mui/material/Dialog";
 import {TailSpin} from "react-loader-spinner";
-import {useDeletePSOMutation} from "@/redux/features/primary-store/output/PSOapiSlice";
+import { useDeleteProductionOutputMutation } from "@/redux/features/production/output/ProductionOutputSlice";
 
 
 
 export default function DeleteDialog(props) {
-    const [handleDelete ,{isLoading}] = useDeletePSOMutation()
+    const [handleDelete ,{isLoading}] = useDeleteProductionOutputMutation()
     const deleteData = async () =>{
         const res = await handleDelete(props.deleteTargetId)
         props.handleCloseDelete()

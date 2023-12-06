@@ -11,14 +11,14 @@ import {
   Skeleton,
 } from "@mui/material";
 
-import AddDataDialog from "@/components/Panel/primary-store/output/AddDataDialog";
-import FilterDialog from "@/components/Panel/primary-store/output/FilterDialog";
-import MoreInfoDialog from "@/components/Panel/primary-store/output/MoreInfoDialog";
-import DeleteDialog from "@/components/Panel/primary-store/output/DeleteDialog";
+import AddDataDialog from "../../../../../components/Panel/production/output/AddDataDialog";
+import FilterDialog from "../../../../../components/Panel/production/output/FilterDialog";
+import MoreInfoDialog from "../../../../../components/Panel/production/output/MoreInfoDialog";
+import DeleteDialog from "../../../../../components/Panel/production/output/DeleteDialog";
 import Link from "next/link";
-import EditInfoDialog from "@/components/Panel/primary-store/output/EditInfoDialog";
+import EditInfoDialog from "../../../../../components/Panel/production/output/EditInfoDialog";
 import { useSelector } from "react-redux";
-import { useGetAllPSOQuery } from "@/redux/features/primary-store/output/PSOapiSlice";
+import { useGetAllProductionOutputQuery } from "@/redux/features/production/output/ProductionOutputSlice";
 
 function productOutput() {
   let permission = useSelector(
@@ -37,14 +37,9 @@ function productOutput() {
     productName: "",
     value: "",
     unit: "",
-    status: "",
     expirationDate: "",
-    machineTag: "",
-    machineCode: "",
-    driverName: "",
-    destinationSubOrganizationId: "",
-    destinationSubOrganizationName: "",
-    description: "",
+    subOrganizationId: "",
+    subOrganizationName: "",
   });
 
   const [openEditInfo, setOpenEditInfo] = useState(false);
@@ -53,14 +48,9 @@ function productOutput() {
     productName: "",
     value: "",
     unit: "",
-    status: "",
     expirationDate: "",
-    machineTag: "",
-    machineCode: "",
-    driverName: "",
-    destinationSubOrganizationId: "",
-    destinationSubOrganizationName: "",
-    description: "",
+    subOrganizationId: "",
+    subOrganizationName: "",
   });
 
   const [openFilter, setOpenFilter] = useState(false);
@@ -99,14 +89,9 @@ function productOutput() {
       productName: "",
       value: "",
       unit: "",
-      status: "",
       expirationDate: "",
-      machineTag: "",
-      machineCode: "",
-      driverName: "",
-      destinationSubOrganizationId: "",
-      destinationSubOrganizationName: "",
-      description: "",
+      subOrganizationId: "",
+      subOrganizationName: "",
     });
     setOpenMoreInfo(false);
   };
@@ -130,14 +115,9 @@ function productOutput() {
       productName: "",
       value: "",
       unit: "",
-      status: "",
       expirationDate: "",
-      machineTag: "",
-      machineCode: "",
-      driverName: "",
-      destinationSubOrganizationId: "",
-      destinationSubOrganizationName: "",
-      description: "",
+      subOrganizationId: "",
+      subOrganizationName: "",
     });
     setOpenEditInfo(false);
   };
@@ -156,7 +136,7 @@ function productOutput() {
     data: inventoryData = [],
     isLoading: isDataLoading,
     isError: isDataError,
-  } = useGetAllPSOQuery(
+  } = useGetAllProductionOutputQuery(
     { page, sort, filterItem },
     { refetchOnMountOrArgChange: true }
   );
@@ -176,7 +156,7 @@ function productOutput() {
                 className="flex bg-mainRed text-white items-center text- px-3 py-2 rounded-full md:rounded"
                 onClick={handleOpenAddData}
               >
-                <span className="hidden md:inline">ثبت مواد اولیه خروجی</span>
+                <span className="hidden md:inline">ثبت خروجی</span>
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
                   width="24"
@@ -331,14 +311,10 @@ function productOutput() {
                     <th className="hidden md:table-cell px-6 py-4">#</th>
                     <th className="px-2 md:px-6 py-4">ماده</th>
                     <th className="px-2 md:px-6 px-6 py-4">مقدار</th>
-                    <th className="px-2 md:px-6 px-6 py-4">نوع وسیله</th>
-                    <th className="hidden md:table-cell px-6 py-4">
-                      به دپارتمان
-                    </th>
-                    <th className="hidden md:table-cell px-6 py-4">تاریخ</th>
-                    <th className="px-2 md:px-6 px-6 py-4">
-                      <span className="inline">وضعیت</span>
-                    </th>
+
+                    <th className="table-cell px-6 py-4">دپارتمان</th>
+                    <th className="table-cell px-6 py-4">تاریخ تولید</th>
+
                     <th className="hidden md:table-cell px-6 py-4">عملیات</th>
                   </tr>
                 </thead>
@@ -364,33 +340,20 @@ function productOutput() {
                               sx={{ fontSize: "1rem" }}
                             />
                           </td>
-                          <td className="px-2 md:px-6 py-2  text-gray70 whitespace-nowrap ">
+
+                          <td className="table-cell px-6 py-4  text-gray70 whitespace-nowrap ">
                             <Skeleton
                               variant="text"
                               sx={{ fontSize: "1rem" }}
                             />
                           </td>
-                          <td className="hidden md:table-cell px-6 py-4  text-gray70 whitespace-nowrap ">
+                          <td className="table-cell px-6 py-4  text-gray70 whitespace-nowrap ">
                             <Skeleton
                               variant="text"
                               sx={{ fontSize: "1rem" }}
                             />
                           </td>
-                          <td className="hidden md:table-cell px-6 py-4  text-gray70 whitespace-nowrap ">
-                            <Skeleton
-                              variant="text"
-                              sx={{ fontSize: "1rem" }}
-                            />
-                          </td>
-                          <td className="px-2 md:px-6 py-4  text-gray70 whitespace-nowrap ">
-                            <div className="flex justify-center">
-                              <Skeleton
-                                variant="rounded"
-                                width={50}
-                                height={20}
-                              />
-                            </div>
-                          </td>
+
                           <td
                             scope="row"
                             className="hidden md:flex gap-2 px-6 py-4 justify-center text-gray70 whitespace-nowrap "
@@ -429,44 +392,17 @@ function productOutput() {
                           <td className="px-2 md:px-6 py-4  text-gray70 whitespace-nowrap ">
                             {data.value} {data.unit}
                           </td>
-                          <td className="px-2 md:px-6 py-2  text-gray70 whitespace-nowrap ">
-                            <div>{data.machineType}</div>
+
+                          <td className="table-cell px-6 py-4  text-gray70 whitespace-nowrap ">
+                            {data.subOrganizationInfo?.subOrganizationName}
+                          </td>
+                          <td className="table-cell px-6 py-4  text-gray70 whitespace-nowrap ">
+                            <div>{data?.productionDate}</div>
                             <div className="mt-1 text-gray9F text-[0.75rem]">
-                              {data?.machineTag === ""
-                                ? data?.machineCode
-                                : data?.machineTag?.slice(2, 5) +
-                                  "-" +
-                                  data?.machineTag?.slice(5, 7) +
-                                  " " +
-                                  data?.machineTag?.slice(7, 8) +
-                                  " " +
-                                  data?.machineTag?.slice(0, 2)}
+                              {data?.productionTime.slice(0, 5)}
                             </div>
                           </td>
-                          <td className="hidden md:table-cell px-6 py-4  text-gray70 whitespace-nowrap ">
-                            {data.destinationSubOrganizationName}
-                          </td>
-                          <td className="hidden md:table-cell px-6 py-4  text-gray70 whitespace-nowrap ">
-                            <div>{data?.date}</div>
-                            <div className="mt-1 text-gray9F text-[0.75rem]">
-                              {data?.time.slice(0, 5)}
-                            </div>
-                          </td>
-                          <td className="px-2 md:px-6 py-4  text-gray70 whitespace-nowrap ">
-                            {data.status === "CONFIRMED" ? (
-                              <span className="text-[0.8rem] bg-greenBg text-greenText py-1 px-2 rounded-xl">
-                                تاييد شده
-                              </span>
-                            ) : data.status === "TROUBLED" ? (
-                              <span className=" text-[0.8rem] bg-orangeBg text-orangeText py-1 px-2 rounded-xl">
-                                مشکل دار
-                              </span>
-                            ) : (
-                              <span className="text-[0.8rem] bg-[#EBEBEB] text-gray70 py-1 px-2 rounded-xl">
-                                نامعلوم
-                              </span>
-                            )}
-                          </td>
+
                           <td
                             scope="row"
                             className="hidden md:flex gap-2 px-6 py-4 justify-center text-gray70 whitespace-nowrap "

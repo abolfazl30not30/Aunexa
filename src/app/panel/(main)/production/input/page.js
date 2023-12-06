@@ -16,7 +16,7 @@ import FilterDialog from "@/components/Panel/production/input/FilterDialog";
 import MoreInfoDialog from "@/components/Panel/production/input/MoreInfoDialog";
 import DeleteDialog from "@/components/Panel/production/input/DeleteDialog";
 import Link from "next/link";
-import { useGetAllPSIQuery } from "@/redux/features/primary-store/input/PSIapiSlice";
+import { useGetAllProductionInputQuery } from "@/redux/features/production/input/ProductionInputSlice";
 import EditInfoDialog from "@/components/Panel/production/input/EditInfoDialog";
 import { useSelector } from "react-redux";
 
@@ -154,7 +154,7 @@ function productionInput() {
     data: inventoryData = [],
     isLoading: isDataLoading,
     isError: isDataError,
-  } = useGetAllPSIQuery(
+  } = useGetAllProductionInputQuery(
     { page, sort, filterItem },
     { refetchOnMountOrArgChange: true }
   );
@@ -406,8 +406,8 @@ function productionInput() {
                           <td className="px-2 md:px-6 py-4  text-gray70 whitespace-nowrap ">
                             {data.value} {data.unit}
                           </td>
-                          <td className="hidden md:table-cell px-6 py-4  text-gray70 whitespace-nowrap ">
-                            {data.producer}
+                          <td className="table-cell px-6 py-4  text-gray70 whitespace-nowrap ">
+                            {data.producedProductName}
                           </td>
                           <td className="hidden md:table-cell px-6 py-4  text-gray70 whitespace-nowrap ">
                             <div>{data?.date}</div>
@@ -417,13 +417,14 @@ function productionInput() {
                           </td>
                           <td
                             scope="row"
-                            className="hidden md:flex gap-2 px-6 py-4 justify-center text-gray70 whitespace-nowrap ">
+                            className="hidden md:flex gap-2 px-6 py-4 justify-center text-gray70 whitespace-nowrap "
+                          >
                             <button
                               onClick={() => {
                                 handleOpenMoreInfo(data);
                               }}
-                              className="border border-1 border-solid border-gray70 rounded p-[0.4rem] hover:bg-neutral-100">
-
+                              className="border border-1 border-solid border-gray70 rounded p-[0.4rem] hover:bg-neutral-100"
+                            >
                               <svg
                                 xmlns="http://www.w3.org/2000/svg"
                                 width="18"

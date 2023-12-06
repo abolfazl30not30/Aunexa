@@ -98,7 +98,7 @@ export default function FilterDialog(props) {
             params.set("producedProductId",values.producedProductId)
         }
         if(values.subOrganizationId){
-            params.set("status",values.subOrganizationId)
+            params.set("subOrganizationId",values.subOrganizationId)
         }
         return params
     }
@@ -311,9 +311,9 @@ export default function FilterDialog(props) {
                                         ListboxProps={{
                                             sx: {fontFamily: "__fonts_2f4189,__fonts_Fallback_2f4189", fontSize: "0.8rem"},
                                         }}
-                                        options={productList}
+                                        options={ProducedProductList}
                                         getOptionLabel={(option) => option.persianName}
-                                        value={product}
+                                        value={producedProduct}
                                         onChange={(event, newValue) => {
                                             setProducedProduct(newValue)
                                             formik.setFieldValue("producedProductId", newValue?.id)

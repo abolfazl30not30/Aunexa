@@ -25,46 +25,14 @@ import {
     useLazyGetAllUnitQuery,
     useLazyGetAllVehicleQuery
 } from "@/redux/features/category/CategorySlice";
-import {useUpdatePSIMutation} from "@/redux/features/primary-store/input/PSIapiSlice";
+import { useUpdateProductionInputMutation } from "@/redux/features/production/input/ProductionInputSlice";
 import {
     useLazyGetOneVehiclesByCodeQuery,
     useLazyGetOneVehiclesByTagQuery
 } from "@/redux/features/vehicles-and-equipment/VehiclesAndEquipmentSlice";
 
 export default function EditInfoDialog(props) {
-    const alphabeticalList = [
-        {value: ""},
-        {value: "ا"},
-        {value: "ب"},
-        {value: "پ"},
-        {value: "ت"},
-        {value: "ث"},
-        {value: "ج"},
-        {value: "ح"},
-        {value: "د"},
-        {value: "ر"},
-        {value: "ز"},
-        {value: "ژ"},
-        {value: "س"},
-        {value: "ش"},
-        {value: "ص"},
-        {value: "ض"},
-        {value: "ط"},
-        {value: "ظ"},
-        {value: "ع"},
-        {value: "ف"},
-        {value: "ق"},
-        {value: "ک"},
-        {value: "گ"},
-        {value: "ل"},
-        {value: "م"},
-        {value: "ن"},
-        {value: "و"},
-        {value: "ه"},
-        {value: "ی"},
-        {value: "D"},
-        {value: "S"},
-    ]
+  
 
     //product input
     const [product,setProduct] = useState(null)
@@ -76,6 +44,16 @@ export default function EditInfoDialog(props) {
         }
     },[openProductList])
 
+
+
+    const [producedProduct,setProducedProduct] = useState(null)
+    const [openProducedProductList,setOpenProducedProductList] = useState(false)
+    const [getProducedProductList,{ data : ProducedProductList  = [] , isLoading : isProducedProductLoading, isError: producedProductIsError }] = useLazyGetAllProductQuery()
+    useEffect(()=>{
+        if(openProducedProductList){
+            getProducedProductList()
+        }
+    },[openProducedProductList])
     //unit input
     const [unit,setUnit] = useState(null)
     const [openUnitList,setOpenUnitList] = useState(false)
@@ -98,83 +76,29 @@ export default function EditInfoDialog(props) {
     // },[openVehicleList])
 
     //date input
-    const [date,setDate] = useState("")
-    const handleDateInput = (value) => {
-        if(value){
-            setDate(value)
-            let month = value?.month < 10 ? ('0' + value?.month) : value?.month;
-            let day = value?.day < 10 ? ('0' + value?.day) : value?.day;
-            let convertDate = value?.year + '/' + month + '/' + day;
-            formik.setFieldValue("expirationDate", convertDate)
-        }else {
-            formik.setFieldValue("expirationDate", "")
-        }
-    }
+   
 
     //machineTag input
-    const [machineTag, setmachineTag] = useState({
-        part1: "",
-        part2: "",
-        part3: "",
-        part4: "",
-    })
-    useEffect(()=>{
-        const machineTagString = machineTag.part4 + machineTag.part2  + machineTag.part1  + machineTag.part3
-        console.log(machineTagString)
-        formik.setFieldValue("machineTag", machineTagString)
-    },[machineTag])
-
-    const handlemachineTag = (e) => {
-        if (e.target.name === "part1") {
-            setmachineTag((co) => ({...co, part1: e.target.value}))
-        } else if (e.target.name === "part2") {
-            setmachineTag((co) => ({...co, part2: e.target.value}))
-        } else if (e.target.name === "part3") {
-            setmachineTag((co) => ({...co, part3: e.target.value}))
-        } else if (e.target.name === "part4") {
-            setmachineTag((co) => ({...co, part4: e.target.value}))
-        }
-    }
-    const validate = (values, props) => {
-        const errors = {};
-
-        if (!values.machineTag && !values.machineCode) {
-            errors.machineTag = "لطفا پلاک یا کد وسیله نقلیه را وارد کنید";
-        } else if (!values.machineCode && values.machineTag) {
-            if (!/[0-9]{7}./.test(values.machineTag)) {
-                errors.machineTag = 'لطفا پلاک  وسیله نقلیه را کامل وارد کنید';
-            }
-        }
-
-        return errors;
-    };
-
+   
 
     const handleReset = () =>{
         formik.resetForm()
-        setDate("")
+        setProducedProduct(null)
         setProduct(null)
         setUnit(null)
-        setmachineTag({
-            part1: "",
-            part2: "",
-            part3: "",
-            part4: ""})
+        
     }
 
     //submit data
-    const [submitData, { isLoading:isSubmitLoading ,error}] = useUpdatePSIMutation()
+    const [submitData, { isLoading:isSubmitLoading ,error}] = useUpdateProductionInputMutation()
 
-    const [getVehicleByTag,{ data : vehicleByTag  = {} , isLoading : isVehicleByTagLoading, isError: isVehicleByTagError }] = useLazyGetOneVehiclesByTagQuery()
-
-    const [getVehicleByCode,{ data : vehicleByCode  = {} , isLoading : isVehicleByCodeLoading, isError: isVehicleByCodeError }] = useLazyGetOneVehiclesByCodeQuery()
+  
 
     const schema = yup.object().shape({
         productId: yup.string().required("لطفا نام محصول را وارد کنید"),
         value: yup.string().required("لطفا مقدار محصول را وارد کنید"),
         unit: yup.string().required("لطفا واحد محصول را وارد کنید"),
-        driverName: yup.string().required("لطفا نام راننده را وارد کنید"),
-        producer: yup.string().required("لطفا تامین کننده را وارد کنید"),
+        producedProductId: yup.string().required("لطفا محصول تولیدی را وارد کنید"),
     });
 
     const formik = useFormik({
@@ -183,40 +107,18 @@ export default function EditInfoDialog(props) {
             productName:"",
             value: "",
             unit: "",
-            status:"UNKNOWN",
-            
-            expirationDate: "",
-            machineTag: "",
-            machineCode: "",
-            driverName: "",
-            producer: "",
-            description:"",
+            producedProductId:"",
+            producedProductName:""
         },
 
-        validate: validate,
+        
 
         validationSchema: schema,
 
         onSubmit: async (product,helpers) => {
-            let updateProduct = {...product,type:"PRIMARY"}
+            let updateProduct = {...product}
 
-            if(product.machineTag !== ""){
-                const res = await getVehicleByTag(product.machineTag)
-                if(res?.status !== "rejected"){
-                    updateProduct = {...updateProduct,machineType:res.data.type,machineId:res.data.id}
-                    console.log(updateProduct)
-                }else {
-                    updateProduct = {...updateProduct,machineType:"نا معلوم",machineId:""}
-                }
-            }else if(product.machineCode !== ""){
-                const res = await getVehicleByCode(product.machineCode)
-                if(res?.status !== "rejected"){
-                    updateProduct = {...updateProduct,machineType:res.data.type,machineId:res.data.id}
-                    console.log(updateProduct)
-                }else {
-                    updateProduct = {...updateProduct,machineType:"نا معلوم",machineId:""}
-                }
-            }
+           
 
             const userData = await submitData(updateProduct)
             handleReset()
@@ -228,33 +130,17 @@ export default function EditInfoDialog(props) {
         const product = productList.filter((product)=> product.id === id)
         setProduct(product[0])
     }
+    const handleSetProducedProductInput = (id) =>{
+        const producedProduct = ProducedProductList.filter((producedProduct)=> producedProduct.id === id)
+        setProducedProduct(producedProduct[0])
+    }
     const handleSetUnitInput = (ab) =>{
         const units= unitList.filter((unit)=> unit.persianName === ab)
         setUnit(units[0])
     }
 
-    const handleSetMachineTagInput = (machineTag) =>{
-        if(machineTag !== "") {
-            const tag = {
-                part1: machineTag.slice(5, 7),
-                part2: machineTag.slice(2, 5),
-                part3: machineTag.slice(7, 8),
-                part4: machineTag.slice(0, 2)
-            }
-            setmachineTag(tag)
-        }
-    }
-    const handleSetExpirationDate = (date)=>{
-        if(date !== ""){
-            const newDate = new DateObject({
-                date: date,
-                format: "YYYY/MM/DD",
-                calendar: persian,
-                locale: persian_fa
-            })
-            setDate(newDate)
-        }
-    }
+    
+    
 
     useEffect(()=>{
         getProductList()
@@ -263,21 +149,16 @@ export default function EditInfoDialog(props) {
             id:props.editInfoTarget?.id,
             productId: props.editInfoTarget?.productId,
             productName:props.editInfoTarget?.productName,
+            producedProductId: props.editInfoTarget?.producedProductId,
+            producedProductName:props.editInfoTarget?.producedProductName,
             value: props.editInfoTarget?.value,
             unit: props.editInfoTarget?.unit,
-            expirationDate: props.editInfoTarget?.expirationDate,
-            machineTag: props.editInfoTarget?.machineTag,
-            machineCode: props.editInfoTarget?.machineCode,
-            machineType:props.editInfoTarget?.machineType,
-            driverName: props.editInfoTarget?.driverName,
-            status:props.editInfoTarget?.status,
-            producer: props.editInfoTarget?.producer,
-            description:props.editInfoTarget?.description
+          
         })
         handleSetProductInput(props.editInfoTarget?.productId)
+        handleSetProducedProductInput(props.editInfoTarget?.producedProductId)
         handleSetUnitInput(props.editInfoTarget?.unit)
-        handleSetMachineTagInput(props.editInfoTarget?.machineTag)
-        handleSetExpirationDate(props.editInfoTarget?.expirationDate)
+        
     },[props.openEditInfo])
 
     return (
@@ -305,10 +186,10 @@ export default function EditInfoDialog(props) {
                             </button>
                         </div>
                         <div className="flex justify-center mb-7">
-                            <h3 className="text-[1.1rem]">ویرایش مواداولیه ورودی</h3>
+                            <h3 className="text-[1.1rem]">ویرایش  ورودی</h3>
                         </div>
                         <form className="flex justify-center " onSubmit={formik.handleSubmit} method="POST">
-                            <div className="flex flex-col justify-center w-[90%] gap-5">
+                        <div className="flex flex-col justify-center w-[90%] gap-5">
                                 <div className=" flex flex-col">
                                     <Autocomplete
                                         open={openProductList}
@@ -347,7 +228,7 @@ export default function EditInfoDialog(props) {
                                                             {params.InputProps.endAdornment}
                                                         </React.Fragment>
                                                     )
-                                                }}
+                                            }}
                                                 placeholder="نوع محصول (اجباری)"
                                             />}
                                     />
@@ -401,188 +282,48 @@ export default function EditInfoDialog(props) {
                                                 />}/>
                                     </div>
                                 </div>
-                                <div>
-                                    <DatePicker
-                                        calendarPosition={`bottom`}
-                                        className="red"
-                                        digits={['0', '1', '2', '3', '4', '5', '6', '7', '8', '9']}
-                                        format={`YYYY/MM/DD`}
-                                        containerStyle={{
-                                            width: "100%"
+                                <div className=" flex flex-col">
+                                    <Autocomplete
+                                        open={openProducedProductList}
+                                        onOpen={() => {
+                                            setOpenProducedProductList(true);
                                         }}
-                                        placeholder="تاریخ انقضا (اختیاری)"
-                                        inputClass={`border border-[#D9D9D9] placeholder-neutral-300 text-gray-900 text-[0.8rem] rounded focus:ring-[#3B82F67F] focus:border-[#3B82F67F] block w-full px-3 py-4`}
-                                        value={date}
-                                        onChange={(value) => {
-                                            handleDateInput(value)
+                                        onClose={() => {
+                                            setOpenProducedProductList(false);
                                         }}
-                                        mapDays={({date}) => {
-                                            let props = {}
-                                            let isWeekend = [6].includes(date.weekDay.index)
-
-                                            if (isWeekend)
-                                                props.className = "highlight highlight-red";
-
-                                            return props
-                                        }}
-
-                                        weekDays={
-                                            [
-                                                ["شنبه", "Sat"],
-                                                ["یکشنبه", "Sun"],
-                                                ["دوشنبه", "Mon"],
-                                                ["سه شنبه", "Tue"],
-                                                ["چهارشنبه", "Wed"],
-                                                ["پنجشنبه", "Thu"],
-                                                ["جمعه", "Fri"],
-                                            ]
-                                        }
-
-                                        calendar={persian}
-                                        locale={persian_fa}>
-                                        <button className="px-2 pb-4" onClick={(e) => {
-                                            e.preventDefault()
-                                            setDate("")
-                                            formik.setFieldValue("expirationDate", "")
-                                        }}>
-                                            ریست
-                                        </button>
-                                    </DatePicker>
-                                </div>
-                                <div>
-                                    <div className="flex flex-col md:flex-row">
-                                        <div className="plate w-full md:w-[47%] flex items-center pl-4">
-                                            <div>
-                                                <div className="w-[55px] h-full pt-3  pl-1 pr-3">
-                                                    <input disabled={formik.values.machineCode !== ""} name="part1"
-                                                           onChange={handlemachineTag} value={machineTag.part1}
-                                                           type="text" placeholder="55" maxLength="2"
-                                                           className="w-full h-full placeholder-neutral-300 text-center rounded"/>
-                                                </div>
-                                            </div>
-                                            <div className="flex">
-                                                <div className="w-[60px] h-full py-1 pl-1 pr-3 h-full">
-                                                    <input disabled={formik.values.machineCode !== ""} name="part2"
-                                                           onChange={handlemachineTag} value={machineTag.part2}
-                                                           type="text" placeholder="555" maxLength="3"
-                                                           className="w-full h-full placeholder-neutral-300 text-center rounded"/>
-                                                </div>
-                                                <div>
-                                                    <FormControl sx={{width: "58px", bgcolor: "#fff"}} size="small">
-                                                        <Select
-                                                        sx={{fontFamily: "__fonts_2f4189,__fonts_Fallback_2f4189", fontSize: "0.8rem"}}
-                                                            disabled={formik.values.machineCode !== ""}
-                                                            name="part3"
-                                                            value={machineTag.part3}
-                                                            onChange={handlemachineTag}
-                                                            labelId="demo-select-small-label"
-                                                            id="demo-select-small">
-                                                            {
-                                                                alphabeticalList.map((alpha)=>(
-                                                                    <MenuItem  sx={{fontFamily: "__fonts_2f4189,__fonts_Fallback_2f4189", fontSize: "0.8rem"}} value={alpha.value}>{alpha.value}</MenuItem>
-                                                                ))
-                                                            }
-                                                        </Select>
-                                                    </FormControl>
-                                                </div>
-                                                <div className="w-[50px] h-full py-1 pl-2 pr-1 h-full">
-                                                    <input disabled={formik.values.machineCode !== ""} name="part4"
-                                                           onChange={handlemachineTag} value={machineTag.part4}
-                                                           type="text" placeholder="55" maxLength="2"
-                                                           className="w-full h-full placeholder-neutral-300 text-center rounded"/>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div className="w-full md:w-[6%] flex justify-center items-center">
-                                            <span className="text-[1rem]">
-                                                یا
-                                            </span>
-                                        </div>
-                                        <div className="w-full md:w-[47%]">
-                                            <TextField
-                                                disabled={formik.values.machineTag !== ""}
-                                                fullWidth
-                                                placeholder="کد وسیله نقلیه(اجباری)"
-                                                type="text"
-                                                name="machineCode"
-                                                value={formik.values.machineCode}
-                                                onChange={formik.handleChange}
-                                                error={formik.touched.machineCode && Boolean(formik.errors.machineCode)}
-                                                // helperText={formik.touched.machineTag && formik.errors.machineTag}
-                                                inputProps={{style: {fontFamily: "__fonts_2f4189,__fonts_Fallback_2f4189", fontSize: "0.8rem"}}}
-                                                InputLabelProps={{style: {fontFamily: "__fonts_2f4189,__fonts_Fallback_2f4189"}}}/>
-                                        </div>
-                                    </div>
-                                    <div>
-                                        {
-                                            Boolean(formik.errors.machineTag) && (
-                                                <span className="mx-3 text-[0.6rem] text-red-600 ">
-                                                    {formik.errors.machineTag}
-                                                </span>
-                                            )
-                                        }
-                                    </div>
-                                </div>
-                                <div>
-                                    <FormControl fullWidth>
-                                        <InputLabel id="demo-simple-select-label" sx={{fontFamily: "__fonts_2f4189,__fonts_Fallback_2f4189", fontSize: "0.8rem",color:"#9F9F9F"}}>وضعیت</InputLabel>
-                                        <Select
-                                            labelId="demo-simple-select-label"
-                                            id="demo-simple-select"
-                                            value={formik.values.status}
-                                            name="status"
-                                            input={<OutlinedInput sx={{fontFamily: "__fonts_2f4189,__fonts_Fallback_2f4189", fontSize: "0.8rem"}} label="وضعیت" />}
-                                            sx={{fontFamily: "__fonts_2f4189,__fonts_Fallback_2f4189", fontSize: "0.8rem"}}
-                                            onChange={formik.handleChange}>
-                                            <MenuItem value="UNKNOWN" sx={{fontFamily: "__fonts_2f4189,__fonts_Fallback_2f4189", fontSize: "0.8rem"}}>نامعلوم</MenuItem>
-                                            <MenuItem value="CONFIRMED" sx={{fontFamily: "__fonts_2f4189,__fonts_Fallback_2f4189", fontSize: "0.8rem"}}>تاييد شده</MenuItem>
-                                            <MenuItem value="TROUBLED" sx={{fontFamily: "__fonts_2f4189,__fonts_Fallback_2f4189", fontSize: "0.8rem"}}>مشکل دار</MenuItem>
-                                        </Select>
-                                    </FormControl>
-                                </div>
-                                <div className="flex flex-col md:flex-row gap-5 md:gap-1 justify-between">
-                                    <div className="w-full md:w-1/2">
-                                        <TextField
-                                            fullWidth
-                                            placeholder="نام راننده (اجباری)"
-                                            type="text"
-                                            name="driverName"
-                                            value={formik.values.driverName}
-                                            onChange={formik.handleChange}
-                                            error={formik.touched.driverName && Boolean(formik.errors.driverName)}
-                                            helperText={formik.touched.driverName && formik.errors.driverName}
-                                            inputProps={{style: {fontFamily: "__fonts_2f4189,__fonts_Fallback_2f4189", fontSize: "0.8rem"}}}
-                                            InputLabelProps={{style: {fontFamily: "__fonts_2f4189,__fonts_Fallback_2f4189"}}}/>
-                                    </div>
-                                    <div className="w-full md:w-1/2">
-                                        <TextField
-                                            fullWidth
-                                            placeholder="تامین کننده (اجباری)"
-                                            type="text"
-                                            name="producer"
-                                            value={formik.values.producer}
-                                            onChange={formik.handleChange}
-                                            error={formik.touched.producer && Boolean(formik.errors.producer)}
-                                            helperText={formik.touched.producer && formik.errors.producer}
-                                            inputProps={{style: {fontFamily: "__fonts_2f4189,__fonts_Fallback_2f4189", fontSize: "0.8rem"}}}
-                                            InputLabelProps={{style: {fontFamily: "__fonts_2f4189,__fonts_Fallback_2f4189"}}}/>
-                                    </div>
-                                </div>
-                                <div>
-                                    <TextField
-                                        multiline
-                                        rows={1}
-                                        maxRows={4}
                                         fullWidth
-                                        placeholder="توضيحات (اختياری)"
-                                        type="text"
-                                        name="description"
-                                        value={formik.values.description}
-                                        onChange={formik.handleChange}
-                                        error={formik.touched.description && Boolean(formik.errors.description)}
-                                        helperText={formik.touched.description && formik.errors.description}
-                                        inputProps={{style: {fontFamily: "__fonts_2f4189,__fonts_Fallback_2f4189", fontSize: "0.8rem"}}}
-                                        InputLabelProps={{style: {fontFamily: "__fonts_2f4189,__fonts_Fallback_2f4189"}}}/>
+                                        clearOnEscape
+                                        disablePortal
+                                        id="combo-box-demo"
+                                        ListboxProps={{
+                                            sx: {fontFamily: "__fonts_2f4189,__fonts_Fallback_2f4189", fontSize: "0.8rem"},
+                                        }}
+                                        options={ProducedProductList}
+                                        getOptionLabel={(option) => option.persianName}
+                                        value={producedProduct}
+                                        onChange={(event, newValue) => {
+                                            setProducedProduct(newValue)
+                                            formik.setFieldValue("producedProductId", newValue?.id)
+                                            formik.setFieldValue("producedProductName", newValue?.persianName)
+                                        }}
+                                        renderInput={(params) =>
+                                            <TextField
+                                                error={formik.touched.producedProductId && Boolean(formik.errors.producedProductId)}
+                                                helperText={formik.touched.producedProductId && formik.errors.producedProductId}
+                                                {...params}
+                                                InputProps={{
+                                                    ...params.InputProps,
+                                                    style: {fontFamily: "__fonts_2f4189,__fonts_Fallback_2f4189", fontSize: "0.8rem"},
+                                                    endAdornment:(
+                                                        <React.Fragment>
+                                                            {isProductLoading ? <CircularProgress color="inherit" size={20} /> : null}
+                                                            {params.InputProps.endAdornment}
+                                                        </React.Fragment>
+                                                    )
+                                                }}
+                                                placeholder="محصول تولیدی (اجباری)"
+                                            />}
+                                    />
                                 </div>
                                 <div>
                                     {
