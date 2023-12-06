@@ -649,7 +649,9 @@ export default function page() {
                               <span className="pl-2  text-[#4E4E4E]">
                                 دپارتمان :
                               </span>
-                              <span>{data?.subOrganizationName}</span>
+                              <span>
+                                {data?.subOrganizationInfo?.subOrganizationName}
+                              </span>
                             </td>
 
                             <td

@@ -98,7 +98,7 @@ export default function MoreInfoItemDialog(props) {
                                     </div>
                                 </div>
                                 
-                                <div className="flex flex-col">
+                                {props.moreInfoItemTarget?.bill?.billCycle?.description && <div className="flex flex-col">
                                     <div className="mb-2">
                                         <span className="text-[0.9rem] text-gray70 ">  توضیحات  </span>
                                     </div>
@@ -109,7 +109,7 @@ export default function MoreInfoItemDialog(props) {
                                         
                                        
                                     </div>
-                                </div>
+                                </div>}
                                 
                                
                                 
@@ -198,14 +198,14 @@ export default function MoreInfoItemDialog(props) {
                                
                                
                             </div>
-                                <div>
+                                {props.moreInfoItemTarget?.bill?.billCycle?.description &&<div>
                                     <span className="ml-1 text-gray9F text-[0.8rem]">
                                          توضیحات  :
                                     </span>
                                     <span className="text-[#29262A] text-[0.8rem]">
                                     {props.moreInfoItemTarget?.bill?.billCycle?.description}
                                     </span>
-                                </div>
+                                </div>}
                                 
                                
                                
