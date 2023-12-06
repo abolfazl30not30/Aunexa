@@ -24,6 +24,7 @@ export default function RegisterUserDialog(props) {
             code: props.codeRequest,
             username: props.registerIndividualTarget.nationalCode,
             password: props.registerIndividualTarget.nationalCode,
+           
             role: props.registerIndividualTarget.role,
             name: props.registerIndividualTarget.fullName,
             phoneNumber: props.registerIndividualTarget.originalPhoneNumber,
@@ -31,7 +32,8 @@ export default function RegisterUserDialog(props) {
             subOrganizationName: props.registerIndividualTarget.subOrganizationName,
             organizationId: props.registerIndividualTarget.organizationId,
             profile: "12345",
-            cLevel: false
+            cLevel: false,
+            individualId:props.registerIndividualTarget.id,
         }
         const userData = await submitData(updatePerson)
        
@@ -44,6 +46,7 @@ export default function RegisterUserDialog(props) {
                 fatherName: props.registerIndividualTarget?.fatherName,
                 gender: props.registerIndividualTarget?.gender,
                 roleId: props.registerIndividualTarget?.roleId,
+                role: props.registerIndividualTarget?.role,
                 originalPhoneNumber: props.registerIndividualTarget?.originalPhoneNumber,
                 anotherPhoneNumber: props.registerIndividualTarget?.anotherPhoneNumber,
                 telephoneNumber: props.registerIndividualTarget?.telephoneNumber,
@@ -51,7 +54,8 @@ export default function RegisterUserDialog(props) {
                 email: props.registerIndividualTarget?.email,
                 address: props.registerIndividualTarget?.address,
                 cLevel:props.registerIndividualTarget?.cLevel,
-                register:true
+                register:true,
+                
               }
              const individual = await submitDataUpdateIndividual(updateIndividual)
             

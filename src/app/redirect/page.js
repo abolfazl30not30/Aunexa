@@ -29,7 +29,7 @@ export default function redirect() {
 
   const formData = {
     code: code,
-    redirect_uri: "https://msc.vipsoftware1.com/redirect",
+    redirect_uri: "http://localhost:3000/redirect",
     client_id: "client1",
     grant_type: "authorization_code",
     code_verifier: window.sessionStorage.getItem("codeVerifier"),
@@ -50,6 +50,7 @@ export default function redirect() {
         "subOrganizationName",
         tokenContent.subOrganizationName
       );
+      window.sessionStorage.setItem("individualId", tokenContent.individualId);
       window.sessionStorage.setItem(
         "organizationId",
         tokenContent.organizationId

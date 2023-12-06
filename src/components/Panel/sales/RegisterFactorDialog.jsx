@@ -21,7 +21,7 @@ import {
     useLazyGetAllProductQuery,
     useLazyGetAllUnitQuery
 } from "@/redux/features/category/CategorySlice";
-import { useUploadFileCloudMutation } from "@/redux/features/file/FileSlice";
+import { useUploadFileMinioMutation } from "@/redux/features/file/FileSlice";
 import { useSaveSalesMutation } from "@/redux/features/sales/SalesSlice";
 import AddProduct from "@/components/Panel/sales/AddProduct";
 import { Box } from "@material-ui/core";
@@ -57,7 +57,7 @@ export default function RegisterFactorDialog(props) {
 
     const [organization,setOrganization] = useState(null)
     const [uploadedImage,setUploadedImage] = useState("")
-    const [uploadFile, { isLoading:isLoadingUpload ,error:errorUpload}] = useUploadFileCloudMutation()
+    const [uploadFile, { isLoading:isLoadingUpload ,error:errorUpload}] = useUploadFileMinioMutation()
 
     const [invoiceItemInput,setInvoiceItemInput] = useState([])
 

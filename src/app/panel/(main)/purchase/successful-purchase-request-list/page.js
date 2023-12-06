@@ -8,13 +8,24 @@ import {
   OutlinedInput,
   Pagination,
   Skeleton,
+  Accordion,
+  AccordionSummary,
+  Typography,
 } from "@mui/material";
 import { useGetAllSuccessfulPurchaseRequestListQuery } from "@/redux/features/purchase/successful-purchase-request-list/SuccessfulPurchaseRequestList";
 import Link from "next/link";
 import FilterDialog from "@/components/Panel/purchase/SuccessfulPurchaseRequestList/FilterDialog";
-
-import { useSelector } from "react-redux";
 import MoreInfoDialog from "@/components/Panel/purchase/SuccessfulPurchaseRequestList/MoreInfoDialog";
+import DeleteDialog from "@/components/Panel/sales/DeleteDialog";
+import EditInfoDialog from "@/components/Panel/sales/EditInfoDialog";
+import { useSelector } from "react-redux";
+import Checkbox from "@mui/material/Checkbox";
+import RegisterFactorDialog from "@/components/Panel/sales/RegisterFactorDialog";
+import { AccordionDetails } from "@material-ui/core";
+import DeleteItemDialog from "@/components/Panel/sales/DeleteItemDialog";
+import EditItemInfoDialog from "@/components/Panel/sales/EditItemInfoDialog";
+import MoreInfoItemDialog from "@/components/Panel/purchase/SuccessfulPurchaseRequestList/MoreInfoItemDialog";
+
 export default function page() {
   let permission = useSelector(
     (state) => state.access?.pages?.primaryStoreInput
@@ -33,6 +44,21 @@ export default function page() {
   const [filterItem, setFilterItem] = useState("");
 
   const [paymentList, setPaymentList] = useState([]);
+  // const [checkedAll, setCheckedAll] = useState(false);
+  // const handleChangeAllCheckbox = (event) => {
+  //   setCheckedAll(event.target.checked);
+  // };
+
+  // const handleChangeChecked = (event, data) => {
+  //   if (event.target.checked) {
+  //     const obj = { ...data };
+  //     let updateList = [...paymentList, obj];
+  //     setPaymentList(updateList);
+  //   } else {
+  //     let temp = paymentList.filter((item) => item.id !== data.id);
+  //     setPaymentList(temp);
+  //   }
+  // };
 
   const {
     data: inventoryData = [],
@@ -51,46 +77,45 @@ export default function page() {
   const handleCloseFilter = () => {
     setOpenFilter(false);
   };
+  // const [openRegisterFactor, setOpenRegisterFactor] = useState(false);
+  // const handleOpenRegisterFactor = () => {
+  //   setOpenRegisterFactor(true);
+  // };
+  // const handleCloseRegisterFactor = () => {
+  //   setOpenRegisterFactor(false);
+  // };
+  // const [openDelete, setOpenDelete] = useState(false);
+  // const [deleteTargetId, setDeleteTargetId] = useState("");
+
   const [openMoreInfo, setOpenMoreInfo] = useState(false);
   const [moreInfoTarget, setMoreInfoTarget] = useState({
     id: "",
-    purchaseDate: "",
-    purchaseTime: "",
-    producer: "",
-    buyerName: "",
-    status: "IN_PROGRESS",
-    receiptCode: "",
+    productId: "",
+    productName: "",
+    productImage: "",
+    quantity: {
+      unit: "",
+      value: 0,
+    },
+    price: 0,
+    description: "",
+    paymentMethod: "",
+    invoiceId: "",
+    subOrganizationInfo: {
+      subOrganizationId: "",
+      subOrganizationName: "",
+      organizationId: "",
+    },
+    salesDate: "",
+    salesTime: "",
+    confirmationDate: "",
+    confirmationTime: "",
+    confirmerName: "",
+    status: "",
+    sellerName: "",
+    customer: "",
     receiptFile: "",
-    paymentItems: [
-      {
-        id: "",
-        quantity: {
-          unit: "",
-          value: 0,
-        },
-        paymentMethod: "",
-        bill: {
-          id: "",
-          confirmationDate: "",
-          confirmationTime: "",
-          confirmerName: "",
-          billCycle: {
-            id: "",
-            requestDate: "",
-            requestTime: "",
-            productId: "",
-            productName: "",
-            productImage: "",
-            code: 0,
-            registrar: "",
-            description: "",
-            subOrganizationName: "",
-            subOrganizationId: "",
-          },
-        },
-        paymentId: "",
-      },
-    ],
+    receiptCode: "",
     failureReason: {
       date: "",
       time: "",
@@ -98,11 +123,121 @@ export default function page() {
       reporter: "",
     },
   });
-  const handleOpenMoreInfoRow = (info) => {
-    if (window.innerWidth <= 768) {
-      handleOpenMoreInfo(info);
-    }
-  };
+
+  // const [openEditInfo, setOpenEditInfo] = useState(false);
+  // const [editInfoTarget, setEditInfoTarget] = useState({
+  //   id: "",
+  //   productId: "",
+  //   productName: "",
+  //   productImage: "",
+  //   quantity: {
+  //     unit: "",
+  //     value: 0,
+  //   },
+  //   price: 0,
+  //   description: "",
+  //   paymentMethod: "",
+  //   invoiceId: "",
+  //   subOrganizationInfo: {
+  //     subOrganizationId: "",
+  //     subOrganizationName: "",
+  //     organizationId: "",
+  //   },
+  //   salesDate: "",
+  //   salesTime: "",
+  //   confirmationDate: "",
+  //   confirmationTime: "",
+  //   confirmerName: "",
+  //   status: "",
+  //   sellerName: "",
+  //   customer: "",
+  //   receiptFile: "",
+  //   receiptCode: "",
+  //   failureReason: {
+  //     date: "",
+  //     time: "",
+  //     description: "",
+  //     reporter: "",
+  //   },
+  // });
+  // const [openEditItemInfo, setOpenEditItemInfo] = useState(false);
+  // const [editInfoItemTarget, setEditInfoItemTarget] = useState({
+  //   id: "",
+  //   productId: "",
+  //   productName: "",
+  //   productImage: "",
+  //   quantity: {
+  //     unit: "",
+  //     value: 0,
+  //   },
+  //   price: 0,
+  //   description: "",
+  //   paymentMethod: "",
+  //   invoiceId: "",
+  //   subOrganizationInfo: {
+  //     subOrganizationId: "",
+  //     subOrganizationName: "",
+  //     organizationId: "",
+  //   },
+  //   salesDate: "",
+  //   salesTime: "",
+  //   confirmationDate: "",
+  //   confirmationTime: "",
+  //   confirmerName: "",
+  //   status: "",
+  //   sellerName: "",
+  //   customer: "",
+  //   receiptFile: "",
+  //   receiptCode: "",
+  //   failureReason: {
+  //     date: "",
+  //     time: "",
+  //     description: "",
+  //     reporter: "",
+  //   },
+  // });
+  // const handleOpenEditItemInfo = (info) => {
+  //   setEditInfoItemTarget(info);
+  //   setOpenEditItemInfo(true);
+  // };
+  // const handleCloseEditItemInfo = () => {
+  //   setEditInfoItemTarget({
+  //     id: "",
+  //     productId: "",
+  //     productName: "",
+  //     productImage: "",
+  //     quantity: {
+  //       unit: "",
+  //       value: 0,
+  //     },
+  //     price: 0,
+  //     description: "",
+  //     paymentMethod: "",
+  //     invoiceId: "",
+  //     subOrganizationInfo: {
+  //       subOrganizationId: "",
+  //       subOrganizationName: "",
+  //       organizationId: "",
+  //     },
+  //     salesDate: "",
+  //     salesTime: "",
+  //     confirmationDate: "",
+  //     confirmationTime: "",
+  //     confirmerName: "",
+  //     status: "",
+  //     sellerName: "",
+  //     customer: "",
+  //     receiptFile: "",
+  //     receiptCode: "",
+  //     failureReason: {
+  //       date: "",
+  //       time: "",
+  //       description: "",
+  //       reporter: "",
+  //     },
+  //   });
+  //   setOpenEditItemInfo(false);
+  // };
   const handleOpenMoreInfo = (info) => {
     setMoreInfoTarget(info);
     setOpenMoreInfo(true);
@@ -111,43 +246,32 @@ export default function page() {
   const handleCloseMoreInfo = () => {
     setMoreInfoTarget({
       id: "",
-      purchaseDate: "",
-      purchaseTime: "",
-      producer: "",
-      buyerName: "",
-      status: "IN_PROGRESS",
-      receiptCode: "",
+      productId: "",
+      productName: "",
+      productImage: "",
+      quantity: {
+        unit: "",
+        value: 0,
+      },
+      price: 0,
+      description: "",
+      paymentMethod: "",
+      invoiceId: "",
+      subOrganizationInfo: {
+        subOrganizationId: "",
+        subOrganizationName: "",
+        organizationId: "",
+      },
+      salesDate: "",
+      salesTime: "",
+      confirmationDate: "",
+      confirmationTime: "",
+      confirmerName: "",
+      status: "",
+      sellerName: "",
+      customer: "",
       receiptFile: "",
-      paymentItems: [
-        {
-          id: "",
-          quantity: {
-            unit: "",
-            value: 0,
-          },
-          paymentMethod: "",
-          bill: {
-            id: "",
-            confirmationDate: "",
-            confirmationTime: "",
-            confirmerName: "",
-            billCycle: {
-              id: "",
-              requestDate: "",
-              requestTime: "",
-              productId: "",
-              productName: "",
-              productImage: "",
-              code: 0,
-              registrar: "",
-              description: "",
-              subOrganizationName: "",
-              subOrganizationId: "",
-            },
-          },
-          paymentId: "",
-        },
-      ],
+      receiptCode: "",
       failureReason: {
         date: "",
         time: "",
@@ -157,9 +281,107 @@ export default function page() {
     });
     setOpenMoreInfo(false);
   };
+
+  const [openMoreInfoItem, setOpenMoreInfoItem] = useState(false);
+  const [moreInfoItemTarget, setMoreInfoItemTarget] = useState({
+    description: "",
+  });
+  const handleOpenMoreInfoItem = (info) => {
+    setMoreInfoItemTarget(info);
+    setOpenMoreInfoItem(true);
+  };
+
+  const handleCloseMoreInfoItem = () => {
+    setMoreInfoItemTarget({
+      description: "",
+    });
+    setOpenMoreInfoItem(false);
+  };
+  // const handleOpenDelete = (id) => {
+  //   setDeleteTargetId(id);
+  //   setOpenDelete(true);
+  // };
+
+  // const handleCloseDelete = () => {
+  //   setDeleteTargetId("");
+  //   setOpenDelete(false);
+  // };
+
+  // const [openDeleteItem, setOpenDeleteItem] = useState(false);
+  // const [deleteTargetItemId, setDeleteTargetItemId] = useState("");
+  // const handleOpenDeleteItem = (id) => {
+  //   setDeleteTargetItemId(id);
+  //   setOpenDeleteItem(true);
+  // };
+
+  // const handleCloseDeleteItem = () => {
+  //   setDeleteTargetItemId("");
+  //   setOpenDeleteItem(false);
+  // };
+  // const handleOpenEditInfo = (info) => {
+  //   setEditInfoTarget(info);
+  //   setOpenEditInfo(true);
+  // };
+  // const handleCloseEditInfo = () => {
+  //   setEditInfoTarget({
+  //     id: "",
+  //     productId: "",
+  //     productName: "",
+  //     productImage: "",
+  //     quantity: {
+  //       unit: "",
+  //       value: 0,
+  //     },
+  //     price: 0,
+  //     description: "",
+  //     paymentMethod: "",
+  //     invoiceId: "",
+  //     subOrganizationInfo: {
+  //       subOrganizationId: "",
+  //       subOrganizationName: "",
+  //       organizationId: "",
+  //     },
+  //     salesDate: "",
+  //     salesTime: "",
+  //     confirmationDate: "",
+  //     confirmationTime: "",
+  //     confirmerName: "",
+  //     status: "",
+  //     sellerName: "",
+  //     customer: "",
+  //     receiptFile: "",
+  //     receiptCode: "",
+  //     failureReason: {
+  //       date: "",
+  //       time: "",
+  //       description: "",
+  //       reporter: "",
+  //     },
+  //   });
+  //   setOpenEditInfo(false);
+  // };
+
+  const handleOpenMoreInfoRow = (info) => {
+    if (window.innerWidth <= 768) {
+      handleOpenMoreInfo(info);
+    }
+  };
+  const [searchValue, setSearchValue] = useState("");
+  const [filterType, setFilterType] = useState("receiptCode");
+
+  const handleSearchBox = (e) => {
+    setSearchValue(e.target.value);
+    let params = new URLSearchParams();
+    params.set(filterType, e.target.value);
+    setFilterItem(params.toString());
+  };
+  const [expanded, setExpanded] = React.useState(false);
+  const handleChangeInvoiceList = (panel) => (event, isExpanded) => {
+    setExpanded(isExpanded ? panel : false);
+  };
   return (
     <div>
-      <header className=" text-[0.9rem] bg-white py-6 px-5 md:px-10">
+      <header className="flex justify-between items-center text-[0.9rem] bg-white py-6 px-5 md:px-10">
         <div className="">
           <h2 className="font-[800] text-[0.9rem] md:text-[1.1rem]">
             کالاهای خریداری شده
@@ -167,27 +389,48 @@ export default function page() {
         </div>
       </header>
       <section className="py-4 md:px-8 mt-5 bg-white h-[50rem]">
-        <div className="px-4 flex justify-end">
-          {/*<div className="w-[50%] md:w-[37%]">*/}
-          {/*    <FormControl fullWidth>*/}
-          {/*        <OutlinedInput*/}
-          {/*            size="small"*/}
-          {/*            sx={{py: "0.2rem"}}*/}
-          {/*            placeholder="جستوجو..."*/}
-          {/*            id="outlined-adornment-amount"*/}
-          {/*            inputProps={{style: {fontFamily: "__fonts_2f4189,__fonts_Fallback_2f4189", fontSize: "0.9rem"}}}*/}
-          {/*            startAdornment={<InputAdornment position="start">*/}
-          {/*                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"*/}
-          {/*                     viewBox="0 0 24 24" fill="none">*/}
-          {/*                    <path*/}
-          {/*                        d="M21 21L16.65 16.65M11 6C13.7614 6 16 8.23858 16 11M19 11C19 15.4183 15.4183 19 11 19C6.58172 19 3 15.4183 3 11C3 6.58172 6.58172 3 11 3C15.4183 3 19 6.58172 19 11Z"*/}
-          {/*                        stroke="#9F9F9F" stroke-width="1.5" stroke-linecap="round"*/}
-          {/*                        stroke-linejoin="round"/>*/}
-          {/*                </svg>*/}
-          {/*            </InputAdornment>}*/}
-          {/*        />*/}
-          {/*    </FormControl>*/}
-          {/*</div>*/}
+        <div className="px-4 flex justify-between">
+          <div className="xl:w-1/4 md:w-1/3">
+            <FormControl fullWidth>
+              <OutlinedInput
+                value={searchValue}
+                onChange={handleSearchBox}
+                className=""
+                size="small"
+                sx={{
+                  py: "0.2rem",
+                  borderRadius: 0,
+                }}
+                placeholder="جستوجو شماره فاکتور"
+                id="outlined-adornment-amount"
+                inputProps={{
+                  style: {
+                    fontFamily: "__fonts_2f4189,__fonts_Fallback_2f4189",
+                    fontSize: "0.9rem",
+                  },
+                }}
+                startAdornment={
+                  <InputAdornment position="start">
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      width="24"
+                      height="24"
+                      viewBox="0 0 24 24"
+                      fill="none"
+                    >
+                      <path
+                        d="M21 21L16.65 16.65M11 6C13.7614 6 16 8.23858 16 11M19 11C19 15.4183 15.4183 19 11 19C6.58172 19 3 15.4183 3 11C3 6.58172 6.58172 3 11 3C15.4183 3 19 6.58172 19 11Z"
+                        stroke="#9F9F9F"
+                        stroke-width="1.5"
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                      />
+                    </svg>
+                  </InputAdornment>
+                }
+              />
+            </FormControl>
+          </div>
           <div className="flex gap-3">
             <button
               onClick={handleOpenFilter}
@@ -289,23 +532,18 @@ export default function page() {
         <div className="mt-10">
           <div className="overflow-x-auto">
             <table className=" w-full table-auto overflow-scroll border-collapse border-spacing-0 text-sm text-center text-gray70  ">
-              <thead className="text-[0.9rem] text-gray80  bg-[#F8F8F8] md:bg-[#F2EDED] ">
+              {/* <thead className="text-[0.9rem] text-gray80  bg-[#F8F8F8] md:bg-[#F2EDED] ">
                 <tr>
-                  <th className="hidden md:table-cell px-6 py-4">#</th>
                   <th className="hidden md:table-cell px-2 md:px-6 py-4">
                     شماره فاکتور
                   </th>
-                  <th className="px-2 md:px-6 px-6 py-4">محصول</th>
-                  <th className="px-2 md:px-6 px-6 py-4">مقدار</th>
-                  <th className=" hidden md:table-cell px-2 md:px-6 px-6 py-4">
-                    تاریخ خرید
-                  </th>
-
-                  <th className="table-cell px-6 py-4">دپارتمان</th>
-                  <th className="table-cell px-6 py-4">وضعیت فاکتور</th>
+                  <th className="px-2 md:px-6 px-6 py-4 ">مشتری</th>
+                  <th className="px-2 md:px-6 px-6 py-4">وضعیت فاکتور</th>
+                  <th className="px-2 md:px-6 px-6 py-4">تاریخ فروش</th>
+                  <th className="hidden md:table-cell px-6 py-4">دپارتمان</th>
                   <th className="hidden md:table-cell px-6 py-4">عملیات</th>
-                </tr>
-              </thead>
+                </tr> 
+              </thead> */}
               <tbody className="table-body">
                 {isDataLoading
                   ? [...Array(8)].map(() => (
@@ -330,102 +568,279 @@ export default function page() {
                         <td className="hidden md:table-cell px-6 py-4  text-gray70 whitespace-nowrap ">
                           <Skeleton variant="text" sx={{ fontSize: "1rem" }} />
                         </td>
-                        <td className="hidden md:table-cell px-6 py-4  text-gray70 whitespace-nowrap ">
-                          <Skeleton variant="text" sx={{ fontSize: "1rem" }} />
-                        </td>
+
                         <td
                           scope="row"
-                          className="hidden md:flex  px-6 py-4 justify-center text-gray70 whitespace-nowrap "
+                          className="hidden md:flex gap-2 px-6 py-4 justify-center text-gray70 whitespace-nowrap "
                         >
+                          <Skeleton variant="rounded" width={23} height={23} />
+                          <Skeleton variant="rounded" width={23} height={23} />
+                          <Skeleton variant="rounded" width={23} height={23} />
                           <Skeleton variant="rounded" width={23} height={23} />
                         </td>
                       </tr>
                     ))
                   : inventoryData?.content?.map((data, index) => (
-                      <tr
-                        onClick={() => {
-                          handleOpenMoreInfoRow(data);
-                        }}
-                        className="table-row border-b"
+                      <Accordion
+                        className="justify-between sales-table-row"
+                        onChange={handleChangeInvoiceList(
+                          `panel${data.id + index}`
+                        )}
                       >
-                        <td className="hidden md:table-cell md:px-6 py-4 px-2  text-gray70 whitespace-nowrap ">
-                          {index + 1}
-                        </td>
-                        <td className="hidden md:table-cell px-2 md:px-6 py-4  text-gray70 whitespace-nowrap ">
-                          <span>{data?.receiptCode}</span>
-                        </td>
-                        <td className="px-6 py-4  text-gray70 whitespace-nowrap ">
-                          <span>{data?.bill?.billCycle?.productName}</span>
-                        </td>
-                        <td className="px-2 md:px-6 py-4  text-gray70 whitespace-nowrap ">
-                          <span>{data?.bill?.quantity?.value}</span>
-                          <span>{data?.bill?.quantity?.unit}</span>
-                        </td>
-                        <td className=" space-x-2 px-2 py-4 md:px-6 md:table-cell hidden text-gray70 whitespace-nowrap ">
-                          <span>{data?.bill?.billCycle?.requestTime}</span>
-                          <span>{data?.bill?.billCycle?.requestDate}</span>
-                        </td>
-                        <td className="px-6 py-4  text-gray70 whitespace-nowrap ">
-                          <span>
-                            {data?.bill?.billCycle?.subOrganizationName}
-                          </span>
-                        </td>
-                        <td className="px-6 py-4  text-gray70 whitespace-nowrap ">
-                          <span>
-                            {data.status === "DONE" ? (
-                              <span className="text-[0.8rem] bg-greenBg text-greenText py-1 px-2 rounded-xl">
-                                تایید شده
-                              </span>
-                            ) : data.status === "IN_PROGRESS" ? (
-                              <span className="text-[0.8rem] text-gray70 bg-[#EBEBEB]  py-1 px-2 rounded-xl">
-                                در انتظار تایید
-                              </span>
-                            ) : data.status === "FAIL" ? (
-                              <span className=" text-[0.8rem] bg-[#ffe9d4] text-[#e95a18] py-1 px-2 rounded-xl">
-                                رد شده
-                              </span>
-                            ) : null}
-                          </span>
-                        </td>
-                        <td
-                          scope="row"
-                          className="hidden md:flex gap-2 px-6 py-4 justify-center text-gray70 whitespace-nowrap "
+                        <AccordionSummary
+                          aria-controls="panelbh-content"
+                          id="panelbh-header"
                         >
-                          <button
+                          <div
                             onClick={() => {
-                              handleOpenMoreInfo(data);
+                              handleOpenMoreInfoRow(data);
                             }}
-                            className="border border-1 border-solid border-gray70 rounded p-[0.4rem] hover:bg-neutral-100"
+                            className=" w-full flex justify-between items-center "
                           >
-                            <svg
-                              xmlns="http://www.w3.org/2000/svg"
-                              width="18"
-                              height="18"
-                              viewBox="0 0 18 18"
-                              fill="none"
+                            <td className="hidden md:table-cell px-2 md:px-6 py-4  text-gray70 whitespace-nowrap ">
+                              <span>{index + 1}</span>
+                            </td>
+                            <td className="hidden md:table-cell px-2 md:px-6 py-4  items-center gap-2 text-gray70 whitespace-nowrap ">
+                              <span className="pl-2  text-[#4E4E4E]">
+                                شماره فاکتور :
+                              </span>
+                              <span>{data?.receiptCode}</span>
+                            </td>
+                            <td className="px-6 py-4  text-gray70 whitespace-nowrap ">
+                              <span className="pl-2  text-[#4E4E4E]">
+                                مسئول خرید :
+                              </span>
+                              <span>{data?.buyerName}</span>
+                            </td>
+                            <td className="px-2 md:px-6 py-4 flex items-center gap-2 text-gray70 whitespace-nowrap ">
+                              <span className="pl-2  text-[#4E4E4E]">
+                                {" "}
+                                وضعیت :
+                              </span>
+                              <span>
+                                {data?.status === "IN_PROGRESS" ? (
+                                  <div>
+                                    <span className="text-[0.8rem] bg-[#EBEBEB] text-gray70 py-1 px-2 rounded-xl">
+                                      در انتظار تایید
+                                    </span>
+                                  </div>
+                                ) : data?.status === "FAIL" ? (
+                                  <div>
+                                    <span className="text-[0.8rem] bg-orangeBg text-orangeText py-1 px-2 rounded-xl">
+                                      رد شده
+                                    </span>
+                                  </div>
+                                ) : data?.status === "DONE" ? (
+                                  <span className="text-[0.8rem] bg-greenBg text-greenText py-1 px-2 rounded-xl">
+                                    تایید شده
+                                  </span>
+                                ) : null}
+                              </span>
+                            </td>
+                            <td className=" space-x-2 px-2 py-4 md:px-6  text-gray70 whitespace-nowrap ">
+                              <span className="pl-2  text-[#4E4E4E]">
+                                تاریخ خرید :
+                              </span>
+                              <span>{data?.purchaseDate}</span>
+                              <span>{data?.purchaseTime}</span>
+                            </td>
+
+                            <td className="px-6 py-4 md:table-cell hidden text-gray70 whitespace-nowrap ">
+                              <span className="pl-2  text-[#4E4E4E]">
+                                دپارتمان :
+                              </span>
+                              <span>{data?.subOrganizationName}</span>
+                            </td>
+
+                            <td
+                              scope="row"
+                              className="hidden md:flex gap-2 px-6 py-4 justify-center text-gray70 whitespace-nowrap "
                             >
-                              <path
-                                d="M9 4.56442V4.55554"
-                                stroke="#797979"
-                                stroke-linecap="round"
-                                stroke-linejoin="round"
-                              />
-                              <path
-                                d="M9 13.4445V7.22223"
-                                stroke="#797979"
-                                stroke-linecap="round"
-                                stroke-linejoin="round"
-                              />
-                              <path
-                                d="M9 17C13.4183 17 17 13.4183 17 9C17 4.58172 13.4183 1 9 1C4.58172 1 1 4.58172 1 9C1 13.4183 4.58172 17 9 17Z"
-                                stroke="#797979"
-                                stroke-linecap="round"
-                                stroke-linejoin="round"
-                              />
-                            </svg>
-                          </button>
-                        </td>
-                      </tr>
+                              <button
+                                onClick={() => {
+                                  handleOpenMoreInfo(data);
+                                }}
+                                className="border border-1 border-solid border-gray70 rounded p-[0.4rem] hover:bg-neutral-100"
+                              >
+                                <svg
+                                  xmlns="http://www.w3.org/2000/svg"
+                                  width="18"
+                                  height="18"
+                                  viewBox="0 0 18 18"
+                                  fill="none"
+                                >
+                                  <path
+                                    d="M9 4.56442V4.55554"
+                                    stroke="#797979"
+                                    stroke-linecap="round"
+                                    stroke-linejoin="round"
+                                  />
+                                  <path
+                                    d="M9 13.4445V7.22223"
+                                    stroke="#797979"
+                                    stroke-linecap="round"
+                                    stroke-linejoin="round"
+                                  />
+                                  <path
+                                    d="M9 17C13.4183 17 17 13.4183 17 9C17 4.58172 13.4183 1 9 1C4.58172 1 1 4.58172 1 9C1 13.4183 4.58172 17 9 17Z"
+                                    stroke="#797979"
+                                    stroke-linecap="round"
+                                    stroke-linejoin="round"
+                                  />
+                                </svg>
+                              </button>
+
+                              <button
+                                onClick={() => {
+                                  handleChangeInvoiceList(
+                                    `panel${data.id + index}`
+                                  );
+                                }}
+                                className="border border-1 border-solid border-[#797979] rounded p-[0.4rem] hover:bg-red-100"
+                              >
+                                <svg
+                                  className={
+                                    expanded === `panel${data.id + index}`
+                                      ? "rotate-180 transition-all duration-300"
+                                      : " transition-all duration-300"
+                                  }
+                                  xmlns="http://www.w3.org/2000/svg"
+                                  width="16"
+                                  height="16"
+                                  viewBox="0 0 16 16"
+                                  fill="none"
+                                >
+                                  <path
+                                    d="M4 6L8 10L12 6"
+                                    stroke="#797979"
+                                    stroke-linecap="round"
+                                    stroke-linejoin="round"
+                                  />
+                                </svg>
+                              </button>
+                            </td>
+                          </div>
+                        </AccordionSummary>
+                        <AccordionDetails className="">
+                          <div className=" px-32 w-full">
+                            <div className="overflow-x-auto  border-r border-dotted border-black">
+                              <table className=" w-full overflow-scroll  border-collapse border-spacing-0 text-sm text-center text-gray70  ">
+                                <tbody className="">
+                                  {data?.paymentItems?.map(
+                                    (item, itemIndex) => (
+                                      <div className="flex justify-between my-1 items-center pr-1">
+                                        <Typography
+                                          sx={{
+                                            fontFamily:
+                                              "__fonts_2f4189,__fonts_Fallback_2f4189",
+                                          }}
+                                          className="flex gap-2 items-center w-1/5"
+                                        >
+                                          <span className="text-[0.8rem]">
+                                            {itemIndex + 1}
+                                          </span>
+                                          <span className="text-[0.8rem] text-[#4E4E4E] pr-2 ">
+                                            نام محصول :
+                                          </span>
+                                          <span className=" text-[0.8rem]">
+                                            {item?.bill?.billCycle?.productName}
+                                          </span>
+                                        </Typography>
+                                        <Typography
+                                          sx={{
+                                            fontFamily:
+                                              "__fonts_2f4189,__fonts_Fallback_2f4189",
+                                          }}
+                                          className="w-1/5 flex gap-2 items-center"
+                                        >
+                                          <span className="text-[0.8rem] text-[#4E4E4E]">
+                                            مقدار:
+                                          </span>
+                                          <span className="text-[0.8rem]">
+                                            {item?.bill?.quantity?.value}
+                                            {item?.bill?.quantity?.unit}
+                                          </span>
+                                        </Typography>
+                                        <Typography
+                                          sx={{
+                                            fontFamily:
+                                              "__fonts_2f4189,__fonts_Fallback_2f4189",
+                                          }}
+                                          className="w-1/2 flex gap-2 items-center"
+                                        >
+                                          <span className="text-[0.8rem] text-[#4E4E4E]">
+                                            روش پرداخت:
+                                          </span>
+                                          <span className="text-[0.8rem]">
+                                            {item?.paymentMethod ===
+                                            "PARDAKHT_NAGHDI"
+                                              ? "پرداخت نقدی در محل تحویل"
+                                              : item?.paymentMethod ===
+                                                "PARDAKHT_BANKI"
+                                              ? "پرداخت با کارت بانکی در محل تحویل"
+                                              : item?.paymentMethod ===
+                                                "PARDAKHT_INTERNETI"
+                                              ? "پرداخت از طریق درگاه اینترنتی"
+                                              : item?.paymentMethod ===
+                                                "CHEK_MODAT_DAR"
+                                              ? "چک مدت دار"
+                                              : item?.paymentMethod === "CHEK"
+                                              ? "چک"
+                                              : item?.paymentMethod ===
+                                                "AGHSATI"
+                                              ? "اقساطی"
+                                              : item?.paymentMethod ===
+                                                "ETEBARI"
+                                              ? "اعتباری"
+                                              : item?.paymentMethod === "SAYER"
+                                              ? "سایر"
+                                              : null}
+                                          </span>
+                                        </Typography>
+                                        <div className="hidden md:flex gap-2 px-6  justify-center text-gray70 whitespace-nowrap ">
+                                          <button
+                                            onClick={() => {
+                                              handleOpenMoreInfoItem(item);
+                                            }}
+                                            className="border border-1 border-solid border-gray70 rounded p-[0.4rem] hover:bg-neutral-100"
+                                          >
+                                            <svg
+                                              xmlns="http://www.w3.org/2000/svg"
+                                              width="18"
+                                              height="18"
+                                              viewBox="0 0 18 18"
+                                              fill="none"
+                                            >
+                                              <path
+                                                d="M9 4.56442V4.55554"
+                                                stroke="#797979"
+                                                stroke-linecap="round"
+                                                stroke-linejoin="round"
+                                              />
+                                              <path
+                                                d="M9 13.4445V7.22223"
+                                                stroke="#797979"
+                                                stroke-linecap="round"
+                                                stroke-linejoin="round"
+                                              />
+                                              <path
+                                                d="M9 17C13.4183 17 17 13.4183 17 9C17 4.58172 13.4183 1 9 1C4.58172 1 1 4.58172 1 9C1 13.4183 4.58172 17 9 17Z"
+                                                stroke="#797979"
+                                                stroke-linecap="round"
+                                                stroke-linejoin="round"
+                                              />
+                                            </svg>
+                                          </button>
+                                        </div>
+                                      </div>
+                                    )
+                                  )}
+                                </tbody>
+                              </table>
+                            </div>
+                          </div>
+                        </AccordionDetails>
+                      </Accordion>
                     ))}
               </tbody>
             </table>
@@ -450,9 +865,16 @@ export default function page() {
         handleCloseFilter={handleCloseFilter}
       />
       <MoreInfoDialog
+        // handleOpenDelete={handleOpenDelete}
+        // handleOpenEditInfo={handleOpenEditInfo}
         moreInfoTarget={moreInfoTarget}
         openMoreInfo={openMoreInfo}
         handleCloseMoreInfo={handleCloseMoreInfo}
+      />
+      <MoreInfoItemDialog
+        moreInfoItemTarget={moreInfoItemTarget}
+        openMoreInfoItem={openMoreInfoItem}
+        handleCloseMoreInfoItem={handleCloseMoreInfoItem}
       />
     </div>
   );

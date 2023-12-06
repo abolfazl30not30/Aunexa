@@ -21,11 +21,12 @@ import { useUploadFileCloudMutation } from "@/redux/features/file/FileSlice";
 import {
     useSavePendingPurchaseRequestListMutation
 } from "@/redux/features/purchase/pending-purchase-request-list/PendingPurchaseRequestListSlice";
+import { useUploadFileMinioMutation } from "@/redux/features/file/FileSlice";
 export default function RegisterFactorDialog(props) {
   
     const [organization,setOrganization] = useState(null)
     const [uploadedImage,setUploadedImage] = useState("")
-    const [uploadFile, { isLoading:isLoadingUpload ,error:errorUpload}] = useUploadFileCloudMutation()
+    const [uploadFile, { isLoading:isLoadingUpload ,error:errorUpload}] = useUploadFileMinioMutation()
 
     const handleUploadImage = async (event) =>{
         let formData = new FormData();
