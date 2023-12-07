@@ -575,8 +575,6 @@ export default function page() {
                         >
                           <Skeleton variant="rounded" width={23} height={23} />
                           <Skeleton variant="rounded" width={23} height={23} />
-                          <Skeleton variant="rounded" width={23} height={23} />
-                          <Skeleton variant="rounded" width={23} height={23} />
                         </td>
                       </tr>
                     ))

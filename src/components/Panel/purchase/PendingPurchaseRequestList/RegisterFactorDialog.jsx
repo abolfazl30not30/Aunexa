@@ -33,7 +33,7 @@ export default function RegisterFactorDialog(props) {
         formData.append('file', event.target.files[0]);
         const res = await uploadFile(formData)
         if(res.data){
-            setUploadedImage(res.data?.fileUrl)
+            setUploadedImage(res.data?.name)
         }
     }
     const handleDeleteUpload = () =>{

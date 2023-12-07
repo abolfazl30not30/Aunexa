@@ -1,12 +1,20 @@
 'use client'
-import React from "react";
+import React, { useState ,useEffect} from "react";
 import {
     DialogContent,
     DialogContentText,
 } from "@mui/material";
 import Dialog from "@mui/material/Dialog";
+import { useLazyDownloadFileMinioQuery } from "@/redux/features/file/FileSlice";
+import Link from "next/link";
 
 export default function MoreInfoDialog(props) {
+    const [name,setName]=useState("")
+    const handleImageName=(e)=>{
+        setName(props.moreInfoTarget?.receiptFile)
+        getDownload()
+     }
+     const [getDownload,{ data : download  = [] , isLoading : isdownloadLoading, isError: downloadIsError }] = useLazyDownloadFileMinioQuery({name})
     return(
         <>
             <Dialog
@@ -19,7 +27,7 @@ export default function MoreInfoDialog(props) {
                     style: {
                         fontFamily: "__fonts_2f4189,__fonts_Fallback_2f4189",
                     },
-                }}>
+                }}>                
                 <DialogContent>
                     <DialogContentText style={{ fontFamily: "__fonts_2f4189,__fonts_Fallback_2f4189" }}>
                         <div className="flex justify-end">
@@ -85,6 +93,14 @@ export default function MoreInfoDialog(props) {
                                         <div className="p-2">
                                             <span className="text-[#29262A] text-[0.9rem]">{props.moreInfoTarget?.buyerName}</span>
                                         </div>
+                                    </div>
+                                </div>
+                                <div className="flex flex-col mt-2">
+                                    
+                                    <div className="border border-[#D9D9D9]  flex justify-center px-4">
+                                        <button onClick={(e)=>{handleImageName(e)}}  className="p-2">
+                                            <span   className="text-[#29262A] text-[0.9rem]">دانلود فاکتور </span>
+                                        </button>
                                     </div>
                                 </div>
                                 
