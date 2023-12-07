@@ -50,6 +50,7 @@ export default function redirect() {
         "subOrganizationName",
         tokenContent.subOrganizationName
       );
+      window.sessionStorage.setItem("individualId", tokenContent.individualId);
       window.sessionStorage.setItem(
         "organizationId",
         tokenContent.organizationId
