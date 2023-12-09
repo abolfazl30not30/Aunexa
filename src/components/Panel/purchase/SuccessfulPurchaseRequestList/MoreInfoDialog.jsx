@@ -10,11 +10,20 @@ import Link from "next/link";
 
 export default function MoreInfoDialog(props) {
     const [name,setName]=useState("")
-    const handleImageName=(e)=>{
-        setName(props.moreInfoTarget?.receiptFile)
-        getDownload()
+
+    const handleImageName= async (e)=>{
+        const res = await getDownload(props.moreInfoTarget?.receiptFile)
+        console.log(res.data.fileUrl)
+        const link = document.createElement('a');
+        link.download = "file";
+        link.href = res.data.fileUrl;
+        link.click();
+
+
      }
-     const [getDownload,{ data : download  = [] , isLoading : isdownloadLoading, isError: downloadIsError }] = useLazyDownloadFileMinioQuery({name})
+
+     const [getDownload,{ data : downLoadURL  = [] , isLoading : isDownloadLoading, isError: downloadIsError }] = useLazyDownloadFileMinioQuery(name)
+
     return(
         <>
             <Dialog

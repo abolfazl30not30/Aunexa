@@ -3,11 +3,12 @@ import { apiSlice } from "../../api/apiSlice";
 export const FileSlice = apiSlice.injectEndpoints({
   endpoints: (builder) => ({
     downloadFileMinio: builder.query({
-      query: ({ name }) => ({
+      query: ( name ) => ({
         url: `file/download/${name}`,
       }),
       providesTags: ["file"],
     }),
+
     uploadFileCloud: builder.mutation({
       query: (body) => ({
         url: "file/ftp-upload",
