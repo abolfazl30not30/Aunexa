@@ -78,7 +78,7 @@ export default function MoreInfoDialog(props) {
                                             <span className="text-[#29262A] text-[0.9rem]">
                                                 {props.moreInfoTarget.status === "IN_USE" ? (<span className="text-[0.8rem] bg-[#D5EAFF] text-[#2492FF] py-1 px-2 rounded-xl">در حال استفاده</span>) : (
                                                     props.moreInfoTarget.status === "AVAILABLE" ? (<span className="text-[0.8rem] bg-greenBg text-greenText py-1 px-2 rounded-xl">دردسترس</span>) : (
-                                                        <span className="text-[0.8rem] bg-orangeBg text-orangeText py-1 px-2 rounded-xl">مشکل دار</span>
+                                                        <span className="text-[0.8rem] bg-orangeBg text-orangeText py-1 px-2 rounded-xl">خراب</span>
                                                     )
                                                 )}
                                             </span>
@@ -167,7 +167,7 @@ export default function MoreInfoDialog(props) {
                                     <span className="text-[#29262A] text-[0.8rem]">
                                         {props.moreInfoTarget.status === "IN_USE" ? (<span className="text-[0.8rem] bg-[#D5EAFF] text-[#2492FF] py-1 px-2 rounded-xl">در حال استفاده</span>) : (
                                             props.moreInfoTarget.status === "AVAILABLE" ? (<span className="text-[0.8rem] bg-greenBg text-greenText py-1 px-2 rounded-xl">دردسترس</span>) : (
-                                                <span className="text-[0.8rem] bg-orangeBg text-orangeText py-1 px-2 rounded-xl">مشکل دار</span>
+                                                <span className="text-[0.8rem] bg-orangeBg text-orangeText py-1 px-2 rounded-xl">خراب</span>
                                             )
                                         )}
                                     </span>

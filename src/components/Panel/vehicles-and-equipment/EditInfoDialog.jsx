@@ -500,25 +500,28 @@ export default function EditInfoDialog(props) {
                                             />}
                                     />
                                 </div>
-                                <FormControl fullWidth error={formik.touched.status && Boolean(formik.errors.status)}>
-                                    <InputLabel id="demo-simple-select-label" sx={{fontFamily: "__fonts_2f4189,__fonts_Fallback_2f4189", fontSize: "0.8rem",color:"#9F9F9F"}}>وضعیت</InputLabel>
-                                    <Select
-                                        labelId="demo-simple-select-label"
-                                        id="demo-simple-select"
-                                        defaultValue={formik.values.status}
-                                        value={formik.values.status}
-                                        name="status"
-                                        input={<OutlinedInput sx={{fontFamily: "__fonts_2f4189,__fonts_Fallback_2f4189", fontSize: "0.8rem"}} label="وضعیت" />}
-                                        sx={{fontFamily: "__fonts_2f4189,__fonts_Fallback_2f4189", fontSize: "0.8rem"}}
+                                {
+                                    props.editInfoTarget.status !== "DESTROYED" && (
+                                        <FormControl fullWidth error={formik.touched.status && Boolean(formik.errors.status)}>
+                                            <InputLabel id="demo-simple-select-label" sx={{fontFamily: "__fonts_2f4189,__fonts_Fallback_2f4189", fontSize: "0.8rem",color:"#9F9F9F"}}>وضعیت</InputLabel>
+                                            <Select
+                                                labelId="demo-simple-select-label"
+                                                id="demo-simple-select"
+                                                defaultValue={formik.values.status}
+                                                value={formik.values.status}
+                                                name="status"
+                                                input={<OutlinedInput sx={{fontFamily: "__fonts_2f4189,__fonts_Fallback_2f4189", fontSize: "0.8rem"}} label="وضعیت" />}
+                                                sx={{fontFamily: "__fonts_2f4189,__fonts_Fallback_2f4189", fontSize: "0.8rem"}}
 
-                                        onChange={formik.handleChange}>
+                                                onChange={formik.handleChange}>
 
-                                        <MenuItem value="AVAILABLE" sx={{fontFamily: "__fonts_2f4189,__fonts_Fallback_2f4189", fontSize: "0.8rem"}}>در دسترس</MenuItem>
-                                        <MenuItem value="IN_USE" sx={{fontFamily: "__fonts_2f4189,__fonts_Fallback_2f4189", fontSize: "0.8rem"}}>درحال استفاده</MenuItem>
-                                        <MenuItem value="DESTROYED" sx={{fontFamily: "__fonts_2f4189,__fonts_Fallback_2f4189", fontSize: "0.8rem"}}>مشکل دار</MenuItem>
-                                    </Select>
-                                    <FormHelperText>{formik.touched.status && formik.errors.status}</FormHelperText>
-                                </FormControl>
+                                                <MenuItem value="AVAILABLE" sx={{fontFamily: "__fonts_2f4189,__fonts_Fallback_2f4189", fontSize: "0.8rem"}}>در دسترس</MenuItem>
+                                                <MenuItem value="IN_USE" sx={{fontFamily: "__fonts_2f4189,__fonts_Fallback_2f4189", fontSize: "0.8rem"}}>درحال استفاده</MenuItem>
+                                            </Select>
+                                            <FormHelperText>{formik.touched.status && formik.errors.status}</FormHelperText>
+                                        </FormControl>
+                                    )
+                                }
                                 <div>
                                     <DatePicker
                                         calendarPosition={`bottom`}

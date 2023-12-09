@@ -16,7 +16,7 @@ const authSlice = createSlice({
         logOut: (state, action) => {
             state.accessToken = ""
             window.sessionStorage.clear()
-            window.location.href = "/"
+            window.location.href = "https://auth.vipsoftware1.com/logout"
         }
     },
 })

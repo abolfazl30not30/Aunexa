@@ -298,7 +298,7 @@ export default function AddDataDialog(props) {
                                         <TextField
                                             fullWidth
                                             placeholder="مقدار (اجباری)"
-                                            type="text"
+                                            type="number"
                                             name="value"
                                             value={formik.values.value}
                                             onChange={formik.handleChange}
@@ -378,7 +378,6 @@ export default function AddDataDialog(props) {
                                                 ["جمعه", "Fri"],
                                             ]
                                         }
-
                                         calendar={persian}
                                         locale={persian_fa}>
                                         <button className="px-2 pb-4" onClick={(e) => {

@@ -474,7 +474,7 @@ function vehiclesAndEquipment() {
                               </span>
                             ) : (
                               <span className="text-[0.8rem] bg-orangeBg text-orangeText py-1 px-2 rounded-xl">
-                                مشکل دار
+                                خراب
                               </span>
                             )}
                           </td>

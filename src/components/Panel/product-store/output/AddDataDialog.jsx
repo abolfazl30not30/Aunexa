@@ -299,7 +299,7 @@ export default function AddDataDialog(props) {
                                         <TextField
                                             fullWidth
                                             placeholder="مقدار (اجباری)"
-                                            type="text"
+                                            type="number"
                                             name="value"
                                             value={formik.values.value}
                                             onChange={formik.handleChange}
