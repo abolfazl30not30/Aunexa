@@ -117,10 +117,10 @@ export default function EditRoleInfoDialog(props) {
                 fullWidth={true}
                 open={props.openEditRoleInfo}
                 keepMounted
-                onClose={() => {
-                    handleReset()
-                    props.handleCloseEditRoleInfo();
-                }}
+                // onClose={() => {
+                //     handleReset()
+                //     props.handleCloseEditRoleInfo();
+                // }}
                 aria-describedby="alert-dialog-slide-description"
                 PaperProps={{
                     style: {

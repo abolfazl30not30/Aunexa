@@ -51,7 +51,7 @@ export default function EditConfirmInvoiceInfoDialog(props) {
                 fullWidth={true}
                 open={props.openEditConfirmInvoiceInfo}
                 keepMounted
-                onClose={()=>{props.handleCloseEditConfirmInvoiceInfo();handleReset()}}
+                // onClose={()=>{props.handleCloseEditConfirmInvoiceInfo();handleReset()}}
                 aria-describedby="alert-dialog-slide-description"
                 PaperProps={{
                     style: {

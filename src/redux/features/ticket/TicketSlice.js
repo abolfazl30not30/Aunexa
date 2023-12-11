@@ -2,11 +2,19 @@ import { apiSlice } from "@/redux/api/apiSlice";
 
 export const ticketSlice = apiSlice.injectEndpoints({
   endpoints: (builder) => ({
-    getAllTickets: builder.query({
+    getAllSourceTickets: builder.query({
       query: ({ page, openTicket }) => ({
-        url: `party/ticket/filter?isClosed=${openTicket}&page=${
-          page - 1
-        }&size=10`,
+        url: `party/ticket/filter?isClosed=${openTicket}&sourceDepartmentId=${window.sessionStorage.getItem(
+          "subOrganizationId"
+        )}&page=${page - 1}&size=10`,
+      }),
+      providesTags: ["ticket"],
+    }),
+    getAllTargetTickets: builder.query({
+      query: ({ page, openTicket }) => ({
+        url: `party/ticket/filter?isClosed=${openTicket}&targetDepartmentId=${window.sessionStorage.getItem(
+          "subOrganizationId"
+        )}&page=${page - 1}&size=10`,
       }),
       providesTags: ["ticket"],
     }),
@@ -31,7 +39,8 @@ export const ticketSlice = apiSlice.injectEndpoints({
 });
 
 export const {
-  useGetAllTicketsQuery,
+  useGetAllSourceTicketsQuery,
+  useGetAllTargetTicketsQuery,
   useSaveTicketMutation,
   useUpdateTicketMutation,
 } = ticketSlice;

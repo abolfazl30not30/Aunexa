@@ -21,7 +21,7 @@ export default function DeleteDialog(props) {
                 fullWidth={true}
                 open={props.openDelete}
                 keepMounted
-                onClose={props.handleCloseDelete}
+                // onClose={props.handleCloseDelete}
                 aria-describedby="alert-dialog-slide-description"
                 PaperProps={{
                     style: {

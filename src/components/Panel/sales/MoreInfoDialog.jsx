@@ -1,19 +1,34 @@
 'use client'
 import React from "react";
+import { useState } from "react";
 import {
     DialogContent,
     DialogContentText,
 } from "@mui/material";
 import Dialog from "@mui/material/Dialog";
-
+import { useLazyDownloadFileMinioQuery } from "@/redux/features/file/FileSlice";
 export default function MoreInfoDialog(props) {
+    const [name,setName]=useState("")
+
+    const handleImageName= async (e)=>{
+        const res = await getDownload(props.moreInfoTarget?.receiptFile)
+        console.log(res.data.fileUrl)
+        const link = document.createElement('a');
+        link.download = "file";
+        link.href = res.data.fileUrl;
+        link.click();
+
+
+     }
+
+     const [getDownload,{ data : downLoadURL  = [] , isLoading : isDownloadLoading, isError: downloadIsError }] = useLazyDownloadFileMinioQuery(name)
     return(
         <>
             <Dialog
                 fullWidth={true}
                 open={props.openMoreInfo}
                 keepMounted
-                onClose={props.handleCloseMoreInfo}
+                // onClose={props.handleCloseMoreInfo}
                 aria-describedby="alert-dialog-slide-description"
                 PaperProps={{
                     style: {
@@ -88,16 +103,25 @@ export default function MoreInfoDialog(props) {
                                     </div>
                                 </div>
                                 
-                                {props.moreInfoTarget?.description?(<div className="flex flex-col">
+                                {props.moreInfoTarget?.failureReason?.description?(<div className="flex flex-col">
                                     <div className="mb-2">
                                         <span className="text-[0.9rem] text-gray70 "> توضیحات </span>
                                     </div>
                                     <div className="border border-[#D9D9D9]  flex justify-start px-4">
                                         <div className="p-2">
-                                            <span className="text-[#29262A] text-[0.9rem]">{props.moreInfoTarget?.description}</span>
+                                            <span className="text-[#29262A] text-[0.9rem]">{props.moreInfoTarget?.failureReason?.description}</span>
                                         </div>
                                     </div>
                                 </div>):null}
+                                {props.moreInfoTarget?.receiptFile && <div className="mb-2">
+                                        
+                                    
+                                        <div className="border border-[#D9D9D9]  flex justify-center px-4">
+                                            <button onClick={(e)=>{handleImageName(e)}}  className="p-2">
+                                                <span className="text-[#29262A] text-[0.9rem]">دانلود فاکتور</span>
+                                            </button>
+                                        </div>
+                                    </div>}
                                
                             </div>
                         </div>
@@ -139,14 +163,20 @@ export default function MoreInfoDialog(props) {
                                     </span>
                                 </div>
                                
-                                {props.moreInfoTarget?.description?(<div>
+                                {props.moreInfoTarget?.failureReason?.description?(<div>
                                     <span className="ml-1 text-gray9F text-[0.8rem]">
                                         توضیحات :
                                     </span>
                                     <span className="text-[#29262A] text-[0.8rem]">
-                                        {props.moreInfoTarget?.description}
+                                        {props.moreInfoTarget?.failureReason?.description}
                                     </span>
                                 </div>):null}
+                                {props.moreInfoTarget?.receiptFile &&<div>
+                                    <button  onClick={(e)=>{handleImageName(e)}}  className="ml-1 text-gray9F text-[0.8rem]">
+                                         دانلود فاکتور
+                                    </button>
+                                   
+                                </div>}
                             </div>
                         </div>
                         <div className="md:hidden flex  justify-center mt-5 gap-3">

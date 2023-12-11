@@ -53,7 +53,7 @@ export default function FixFailureDialog(props) {
                 fullWidth={true}
                 open={props.openFix}
                 keepMounted
-                onClose={props.handleCloseFix}
+                // onClose={props.handleCloseFix}
                 aria-describedby="alert-dialog-slide-description"
                 PaperProps={{
                     style: {

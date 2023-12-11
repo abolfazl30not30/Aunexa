@@ -115,11 +115,11 @@ const validate = (values, props) => {
                 fullWidth={true}
                 open={props.openChangePassword}
                 keepMounted
-                onClose={() => {
-                    setClickForSubmit(false)
-                    props.handleCloseChangePassword();
-                    handleReset()
-                }}
+                // onClose={() => {
+                //     setClickForSubmit(false)
+                //     props.handleCloseChangePassword();
+                //     handleReset()
+                // }}
                 aria-describedby="alert-dialog-slide-description"
                 PaperProps={{
                     style: {

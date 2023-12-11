@@ -150,7 +150,7 @@ export default function FilterDialog(props) {
             <Dialog
                 fullWidth={true}
                 open={props.openFilter}
-                onClose={()=>{props.handleCloseFilter();}}
+                // onClose={()=>{props.handleCloseFilter();}}
                 keepMounted
                 aria-describedby="alert-dialog-slide-description"
                 PaperProps={{

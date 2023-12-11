@@ -90,7 +90,7 @@ export default function AddProduct(props) {
         value: yup.string().required("لطفا مقدار محصول را وارد کنید"),
         unit: yup.string().required("لطفا واحد محصول را وارد کنید"),
     });
-
+    
 
     const formik = useFormik({
         initialValues: {
@@ -129,10 +129,10 @@ export default function AddProduct(props) {
                 fullWidth={true}
                 open={props.openAddProduct}
                 keepMounted
-                onClose={() => {
-                    props.handleCloseAddProduct();
-                    handleReset()
-                }}
+                // onClose={() => {
+                //     props.handleCloseAddProduct();
+                //     handleReset()
+                // }}
                 aria-describedby="alert-dialog-slide-description"
                 PaperProps={{
                     style: {fontFamily: "__fonts_2f4189,__fonts_Fallback_2f4189"}

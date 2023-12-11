@@ -12,7 +12,8 @@ import {
 } from "@mui/material";
 import AddTicketDialog from "@/components/Panel/ticket/AddTicketDialog";
 import Link from "next/link";
-import { useGetAllTicketsQuery } from "@/redux/features/ticket/TicketSlice";
+import { useGetAllSourceTicketsQuery } from "@/redux/features/ticket/TicketSlice";
+import { useGetAllTargetTicketsQuery } from "@/redux/features/ticket/TicketSlice";
 import { useSelector } from "react-redux";
 import Box from "@mui/material/Box";
 import { makeStyles } from "@material-ui/core/styles";
@@ -25,7 +26,9 @@ import CloseTicketDialog from "@/components/Panel/ticket/CloseTicketDialog";
 
 function Ticket() {
   let permission = useSelector((state) => state.access?.pages?.ticket);
-  const [page, setPage] = useState(1);
+  const [ticketMethod, setTicketMethod] = useState("source");
+  const [pageSource, setPageSource] = useState(1);
+  const [pageTarget, setPageTarget] = useState(1);
   const [openTicket, setOpenTicket] = useState(false);
   const [openAddTicket, setOpenAddTicket] = useState(false);
 
@@ -41,8 +44,11 @@ function Ticket() {
     setOpenAddTicket(false);
   };
 
-  const handlePagination = (event, value) => {
-    setPage(value);
+  const handleSourcePagination = (event, value) => {
+    setPageSource(value);
+  };
+  const handleTargetPagination = (event, value) => {
+    setPageTarget(value);
   };
 
   const [openEditTicketInfo, setOpenEditTicketInfo] = useState(false);
@@ -77,11 +83,19 @@ function Ticket() {
   };
 
   const {
-    data: ticketData = [],
-    isLoading: isDataLoading,
-    isError: isDataError,
-  } = useGetAllTicketsQuery(
-    { page, openTicket },
+    data: ticketSourceData = [],
+    isLoading: isDataSourceLoading,
+    isError: isDataSourceError,
+  } = useGetAllSourceTicketsQuery(
+    { page: pageSource, openTicket },
+    { refetchOnMountOrArgChange: true }
+  );
+  const {
+    data: ticketTargetData = [],
+    isLoading: isDataTargetLoading,
+    isError: isDataTargetError,
+  } = useGetAllTargetTicketsQuery(
+    { page: pageTarget, openTicket },
     { refetchOnMountOrArgChange: true }
   );
 
@@ -141,8 +155,6 @@ function Ticket() {
                 <TabContext value={ticketState}>
                   <Box
                     sx={{
-                      borderBottom: 1,
-                      borderColor: "divider",
                       fontFamily: "__fonts_2f4189,__fonts_Fallback_2f4189",
                     }}
                   >
@@ -169,6 +181,34 @@ function Ticket() {
                       />
                     </TabList>
                   </Box>
+                  <div className="flex justify-center gap-2 my-2">
+                    <div>
+                      <button
+                        className="flex bg-mainRed text-white items-center text- px-3 py-2 rounded-full md:rounded"
+                        onClick={() => {
+                          setTicketMethod("source");
+                        }}
+                      >
+                        <span className="hidden md:inline">
+                          {" "}
+                          تیکت های ارسالی
+                        </span>
+                      </button>
+                    </div>
+                    <div>
+                      <button
+                        className="flex bg-mainRed text-white items-center text- px-3 py-2 rounded-full md:rounded"
+                        onClick={() => {
+                          setTicketMethod("target");
+                        }}
+                      >
+                        <span className="hidden md:inline">
+                          {" "}
+                          تیکت های دریافتی
+                        </span>
+                      </button>
+                    </div>
+                  </div>
                   <table className=" w-full table-auto overflow-scroll border-collapse border-spacing-0 text-sm text-center text-gray70  ">
                     <thead className="text-[0.9rem] text-gray80  bg-[#F8F8F8] md:bg-[#F2EDED] ">
                       <tr>
@@ -199,7 +239,11 @@ function Ticket() {
                       </tr>
                     </thead>
                     <tbody className="table-body">
-                      {isDataLoading
+                      {(
+                        ticketMethod === "source"
+                          ? isDataSourceLoading
+                          : isDataTargetLoading
+                      )
                         ? [...Array(10)].map(() => (
                             <tr className="border-b">
                               <td className="hidden md:table-cell md:px-10 px-2  py-4  text-gray70 whitespace-nowrap ">
@@ -268,7 +312,10 @@ function Ticket() {
                               </td>
                             </tr>
                           ))
-                        : ticketData?.content?.map((data, index) =>
+                        : (ticketMethod === "source"
+                            ? ticketSourceData
+                            : ticketTargetData
+                          )?.content?.map((data, index) =>
                             (ticketState === "تیکت های باز" &&
                               data.status === "Initialize") ||
                             data.status === "inProgress" ||
@@ -421,9 +468,27 @@ function Ticket() {
             style={{ direction: "rtl" }}
           >
             <Pagination
-              page={page}
-              count={ticketData.totalPages}
-              onChange={handlePagination}
+              page={
+                ticketMethod === "source"
+                  ? pageSource
+                  : ticketMethod === "target"
+                  ? pageTarget
+                  : null
+              }
+              count={
+                ticketMethod === "source"
+                  ? ticketSourceData.totalPages
+                  : ticketMethod === "target"
+                  ? ticketTargetData.totalPages
+                  : null
+              }
+              onChange={
+                ticketMethod === "source"
+                  ? handleSourcePagination
+                  : ticketMethod === "target"
+                  ? handleTargetPagination
+                  : null
+              }
               shape="rounded"
             />
           </div>

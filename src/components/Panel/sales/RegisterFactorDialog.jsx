@@ -30,6 +30,7 @@ export default function RegisterFactorDialog(props) {
     const [openAddProduct,setOpenAddProduct] = useState(false)
     const handleOpenAddProduct = () => {
         setOpenAddProduct(true);
+        
     };
     const handleCloseAddProduct = () => {
         setOpenAddProduct(false);
@@ -56,7 +57,7 @@ export default function RegisterFactorDialog(props) {
     },[openUnitList])
 
     const [organization,setOrganization] = useState(null)
-    const [uploadedImage,setUploadedImage] = useState("")
+    const [uploadedImage,setUploadedImage] = useState(null)
     const [uploadFile, { isLoading:isLoadingUpload ,error:errorUpload}] = useUploadFileMinioMutation()
 
     const [invoiceItemInput,setInvoiceItemInput] = useState([])
@@ -66,11 +67,11 @@ export default function RegisterFactorDialog(props) {
         formData.append('file', event.target.files[0]);
         const res = await uploadFile(formData)
         if(res.data){
-            setUploadedImage(res.data?.fileUrl)
+            setUploadedImage(res.data?.name)
         }
     }
     const handleDeleteUpload = () =>{
-        setUploadedImage("")
+        setUploadedImage(null)
     }
 
     // const [paymentMethod,setPaymentMethod] = useState(null)
@@ -96,8 +97,18 @@ export default function RegisterFactorDialog(props) {
     const handleReset = () =>{
         formik.resetForm()
         setOrganization(null)
+        setUploadedImage(null)
     }
+    const validate = (values, props) => {
+        const errors = {};
+        
+        console.log(invoiceItemInput)
+        if (invoiceItemInput.length===0 ) {
+            errors.invoiceItems = "لطفا کالا را وارد کنید";
+        } 
 
+        return errors;
+    };
     const [submitData, { isLoading:isSubmitLoading ,error}] = useSaveSalesMutation()
     const schema = yup.object().shape({
         receiptCode:yup.string().required("لطفا شماره فاکتور را وارد نمایید "),
@@ -113,21 +124,24 @@ export default function RegisterFactorDialog(props) {
             customer:"",
             invoiceItems:[],
             receiptCode:"",
-            receiptFile:"",
+            receiptFile:null,
             description:""
         },
-
+       
         validationSchema: schema,
-
+        validate:validate,
         
 
         onSubmit: async (registerFactor,helpers) => {
             
-            let updateRegisterFactor = {...registerFactor,receiptFile:uploadedImage,invoiceItems:invoiceItemInput}
-            const userData = await submitData(updateRegisterFactor)
+            let updateRegisterFactor = {...registerFactor,receiptFile:uploadedImage, invoiceItems:invoiceItemInput}
+           
+                const userData = await submitData(updateRegisterFactor)
+            
+            setInvoiceItemInput([])
             handleReset()
             props.handleCloseRegisterFactor()
-            setInvoiceItemInput([])
+            
         },
     });
 
@@ -138,7 +152,7 @@ export default function RegisterFactorDialog(props) {
                 fullWidth={true}
                 open={props.openRegisterFactor}
                 keepMounted
-                onClose={()=>{props.handleCloseRegisterFactor();handleReset();setInvoiceItemInput([])}}
+                // onClose={()=>{props.handleCloseRegisterFactor();handleReset();setInvoiceItemInput([])}}
                 aria-describedby="alert-dialog-slide-description"
                 PaperProps={{
                     style: {fontFamily: "__fonts_2f4189,__fonts_Fallback_2f4189"}
@@ -177,7 +191,7 @@ export default function RegisterFactorDialog(props) {
                                         <span className="px-2 text-[0.8rem]">لیست محصولات</span>
                                     </div>
                                     
-                                    {invoiceItemInput.map((item)=>(
+                                    {invoiceItemInput?.map((item)=>(
                                         <div className="border border-gray50 px-4 py-3 gap-4 flex flex-col ">
 
                                             <div className="flex justify-between gap-4">
@@ -227,6 +241,14 @@ export default function RegisterFactorDialog(props) {
                                         </button>
                                     </div>
                                 </div>
+                                {invoiceItemInput.length===0 &&
+                                            Boolean(formik.errors.invoiceItems) && (
+                                                <span className="mx-3 text-[0.6rem] text-red-600 ">
+                                                    {formik.errors.invoiceItems}
+                                                </span>
+                                            )
+                                            }
+                                
                                 <div className="flex justify-between gap-2 items-center border-t pt-4 border-gray50">
                                     <div className="w-[45%]">
                                     <TextField
@@ -251,13 +273,14 @@ export default function RegisterFactorDialog(props) {
                                                 </div>
                                             </div>
                                         ) : (
-                                            uploadedImage !== '' ? (
+                                            uploadedImage !== null ? (
                                                 <div>
                                                     <div className="relative  rounded border border-dashed border-[#D9D9D9]">
                                                         <button onClick={handleDeleteUpload} className="shadow hover:bg-red-400 absolute z-10 top-0 right-0 rounded-full bg-mainRed p-1">
                                                             <svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" viewBox="0 0 24 24" fill="none"><path d="M18 6L6 18M6 6L18 18" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
                                                         </button>
                                                         <img className="object-cover w-full h-full" src={uploadedImage} alt="uploadedImage"/>
+                                                        
                                                     </div>
                                                 </div>
                                             ):(

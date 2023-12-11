@@ -142,7 +142,7 @@ export default function AddDataDialog(props) {
                 fullWidth={true}
                 open={props.openAddData}
                 keepMounted
-                onClose={()=>{props.handleCloseAddData();handleReset()}}
+                // onClose={()=>{props.handleCloseAddData();handleReset()}}
                 aria-describedby="alert-dialog-slide-description"
                 PaperProps={{
                     style: {

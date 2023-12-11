@@ -169,7 +169,7 @@ export default function EditItemInfoDialog(props) {
                 fullWidth={true}
                 open={props.openEditItemInfo}
                 keepMounted
-                onClose={()=>{props.handleCloseEditItemInfo();handleReset()}}
+                // onClose={()=>{props.handleCloseEditItemInfo();handleReset()}}
                 aria-describedby="alert-dialog-slide-description"
                 PaperProps={{
                     style: {

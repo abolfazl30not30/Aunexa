@@ -57,7 +57,7 @@ export default function AddSubOrganizationDialog(props) {
                 fullWidth={true}
                 open={props.openAddSubOrganization}
                 keepMounted
-                onClose={()=>{props.handleCloseAddSubOrganization();handleReset()}}
+                // onClose={()=>{props.handleCloseAddSubOrganization();handleReset()}}
                 aria-describedby="alert-dialog-slide-description"
                 PaperProps={{
                     style: {fontFamily: "__fonts_2f4189,__fonts_Fallback_2f4189"}

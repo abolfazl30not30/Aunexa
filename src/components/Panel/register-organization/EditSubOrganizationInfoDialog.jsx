@@ -96,7 +96,7 @@ export default function EditSubOrganizationInfoDialog(props) {
                 fullWidth={true}
                 open={props.openEditSubOrganizationInfo}
                 keepMounted
-                onClose={()=>{props.handleCloseEditSubOrganizationInfo();handleReset()}}
+                // onClose={()=>{props.handleCloseEditSubOrganizationInfo();handleReset()}}
                 aria-describedby="alert-dialog-slide-description"
                 PaperProps={{
                     style: {fontFamily: "__fonts_2f4189,__fonts_Fallback_2f4189"}

@@ -100,14 +100,14 @@ export default function EditInfoDialog(props) {
     //date input
     const [date,setDate] = useState("")
     const handleDateInput = (value) => {
-        if(value){
+        if(value!==null){
             setDate(value)
             let month = value?.month < 10 ? ('0' + value?.month) : value?.month;
             let day = value?.day < 10 ? ('0' + value?.day) : value?.day;
             let convertDate = value?.year + '/' + month + '/' + day;
             formik.setFieldValue("expirationDate", convertDate)
         }else {
-            formik.setFieldValue("expirationDate", "")
+            formik.setFieldValue("expirationDate", null)
         }
     }
 
@@ -144,6 +144,8 @@ export default function EditInfoDialog(props) {
             if (!/[0-9]{7}./.test(values.machineTag)) {
                 errors.machineTag = 'لطفا پلاک  وسیله نقلیه را کامل وارد کنید';
             }
+        }if(product?.isExpirable && !values.expirationDate){
+            errors.expirationDate="لطفا تاریخ انقضا را وارد نمایید"
         }
 
         return errors;
@@ -176,7 +178,7 @@ export default function EditInfoDialog(props) {
         driverName: yup.string().required("لطفا نام راننده را وارد کنید"),
         producer: yup.string().required("لطفا تامین کننده را وارد کنید"),
     });
-
+   const [isExpirable,setIsExpirable]=useState()
     const formik = useFormik({
         initialValues: {
             productId: "",
@@ -184,7 +186,6 @@ export default function EditInfoDialog(props) {
             value: "",
             unit: "",
             status:"UNKNOWN",
-            
             expirationDate: "",
             machineTag: "",
             machineCode: "",
@@ -245,7 +246,8 @@ export default function EditInfoDialog(props) {
         }
     }
     const handleSetExpirationDate = (date)=>{
-        if(date !== ""){
+        
+        if( date !==null && date !=="" ){
             const newDate = new DateObject({
                 date: date,
                 format: "YYYY/MM/DD",
@@ -253,12 +255,16 @@ export default function EditInfoDialog(props) {
                 locale: persian_fa
             })
             setDate(newDate)
+        }else{
+            setDate(null)
         }
+       
     }
 
     useEffect(()=>{
         getProductList()
         getUnitList()
+        
         formik.setValues({
             id:props.editInfoTarget?.id,
             productId: props.editInfoTarget?.productId,
@@ -286,7 +292,7 @@ export default function EditInfoDialog(props) {
                 fullWidth={true}
                 open={props.openEditInfo}
                 keepMounted
-                onClose={()=>{props.handleCloseEditInfo();handleReset()}}
+                // onClose={()=>{props.handleCloseEditInfo();handleReset()}}
                 aria-describedby="alert-dialog-slide-description"
                 PaperProps={{
                     style: {
@@ -332,6 +338,8 @@ export default function EditInfoDialog(props) {
                                             setProduct(newValue)
                                             formik.setFieldValue("productId", newValue?.id)
                                             formik.setFieldValue("productName", newValue?.persianName)
+                                            setIsExpirable(newValue?.isExpirable)
+                                            newValue?.isExpirable===false ? (handleDateInput(null)):null 
                                         }}
                                         renderInput={(params) =>
                                             <TextField
@@ -401,54 +409,63 @@ export default function EditInfoDialog(props) {
                                                 />}/>
                                     </div>
                                 </div>
+                                {product?.isExpirable && 
                                 <div>
-                                    <DatePicker
-                                        calendarPosition={`bottom`}
-                                        className="red"
-                                        digits={['0', '1', '2', '3', '4', '5', '6', '7', '8', '9']}
-                                        format={`YYYY/MM/DD`}
-                                        containerStyle={{
-                                            width: "100%"
-                                        }}
-                                        placeholder="تاریخ انقضا (اختیاری)"
-                                        inputClass={`border border-[#D9D9D9] placeholder-neutral-300 text-gray-900 text-[0.8rem] rounded focus:ring-[#3B82F67F] focus:border-[#3B82F67F] block w-full px-3 py-4`}
-                                        value={date}
-                                        onChange={(value) => {
-                                            handleDateInput(value)
-                                        }}
-                                        mapDays={({date}) => {
-                                            let props = {}
-                                            let isWeekend = [6].includes(date.weekDay.index)
+                                <DatePicker
+                                    calendarPosition={`bottom`}
+                                    className="red"
+                                    digits={['0', '1', '2', '3', '4', '5', '6', '7', '8', '9']}
+                                    format={`YYYY/MM/DD`}
+                                    containerStyle={{
+                                        width: "100%"
+                                    }}
+                                    placeholder="تاریخ انقضا (اجباری)"
+                                    inputClass={`border border-[#D9D9D9] placeholder-neutral-300 text-gray-900 text-[0.8rem] rounded focus:ring-[#3B82F67F] focus:border-[#3B82F67F] block w-full px-3 py-4`}
+                                    value={date}
+                                    onChange={(value) => {
+                                        handleDateInput(value)
+                                    }}
+                                    mapDays={({date}) => {
+                                        let props = {}
+                                        let isWeekend = [6].includes(date.weekDay.index)
 
-                                            if (isWeekend)
-                                                props.className = "highlight highlight-red";
+                                        if (isWeekend)
+                                            props.className = "highlight highlight-red";
 
-                                            return props
-                                        }}
+                                        return props
+                                    }}
 
-                                        weekDays={
-                                            [
-                                                ["شنبه", "Sat"],
-                                                ["یکشنبه", "Sun"],
-                                                ["دوشنبه", "Mon"],
-                                                ["سه شنبه", "Tue"],
-                                                ["چهارشنبه", "Wed"],
-                                                ["پنجشنبه", "Thu"],
-                                                ["جمعه", "Fri"],
-                                            ]
+                                    weekDays={
+                                        [
+                                            ["شنبه", "Sat"],
+                                            ["یکشنبه", "Sun"],
+                                            ["دوشنبه", "Mon"],
+                                            ["سه شنبه", "Tue"],
+                                            ["چهارشنبه", "Wed"],
+                                            ["پنجشنبه", "Thu"],
+                                            ["جمعه", "Fri"],
+                                        ]
+                                    }
+
+                                    calendar={persian}
+                                    locale={persian_fa}>
+                                    <button className="px-2 pb-4" onClick={(e) => {
+                                        e.preventDefault()
+                                        setDate("")
+                                        formik.setFieldValue("expirationDate", "")
+                                    }}>
+                                        ریست
+                                    </button>
+                                </DatePicker>
+                            </div>
+                            }
+                            { product?.isExpirable&&
+                                            Boolean(formik.errors.expirationDate) && (
+                                                <span className="mx-3 text-[0.6rem] text-red-600 ">
+                                                    {formik.errors.expirationDate}
+                                                </span>
+                                            )
                                         }
-
-                                        calendar={persian}
-                                        locale={persian_fa}>
-                                        <button className="px-2 pb-4" onClick={(e) => {
-                                            e.preventDefault()
-                                            setDate("")
-                                            formik.setFieldValue("expirationDate", "")
-                                        }}>
-                                            ریست
-                                        </button>
-                                    </DatePicker>
-                                </div>
                                 <div>
                                     <div className="flex flex-col md:flex-row">
                                         <div className="plate w-full md:w-[47%] flex items-center pl-4">

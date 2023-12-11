@@ -25,7 +25,7 @@ import { useUploadFileMinioMutation } from "@/redux/features/file/FileSlice";
 export default function RegisterFactorDialog(props) {
   
     const [organization,setOrganization] = useState(null)
-    const [uploadedImage,setUploadedImage] = useState("")
+    const [uploadedImage,setUploadedImage] = useState(null)
     const [uploadFile, { isLoading:isLoadingUpload ,error:errorUpload}] = useUploadFileMinioMutation()
 
     const handleUploadImage = async (event) =>{
@@ -37,7 +37,7 @@ export default function RegisterFactorDialog(props) {
         }
     }
     const handleDeleteUpload = () =>{
-        setUploadedImage("")
+        setUploadedImage(null)
     }
 
     // const [paymentMethod,setPaymentMethod] = useState(null)
@@ -88,7 +88,7 @@ export default function RegisterFactorDialog(props) {
             buyerName:"",
             paymentItems:[],
             receiptCode:"",
-            receiptFile:""
+            receiptFile:null
         },
 
         validationSchema: schema,
@@ -125,7 +125,7 @@ export default function RegisterFactorDialog(props) {
                 fullWidth={true}
                 open={props.openRegisterFactor}
                 keepMounted
-                onClose={()=>{props.handleCloseRegisterFactor();handleReset()}}
+                // onClose={()=>{props.handleCloseRegisterFactor();handleReset()}}
                 aria-describedby="alert-dialog-slide-description"
                 PaperProps={{
                     style: {fontFamily: "__fonts_2f4189,__fonts_Fallback_2f4189"}
@@ -306,7 +306,7 @@ export default function RegisterFactorDialog(props) {
                                                 </div>
                                             </div>
                                         ) : (
-                                            uploadedImage !== '' ? (
+                                            uploadedImage !== null ? (
                                                 <div>
                                                     <div className="relative  rounded border border-dashed border-[#D9D9D9]">
                                                         <button onClick={handleDeleteUpload} className="shadow hover:bg-red-400 absolute z-10 top-0 right-0 rounded-full bg-mainRed p-1">

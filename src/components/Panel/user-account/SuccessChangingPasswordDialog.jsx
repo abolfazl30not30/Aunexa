@@ -17,11 +17,11 @@ export default function SuccessChangingPasswordDialog(props) {
                 fullWidth={true}
                 open={props.openSuccessChangePassword}
                 keepMounted
-                onClose={() => {
+                // onClose={() => {
                     
-                    props.handleCloseSuccessChangePassword();
+                //     props.handleCloseSuccessChangePassword();
                     
-                }}
+                // }}
                 aria-describedby="alert-dialog-slide-description"
                 PaperProps={{
                     style: {

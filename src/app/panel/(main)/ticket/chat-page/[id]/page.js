@@ -67,7 +67,9 @@ export default function page({ params }) {
   let param = params.id;
   let endOfId = param.indexOf("%26%26status");
   let ticketId = param.slice(5, endOfId);
+
   let endOfStatus = param.indexOf("%26%26ticketNumber");
+  let status = param.slice(endOfId + 15, endOfStatus);
   const handleReset = () => {
     formik.resetForm();
   };
@@ -83,12 +85,13 @@ export default function page({ params }) {
     },
 
     onSubmit: async (chat, helpers) => {
-      let updateChat = { ...chat, ticketId: ticketId };
+      let updateChat = { ...chat, ticketId: ticketId, status: status };
       const userData = await submitData(updateChat);
       console.log(userData);
       handleReset();
     },
   });
+
   const {
     data: chatData = [],
     isLoading: isDataLoading,
@@ -146,19 +149,19 @@ export default function page({ params }) {
           renderThumbVertical={renderThumbVertical}
           renderTrackVertical={renderTrackVertical}
         >
-          <div>
+          <div className="py-2">
             {chatData?.map((data, index) => (
               <div className="flex flex-col gap-2  lg:px-4 py-2 px-2 ">
-                {data.senderName === senderNameOfTicket ? (
+                {data.senderName === window.sessionStorage.getItem("name") ? (
                   <div className="xl:w-1/3 lg:w-2/5 md:w-3/4 sm:w-3/5 w-7/8 ">
-                    <div className="bg-[#29262A] rounded-lg rounded-tr-none px-3 py-2 space-y-3 text-white">
+                    <div className="bg-[#9E9E9E] rounded-lg rounded-tr-none px-3 py-2 space-y-3 text-white">
                       <div>
                         <span> {data?.senderName} :</span>
                       </div>
                       <div>
                         <p className="text-sm leading-6">{data?.value}</p>
                       </div>
-                      <div className="flex items-center gap-2 text-[#9F9F9F] text-xs">
+                      <div className="flex items-center gap-2  text-xs">
                         <div>
                           <span>{data?.date}</span>
                         </div>
@@ -194,7 +197,7 @@ export default function page({ params }) {
         </Scrollbars>
         {param.slice(endOfId + 15, endOfStatus) !== "closed" ? (
           <form
-            className=" flex justify-between gap-2 mx-2"
+            className=" flex justify-between gap-2 mx-2 my-2"
             onSubmit={formik.handleSubmit}
             method="POST"
           >

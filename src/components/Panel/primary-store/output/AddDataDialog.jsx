@@ -164,6 +164,8 @@ export default function AddDataDialog(props) {
             if (!/[0-9]{7}./.test(values.machineTag)) {
                 errors.machineTag = 'لطفا پلاک  وسیله نقلیه را کامل وارد کنید';
             }
+        }if(isExpirable && !values.expirationDate){
+            errors.expirationDate="لطفا تاریخ انقضا را وارد نمایید"
         }
 
         return errors;
@@ -172,6 +174,7 @@ export default function AddDataDialog(props) {
     const handleReset = () => {
         formik.resetForm()
         setDate("")
+        setIsExpirable()
         setProduct(null)
         setUnit(null)
         setSubOrganization(null)
@@ -196,7 +199,7 @@ export default function AddDataDialog(props) {
         isLoading: isVehicleByCodeLoading,
         isError: isVehicleByCodeError
     }] = useLazyGetOneVehiclesByCodeQuery()
-
+    const [isExpirable,setIsExpirable]=useState(false)
     const schema = yup.object().shape({
         productId: yup.string().required("لطفا نام محصول را وارد کنید"),
         value: yup.string().required("لطفا مقدار محصول را وارد کنید"),
@@ -212,7 +215,7 @@ export default function AddDataDialog(props) {
             productName: "",
             value: "",
             unit: "",
-            expirationDate: "",
+            expirationDate: (isExpirable?"":null),
             machineTag: "",
             machineCode: "",
             driverName: "",
@@ -258,10 +261,10 @@ export default function AddDataDialog(props) {
                 fullWidth={true}
                 open={props.openAddData}
                 keepMounted
-                onClose={() => {
-                    props.handleCloseAddData();
-                    handleReset()
-                }}
+                // onClose={() => {
+                //     props.handleCloseAddData();
+                //     handleReset()
+                // }}
                 aria-describedby="alert-dialog-slide-description"
                 PaperProps={{
                     style: {
@@ -310,6 +313,7 @@ export default function AddDataDialog(props) {
                                             setProduct(newValue)
                                             formik.setFieldValue("productId", newValue?.id)
                                             formik.setFieldValue("productName", newValue?.persianName)
+                                            setIsExpirable(newValue?.isExpirable)
                                         }}
                                         renderInput={(params) =>
                                             <TextField
@@ -380,7 +384,7 @@ export default function AddDataDialog(props) {
                                                 />}/>
                                     </div>
                                 </div>
-                                <div>
+                                {product?.isExpirable &&<div>
                                     <DatePicker
                                         calendarPosition={`bottom`}
                                         className="red"
@@ -389,7 +393,7 @@ export default function AddDataDialog(props) {
                                         containerStyle={{
                                             width: "100%"
                                         }}
-                                        placeholder="تاریخ انقضا (اختیاری)"
+                                        placeholder="تاریخ انقضا (اجباری)"
                                         inputClass={`border border-[#D9D9D9] placeholder-neutral-300 text-gray-900 text-[0.8rem] rounded focus:ring-[#3B82F67F] focus:border-[#3B82F67F] block w-full px-3 py-4`}
                                         value={date}
                                         onChange={(value) => {
@@ -427,7 +431,14 @@ export default function AddDataDialog(props) {
                                             ریست
                                         </button>
                                     </DatePicker>
-                                </div>
+                                </div>}
+                                { product?.isExpirable&&
+                                            Boolean(formik.errors.expirationDate) && (
+                                                <span className="mx-3 text-[0.6rem] text-red-600 ">
+                                                    {formik.errors.expirationDate}
+                                                </span>
+                                            )
+                                        }
                                 <div>
                                     <div className="flex flex-col md:flex-row">
                                         <div className="plate w-full md:w-[47%] flex items-center pl-4">

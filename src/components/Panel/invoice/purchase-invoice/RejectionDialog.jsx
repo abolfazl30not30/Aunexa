@@ -51,7 +51,7 @@ export default function RejectionDialog(props) {
                 fullWidth={true}
                 open={props.openRejection}
                 keepMounted
-                onClose={()=>{props.handleCloseRejection();handleReset()}}
+                // onClose={()=>{props.handleCloseRejection();handleReset()}}
                 aria-describedby="alert-dialog-slide-description"
                 PaperProps={{
                     style: {

@@ -115,7 +115,7 @@ export default function AddIndividualDialog(props) {
         fullWidth={true}
         open={props.openAddIndividual}
         keepMounted
-        onClose={() => { props.handleCloseAddIndividual(); handleReset() }}
+        // onClose={() => { props.handleCloseAddIndividual(); handleReset() }}
         aria-describedby="alert-dialog-slide-description"
         PaperProps={{
           style: {fontFamily: "__fonts_2f4189,__fonts_Fallback_2f4189"}

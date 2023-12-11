@@ -21,7 +21,7 @@ export default function DeleteIndividualDialog(props) {
                 fullWidth={true}
                 open={props.openDeleteIndividual}
                 keepMounted
-                onClose={props.handleCloseDeleteIndividual}
+                // onClose={props.handleCloseDeleteIndividual}
                 aria-describedby="alert-dialog-slide-description"
                 PaperProps={{
                     style: {fontFamily: "__fonts_2f4189,__fonts_Fallback_2f4189"}

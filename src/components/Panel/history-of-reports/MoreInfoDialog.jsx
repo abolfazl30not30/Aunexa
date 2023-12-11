@@ -10,7 +10,7 @@ export default function MoreInfoDialog(props) {
                 fullWidth={true}
                 open={props.openMoreInfo}
                 keepMounted
-                onClose={props.handleCloseMoreInfo}
+                // onClose={props.handleCloseMoreInfo}
                 aria-describedby="alert-dialog-slide-description"
                 PaperProps={{
                     style: {
