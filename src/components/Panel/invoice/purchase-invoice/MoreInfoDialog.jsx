@@ -1,13 +1,28 @@
 'use client'
 import React from "react";
+import { useState } from "react";
 import {
     DialogContent,
     DialogContentText,
 } from "@mui/material";
 import Dialog from "@mui/material/Dialog";
 import Link from "next/link";
-
+import { useLazyDownloadFileMinioQuery } from "@/redux/features/file/FileSlice";
 export default function MoreInfoDialog(props) {
+    const [name,setName]=useState("")
+
+    const handleImageName= async (e)=>{
+        const res = await getDownload(props.moreInfoTarget?.receiptFile)
+        console.log(res.data.fileUrl)
+        const link = document.createElement('a');
+        link.download = "file";
+        link.href = res.data.fileUrl;
+        link.click();
+
+
+     }
+
+     const [getDownload,{ data : downLoadURL  = [] , isLoading : isDownloadLoading, isError: downloadIsError }] = useLazyDownloadFileMinioQuery(name)
     return(
         <>
             <Dialog
@@ -127,16 +142,14 @@ export default function MoreInfoDialog(props) {
                                             </div>
                                         </div>
                                     </div>
-                                    <div className="w-1/2  flex flex-col">
+                                    {props.moreInfoTarget?.receiptFile && <div className="w-1/2  flex flex-col">
                                         <div className="mb-2">
                                             <span className="text-[0.9rem] text-gray70 ">دانلود فاکتور</span>
                                         </div>
-                                        <Link href={`${props.moreInfoTarget?.receiptFile}`} className=" border border-dashed border-[#D9D9D9]  flex  px-4">
-                                            <div className="flex justify-center items-center text-[0.9rem] p-2">
-                                                <span className="text-[#29262A] w-full"> دانلود فاکتور  </span>
-                                            </div>
-                                        </Link>
-                                    </div>
+                                        <button onClick={(e)=>{handleImageName(e)}}  className="p-2 border border-[#D9D9D9]">
+                                                <span className="text-[#29262A] text-[0.9rem]">دانلود فاکتور</span>
+                                            </button>
+                                    </div>}
                                     
                                 </div>
                                 
@@ -207,9 +220,12 @@ export default function MoreInfoDialog(props) {
                                           {props.moreInfoTarget?.receiptCode}
                                     </span>
                                 </div>
-                                <Link className="text-xs" href={`${props.moreInfoTarget?.receiptFile}`}>
-                                دانلود فاکتور
-                                </Link>
+                                {props.moreInfoTarget?.receiptFile && <div>
+                                    <button  onClick={(e)=>{handleImageName(e)}}  className="ml-1 text-gray9F text-[0.8rem]">
+                                         دانلود فاکتور
+                                    </button>
+                                   
+                                </div>}
                             </div>
                         </div>
                         {props.moreInfoTarget?.status==="IN_PROGRESS"?

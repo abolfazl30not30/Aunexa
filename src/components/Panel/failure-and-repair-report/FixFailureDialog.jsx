@@ -100,7 +100,7 @@ export default function FixFailureDialog(props) {
                                     </div>
                                     </div>
                                     }
-                                    <div className="w-[45%]">
+                                    {props.fixTarget?.machine?.code&&<div className="w-[45%]">
                                     <div className="mb-2">
                                         <span className="text-[0.9rem] text-gray70 "> کد وسیله</span>
                                     </div>
@@ -109,7 +109,7 @@ export default function FixFailureDialog(props) {
                                             <span className="text-[#29262A] text-[0.9rem]">{props.fixTarget?.machine?.code}</span>
                                         </div>
                                     </div>
-                                    </div>
+                                    </div>}
                                 </div>
                                 <div className="flex justify-between">
                                     <div className="w-[45%]">

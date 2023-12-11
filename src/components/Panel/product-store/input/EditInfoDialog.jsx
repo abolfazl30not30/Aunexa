@@ -35,7 +35,7 @@ import {useUpdatePOSIMutation} from "@/redux/features/product-store/input/POSIap
 
 export default function EditInfoDialog(props) {
     const alphabeticalList = [
-        {value: ""},
+        {value: "هیچ کدام"},
         {value: "ا"},
         {value: "ب"},
         {value: "پ"},
@@ -141,8 +141,12 @@ export default function EditInfoDialog(props) {
         } else if (e.target.name === "part2") {
             setmachineTag((co) => ({...co, part2: e.target.value}))
         } else if (e.target.name === "part3") {
-            setmachineTag((co) => ({...co, part3: e.target.value}))
-        } else if (e.target.name === "part4") {
+            if(e.target.value!=="هیچ کدام"){
+             setmachineTag((co) => ({...co, part3: e.target.value}))
+            }else{
+             setmachineTag((co) => ({...co, part3: ""}))
+            }
+         } else if (e.target.name === "part4") {
             setmachineTag((co) => ({...co, part4: e.target.value}))
         }
     }
