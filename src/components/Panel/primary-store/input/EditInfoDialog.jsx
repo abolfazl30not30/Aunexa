@@ -30,7 +30,8 @@ import {
     useLazyGetOneVehiclesByCodeQuery,
     useLazyGetOneVehiclesByTagQuery
 } from "@/redux/features/vehicles-and-equipment/VehiclesAndEquipmentSlice";
-
+import { PersianToEnglish } from "@/helper/PersianToEnglish";
+import { EnglishToPersian } from "@/helper/EnglishToPersian";
 export default function EditInfoDialog(props) {
     const alphabeticalList = [
         {value: "هیچ کدام"},
@@ -206,8 +207,10 @@ export default function EditInfoDialog(props) {
         validationSchema: schema,
 
         onSubmit: async (product,helpers) => {
-            let updateProduct = {...product,type:"PRIMARY"}
+            
+            let updateProduct = {...product,type:"PRIMARY",value:PersianToEnglish(`${product.value}`)}
 
+            
             if(product.machineTag !== ""){
                 const res = await getVehicleByTag(product.machineTag)
                 if(res?.status !== "rejected"){
@@ -277,6 +280,7 @@ export default function EditInfoDialog(props) {
             productId: props.editInfoTarget?.productId,
             productName:props.editInfoTarget?.productName,
             value: props.editInfoTarget?.value,
+            
             unit: props.editInfoTarget?.unit,
             expirationDate: props.editInfoTarget?.expirationDate,
             machineTag: props.editInfoTarget?.machineTag,

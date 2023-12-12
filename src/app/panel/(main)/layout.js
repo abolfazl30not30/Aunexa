@@ -299,9 +299,8 @@ export default function RootLayout({ children }) {
           </div>
         </header>
 
-
-        <div className="flex justify-center px-3 md:px-0">
-          <div>
+        <div className="flex justify-center px-3 md:px-0  ">
+          <div className="">
             <Drawer
               anchor={"right"}
               open={openSidebar}
@@ -342,7 +341,7 @@ export default function RootLayout({ children }) {
                 <div className="px-4 py-3">
                   <div>
                     <Link
-                        onClick={handleCloseSidebar}
+                      onClick={handleCloseSidebar}
                       href="/panel"
                       className="block py-4 px-2 border-b border-b-1 border-b-solid  border-b-borderGray"
                     >
@@ -442,7 +441,7 @@ export default function RootLayout({ children }) {
                       <ul className="flex flex-col gap-1 pr-2">
                         <li>
                           <Link
-                              onClick={handleCloseSidebar}
+                            onClick={handleCloseSidebar}
                             href="/panel/equipment-store/input"
                             className="block py-2 px-5"
                           >
@@ -459,7 +458,7 @@ export default function RootLayout({ children }) {
                         </li>
                         <li>
                           <Link
-                              onClick={handleCloseSidebar}
+                            onClick={handleCloseSidebar}
                             href="/panel/equipment-store/input"
                             className="block py-2 px-5"
                           >
@@ -502,7 +501,7 @@ export default function RootLayout({ children }) {
                       <ul className="flex flex-col gap-1 pr-2">
                         <li>
                           <Link
-                              onClick={handleCloseSidebar}
+                            onClick={handleCloseSidebar}
                             href="/panel/product-store/input"
                             className="block py-2 px-5"
                           >
@@ -519,7 +518,7 @@ export default function RootLayout({ children }) {
                         </li>
                         <li>
                           <Link
-                              onClick={handleCloseSidebar}
+                            onClick={handleCloseSidebar}
                             href="/panel/product-store/output"
                             className="block py-2 px-5"
                           >
@@ -562,7 +561,7 @@ export default function RootLayout({ children }) {
                       <ul className="flex flex-col gap-1 pr-2">
                         <li>
                           <Link
-                              onClick={handleCloseSidebar}
+                            onClick={handleCloseSidebar}
                             href="/panel/vehicles-and-equipment"
                             className="block py-2 px-5"
                           >
@@ -579,7 +578,7 @@ export default function RootLayout({ children }) {
                         </li>
                         <li>
                           <Link
-                              onClick={handleCloseSidebar}
+                            onClick={handleCloseSidebar}
                             href="/panel/failure-and-repair-report"
                             className="block py-2 px-5"
                           >
@@ -596,7 +595,7 @@ export default function RootLayout({ children }) {
                         </li>
                         <li>
                           <Link
-                              onClick={handleCloseSidebar}
+                            onClick={handleCloseSidebar}
                             href="/panel/history-of-reports"
                             className="block py-2 px-5"
                           >
@@ -617,7 +616,7 @@ export default function RootLayout({ children }) {
 
                   <div>
                     <Link
-                        onClick={handleCloseSidebar}
+                      onClick={handleCloseSidebar}
                       href="/panel/purchase-request"
                       className="block py-4 px-2 border-b border-b-1 border-b-solid  border-b-borderGray"
                     >
@@ -634,7 +633,7 @@ export default function RootLayout({ children }) {
                   </div>
                   <div>
                     <Link
-                        onClick={handleCloseSidebar}
+                      onClick={handleCloseSidebar}
                       href="/panel/products"
                       className="block py-4 px-2 border-b border-b-1 border-b-solid  border-b-borderGray"
                     >
@@ -656,34 +655,34 @@ export default function RootLayout({ children }) {
                           تولید
                         </span>
                         <svg
-                            className="transition group-open:rotate-90"
-                            xmlns="http://www.w3.org/2000/svg"
-                            width="16"
-                            height="16"
-                            viewBox="0 0 16 16"
-                            fill="none"
+                          className="transition group-open:rotate-90"
+                          xmlns="http://www.w3.org/2000/svg"
+                          width="16"
+                          height="16"
+                          viewBox="0 0 16 16"
+                          fill="none"
                         >
                           <path
-                              d="M10 4L6 8L10 12"
-                              stroke="#9F9F9F"
-                              stroke-linecap="round"
-                              stroke-linejoin="round"
+                            d="M10 4L6 8L10 12"
+                            stroke="#9F9F9F"
+                            stroke-linecap="round"
+                            stroke-linejoin="round"
                           />
                         </svg>
                       </summary>
                       <ul className="flex flex-col gap-1 pr-2">
                         <li>
                           <Link
-                              onClick={handleCloseSidebar}
-                              href="/panel/production/input"
-                              className="block py-2 px-5"
+                            onClick={handleCloseSidebar}
+                            href="/panel/production/input"
+                            className="block py-2 px-5"
                           >
                             <span
-                                className={
-                                  pathname === "/panel/production/input"
-                                      ? "text-mainRed text-[0.9rem]"
-                                      : "text-gray9F hover:text-textGray text-[0.9rem]"
-                                }
+                              className={
+                                pathname === "/panel/production/input"
+                                  ? "text-mainRed text-[0.9rem]"
+                                  : "text-gray9F hover:text-textGray text-[0.9rem]"
+                              }
                             >
                               بخش ورودی
                             </span>
@@ -691,16 +690,16 @@ export default function RootLayout({ children }) {
                         </li>
                         <li>
                           <Link
-                              onClick={handleCloseSidebar}
-                              href="/panel/production/output"
-                              className="block py-2 px-5"
+                            onClick={handleCloseSidebar}
+                            href="/panel/production/output"
+                            className="block py-2 px-5"
                           >
                             <span
-                                className={
-                                  pathname === "/panel/production/output"
-                                      ? "text-mainRed text-[0.9rem]"
-                                      : "text-gray9F hover:text-textGray text-[0.9rem]"
-                                }
+                              className={
+                                pathname === "/panel/production/output"
+                                  ? "text-mainRed text-[0.9rem]"
+                                  : "text-gray9F hover:text-textGray text-[0.9rem]"
+                              }
                             >
                               بخش خروجی
                             </span>
@@ -734,7 +733,7 @@ export default function RootLayout({ children }) {
                       <ul className="flex flex-col gap-1 pr-2">
                         <li>
                           <Link
-                              onClick={handleCloseSidebar}
+                            onClick={handleCloseSidebar}
                             href="/panel/purchase/purchase-request-list"
                             className="block py-2 px-5"
                           >
@@ -752,7 +751,7 @@ export default function RootLayout({ children }) {
                         </li>
                         <li>
                           <Link
-                              onClick={handleCloseSidebar}
+                            onClick={handleCloseSidebar}
                             href="/panel/purchase/pending-purchase-request-list"
                             className="block py-2 px-5"
                           >
@@ -770,7 +769,7 @@ export default function RootLayout({ children }) {
                         </li>
                         <li>
                           <Link
-                              onClick={handleCloseSidebar}
+                            onClick={handleCloseSidebar}
                             href="/panel/purchase/successful-purchase-request-list"
                             className="block py-2 px-5"
                           >
@@ -788,7 +787,7 @@ export default function RootLayout({ children }) {
                         </li>
                         <li>
                           <Link
-                              onClick={handleCloseSidebar}
+                            onClick={handleCloseSidebar}
                             href="/panel/purchase/unsuccessful-purchase-request-list"
                             className="block py-2 px-5"
                           >
@@ -809,7 +808,7 @@ export default function RootLayout({ children }) {
                   </div>
                   <div>
                     <Link
-                        onClick={handleCloseSidebar}
+                      onClick={handleCloseSidebar}
                       href="/panel/sales"
                       className="block py-4 px-2 border-b border-b-1 border-b-solid  border-b-borderGray"
                     >
@@ -849,7 +848,7 @@ export default function RootLayout({ children }) {
                       <ul className="flex flex-col gap-1 pr-2">
                         <li>
                           <Link
-                              onClick={handleCloseSidebar}
+                            onClick={handleCloseSidebar}
                             href="/panel/invoice/sales-invoice"
                             className="block py-2 px-5"
                           >
@@ -866,7 +865,7 @@ export default function RootLayout({ children }) {
                         </li>
                         <li>
                           <Link
-                              onClick={handleCloseSidebar}
+                            onClick={handleCloseSidebar}
                             href="/panel/invoice/purchase-invoice"
                             className="block py-2 px-5"
                           >
@@ -903,7 +902,7 @@ export default function RootLayout({ children }) {
                   </div>
                   <div>
                     <Link
-                        onClick={handleCloseSidebar}
+                      onClick={handleCloseSidebar}
                       href="/panel/register/organization"
                       className="block py-4 px-2 border-b border-b-1 border-b-solid  border-b-borderGray"
                     >
@@ -920,7 +919,7 @@ export default function RootLayout({ children }) {
                   </div>
                   <div>
                     <Link
-                        onClick={handleCloseSidebar}
+                      onClick={handleCloseSidebar}
                       href="/panel/employees"
                       className="block py-4 px-2 border-b border-b-1 border-b-solid  border-b-borderGray"
                     >
@@ -937,7 +936,7 @@ export default function RootLayout({ children }) {
                   </div>
                   <div>
                     <Link
-                        onClick={handleCloseSidebar}
+                      onClick={handleCloseSidebar}
                       href="/panel/register/role"
                       className="block py-4 px-2 border-b border-b-1 border-b-solid  border-b-borderGray"
                     >
@@ -954,7 +953,7 @@ export default function RootLayout({ children }) {
                   </div>
                   <div>
                     <Link
-                        onClick={handleCloseSidebar}
+                      onClick={handleCloseSidebar}
                       href="/panel/user-account"
                       className="block py-4 px-2 border-b border-b-1 border-b-solid  border-b-borderGray"
                     >
@@ -971,7 +970,7 @@ export default function RootLayout({ children }) {
                   </div>
                   <div>
                     <Link
-                     onClick={handleCloseSidebar}
+                      onClick={handleCloseSidebar}
                       href="https://auth.vipsoftware1.com/logout"
                       className="block py-4 px-2 border-b border-b-1 border-b-solid  border-b-borderGray"
                     >
@@ -1287,55 +1286,56 @@ export default function RootLayout({ children }) {
               <div>
                 <details className="group py-3 border-b border-b-1 border-b-solid  border-b-borderGray">
                   <summary className="flex items-center justify-between gap-2 p-2 font-medium marker:content-none hover:cursor-pointer">
-                        <span className="text-gray9F group-open:text-textGray text-[0.9rem]">
-                          تولید
-                        </span>
+                    <span className="text-gray9F group-open:text-textGray text-[0.9rem]">
+                      تولید
+                    </span>
                     <svg
-                        className="transition group-open:rotate-90"
-                        xmlns="http://www.w3.org/2000/svg"
-                        width="16"
-                        height="16"
-                        viewBox="0 0 16 16"
-                        fill="none"
+                      className="transition group-open:rotate-90"
+                      xmlns="http://www.w3.org/2000/svg"
+                      width="16"
+                      height="16"
+                      viewBox="0 0 16 16"
+                      fill="none"
                     >
                       <path
-                          d="M10 4L6 8L10 12"
-                          stroke="#9F9F9F"
-                          stroke-linecap="round"
-                          stroke-linejoin="round"
+                        d="M10 4L6 8L10 12"
+                        stroke="#9F9F9F"
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
                       />
                     </svg>
                   </summary>
                   <ul className="flex flex-col gap-1 pr-2">
                     <li>
                       <Link
-                          href="/panel/production/input"
-                          className="block py-2 px-5"
+                        href="/panel/production/input"
+                        className="block py-2 px-5"
                       >
-                            <span
-                                className={
-                                  pathname === "/panel/production/input"
-                                      ? "text-mainRed text-[0.9rem]"
-                                      : "text-gray9F hover:text-textGray text-[0.9rem]"
-                                }
-                            >
-                              بخش ورودی
-                            </span>
+                        <span
+                          className={
+                            pathname === "/panel/production/input"
+                              ? "text-mainRed text-[0.9rem]"
+                              : "text-gray9F hover:text-textGray text-[0.9rem]"
+                          }
+                        >
+                          بخش ورودی
+                        </span>
                       </Link>
                     </li>
                     <li>
                       <Link
-                          href="/panel/production/output"
-                          className="block py-2 px-5"
+                        href="/panel/production/output"
+                        className="block py-2 px-5"
                       >
-                            <span
-                                className={
-                                  pathname === "/panel/production/output"
-                                      ? "text-mainRed text-[0.9rem]"
-                                      : "text-gray9F hover:text-textGray text-[0.9rem]"
-                                }>
-                              بخش خروجی
-                            </span>
+                        <span
+                          className={
+                            pathname === "/panel/production/output"
+                              ? "text-mainRed text-[0.9rem]"
+                              : "text-gray9F hover:text-textGray text-[0.9rem]"
+                          }
+                        >
+                          بخش خروجی
+                        </span>
                       </Link>
                     </li>
                   </ul>

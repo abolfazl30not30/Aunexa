@@ -30,7 +30,7 @@ import {
     useLazyGetOneVehiclesByCodeQuery,
     useLazyGetOneVehiclesByTagQuery
 } from "@/redux/features/vehicles-and-equipment/VehiclesAndEquipmentSlice";
-
+import { PersianToEnglish } from "@/helper/PersianToEnglish";
 export default function EditInfoDialog(props) {
   
 
@@ -119,7 +119,7 @@ export default function EditInfoDialog(props) {
         validationSchema: schema,
 
         onSubmit: async (product,helpers) => {
-            let updateProduct = {...product}
+            let updateProduct = {...product,value:PersianToEnglish(`${product.value}`)}
 
            
 

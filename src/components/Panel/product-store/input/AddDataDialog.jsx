@@ -33,7 +33,7 @@ import {
 import {useSaveESOMutation} from "@/redux/features/equipment-store/output/ESOapiSlice";
 import {useSavePOSIMutation} from "@/redux/features/product-store/input/POSIapiSlice";
 
-
+import { PersianToEnglish } from "@/helper/PersianToEnglish";
 export default function AddDataDialog(props) {
     const alphabeticalList = [
         {value: "هیچ کدام"},
@@ -238,7 +238,7 @@ export default function AddDataDialog(props) {
         validationSchema: schema,
 
         onSubmit: async (product, helpers) => {
-            let updateProduct = {...product}
+            let updateProduct = {...product,value:PersianToEnglish(product.value)}
 
             if (product.machineTag !== "") {
                 const res = await getVehicleByTag(product.machineTag)

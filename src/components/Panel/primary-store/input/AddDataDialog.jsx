@@ -30,6 +30,7 @@ import {
     useLazyGetOneVehiclesByCodeQuery,
     useLazyGetOneVehiclesByTagQuery
 } from "@/redux/features/vehicles-and-equipment/VehiclesAndEquipmentSlice";
+import { PersianToEnglish } from "@/helper/PersianToEnglish";
 
 
 export default function AddDataDialog(props) {
@@ -210,7 +211,7 @@ export default function AddDataDialog(props) {
         validationSchema: schema,
 
         onSubmit: async (product,helpers) => {
-            let updateProduct = {...product}
+            let updateProduct = {...product,value:PersianToEnglish(product.value)}
 
             if(product.machineTag !== ""){
                 const res = await getVehicleByTag(product.machineTag)

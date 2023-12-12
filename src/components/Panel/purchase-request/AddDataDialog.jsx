@@ -20,7 +20,7 @@ import {
 import {styled} from "@mui/material/styles";
 import Switch from "@mui/material/Switch";
 import {useSavePurchaseRequestMutation} from "@/redux/features/purchase-request/PurchaseRequestSlice";
-
+import { PersianToEnglish } from "@/helper/PersianToEnglish";
 const AntSwitch = styled(Switch)(({ theme }) => ({
     width: 35,
     height: 18,
@@ -118,7 +118,7 @@ export default function AddDataDialog(props) {
         validationSchema: schema,
 
         onSubmit: async (product,helpers) => {
-            let updateProduct = {...product}
+            let updateProduct = {...product,value:PersianToEnglish(product.value)}
             const userData = await submitData(updateProduct)
             handleReset()
             props.handleCloseAddData()

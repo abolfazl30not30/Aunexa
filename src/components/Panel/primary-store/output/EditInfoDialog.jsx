@@ -30,7 +30,7 @@ import {
     useLazyGetOneVehiclesByTagQuery
 } from "@/redux/features/vehicles-and-equipment/VehiclesAndEquipmentSlice";
 import {useUpdatePSOMutation} from "@/redux/features/primary-store/output/PSOapiSlice";
-
+import { PersianToEnglish } from "@/helper/PersianToEnglish";
 export default function EditInfoDialog(props) {
     const alphabeticalList = [
         {value: "هیچ کدام"},
@@ -217,7 +217,7 @@ export default function EditInfoDialog(props) {
         validationSchema: schema,
 
         onSubmit: async (product,helpers) => {
-            let updateProduct = {...product,type:"PRIMARY"}
+            let updateProduct = {...product,type:"PRIMARY",value:PersianToEnglish(`${product.value}`)}
 
             if(product.machineTag !== ""){
                 const res = await getVehicleByTag(product.machineTag)

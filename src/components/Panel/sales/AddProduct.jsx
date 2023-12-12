@@ -21,7 +21,7 @@ import {useUploadFileCloudMutation} from "@/redux/features/file/FileSlice";
 import {
     useSavePendingPurchaseRequestListMutation
 } from "@/redux/features/purchase/pending-purchase-request-list/PendingPurchaseRequestListSlice";
-
+import { PersianToEnglish } from "@/helper/PersianToEnglish";
 export default function AddProduct(props) {
 
     //product input
@@ -117,7 +117,7 @@ const [includeError,setIncludeError]=useState(false)
                 paymentMethod: product.paymentMethod,
                 quantity:{
                     unit: product.unit,
-                    value: product.value
+                    value: PersianToEnglish(product.value)
                 }
             }
            

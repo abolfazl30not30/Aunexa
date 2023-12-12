@@ -9,7 +9,7 @@ import {TailSpin} from "react-loader-spinner";
 import * as yup from "yup";
 import {useFormik} from "formik";
 import { useUpdateSubOrganizationMutation } from "@/redux/features/organization/sub-organization/SubOrganizationSlice";
-
+import { PersianToEnglish } from "@/helper/PersianToEnglish";
 
 export default function EditSubOrganizationInfoDialog(props) {
     
@@ -53,7 +53,7 @@ export default function EditSubOrganizationInfoDialog(props) {
             const body = {...subOrganization,
                 organizationId:window.sessionStorage.getItem("organizationId"),
                 subOrganizationId:window.sessionStorage.getItem("subOrganizationId"),
-                
+                capacity:PersianToEnglish(`${subOrganization.capacity}`)
             }
             const userData = await submitData(body)
             console.log(error)

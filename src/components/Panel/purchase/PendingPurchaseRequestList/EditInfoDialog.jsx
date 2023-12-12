@@ -20,6 +20,7 @@ import {
 import {styled} from "@mui/material/styles";
 import Switch from "@mui/material/Switch";
 import { useUpdatePendingPurchaseRequestListMutation } from "@/redux/features/purchase/pending-purchase-request-list/PendingPurchaseRequestListSlice";
+import { PersianToEnglish } from "@/helper/PersianToEnglish";
 
 const AntSwitch = styled(Switch)(({ theme }) => ({
     width: 35,
@@ -139,7 +140,7 @@ export default function EditInfoDialog(props) {
         validationSchema: schema,
 
         onSubmit: async (product,helpers) => {
-            let updateProduct = {id:props.editInfoTarget?.id,quantity:{unit:formik.values.unit,value:formik.values.value}}
+            let updateProduct = {id:props.editInfoTarget?.id,quantity:{unit:formik.values.unit,value:PersianToEnglish(`${formik.values.value}`)}}
             const userData = await submitData(updateProduct)
             handleReset()
             props.handleCloseEditInfo()

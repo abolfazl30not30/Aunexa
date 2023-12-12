@@ -25,6 +25,7 @@ import {
 import {styled} from "@mui/material/styles";
 import Switch from "@mui/material/Switch";
 import { useUpdateSalesItemMutation } from "@/redux/features/sales/SalesSlice";
+import { PersianToEnglish } from "@/helper/PersianToEnglish";
 
 
 
@@ -125,7 +126,7 @@ export default function EditItemInfoDialog(props) {
     validationSchema: schema,
 
     onSubmit: async (product,helpers) => {
-        let updateProduct = {...product,quantity:{unit:formik.values.unit,value:formik.values.value},productImage:props.editInfoItemTarget?.imageURL}
+        let updateProduct = {...product,quantity:{unit:formik.values.unit,value:PersianToEnglish(`${formik.values.value}`)},productImage:props.editInfoItemTarget?.imageURL}
         const userData = await submitData(updateProduct)
         handleReset()
         props.handleCloseEditItemInfo()

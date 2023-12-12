@@ -30,7 +30,7 @@ import {
     useLazyGetOneVehiclesByTagQuery
 } from "@/redux/features/vehicles-and-equipment/VehiclesAndEquipmentSlice";
 import { useSaveProductionInputMutation } from "@/redux/features/production/input/ProductionInputSlice";
-
+import { PersianToEnglish } from "@/helper/PersianToEnglish";
 export default function AddDataDialog(props) {
 
     //product input
@@ -99,7 +99,7 @@ export default function AddDataDialog(props) {
         validationSchema: schema,
 
         onSubmit: async (product,helpers) => {
-            let updateProduct = {...product}
+            let updateProduct = {...product,value:PersianToEnglish(product.value)}
 
             const userData = await submitData(updateProduct)
             handleReset()

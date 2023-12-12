@@ -18,7 +18,7 @@ import {useFormik} from "formik";
 import CircularProgress from '@mui/material/CircularProgress';
 
 import { useSaveSubOrganizationMutation } from "@/redux/features/organization/sub-organization/SubOrganizationSlice";
-
+import { PersianToEnglish } from "@/helper/PersianToEnglish";
 export default function AddSubOrganizationDialog(props) {
 
     const handleReset = () =>{
@@ -47,7 +47,9 @@ export default function AddSubOrganizationDialog(props) {
         validationSchema: schema,
 
         onSubmit: async (subOrganization,helpers) => {
-            let updateSubOrganization = {...subOrganization,organizationId:props.organizationIdTarget}
+            
+            let updateSubOrganization = {...subOrganization,organizationId:props.organizationIdTarget,capacity:PersianToEnglish(subOrganization.capacity)}
+            
             const userData = await submitData(updateSubOrganization)
             handleReset()
             props.handleCloseAddSubOrganization()

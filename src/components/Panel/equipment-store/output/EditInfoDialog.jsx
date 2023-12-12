@@ -31,7 +31,7 @@ import {
 } from "@/redux/features/vehicles-and-equipment/VehiclesAndEquipmentSlice";
 import {useUpdatePSOMutation} from "@/redux/features/primary-store/output/PSOapiSlice";
 import {useUpdateESOMutation} from "@/redux/features/equipment-store/output/ESOapiSlice";
-
+import { PersianToEnglish } from "@/helper/PersianToEnglish";
 export default function EditInfoDialog(props) {
     const alphabeticalList = [
         {value: "هیچ کدام"},
@@ -218,7 +218,7 @@ export default function EditInfoDialog(props) {
         validationSchema: schema,
 
         onSubmit: async (product,helpers) => {
-            let updateProduct = {...product,type:"EQUIPMENT"}
+            let updateProduct = {...product,type:"EQUIPMENT",value:PersianToEnglish(`${product.value}`)}
 
             if(product.machineTag !== ""){
                 const res = await getVehicleByTag(product.machineTag)

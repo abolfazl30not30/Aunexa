@@ -11,7 +11,7 @@ import {useLazyGetAllUnitQuery, useLazyGetInventoryBalanceQuery,} from "@/redux/
 import {
     useAcceptPurchaseRequestListMutation
 } from "@/redux/features/purchase/purchase-request-list/PurchaseRequestListSlice";
-
+import { PersianToEnglish } from "@/helper/PersianToEnglish";
 
 export default function ConfirmDialog(props) {
 
@@ -79,7 +79,7 @@ export default function ConfirmDialog(props) {
         onSubmit: async (purchase) => {
             let updatePurchase = {...props.confirmTarget}
             updatePurchase = {...updatePurchase,unit:purchase.unit}
-            updatePurchase = {...updatePurchase,value:purchase.value}
+            updatePurchase = {...updatePurchase,value:PersianToEnglish(`${purchase.value}`)}
             console.log(updatePurchase)
             const userData = await submitData(updatePurchase)
             handleReset()

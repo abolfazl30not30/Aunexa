@@ -29,7 +29,7 @@ import {
 
 import { useSaveProductionOutputMutation } from "@/redux/features/production/output/ProductionOutputSlice";
 
-
+import { PersianToEnglish } from "@/helper/PersianToEnglish";
 export default function AddDataDialog(props) {
   
 
@@ -123,7 +123,7 @@ export default function AddDataDialog(props) {
         validationSchema: schema,
 
         onSubmit: async (product, helpers) => {
-            let updateProduct = {...product}
+            let updateProduct = {...product,value:PersianToEnglish(product.value)}
             const userData = await submitData(updateProduct)
             handleReset()
             props.handleCloseAddData()
