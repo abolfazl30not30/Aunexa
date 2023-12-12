@@ -166,8 +166,8 @@ export default function AddDataDialog(props) {
         if (!values.machineTag && !values.machineCode) {
             errors.machineTag = "لطفا پلاک یا کد وسیله نقلیه را وارد کنید";
         } else if (!values.machineCode && values.machineTag) {
-            if (!/[0-9]{7}./.test(values.machineTag)) {
-                errors.machineTag = 'لطفا پلاک  وسیله نقلیه را کامل وارد کنید';
+            if (!/[۰۱۲۳۴۵۶۷۸۹0-9]{7}./.test(values.machineTag)) {
+                errors.machineTag = 'لطفا پلاک  وسیله نقلیه را به صورت صحیح و کامل وارد کنید';
             }
         }if(isExpirable && !values.expirationDate){
             errors.expirationDate="لطفا تاریخ انقضا را وارد نمایید"
@@ -207,7 +207,10 @@ export default function AddDataDialog(props) {
     const [isExpirable,setIsExpirable]=useState(false)
     const schema = yup.object().shape({
         productId: yup.string().required("لطفا نام محصول را وارد کنید"),
-        value: yup.string().required("لطفا مقدار محصول را وارد کنید"),
+        value: yup.string().required("لطفا مقدار محصول را وارد کنید").matches(
+            /^[۰۱۲۳۴۵۶۷۸۹0.-9]+$/,
+            "لطفا فقط عدد وارد نمایید"
+          ),
         unit: yup.string().required("لطفا واحد محصول را وارد کنید"),
         driverName: yup.string().required("لطفا نام راننده را وارد کنید"),
         sourceSubOrganizationId: yup.string().required("لطفا دپارتمان مورد نظر را انتخاب کنید"),
@@ -346,7 +349,7 @@ export default function AddDataDialog(props) {
                                         <TextField
                                             fullWidth
                                             placeholder="مقدار (اجباری)"
-                                            type="number"
+                                            type="text"
                                             name="value"
                                             value={formik.values.value}
                                             onChange={formik.handleChange}

@@ -60,7 +60,10 @@ export default function ConfirmDialog(props) {
     const [submitData, {isLoading: isSubmitLoading, error}] = useAcceptPurchaseRequestListMutation()
 
     const schema = yup.object().shape({
-        value: yup.string().required("لطفا مقدار محصول را وارد کنید"),
+        value: yup.string().required("لطفا مقدار محصول را وارد کنید").matches(
+            /^[۰۱۲۳۴۵۶۷۸۹0.-9]+$/,
+            "لطفا فقط عدد وارد نمایید"
+          ),
         unit: yup.string().required("لطفا واحد محصول را وارد کنید"),
     });
 

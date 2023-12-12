@@ -26,11 +26,17 @@ export default function AddIndividualRelationshipDialog(props) {
     const [submitData, { isLoading:isSubmitLoading ,error}] = useSaveRelationshipMutation()
     const schema = yup.object().shape({
         firstFullName: yup.string(),
-        firstPhoneNumber:yup.string().min(11,"تعداد رقم وارد شده کم می باشد").max(11,"تعداد رقم وارد شده زیاد می باشد"),
+        firstPhoneNumber:yup.string().matches(
+            /^[۰۱۲۳۴۵۶۷۸۹0-9]+$/,
+            "لطفا فقط عدد وارد نمایید"
+          ).min(11,"تعداد رقم وارد شده کم می باشد").max(11,"تعداد رقم وارد شده زیاد می باشد"),
         firstRelationship:yup.string(),
         firstAddress:yup.string(),
         secondFullName: yup.string(),
-        secondPhoneNumber:yup.string().min(11,"تعداد رقم وارد شده کم می باشد").max(11,"تعداد رقم وارد شده زیاد می باشد"),
+        secondPhoneNumber:yup.string().matches(
+            /^[۰۱۲۳۴۵۶۷۸۹0-9]+$/,
+            "لطفا فقط عدد وارد نمایید"
+          ).min(11,"تعداد رقم وارد شده کم می باشد").max(11,"تعداد رقم وارد شده زیاد می باشد"),
         secondRelationship:yup.string(),
         secondAddress:yup.string(),
     });

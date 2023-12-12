@@ -29,7 +29,10 @@ export default function AddSubOrganizationDialog(props) {
     const schema = yup.object().shape({
         name: yup.string().required("لطفا نام دپارتمان را وارد کنید"),
         type:yup.string().required(),
-        capacity:yup.string()
+        capacity: yup.string().matches(
+            /^[۰۱۲۳۴۵۶۷۸۹0.-9]+$/,
+            "لطفا فقط عدد وارد نمایید"
+          ),
     });
 
     const formik = useFormik({
@@ -99,7 +102,8 @@ export default function AddSubOrganizationDialog(props) {
                                         name="capacity"
                                         value={formik.values.capacity}
                                         onChange={formik.handleChange}
-                                        
+                                        error={formik.touched.capacity && Boolean(formik.errors.capacity)}
+                                        helperText={formik.touched.capacity && formik.errors.capacity}
                                         inputProps={{style: {fontFamily: "__fonts_2f4189,__fonts_Fallback_2f4189", fontSize: "0.8rem"}}}
                                         InputLabelProps={{style: {fontFamily: "__fonts_2f4189,__fonts_Fallback_2f4189"}}}/>
                                 </div>

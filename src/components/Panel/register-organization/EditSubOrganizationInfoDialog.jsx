@@ -29,7 +29,10 @@ export default function EditSubOrganizationInfoDialog(props) {
       name: yup.string().required("لطفا نام دپارتمان را وارد کنید"),
       unit: yup.string(),
       type:yup.string().required(),
-      
+      capacity: yup.string().matches(
+        /^[۰۱۲۳۴۵۶۷۸۹0.-9]+$/,
+        "لطفا فقط عدد وارد نمایید"
+      ),
       
     });
 

@@ -176,9 +176,9 @@ export default function EditInfoDialog(props) {
 
         if (!values.tag && !values.code) {
             errors.tag = "لطفا پلاک یا کد وسیله نقلیه را وارد کنید";
-        } else if (!values.code && values.tag) {
-            if (!/[0-9]{7}./.test(values.tag)) {
-                errors.tag = 'لطفا پلاک  وسیله نقلیه را کامل وارد کنید';
+        } else if ( values.tag) {
+            if (!/[۰۱۲۳۴۵۶۷۸۹0-9]{7}./.test(values.tag)) {
+                errors.tag = 'لطفا پلاک  وسیله نقلیه را به صورت صحیح و کامل وارد کنید';
             }
         }
 

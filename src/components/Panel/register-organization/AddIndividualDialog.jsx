@@ -44,15 +44,27 @@ export default function AddIndividualDialog(props) {
   const [submitData, { isLoading: isSubmitLoading, error }] = useSaveIndividualMutation()
   const schema = yup.object().shape({
     fullName: yup.string("لطفا نام و نام خانوادگی شخص را درست وارد نمایید").required("لطفا نام و نام خانوادگی شخص را وارد کنید"),
-    nationalCode: yup.string().min(10, "تعداد رقم وارد شده کم می باشد").max(10, "تعداد رقم وارد شده زیاد می باشد").required("لطفا کد ملی را وارد کنید"),
+    nationalCode: yup.string().matches(
+      /^[۰۱۲۳۴۵۶۷۸۹0-9]+$/,
+      "لطفا فقط عدد وارد نمایید"
+    ).min(10, "تعداد رقم وارد شده کم می باشد").max(10, "تعداد رقم وارد شده زیاد می باشد").required("لطفا کد ملی را وارد کنید"),
     personalCode: yup.string().required("لطفا کد پرسنلی خود را وارد کنید"),
     birthDate: yup.date().required("لطفا تاریخ تولد را وارد کنید"),
     fatherName: yup.string("لطفا نام پدر را درست وارد نمایید").required("لطفا نام پدر را وارد نمایید"),
     gender: yup.string().required("لطفا جنسیت را وارد نمایید"),
     role: yup.string().required("لطفا نقش را وارد نمایید"),
-    originalPhoneNumber: yup.string().required("لطفا شماره همراه را وارد نمایید").min(11, "تعداد رقم وارد شده کم می باشد").max(11, "تعداد رقم وارد شده زیاد می باشد"),
-    anotherPhoneNumber: yup.string().required("لطفا شماره همراه را وارد نمایید").min(11, "تعداد رقم وارد شده کم می باشد").max(11, "تعداد رقم وارد شده زیاد می باشد"),
-    telephoneNumber: yup.string().required("لطفا تلفن ثابت خود را وارد کنید را وارد نمایید").min(11, "لطفا شماره تلفن ثابت خود را به همراه کد استان وارد کنید برای مثال برای تهران 021").max(11, "تعداد رقم وارد شده زیاد می باشد"),
+    originalPhoneNumber: yup.string().required("لطفا شماره همراه را وارد نمایید").matches(
+      /^[۰۱۲۳۴۵۶۷۸۹0-9]+$/,
+      "لطفا فقط عدد وارد نمایید"
+    ).min(11, "تعداد رقم وارد شده کم می باشد").max(11, "تعداد رقم وارد شده زیاد می باشد"),
+    anotherPhoneNumber: yup.string().required("لطفا شماره همراه را وارد نمایید").matches(
+      /^[۰۱۲۳۴۵۶۷۸۹0-9]+$/,
+      "لطفا فقط عدد وارد نمایید"
+    ).min(11, "تعداد رقم وارد شده کم می باشد").max(11, "تعداد رقم وارد شده زیاد می باشد"),
+    telephoneNumber: yup.string().required("لطفا تلفن ثابت خود را وارد کنید را وارد نمایید").matches(
+      /^[۰۱۲۳۴۵۶۷۸۹0-9]+$/,
+      "لطفا فقط عدد وارد نمایید"
+    ).min(11, "لطفا شماره تلفن ثابت خود را به همراه کد استان وارد کنید برای مثال برای تهران 021").max(11, "تعداد رقم وارد شده زیاد می باشد"),
     education: yup.string().required(),
     email: yup.string().email("فرمت ایمیل باید صحیح باشد").required("لطفا ایمیل را وارد نمایید"),
     address: yup.string().required("لطفا آدرس را وارد کنید"),
