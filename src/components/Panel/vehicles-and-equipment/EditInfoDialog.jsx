@@ -75,7 +75,7 @@ const AntSwitch = styled(Switch)(({ theme }) => ({
 
 export default function EditInfoDialog(props) {
     const alphabeticalList = [
-        {value: ""},
+        {value: "هیچ کدام"},
         {value: "ا"},
         {value: "ب"},
         {value: "پ"},
@@ -161,8 +161,12 @@ export default function EditInfoDialog(props) {
         } else if (e.target.name === "part2") {
             setTag((co) => ({...co, part2: e.target.value}))
         } else if (e.target.name === "part3") {
-            setTag((co) => ({...co, part3: e.target.value}))
-        } else if (e.target.name === "part4") {
+            if(e.target.value!=="هیچ کدام"){
+             setTag((co) => ({...co, part3: e.target.value}))
+            }else{
+             setTag((co) => ({...co, part3: ""}))
+            }
+         } else if (e.target.name === "part4") {
             setTag((co) => ({...co, part4: e.target.value}))
         }
     }
@@ -172,9 +176,9 @@ export default function EditInfoDialog(props) {
 
         if (!values.tag && !values.code) {
             errors.tag = "لطفا پلاک یا کد وسیله نقلیه را وارد کنید";
-        } else if (!values.code && values.tag) {
-            if (!/[0-9]{7}./.test(values.tag)) {
-                errors.tag = 'لطفا پلاک  وسیله نقلیه را کامل وارد کنید';
+        } else if ( values.tag) {
+            if (!/[۰۱۲۳۴۵۶۷۸۹0-9]{7}./.test(values.tag)) {
+                errors.tag = 'لطفا پلاک  وسیله نقلیه را به صورت صحیح و کامل وارد کنید';
             }
         }
 
@@ -287,7 +291,7 @@ export default function EditInfoDialog(props) {
                 fullWidth={true}
                 open={props.openEditInfo}
                 keepMounted
-                onClose={()=>{props.handleCloseEditInfo();handleReset()}}
+                // onClose={()=>{props.handleCloseEditInfo();handleReset()}}
                 aria-describedby="alert-dialog-slide-description"
                 PaperProps={{
                     style: {

@@ -491,7 +491,7 @@ function PurchaseRequest() {
                                 />
                               </svg>
                             </button>
-                            {
+                            {data.status === "IN_PROGRESS" && (
                               <button
                                 onClick={() => {
                                   handleOpenEditInfo(data);
@@ -524,8 +524,8 @@ function PurchaseRequest() {
                                   </defs>
                                 </svg>
                               </button>
-                            }
-                            {
+                            )}
+                            {data.status === "IN_PROGRESS" && (
                               <button
                                 onClick={() => {
                                   handleOpenDelete(data.id);
@@ -547,7 +547,7 @@ function PurchaseRequest() {
                                   />
                                 </svg>
                               </button>
-                            }
+                            )}
                           </td>
                         </tr>
                       ))}

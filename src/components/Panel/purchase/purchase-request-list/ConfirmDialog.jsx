@@ -11,7 +11,7 @@ import {useLazyGetAllUnitQuery, useLazyGetInventoryBalanceQuery,} from "@/redux/
 import {
     useAcceptPurchaseRequestListMutation
 } from "@/redux/features/purchase/purchase-request-list/PurchaseRequestListSlice";
-
+import { PersianToEnglish } from "@/helper/PersianToEnglish";
 
 export default function ConfirmDialog(props) {
 
@@ -60,7 +60,10 @@ export default function ConfirmDialog(props) {
     const [submitData, {isLoading: isSubmitLoading, error}] = useAcceptPurchaseRequestListMutation()
 
     const schema = yup.object().shape({
-        value: yup.string().required("لطفا مقدار محصول را وارد کنید"),
+        value: yup.string().required("لطفا مقدار محصول را وارد کنید").matches(
+            /^[۰۱۲۳۴۵۶۷۸۹0.-9]+$/,
+            "لطفا فقط عدد وارد نمایید"
+          ),
         unit: yup.string().required("لطفا واحد محصول را وارد کنید"),
     });
 
@@ -76,7 +79,7 @@ export default function ConfirmDialog(props) {
         onSubmit: async (purchase) => {
             let updatePurchase = {...props.confirmTarget}
             updatePurchase = {...updatePurchase,unit:purchase.unit}
-            updatePurchase = {...updatePurchase,value:purchase.value}
+            updatePurchase = {...updatePurchase,value:PersianToEnglish(`${purchase.value}`)}
             console.log(updatePurchase)
             const userData = await submitData(updatePurchase)
             handleReset()
@@ -90,10 +93,10 @@ export default function ConfirmDialog(props) {
                 fullWidth={true}
                 open={props.openConfirm}
                 keepMounted
-                onClose={() => {
-                    props.handleCloseConfirm();
-                    handleReset()
-                }}
+                // onClose={() => {
+                //     props.handleCloseConfirm();
+                //     handleReset()
+                // }}
                 aria-describedby="alert-dialog-slide-description"
                 PaperProps={{
                     style: {

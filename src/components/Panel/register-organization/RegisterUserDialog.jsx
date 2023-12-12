@@ -73,7 +73,7 @@ export default function RegisterUserDialog(props) {
                 fullWidth={true}
                 open={props.openRegisterIndividual}
                 keepMounted
-                onClose={props.handleCloseRegisterIndividual}
+                // onClose={props.handleCloseRegisterIndividual}
                 aria-describedby="alert-dialog-slide-description"
                 PaperProps={{
                     style: {fontFamily: "__fonts_2f4189,__fonts_Fallback_2f4189"},

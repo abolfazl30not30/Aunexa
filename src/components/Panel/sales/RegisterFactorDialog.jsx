@@ -30,6 +30,7 @@ export default function RegisterFactorDialog(props) {
     const [openAddProduct,setOpenAddProduct] = useState(false)
     const handleOpenAddProduct = () => {
         setOpenAddProduct(true);
+        
     };
     const handleCloseAddProduct = () => {
         setOpenAddProduct(false);
@@ -56,7 +57,7 @@ export default function RegisterFactorDialog(props) {
     },[openUnitList])
 
     const [organization,setOrganization] = useState(null)
-    const [uploadedImage,setUploadedImage] = useState("")
+    const [uploadedImage,setUploadedImage] = useState(null)
     const [uploadFile, { isLoading:isLoadingUpload ,error:errorUpload}] = useUploadFileMinioMutation()
 
     const [invoiceItemInput,setInvoiceItemInput] = useState([])
@@ -66,11 +67,11 @@ export default function RegisterFactorDialog(props) {
         formData.append('file', event.target.files[0]);
         const res = await uploadFile(formData)
         if(res.data){
-            setUploadedImage(res.data?.fileUrl)
+            setUploadedImage(res.data?.name)
         }
     }
     const handleDeleteUpload = () =>{
-        setUploadedImage("")
+        setUploadedImage(null)
     }
 
     // const [paymentMethod,setPaymentMethod] = useState(null)
@@ -96,8 +97,18 @@ export default function RegisterFactorDialog(props) {
     const handleReset = () =>{
         formik.resetForm()
         setOrganization(null)
+        setUploadedImage(null)
     }
+    const validate = (values, props) => {
+        const errors = {};
+        
+        
+        if (invoiceItemInput.length===0 ) {
+            errors.invoiceItems = "لطفا کالا را وارد کنید";
+        } 
 
+        return errors;
+    };
     const [submitData, { isLoading:isSubmitLoading ,error}] = useSaveSalesMutation()
     const schema = yup.object().shape({
         receiptCode:yup.string().required("لطفا شماره فاکتور را وارد نمایید "),
@@ -113,32 +124,40 @@ export default function RegisterFactorDialog(props) {
             customer:"",
             invoiceItems:[],
             receiptCode:"",
-            receiptFile:"",
+            receiptFile:null,
             description:""
         },
-
+       
         validationSchema: schema,
-
+        validate:validate,
         
 
         onSubmit: async (registerFactor,helpers) => {
             
-            let updateRegisterFactor = {...registerFactor,receiptFile:uploadedImage,invoiceItems:invoiceItemInput}
-            const userData = await submitData(updateRegisterFactor)
+            if(!openAddProduct){
+                let updateRegisterFactor = {...registerFactor,receiptFile:uploadedImage, invoiceItems:invoiceItemInput}
+           
+                const userData = await submitData(updateRegisterFactor)
+            
+            setInvoiceItemInput([])
             handleReset()
             props.handleCloseRegisterFactor()
-            setInvoiceItemInput([])
+            }
+            
         },
     });
 
-    
+    const handleDeleteItem=(item)=>{
+        setInvoiceItemInput(invoiceItemInput.filter((items)=> (items?.paymentMethod !== item?.paymentMethod) || (items?.productName !== item?.productName)  ))
+        
+    }
     return (
         <>
             <Dialog
                 fullWidth={true}
                 open={props.openRegisterFactor}
                 keepMounted
-                onClose={()=>{props.handleCloseRegisterFactor();handleReset();setInvoiceItemInput([])}}
+                // onClose={()=>{props.handleCloseRegisterFactor();handleReset();setInvoiceItemInput([])}}
                 aria-describedby="alert-dialog-slide-description"
                 PaperProps={{
                     style: {fontFamily: "__fonts_2f4189,__fonts_Fallback_2f4189"}
@@ -177,23 +196,42 @@ export default function RegisterFactorDialog(props) {
                                         <span className="px-2 text-[0.8rem]">لیست محصولات</span>
                                     </div>
                                     
-                                    {invoiceItemInput.map((item)=>(
-                                        <div className="border border-gray50 px-4 py-3 gap-4 flex flex-col ">
-
+                                    {invoiceItemInput?.map((item)=>(
+                                         
+                                        <div className="border border-gray50 sm:px-4 px-2 py-3 gap-4 flex flex-col ">
+                                       
                                             <div className="flex justify-between gap-4">
-                                                <div className="flex items-center gap-2 text-sm">
+                                                <div className="flex items-center gap-2 sm:text-sm text-xs">
                                                     <div><span>نام محصول :</span></div>
                                                     <div><span className="text-[#29262A] font-semibold">{item?.productName}</span></div>
                                                 </div>
-                                                <div className="flex items-center gap-2 text-sm">
+                                                <div className="flex items-center gap-2 sm:text-sm text-xs">
                                                     <div><span>مقدار :</span></div>
                                                     <div><span className="text-[#29262A] font-semibold">{item?.quantity?.value} {item?.quantity?.unit}</span></div>
                                                 </div>
                                             </div>
-                                            <div className="flex items-center gap-2 text-sm">
-                                                <div><span>شیوه پرداخت :</span></div>
+                                            <div className="flex items-center justify-between sm:gap-2 gap-1 sm:text-sm text-xs">
+                                               <div className="flex items-center  sm:gap-2 gap-0.5 sm:text-sm text-xs">
+                                               <div><span>شیوه پرداخت :</span></div>
                                                 <div><span className="text-[#29262A] font-semibold">{item?.paymentMethod==="PARDAKHT_NAGHDI"?"پرداخت نقدی در محل تحویل":item?.paymentMethod==="PARDAKHT_BANKI"?"پرداخت با کارت بانکی در محل تحویل":item?.paymentMethod==="PARDAKHT_INTERNETI"?"پرداخت از طریق درگاه اینترنتی":item?.paymentMethod==="CHEK_MODAT_DAR"?"چک مدت دار":item?.paymentMethod==="CHEK"?"چک":item?.paymentMethod==="AGHSATI"?"اقساطی":item?.paymentMethod==="ETEBARI"?"اعتباری":item?.paymentMethod==="SAYER"?"سایر":null}
                                     </span></div>
+                                               </div>
+                                               <button onClick={()=>{handleDeleteItem(item)}}>
+                                               <svg
+                                    xmlns="http://www.w3.org/2000/svg"
+                                    width="16"
+                                    height="16"
+                                    viewBox="0 0 16 16"
+                                    fill="none"
+                                  >
+                                    <path
+                                      d="M10.6667 3.99998V3.46665C10.6667 2.71991 10.6667 2.34654 10.5213 2.06133C10.3935 1.81044 10.1895 1.60647 9.93865 1.47864C9.65344 1.33331 9.28007 1.33331 8.53333 1.33331H7.46667C6.71993 1.33331 6.34656 1.33331 6.06135 1.47864C5.81046 1.60647 5.60649 1.81044 5.47866 2.06133C5.33333 2.34654 5.33333 2.71991 5.33333 3.46665V3.99998M6.66667 7.66665V11M9.33333 7.66665V11M2 3.99998H14M12.6667 3.99998V11.4666C12.6667 12.5868 12.6667 13.1468 12.4487 13.5746C12.2569 13.951 11.951 14.2569 11.5746 14.4487C11.1468 14.6666 10.5868 14.6666 9.46667 14.6666H6.53333C5.41323 14.6666 4.85318 14.6666 4.42535 14.4487C4.04903 14.2569 3.74307 13.951 3.55132 13.5746C3.33333 13.1468 3.33333 12.5868 3.33333 11.4666V3.99998"
+                                      stroke="#FE4949"
+                                      stroke-linecap="round"
+                                      stroke-linejoin="round"
+                                    />
+                                  </svg>
+                                               </button>
                                             </div>
                                         </div>
                                     ))}
@@ -227,6 +265,14 @@ export default function RegisterFactorDialog(props) {
                                         </button>
                                     </div>
                                 </div>
+                                {invoiceItemInput.length===0 &&
+                                            Boolean(formik.errors.invoiceItems) && (
+                                                <span className="mx-3 text-[0.6rem] text-red-600 ">
+                                                    {formik.errors.invoiceItems}
+                                                </span>
+                                            )
+                                            }
+                                
                                 <div className="flex justify-between gap-2 items-center border-t pt-4 border-gray50">
                                     <div className="w-[45%]">
                                     <TextField
@@ -251,13 +297,14 @@ export default function RegisterFactorDialog(props) {
                                                 </div>
                                             </div>
                                         ) : (
-                                            uploadedImage !== '' ? (
+                                            uploadedImage !== null ? (
                                                 <div>
                                                     <div className="relative  rounded border border-dashed border-[#D9D9D9]">
                                                         <button onClick={handleDeleteUpload} className="shadow hover:bg-red-400 absolute z-10 top-0 right-0 rounded-full bg-mainRed p-1">
                                                             <svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" viewBox="0 0 24 24" fill="none"><path d="M18 6L6 18M6 6L18 18" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
                                                         </button>
                                                         <img className="object-cover w-full h-full" src={uploadedImage} alt="uploadedImage"/>
+                                                        
                                                     </div>
                                                 </div>
                                             ):(
@@ -319,7 +366,7 @@ export default function RegisterFactorDialog(props) {
                                                 visible={true}/>
                                             ثبت
                                         </button>) : (
-                                            <button type="submit"
+                                            <button type="submit" 
                                                     className="w-full rounded-[0.5rem] py-3 hover:border hover:opacity-80 font-bold  bg-mainRed text-white">ثبت
                                             </button>
                                         )

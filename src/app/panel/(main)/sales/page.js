@@ -619,7 +619,7 @@ export default function page() {
                             </td>
                             <td className="px-6 py-4  text-gray70 whitespace-nowrap ">
                               <span className="pl-2  text-[#4E4E4E]">
-                                مسئول فروش :
+                                مشتری :
                               </span>
                               <span>{data?.customer}</span>
                             </td>

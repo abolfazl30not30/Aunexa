@@ -59,11 +59,11 @@ export default function AddTicketDialog(props) {
         onSubmit: async (tiket,helpers) => {
             let updateTiket = {...tiket}
             const userData = await submitData(updateTiket)
+            console.log(userData)
             handleReset()
             props.handleCloseAddTicket()
-            history.pushState({ ticketInfo: userData }, "", pathname + "/chat-page"+`/${userData.data.ticketNumber}`);
-            router.push(`${userData.data.ticketNumber}`);
-            
+            // history.pushState({ ticketInfo: userData }, "", pathname + "/chat-page"+`/id=${data.id}&&status=${data.status}&&ticketNumber=${data.ticketNumber}`);
+            router.push(`ticket/chat-page/id=${userData.data.id}&&status=${userData.data.status}&&ticketNumber=${userData.data.ticketNumber}`);
             
         },
     });
@@ -76,7 +76,7 @@ export default function AddTicketDialog(props) {
                 fullWidth={true}
                 open={props.openAddTicket}
                 keepMounted
-                onClose={()=>{props.handleCloseAddTicket();handleReset()}}
+                // onClose={()=>{props.handleCloseAddTicket();handleReset()}}
                 aria-describedby="alert-dialog-slide-description"
                 PaperProps={{
                     style: {

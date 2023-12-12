@@ -30,7 +30,7 @@ export default function MoreInfoDialog(props) {
                 fullWidth={true}
                 open={props.openMoreInfo}
                 keepMounted
-                onClose={props.handleCloseMoreInfo}
+                // onClose={props.handleCloseMoreInfo}
                 aria-describedby="alert-dialog-slide-description"
                 PaperProps={{
                     style: {
@@ -94,7 +94,7 @@ export default function MoreInfoDialog(props) {
                                    </div>
                                    
                                 </div>
-                                <div className="flex flex-col">
+                                {props.moreInfoTarget?.buyerName&&<div className="flex flex-col">
                                     <div className="mb-2">
                                         <span className="text-[0.9rem] text-gray70 ">نام مسئول خرید </span>
                                     </div>
@@ -103,15 +103,15 @@ export default function MoreInfoDialog(props) {
                                             <span className="text-[#29262A] text-[0.9rem]">{props.moreInfoTarget?.buyerName}</span>
                                         </div>
                                     </div>
-                                </div>
-                                <div className="flex flex-col mt-2">
+                                </div>}
+                                {props.moreInfoTarget?.receiptFile && <div className="flex flex-col mt-2">
                                     
                                     <div className="border border-[#D9D9D9]  flex justify-center px-4">
                                         <button onClick={(e)=>{handleImageName(e)}}  className="p-2">
                                             <span   className="text-[#29262A] text-[0.9rem]">دانلود فاکتور </span>
                                         </button>
                                     </div>
-                                </div>
+                                </div>}
                                 
                                
                                
@@ -146,14 +146,20 @@ export default function MoreInfoDialog(props) {
                                     </span>
                                 </div>
                                 
-                                <div>
+                                {props.moreInfoTarget?.buyerName&&<div>
                                     <span className="ml-1 text-gray9F text-[0.8rem]">
                                         نام مسئول خرید :
                                     </span>
                                     <span className="text-[#29262A] text-[0.8rem]">
                                         {props.moreInfoTarget?.buyerName}
                                     </span>
-                                </div>
+                                </div>}
+                                {props.moreInfoTarget?.receiptFile &&<div>
+                                    <button  onClick={(e)=>{handleImageName(e)}}  className="ml-1 text-gray9F text-[0.8rem]">
+                                         دانلود فاکتور
+                                    </button>
+                                   
+                                </div>}
                                
                                
                             </div>

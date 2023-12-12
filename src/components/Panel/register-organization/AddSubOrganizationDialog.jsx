@@ -18,7 +18,7 @@ import {useFormik} from "formik";
 import CircularProgress from '@mui/material/CircularProgress';
 
 import { useSaveSubOrganizationMutation } from "@/redux/features/organization/sub-organization/SubOrganizationSlice";
-
+import { PersianToEnglish } from "@/helper/PersianToEnglish";
 export default function AddSubOrganizationDialog(props) {
 
     const handleReset = () =>{
@@ -29,7 +29,10 @@ export default function AddSubOrganizationDialog(props) {
     const schema = yup.object().shape({
         name: yup.string().required("لطفا نام دپارتمان را وارد کنید"),
         type:yup.string().required(),
-        capacity:yup.string()
+        capacity: yup.string().matches(
+            /^[۰۱۲۳۴۵۶۷۸۹0.-9]+$/,
+            "لطفا فقط عدد وارد نمایید"
+          ),
     });
 
     const formik = useFormik({
@@ -44,7 +47,9 @@ export default function AddSubOrganizationDialog(props) {
         validationSchema: schema,
 
         onSubmit: async (subOrganization,helpers) => {
-            let updateSubOrganization = {...subOrganization,organizationId:props.organizationIdTarget}
+            
+            let updateSubOrganization = {...subOrganization,organizationId:props.organizationIdTarget,capacity:PersianToEnglish(subOrganization.capacity)}
+            
             const userData = await submitData(updateSubOrganization)
             handleReset()
             props.handleCloseAddSubOrganization()
@@ -57,7 +62,7 @@ export default function AddSubOrganizationDialog(props) {
                 fullWidth={true}
                 open={props.openAddSubOrganization}
                 keepMounted
-                onClose={()=>{props.handleCloseAddSubOrganization();handleReset()}}
+                // onClose={()=>{props.handleCloseAddSubOrganization();handleReset()}}
                 aria-describedby="alert-dialog-slide-description"
                 PaperProps={{
                     style: {fontFamily: "__fonts_2f4189,__fonts_Fallback_2f4189"}
@@ -99,7 +104,8 @@ export default function AddSubOrganizationDialog(props) {
                                         name="capacity"
                                         value={formik.values.capacity}
                                         onChange={formik.handleChange}
-                                        
+                                        error={formik.touched.capacity && Boolean(formik.errors.capacity)}
+                                        helperText={formik.touched.capacity && formik.errors.capacity}
                                         inputProps={{style: {fontFamily: "__fonts_2f4189,__fonts_Fallback_2f4189", fontSize: "0.8rem"}}}
                                         InputLabelProps={{style: {fontFamily: "__fonts_2f4189,__fonts_Fallback_2f4189"}}}/>
                                 </div>

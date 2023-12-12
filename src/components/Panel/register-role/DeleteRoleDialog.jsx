@@ -24,7 +24,7 @@ export default function DeleteRoleDialog(props) {
                 fullWidth={true}
                 open={props.openDeleteRole}
                 keepMounted
-                onClose={props.handleCloseDeleteRole}
+                // onClose={props.handleCloseDeleteRole}
                 aria-describedby="alert-dialog-slide-description"
                 PaperProps={{
                     style: {

@@ -10,7 +10,7 @@ export default function MoreInfoDialog(props) {
                 fullWidth={true}
                 open={props.openMoreInfo}
                 keepMounted
-                onClose={props.handleCloseMoreInfo}
+                // onClose={props.handleCloseMoreInfo}
                 aria-describedby="alert-dialog-slide-description"
                 PaperProps={{
                     style: {
@@ -153,14 +153,14 @@ export default function MoreInfoDialog(props) {
                                        {props.moreInfoTarget?.machine?.type}
                                     </span>
                                 </div>
-                                <div>
+                                {props.moreInfoTarget?.machine?.code &&<div>
                                     <span className="ml-1 text-gray9F text-[0.8rem]">
                                         کد وسیله نقلیه :
                                     </span>
                                     <span className="text-[#29262A] text-[0.8rem]">
                                        {props.moreInfoTarget?.machine?.code}
                                     </span>
-                                </div>
+                                </div>}
                                 <div>
                                     <span className="ml-1 text-gray9F text-[0.8rem]">
                                         پلاک وسیله نقلیه :

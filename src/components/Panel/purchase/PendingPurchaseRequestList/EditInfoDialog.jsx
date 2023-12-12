@@ -20,6 +20,7 @@ import {
 import {styled} from "@mui/material/styles";
 import Switch from "@mui/material/Switch";
 import { useUpdatePendingPurchaseRequestListMutation } from "@/redux/features/purchase/pending-purchase-request-list/PendingPurchaseRequestListSlice";
+import { PersianToEnglish } from "@/helper/PersianToEnglish";
 
 const AntSwitch = styled(Switch)(({ theme }) => ({
     width: 35,
@@ -118,7 +119,10 @@ export default function EditInfoDialog(props) {
 
     const schema = yup.object().shape({
         
-        value: yup.string().required("لطفا مقدار محصول را وارد کنید"),
+        value: yup.string().required("لطفا مقدار محصول را وارد کنید").matches(
+            /^[۰۱۲۳۴۵۶۷۸۹0.-9]+$/,
+            "لطفا فقط عدد وارد نمایید"
+          ),
         unit: yup.string().required("لطفا واحد محصول را وارد کنید"),
     });
 
@@ -136,7 +140,7 @@ export default function EditInfoDialog(props) {
         validationSchema: schema,
 
         onSubmit: async (product,helpers) => {
-            let updateProduct = {id:props.editInfoTarget?.id,quantity:{unit:formik.values.unit,value:formik.values.value}}
+            let updateProduct = {id:props.editInfoTarget?.id,quantity:{unit:formik.values.unit,value:PersianToEnglish(`${formik.values.value}`)}}
             const userData = await submitData(updateProduct)
             handleReset()
             props.handleCloseEditInfo()
@@ -149,7 +153,7 @@ export default function EditInfoDialog(props) {
                 fullWidth={true}
                 open={props.openEditInfo}
                 keepMounted
-                onClose={()=>{props.handleCloseEditInfo();handleReset()}}
+                // onClose={()=>{props.handleCloseEditInfo();handleReset()}}
                 aria-describedby="alert-dialog-slide-description"
                 PaperProps={{
                     style: {
@@ -177,7 +181,7 @@ export default function EditInfoDialog(props) {
                                         <TextField
                                             fullWidth
                                             placeholder="مقدار (اجباری)"
-                                            type="number"
+                                            type="text"
                                             name="value"
                                             value={formik.values.value}
                                             onChange={formik.handleChange}

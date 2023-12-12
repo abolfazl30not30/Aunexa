@@ -14,7 +14,7 @@ export default function UnregisterUserDialog(props) {
                 fullWidth={true}
                 open={props.openUnregisterIndividual}
                 keepMounted
-                onClose={props.handleCloseUnregisterIndividual}
+                // onClose={props.handleCloseUnregisterIndividual}
                 aria-describedby="alert-dialog-slide-description"
                 PaperProps={{
                     style: {fontFamily: "__fonts_2f4189,__fonts_Fallback_2f4189"},

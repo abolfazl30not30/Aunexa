@@ -53,10 +53,10 @@ export default function ConfirmDialog(props) {
                 fullWidth={true}
                 open={props.openConfirm}
                 keepMounted
-                onClose={() => {
-                    props.handleCloseConfirm();
-                    handleReset()
-                }}
+                // onClose={() => {
+                //     props.handleCloseConfirm();
+                //     handleReset()
+                // }}
                 aria-describedby="alert-dialog-slide-description"
                 PaperProps={{
                     style: {

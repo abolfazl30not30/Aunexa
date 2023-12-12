@@ -107,10 +107,10 @@ export default function AddRoleDialog(props) {
                 fullWidth={true}
                 open={props.openAddRole}
                 keepMounted
-                onClose={() => {
-                    handleReset()
-                    props.handleCloseAddRole();
-                }}
+                // onClose={() => {
+                //     handleReset()
+                //     props.handleCloseAddRole();
+                // }}
                 aria-describedby="alert-dialog-slide-description"
                 PaperProps={{
                     style: {

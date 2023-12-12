@@ -30,7 +30,7 @@ import {
     useLazyGetOneVehiclesByTagQuery
 } from "@/redux/features/vehicles-and-equipment/VehiclesAndEquipmentSlice";
 import { useUpdateProductionOutputMutation } from "@/redux/features/production/output/ProductionOutputSlice";
-
+import { PersianToEnglish } from "@/helper/PersianToEnglish";
 export default function EditInfoDialog(props) {
    
 
@@ -90,7 +90,10 @@ export default function EditInfoDialog(props) {
 
     const schema = yup.object().shape({
         productId: yup.string().required("لطفا نام محصول را وارد کنید"),
-        value: yup.string().required("لطفا مقدار محصول را وارد کنید"),
+        value: yup.string().required("لطفا مقدار محصول را وارد کنید").matches(
+            /^[۰۱۲۳۴۵۶۷۸۹0.-9]+$/,
+            "لطفا فقط عدد وارد نمایید"
+          ),
         unit: yup.string().required("لطفا واحد محصول را وارد کنید"),
         
         
@@ -111,7 +114,7 @@ export default function EditInfoDialog(props) {
         validationSchema: schema,
 
         onSubmit: async (product,helpers) => {
-            let updateProduct = {...product,type:"PRIMARY"}
+            let updateProduct = {...product,type:"PRIMARY",value:PersianToEnglish(`${product.value}`)}
 
 
             const userData = await submitData(updateProduct)
@@ -170,7 +173,7 @@ export default function EditInfoDialog(props) {
                 fullWidth={true}
                 open={props.openEditInfo}
                 keepMounted
-                onClose={()=>{props.handleCloseEditInfo();handleReset()}}
+                // onClose={()=>{props.handleCloseEditInfo();handleReset()}}
                 aria-describedby="alert-dialog-slide-description"
                 PaperProps={{
                     style: {
@@ -241,7 +244,7 @@ export default function EditInfoDialog(props) {
                                         <TextField
                                             fullWidth
                                             placeholder="مقدار (اجباری)"
-                                            type="number"
+                                            type="text"
                                             name="value"
                                             value={formik.values.value}
                                             onChange={formik.handleChange}

@@ -16,7 +16,7 @@ export default function MoreRoleInfoDialog(props) {
                 fullWidth={true}
                 open={props.openMoreRoleInfo}
                 keepMounted
-                onClose={props.handleCloseMoreRoleInfo}
+                // onClose={props.handleCloseMoreRoleInfo}
                 aria-describedby="alert-dialog-slide-description"
                 PaperProps={{
                     style: {

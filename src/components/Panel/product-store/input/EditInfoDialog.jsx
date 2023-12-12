@@ -32,10 +32,10 @@ import {
 import {useUpdatePSOMutation} from "@/redux/features/primary-store/output/PSOapiSlice";
 import {useUpdateESOMutation} from "@/redux/features/equipment-store/output/ESOapiSlice";
 import {useUpdatePOSIMutation} from "@/redux/features/product-store/input/POSIapiSlice";
-
+import { PersianToEnglish } from "@/helper/PersianToEnglish";
 export default function EditInfoDialog(props) {
     const alphabeticalList = [
-        {value: ""},
+        {value: "هیچ کدام"},
         {value: "ا"},
         {value: "ب"},
         {value: "پ"},
@@ -111,14 +111,14 @@ export default function EditInfoDialog(props) {
     //date input
     const [date,setDate] = useState("")
     const handleDateInput = (value) => {
-        if(value){
+        if(value!==null){
             setDate(value)
             let month = value?.month < 10 ? ('0' + value?.month) : value?.month;
             let day = value?.day < 10 ? ('0' + value?.day) : value?.day;
             let convertDate = value?.year + '/' + month + '/' + day;
             formik.setFieldValue("expirationDate", convertDate)
         }else {
-            formik.setFieldValue("expirationDate", "")
+            formik.setFieldValue("expirationDate", null)
         }
     }
 
@@ -141,8 +141,12 @@ export default function EditInfoDialog(props) {
         } else if (e.target.name === "part2") {
             setmachineTag((co) => ({...co, part2: e.target.value}))
         } else if (e.target.name === "part3") {
-            setmachineTag((co) => ({...co, part3: e.target.value}))
-        } else if (e.target.name === "part4") {
+            if(e.target.value!=="هیچ کدام"){
+             setmachineTag((co) => ({...co, part3: e.target.value}))
+            }else{
+             setmachineTag((co) => ({...co, part3: ""}))
+            }
+         } else if (e.target.name === "part4") {
             setmachineTag((co) => ({...co, part4: e.target.value}))
         }
     }
@@ -152,9 +156,11 @@ export default function EditInfoDialog(props) {
         if (!values.machineTag && !values.machineCode) {
             errors.machineTag = "لطفا پلاک یا کد وسیله نقلیه را وارد کنید";
         } else if (!values.machineCode && values.machineTag) {
-            if (!/[0-9]{7}./.test(values.machineTag)) {
-                errors.machineTag = 'لطفا پلاک  وسیله نقلیه را کامل وارد کنید';
+            if (!/[۰۱۲۳۴۵۶۷۸۹0-9]{7}./.test(values.machineTag)) {
+                errors.machineTag = 'لطفا پلاک  وسیله نقلیه را به صورت صحیح و کامل وارد کنید';
             }
+        }if(product?.isExpirable && !values.expirationDate){
+            errors.expirationDate="لطفا تاریخ انقضا را وارد نمایید"
         }
 
         return errors;
@@ -180,10 +186,13 @@ export default function EditInfoDialog(props) {
     const [getVehicleByTag,{ data : vehicleByTag  = {} , isLoading : isVehicleByTagLoading, isError: isVehicleByTagError }] = useLazyGetOneVehiclesByTagQuery()
 
     const [getVehicleByCode,{ data : vehicleByCode  = {} , isLoading : isVehicleByCodeLoading, isError: isVehicleByCodeError }] = useLazyGetOneVehiclesByCodeQuery()
-
+    const [isExpirable,setIsExpirable]=useState()
     const schema = yup.object().shape({
         productId: yup.string().required("لطفا نام محصول را وارد کنید"),
-        value: yup.string().required("لطفا مقدار محصول را وارد کنید"),
+        value: yup.string().required("لطفا مقدار محصول را وارد کنید").matches(
+            /^[۰۱۲۳۴۵۶۷۸۹0.-9]+$/,
+            "لطفا فقط عدد وارد نمایید"
+          ),
         unit: yup.string().required("لطفا واحد محصول را وارد کنید"),
         driverName: yup.string().required("لطفا نام راننده را وارد کنید"),
         sourceSubOrganizationId: yup.string().required("لطفا دپارتمان مورد نظر را انتخاب کنید"),
@@ -210,7 +219,7 @@ export default function EditInfoDialog(props) {
         validationSchema: schema,
 
         onSubmit: async (product,helpers) => {
-            let updateProduct = {...product,type:"PRODUCT"}
+            let updateProduct = {...product,type:"PRODUCT",status:props.editInfoTarget?.status,value:PersianToEnglish(`${product.value}`)}
 
             if(product.machineTag !== ""){
                 const res = await getVehicleByTag(product.machineTag)
@@ -262,7 +271,7 @@ export default function EditInfoDialog(props) {
         }
     }
     const handleSetExpirationDate = (date)=>{
-        if(date !== ""){
+        if( date !==null && date !=="" ){
             const newDate = new DateObject({
                 date: date,
                 format: "YYYY/MM/DD",
@@ -270,6 +279,8 @@ export default function EditInfoDialog(props) {
                 locale: persian_fa
             })
             setDate(newDate)
+        }else{
+            setDate(null)
         }
     }
 
@@ -306,7 +317,7 @@ export default function EditInfoDialog(props) {
                 fullWidth={true}
                 open={props.openEditInfo}
                 keepMounted
-                onClose={()=>{props.handleCloseEditInfo();handleReset()}}
+                // onClose={()=>{props.handleCloseEditInfo();handleReset()}}
                 aria-describedby="alert-dialog-slide-description"
                 PaperProps={{
                     style: {
@@ -352,6 +363,8 @@ export default function EditInfoDialog(props) {
                                             setProduct(newValue)
                                             formik.setFieldValue("productId", newValue?.id)
                                             formik.setFieldValue("productName", newValue?.persianName)
+                                            setIsExpirable(newValue?.isExpirable)
+                                            newValue?.isExpirable===false ? (handleDateInput(null)):null 
                                         }}
                                         renderInput={(params) =>
                                             <TextField
@@ -377,7 +390,7 @@ export default function EditInfoDialog(props) {
                                         <TextField
                                             fullWidth
                                             placeholder="مقدار (اجباری)"
-                                            type="number"
+                                            type="text"
                                             name="value"
                                             value={formik.values.value}
                                             onChange={formik.handleChange}
@@ -421,7 +434,7 @@ export default function EditInfoDialog(props) {
                                                 />}/>
                                     </div>
                                 </div>
-                                <div>
+                                {product?.isExpirable && <div>
                                     <DatePicker
                                         calendarPosition={`bottom`}
                                         className="red"
@@ -430,7 +443,7 @@ export default function EditInfoDialog(props) {
                                         containerStyle={{
                                             width: "100%"
                                         }}
-                                        placeholder="تاریخ انقضا (اختیاری)"
+                                        placeholder="تاریخ انقضا (اجباری)"
                                         inputClass={`border border-[#D9D9D9] placeholder-neutral-300 text-gray-900 text-[0.8rem] rounded focus:ring-[#3B82F67F] focus:border-[#3B82F67F] block w-full px-3 py-4`}
                                         value={date}
                                         onChange={(value) => {
@@ -468,7 +481,13 @@ export default function EditInfoDialog(props) {
                                             ریست
                                         </button>
                                     </DatePicker>
-                                </div>
+                                </div>} { product?.isExpirable&&
+                                            Boolean(formik.errors.expirationDate) && (
+                                                <span className="mx-3 text-[0.6rem] text-red-600 ">
+                                                    {formik.errors.expirationDate}
+                                                </span>
+                                            )
+                                        }
                                 <div>
                                     <div className="flex flex-col md:flex-row">
                                         <div className="plate w-full md:w-[47%] flex items-center pl-4">

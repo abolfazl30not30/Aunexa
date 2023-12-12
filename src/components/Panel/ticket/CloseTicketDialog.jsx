@@ -96,7 +96,7 @@ export default function CloseTicketDialog(props) {
                 fullWidth={true}
                 open={props.openEditTicketInfo}
                 keepMounted
-                onClose={props.handleCloseEditTicketInfo}
+                // onClose={props.handleCloseEditTicketInfo}
                 aria-describedby="alert-dialog-slide-description"
                 PaperProps={{
                     style: {fontFamily: "__fonts_2f4189,__fonts_Fallback_2f4189"}

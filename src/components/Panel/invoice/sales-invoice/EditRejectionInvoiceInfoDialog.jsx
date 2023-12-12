@@ -38,10 +38,10 @@ export default function ConfirmDialog(props) {
                 fullWidth={true}
                 open={props.openEditRejectionInvoiceInfo}
                 keepMounted
-                onClose={() => {
-                    props.handleCloseEditRejectionInvoiceInfo();
-                    handleReset()
-                }}
+                // onClose={() => {
+                //     props.handleCloseEditRejectionInvoiceInfo();
+                //     handleReset()
+                // }}
                 aria-describedby="alert-dialog-slide-description"
                 PaperProps={{
                     style: {

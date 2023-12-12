@@ -9,7 +9,7 @@ import {TailSpin} from "react-loader-spinner";
 import * as yup from "yup";
 import {useFormik} from "formik";
 import { useUpdateSubOrganizationMutation } from "@/redux/features/organization/sub-organization/SubOrganizationSlice";
-
+import { PersianToEnglish } from "@/helper/PersianToEnglish";
 
 export default function EditSubOrganizationInfoDialog(props) {
     
@@ -29,7 +29,10 @@ export default function EditSubOrganizationInfoDialog(props) {
       name: yup.string().required("لطفا نام دپارتمان را وارد کنید"),
       unit: yup.string(),
       type:yup.string().required(),
-      
+      capacity: yup.string().matches(
+        /^[۰۱۲۳۴۵۶۷۸۹0.-9]+$/,
+        "لطفا فقط عدد وارد نمایید"
+      ),
       
     });
 
@@ -50,7 +53,7 @@ export default function EditSubOrganizationInfoDialog(props) {
             const body = {...subOrganization,
                 organizationId:window.sessionStorage.getItem("organizationId"),
                 subOrganizationId:window.sessionStorage.getItem("subOrganizationId"),
-                
+                capacity:PersianToEnglish(`${subOrganization.capacity}`)
             }
             const userData = await submitData(body)
             console.log(error)
@@ -96,7 +99,7 @@ export default function EditSubOrganizationInfoDialog(props) {
                 fullWidth={true}
                 open={props.openEditSubOrganizationInfo}
                 keepMounted
-                onClose={()=>{props.handleCloseEditSubOrganizationInfo();handleReset()}}
+                // onClose={()=>{props.handleCloseEditSubOrganizationInfo();handleReset()}}
                 aria-describedby="alert-dialog-slide-description"
                 PaperProps={{
                     style: {fontFamily: "__fonts_2f4189,__fonts_Fallback_2f4189"}

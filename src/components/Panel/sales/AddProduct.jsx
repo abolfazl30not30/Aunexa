@@ -21,7 +21,7 @@ import {useUploadFileCloudMutation} from "@/redux/features/file/FileSlice";
 import {
     useSavePendingPurchaseRequestListMutation
 } from "@/redux/features/purchase/pending-purchase-request-list/PendingPurchaseRequestListSlice";
-
+import { PersianToEnglish } from "@/helper/PersianToEnglish";
 export default function AddProduct(props) {
 
     //product input
@@ -52,6 +52,7 @@ export default function AddProduct(props) {
         }
     }, [openUnitList])
 
+ 
    
     // const [uploadedImage, setUploadedImage] = useState("")
     // const [uploadFile, {isLoading: isLoadingUpload, error: errorUpload}] = useUploadFileCloudMutation()
@@ -76,7 +77,7 @@ export default function AddProduct(props) {
     // }
 
 
-
+const [includeError,setIncludeError]=useState(false)
     const handleReset = () => {
         formik.resetForm()
         setProduct(null)
@@ -87,10 +88,13 @@ export default function AddProduct(props) {
     const schema = yup.object().shape({
         productId: yup.string().required("لطفا نام محصول را وارد کنید"),
         paymentMethod: yup.string().required("لطفا شيوه پرداخت را انتخاب كنيد"),
-        value: yup.string().required("لطفا مقدار محصول را وارد کنید"),
+        value: yup.string().required("لطفا مقدار محصول را وارد کنید").matches(
+            /^[۰۱۲۳۴۵۶۷۸۹0.-9]+$/,
+            "لطفا فقط عدد وارد نمایید"
+          ),
         unit: yup.string().required("لطفا واحد محصول را وارد کنید"),
     });
-
+    
 
     const formik = useFormik({
         initialValues: {
@@ -113,13 +117,24 @@ export default function AddProduct(props) {
                 paymentMethod: product.paymentMethod,
                 quantity:{
                     unit: product.unit,
-                    value: product.value
+                    value: PersianToEnglish(product.value)
                 }
             }
-            updateInvoiceItems.push(newProduct)
-            props.setInvoiceItemInput(updateInvoiceItems)
-            handleReset()
-            props.handleCloseAddProduct()
+           
+        
+            if(updateInvoiceItems.filter((item)=>{return item?.productName===newProduct?.productName && item?.paymentMethod===newProduct?.paymentMethod}).length===0){
+                updateInvoiceItems.push(newProduct)
+                props.setInvoiceItemInput(updateInvoiceItems)
+                handleReset()
+                props.handleCloseAddProduct()
+                setIncludeError(false)
+            }
+            else{
+                setIncludeError(true)
+            }
+            
+            
+           
         },
     });
 
@@ -129,10 +144,10 @@ export default function AddProduct(props) {
                 fullWidth={true}
                 open={props.openAddProduct}
                 keepMounted
-                onClose={() => {
-                    props.handleCloseAddProduct();
-                    handleReset()
-                }}
+                // onClose={() => {
+                //     props.handleCloseAddProduct();
+                //     handleReset()
+                // }}
                 aria-describedby="alert-dialog-slide-description"
                 PaperProps={{
                     style: {fontFamily: "__fonts_2f4189,__fonts_Fallback_2f4189"}
@@ -142,7 +157,8 @@ export default function AddProduct(props) {
                         <div className="flex justify-end">
                             <button onClick={() => {
                                 props.handleCloseAddProduct();
-                                handleReset()
+                                handleReset();
+                                setIncludeError(false)
                             }}>
                                 <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 14 14"
                                      fill="none">
@@ -182,6 +198,9 @@ export default function AddProduct(props) {
                                             setProduct(newValue)
                                             formik.setFieldValue("productId", newValue?.id)
                                             formik.setFieldValue("productName", newValue?.persianName)
+                                            
+
+                                            
                                         }}
                                         renderInput={(params) =>
                                             <TextField
@@ -278,7 +297,7 @@ export default function AddProduct(props) {
                                             labelId="demo-simple-select-label"
                                             id="demo-simple-select"
                                             value={formik.values.paymentMethod}
-                                            onChange={formik.handleChange}
+                                            onChange={formik.handleChange }
                                             name="paymentMethod"
                                             input={<OutlinedInput sx={{
                                                 fontFamily: "__fonts_2f4189,__fonts_Fallback_2f4189",
@@ -325,6 +344,11 @@ export default function AddProduct(props) {
                                         </Select>
                                     </FormControl>
                                 </div>
+                                {(props.invoiceItemInput.filter((item)=>{return item?.productName===formik.values.productName && item?.paymentMethod===formik.values.paymentMethod}).length!==0)&&includeError&&<div>
+                                    <span className="text-xs text-mainRed">
+                                           کالای وارد شده با این نام محصول و شیوه پرداخت موجود است
+                                    </span>
+                                </div>}
                                 <div>
                                     {
                                         isSubmitLoading ? (<button disabled type="submit"

@@ -21,7 +21,7 @@ export default function DeleteSubOrganizationDialog(props) {
                 fullWidth={true}
                 open={props.openDeleteSubOrganization}
                 keepMounted
-                onClose={props.handleCloseDeleteSubOrganization}
+                // onClose={props.handleCloseDeleteSubOrganization}
                 aria-describedby="alert-dialog-slide-description"
                 PaperProps={{
                     style: {fontFamily: "__fonts_2f4189,__fonts_Fallback_2f4189"}

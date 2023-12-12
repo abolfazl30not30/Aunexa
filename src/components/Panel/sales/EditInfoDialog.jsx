@@ -20,7 +20,7 @@ import {
 import {styled} from "@mui/material/styles";
 import Switch from "@mui/material/Switch";
 import { useUpdateSalesMutation } from "@/redux/features/sales/SalesSlice";
-import { useUploadFileCloudMutation } from "@/redux/features/file/FileSlice";
+import { useUploadFileMinioMutation } from "@/redux/features/file/FileSlice";
 
 const AntSwitch = styled(Switch)(({ theme }) => ({
     width: 35,
@@ -85,18 +85,19 @@ export default function EditInfoDialog(props) {
     //         getUnitList()
     //     }
     // },[openUnitList])
-    const [uploadedImage,setUploadedImage] = useState("")
-    const [uploadFile, { isLoading:isLoadingUpload ,error:errorUpload}] = useUploadFileCloudMutation()
+    const [uploadedImage,setUploadedImage] = useState()
+    const [uploadFile, { isLoading:isLoadingUpload ,error:errorUpload}] = useUploadFileMinioMutation()
     const handleUploadImage = async (event) =>{
         let formData = new FormData();
         formData.append('file', event.target.files[0]);
         const res = await uploadFile(formData)
         if(res.data){
-            setUploadedImage(res.data?.fileUrl)
+            
+            setUploadedImage(res.data?.name)
         }
     }
     const handleDeleteUpload = () =>{
-        setUploadedImage("")
+        setUploadedImage(null)
     }
     const handleReset = () =>{
         formik.resetForm()
@@ -152,7 +153,7 @@ export default function EditInfoDialog(props) {
         //    value:"",
            customer:"",
            receiptCode:"",
-           receiptFile:"",
+           receiptFile:null,
            description:"",
         },
 
@@ -172,7 +173,7 @@ export default function EditInfoDialog(props) {
                 fullWidth={true}
                 open={props.openEditInfo}
                 keepMounted
-                onClose={()=>{props.handleCloseEditInfo();handleReset()}}
+                // onClose={()=>{props.handleCloseEditInfo();handleReset()}}
                 aria-describedby="alert-dialog-slide-description"
                 PaperProps={{
                     style: {
@@ -231,7 +232,7 @@ export default function EditInfoDialog(props) {
                                                 </div>
                                             </div>
                                         ) : (
-                                            uploadedImage !== '' ? (
+                                            uploadedImage !== null ? (
                                                 <div>
                                                     <div className="relative  rounded border border-dashed border-[#D9D9D9]">
                                                         <button onClick={handleDeleteUpload} className="shadow hover:bg-red-400 absolute z-10 top-0 right-0 rounded-full bg-mainRed p-1">

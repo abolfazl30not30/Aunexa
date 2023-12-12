@@ -14,7 +14,7 @@ export default function MoreInfoDialog(props) {
                 fullWidth={true}
                 open={props.openMoreInfo}
                 keepMounted
-                onClose={props.handleCloseMoreInfo}
+                // onClose={props.handleCloseMoreInfo}
                 aria-describedby="alert-dialog-slide-description"
                 PaperProps={{
                     style: {
@@ -100,14 +100,14 @@ export default function MoreInfoDialog(props) {
                                     </div>
                                 </div>
                                 {
-                                    props.moreInfoTarget.description && (
+                                    props.moreInfoTarget?.failureReason?.description && (
                                         <div className="flex flex-col">
                                             <div className="mb-2">
-                                                <span className="text-[0.9rem] text-gray70 ">توضیحات</span>
+                                                <span className="text-[0.9rem] text-gray70 ">توضیحات رد</span>
                                             </div>
                                             <div className="border border-[#D9D9D9]  flex justify-start px-4">
                                                 <div className="p-2">
-                                                    <span className="text-[#29262A] text-[0.9rem]">{props.moreInfoTarget.description}</span>
+                                                    <span className="text-[#29262A] text-[0.9rem]">{props.moreInfoTarget?.failureReason?.description}</span>
                                                 </div>
                                             </div>
                                         </div>
@@ -170,27 +170,28 @@ export default function MoreInfoDialog(props) {
                                         )}
                                     </span>
                                 </div>
-                                {props.moreInfoTarget?.description?(
+                                {props.moreInfoTarget?.failureReason?.description&&
                                     <div>
                                     <span className="ml-1 text-gray9F text-[0.8rem]">
-                                        توضیحات :
+                                        توضیحات رد  :
                                     </span>
                                     <span className="text-[#29262A] text-[0.8rem]">
-                                        {props.moreInfoTarget?.description}
+                                        {props.moreInfoTarget?.failureReason?.description}
                                     </span>
                                 </div>
-                                ):null}
+                                }
                                 
                             </div>
                         </div>
+                       {props.moreInfoTarget?.status==="IN_PROGRESS" && 
                         <div className="md:hidden flex  justify-center mt-5 gap-3">
-                            <button onClick={()=>{props.handleOpenDelete(props.moreInfoTarget.id);props.handleCloseMoreInfo()}} className="px-6 py-2 text-[0.8rem] text-mainRed border border-mainRed rounded hover:bg-mainRed hover:text-white">
-                                حذف
-                            </button>
-                            <button onClick={()=>{props.handleOpenEditInfo(props.moreInfoTarget);props.handleCloseMoreInfo()}}  className="px-5 py-2 text-[0.8rem] text-[#4087DB] border border-[#4087DB] rounded hover:bg-[#4087DB] hover:text-white">
-                                ویرایش
-                            </button>
-                        </div>
+                        <button onClick={()=>{props.handleOpenDelete(props.moreInfoTarget.id);props.handleCloseMoreInfo()}} className="px-6 py-2 text-[0.8rem] text-mainRed border border-mainRed rounded hover:bg-mainRed hover:text-white">
+                            حذف
+                        </button>
+                        <button onClick={()=>{props.handleOpenEditInfo(props.moreInfoTarget);props.handleCloseMoreInfo()}}  className="px-5 py-2 text-[0.8rem] text-[#4087DB] border border-[#4087DB] rounded hover:bg-[#4087DB] hover:text-white">
+                            ویرایش
+                        </button>
+                    </div>}
                     </DialogContentText>
                 </DialogContent>
             </Dialog>
