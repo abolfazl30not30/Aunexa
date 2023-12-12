@@ -52,6 +52,7 @@ export default function AddProduct(props) {
         }
     }, [openUnitList])
 
+ 
    
     // const [uploadedImage, setUploadedImage] = useState("")
     // const [uploadFile, {isLoading: isLoadingUpload, error: errorUpload}] = useUploadFileCloudMutation()
@@ -76,7 +77,7 @@ export default function AddProduct(props) {
     // }
 
 
-
+const [includeError,setIncludeError]=useState(false)
     const handleReset = () => {
         formik.resetForm()
         setProduct(null)
@@ -116,10 +117,21 @@ export default function AddProduct(props) {
                     value: product.value
                 }
             }
-            updateInvoiceItems.push(newProduct)
-            props.setInvoiceItemInput(updateInvoiceItems)
-            handleReset()
-            props.handleCloseAddProduct()
+           
+        
+            if(updateInvoiceItems.filter((item)=>{return item?.productName===newProduct?.productName && item?.paymentMethod===newProduct?.paymentMethod}).length===0){
+                updateInvoiceItems.push(newProduct)
+                props.setInvoiceItemInput(updateInvoiceItems)
+                handleReset()
+                props.handleCloseAddProduct()
+                setIncludeError(false)
+            }
+            else{
+                setIncludeError(true)
+            }
+            
+            
+           
         },
     });
 
@@ -142,7 +154,8 @@ export default function AddProduct(props) {
                         <div className="flex justify-end">
                             <button onClick={() => {
                                 props.handleCloseAddProduct();
-                                handleReset()
+                                handleReset();
+                                setIncludeError(false)
                             }}>
                                 <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 14 14"
                                      fill="none">
@@ -182,6 +195,9 @@ export default function AddProduct(props) {
                                             setProduct(newValue)
                                             formik.setFieldValue("productId", newValue?.id)
                                             formik.setFieldValue("productName", newValue?.persianName)
+                                            
+
+                                            
                                         }}
                                         renderInput={(params) =>
                                             <TextField
@@ -278,7 +294,7 @@ export default function AddProduct(props) {
                                             labelId="demo-simple-select-label"
                                             id="demo-simple-select"
                                             value={formik.values.paymentMethod}
-                                            onChange={formik.handleChange}
+                                            onChange={formik.handleChange }
                                             name="paymentMethod"
                                             input={<OutlinedInput sx={{
                                                 fontFamily: "__fonts_2f4189,__fonts_Fallback_2f4189",
@@ -325,6 +341,11 @@ export default function AddProduct(props) {
                                         </Select>
                                     </FormControl>
                                 </div>
+                                {(props.invoiceItemInput.filter((item)=>{return item?.productName===formik.values.productName && item?.paymentMethod===formik.values.paymentMethod}).length!==0)&&includeError&&<div>
+                                    <span className="text-xs text-mainRed">
+                                           کالای وارد شده با این نام محصول و شیوه پرداخت موجود است
+                                    </span>
+                                </div>}
                                 <div>
                                     {
                                         isSubmitLoading ? (<button disabled type="submit"

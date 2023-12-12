@@ -85,7 +85,7 @@ export default function EditInfoDialog(props) {
     //         getUnitList()
     //     }
     // },[openUnitList])
-    const [uploadedImage,setUploadedImage] = useState(null)
+    const [uploadedImage,setUploadedImage] = useState()
     const [uploadFile, { isLoading:isLoadingUpload ,error:errorUpload}] = useUploadFileMinioMutation()
     const handleUploadImage = async (event) =>{
         let formData = new FormData();

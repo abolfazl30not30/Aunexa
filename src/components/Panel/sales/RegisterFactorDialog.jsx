@@ -102,7 +102,7 @@ export default function RegisterFactorDialog(props) {
     const validate = (values, props) => {
         const errors = {};
         
-        console.log(invoiceItemInput)
+        
         if (invoiceItemInput.length===0 ) {
             errors.invoiceItems = "لطفا کالا را وارد کنید";
         } 
@@ -134,18 +134,23 @@ export default function RegisterFactorDialog(props) {
 
         onSubmit: async (registerFactor,helpers) => {
             
-            let updateRegisterFactor = {...registerFactor,receiptFile:uploadedImage, invoiceItems:invoiceItemInput}
+            if(!openAddProduct){
+                let updateRegisterFactor = {...registerFactor,receiptFile:uploadedImage, invoiceItems:invoiceItemInput}
            
                 const userData = await submitData(updateRegisterFactor)
             
             setInvoiceItemInput([])
             handleReset()
             props.handleCloseRegisterFactor()
+            }
             
         },
     });
 
-    
+    const handleDeleteItem=(item)=>{
+        setInvoiceItemInput(invoiceItemInput.filter((items)=> (items?.paymentMethod !== item?.paymentMethod) || (items?.productName !== item?.productName)  ))
+        
+    }
     return (
         <>
             <Dialog
@@ -192,22 +197,41 @@ export default function RegisterFactorDialog(props) {
                                     </div>
                                     
                                     {invoiceItemInput?.map((item)=>(
-                                        <div className="border border-gray50 px-4 py-3 gap-4 flex flex-col ">
-
+                                         
+                                        <div className="border border-gray50 sm:px-4 px-2 py-3 gap-4 flex flex-col ">
+                                       
                                             <div className="flex justify-between gap-4">
-                                                <div className="flex items-center gap-2 text-sm">
+                                                <div className="flex items-center gap-2 sm:text-sm text-xs">
                                                     <div><span>نام محصول :</span></div>
                                                     <div><span className="text-[#29262A] font-semibold">{item?.productName}</span></div>
                                                 </div>
-                                                <div className="flex items-center gap-2 text-sm">
+                                                <div className="flex items-center gap-2 sm:text-sm text-xs">
                                                     <div><span>مقدار :</span></div>
                                                     <div><span className="text-[#29262A] font-semibold">{item?.quantity?.value} {item?.quantity?.unit}</span></div>
                                                 </div>
                                             </div>
-                                            <div className="flex items-center gap-2 text-sm">
-                                                <div><span>شیوه پرداخت :</span></div>
+                                            <div className="flex items-center justify-between sm:gap-2 gap-1 sm:text-sm text-xs">
+                                               <div className="flex items-center  sm:gap-2 gap-0.5 sm:text-sm text-xs">
+                                               <div><span>شیوه پرداخت :</span></div>
                                                 <div><span className="text-[#29262A] font-semibold">{item?.paymentMethod==="PARDAKHT_NAGHDI"?"پرداخت نقدی در محل تحویل":item?.paymentMethod==="PARDAKHT_BANKI"?"پرداخت با کارت بانکی در محل تحویل":item?.paymentMethod==="PARDAKHT_INTERNETI"?"پرداخت از طریق درگاه اینترنتی":item?.paymentMethod==="CHEK_MODAT_DAR"?"چک مدت دار":item?.paymentMethod==="CHEK"?"چک":item?.paymentMethod==="AGHSATI"?"اقساطی":item?.paymentMethod==="ETEBARI"?"اعتباری":item?.paymentMethod==="SAYER"?"سایر":null}
                                     </span></div>
+                                               </div>
+                                               <button onClick={()=>{handleDeleteItem(item)}}>
+                                               <svg
+                                    xmlns="http://www.w3.org/2000/svg"
+                                    width="16"
+                                    height="16"
+                                    viewBox="0 0 16 16"
+                                    fill="none"
+                                  >
+                                    <path
+                                      d="M10.6667 3.99998V3.46665C10.6667 2.71991 10.6667 2.34654 10.5213 2.06133C10.3935 1.81044 10.1895 1.60647 9.93865 1.47864C9.65344 1.33331 9.28007 1.33331 8.53333 1.33331H7.46667C6.71993 1.33331 6.34656 1.33331 6.06135 1.47864C5.81046 1.60647 5.60649 1.81044 5.47866 2.06133C5.33333 2.34654 5.33333 2.71991 5.33333 3.46665V3.99998M6.66667 7.66665V11M9.33333 7.66665V11M2 3.99998H14M12.6667 3.99998V11.4666C12.6667 12.5868 12.6667 13.1468 12.4487 13.5746C12.2569 13.951 11.951 14.2569 11.5746 14.4487C11.1468 14.6666 10.5868 14.6666 9.46667 14.6666H6.53333C5.41323 14.6666 4.85318 14.6666 4.42535 14.4487C4.04903 14.2569 3.74307 13.951 3.55132 13.5746C3.33333 13.1468 3.33333 12.5868 3.33333 11.4666V3.99998"
+                                      stroke="#FE4949"
+                                      stroke-linecap="round"
+                                      stroke-linejoin="round"
+                                    />
+                                  </svg>
+                                               </button>
                                             </div>
                                         </div>
                                     ))}
@@ -342,7 +366,7 @@ export default function RegisterFactorDialog(props) {
                                                 visible={true}/>
                                             ثبت
                                         </button>) : (
-                                            <button type="submit"
+                                            <button type="submit" 
                                                     className="w-full rounded-[0.5rem] py-3 hover:border hover:opacity-80 font-bold  bg-mainRed text-white">ثبت
                                             </button>
                                         )
