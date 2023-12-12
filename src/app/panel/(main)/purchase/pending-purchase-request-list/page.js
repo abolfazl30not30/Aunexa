@@ -483,12 +483,12 @@ export default function page() {
                     ))
                   : inventoryData?.content?.map((data, index) => (
                       <tr
-                        onClick={() => {
+                        onClick={(e) => {
                           handleOpenMoreInfoRow(data);
                         }}
                         className="table-row border-b"
                       >
-                        <td className="table-cell md:px-6 py-4 px-2  text-gray70 whitespace-nowrap ">
+                        <td className="table-cell  md:px-6 py-4 px-2  text-gray70 whitespace-nowrap ">
                           <Checkbox
                             id={data.id}
                             checked={paymentList.some(
@@ -496,6 +496,7 @@ export default function page() {
                             )}
                             onClick={(e) => {
                               handleChangeChecked(e, data);
+                              e.stopPropagation();
                             }}
                             inputProps={{ "aria-label": "controlled" }}
                           />
