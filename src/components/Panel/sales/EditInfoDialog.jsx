@@ -21,6 +21,7 @@ import {styled} from "@mui/material/styles";
 import Switch from "@mui/material/Switch";
 import { useUpdateSalesMutation } from "@/redux/features/sales/SalesSlice";
 import { useUploadFileMinioMutation } from "@/redux/features/file/FileSlice";
+import { useDeleteFileMinioMutation } from "@/redux/features/file/FileSlice";
 
 const AntSwitch = styled(Switch)(({ theme }) => ({
     width: 35,
@@ -85,7 +86,7 @@ export default function EditInfoDialog(props) {
     //         getUnitList()
     //     }
     // },[openUnitList])
-    const [uploadedImage,setUploadedImage] = useState()
+    const [uploadedImage,setUploadedImage] = useState("")
     const [uploadFile, { isLoading:isLoadingUpload ,error:errorUpload}] = useUploadFileMinioMutation()
     const handleUploadImage = async (event) =>{
         let formData = new FormData();
@@ -96,11 +97,15 @@ export default function EditInfoDialog(props) {
             setUploadedImage(res.data?.name)
         }
     }
-    const handleDeleteUpload = () =>{
-        setUploadedImage(null)
-    }
+    const [handleDelete ,{isLoadingDelete}] = useDeleteFileMinioMutation()
+    const handleDeleteUpload = async (e) =>{
+        e.preventDefault()
+        const res = await handleDelete(uploadedImage)
+       setUploadedImage("")
+    } 
     const handleReset = () =>{
         formik.resetForm()
+        setUploadedImage("")
         // setProduct(null)
         // setUnit(null)
         // setProduct(null)
@@ -124,11 +129,13 @@ export default function EditInfoDialog(props) {
             receiptCode:props.editInfoTarget?.receiptCode,
             description:props.editInfoTarget?.description,
             receiptFile:props.editInfoTarget?.receiptFile,
+            
             // unit:props.editInfoTarget?.quantity?.unit,
             // value:props.editInfoTarget?.quantity?.value,
             
             
         })
+        setUploadedImage(props.editInfoTarget?.receiptFile)
         // handleSetProductInput(props.editInfoTarget?.billCycle?.productId)
         // handleSetUnitInput(props.editInfoTarget?.quantity?.unit)
     },[props.openEditInfo])
@@ -153,7 +160,7 @@ export default function EditInfoDialog(props) {
         //    value:"",
            customer:"",
            receiptCode:"",
-           receiptFile:null,
+           receiptFile:"",
            description:"",
         },
 
@@ -232,10 +239,10 @@ export default function EditInfoDialog(props) {
                                                 </div>
                                             </div>
                                         ) : (
-                                            uploadedImage !== null ? (
+                                             uploadedImage !=="" ? (
                                                 <div>
                                                     <div className="relative  rounded border border-dashed border-[#D9D9D9]">
-                                                        <button onClick={handleDeleteUpload} className="shadow hover:bg-red-400 absolute z-10 top-0 right-0 rounded-full bg-mainRed p-1">
+                                                        <button onClick={(e)=>handleDeleteUpload(e)} className="shadow hover:bg-red-400 absolute z-10 top-0 right-0 rounded-full bg-mainRed p-1">
                                                             <svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" viewBox="0 0 24 24" fill="none"><path d="M18 6L6 18M6 6L18 18" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
                                                         </button>
                                                         <img className="object-cover w-full h-full" src={uploadedImage} alt="uploadedImage"/>

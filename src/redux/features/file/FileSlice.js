@@ -3,7 +3,7 @@ import { apiSlice } from "../../api/apiSlice";
 export const FileSlice = apiSlice.injectEndpoints({
   endpoints: (builder) => ({
     downloadFileMinio: builder.query({
-      query: ( name ) => ({
+      query: (name) => ({
         url: `file/download/${name}`,
       }),
       providesTags: ["file"],
@@ -27,6 +27,14 @@ export const FileSlice = apiSlice.injectEndpoints({
       }),
       invalidatesTags: ["file"],
     }),
+    deleteFileMinio: builder.mutation({
+      query: (name) => ({
+        url: `file/remove/${name}`,
+        method: "DELETE",
+        body: name,
+      }),
+      invalidatesTags: ["file"],
+    }),
   }),
 });
 
@@ -34,4 +42,5 @@ export const {
   useLazyDownloadFileMinioQuery,
   useUploadFileCloudMutation,
   useUploadFileMinioMutation,
+  useDeleteFileMinioMutation,
 } = FileSlice;
