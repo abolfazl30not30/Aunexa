@@ -758,11 +758,12 @@ export default function registerOrganization() {
                                   <div>
                                     <button
                                       className="flex  text-gray60  border border-gray60 items-center text- px-3 py-2 rounded-full md:rounded"
-                                      onClick={() => {
+                                      onClick={(e) => {
                                         handleOpenAddIndividual(
                                           organization.id,
                                           subOrganization.id
                                         );
+                                        e.stopPropagation();
                                       }}
                                     >
                                       <span className="hidden md:inline text-gray9F">
@@ -798,10 +799,11 @@ export default function registerOrganization() {
                                   className="hidden md:flex gap-2 px-6  justify-center text-gray70 whitespace-nowrap "
                                 >
                                   <button
-                                    onClick={() => {
+                                    onClick={(e) => {
                                       handleOpenEditSubOrganizationInfo(
                                         subOrganization
                                       );
+                                      e.stopPropagation();
                                     }}
                                     className="border border-1 border-solid border-[#2492FF] rounded p-[0.4rem] hover:bg-blue-100"
                                   >
@@ -832,10 +834,11 @@ export default function registerOrganization() {
                                     </svg>
                                   </button>
                                   <button
-                                    onClick={() => {
+                                    onClick={(e) => {
                                       handleOpenDeleteSubOrganization(
                                         subOrganization.id
                                       );
+                                      e.stopPropagation();
                                     }}
                                     className="border border-1 border-solid border-[#FE4949] rounded p-[0.4rem] hover:bg-red-100"
                                   >

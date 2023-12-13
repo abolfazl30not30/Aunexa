@@ -657,8 +657,9 @@ export default function page() {
                               className="hidden md:flex gap-2 px-6 py-4 justify-center text-gray70 whitespace-nowrap "
                             >
                               <button
-                                onClick={() => {
+                                onClick={(e) => {
                                   handleOpenMoreInfo(data);
+                                  e.stopPropagation();
                                 }}
                                 className="border border-1 border-solid border-gray70 rounded p-[0.4rem] hover:bg-neutral-100"
                               >

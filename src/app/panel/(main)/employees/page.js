@@ -536,11 +536,12 @@ export default function registerOrganization() {
                                   <div>
                                     <button
                                       className="flex  text-gray60  border border-gray60 items-center text- px-3 py-2 rounded-full md:rounded"
-                                      onClick={() => {
+                                      onClick={(e) => {
                                         handleOpenAddIndividual(
                                           organization.id,
                                           subOrganization.id
                                         );
+                                        e.stopPropagation();
                                       }}
                                     >
                                       <span className="hidden md:inline text-gray9F">

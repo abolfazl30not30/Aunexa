@@ -71,7 +71,7 @@ export default function MoreInfoDialog(props) {
                                     </div>
                                     <div className="border border-[#D9D9D9]   px-4">
                                         <div className="p-2">
-                                            <span className="text-[#29262A] text-[0.9rem]">{props.moreInfoTarget?.salesDate}</span>
+                                            <span className="text-[#29262A] text-[0.9rem]"><span>{props.moreInfoTarget?.salesDate}</span><span className="pl-2">{props.moreInfoTarget?.salesTime}</span></span>
                                         </div>
                                         
                                        
