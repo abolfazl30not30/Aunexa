@@ -221,7 +221,7 @@ const [includeError,setIncludeError]=useState(false)
                                                         </React.Fragment>
                                                     )
                                                 }}
-                                                placeholder="نوع محصول (اجباری)"
+                                                placeholder="نام محصول (اجباری)"
                                             />}
                                     />
                                 </div>

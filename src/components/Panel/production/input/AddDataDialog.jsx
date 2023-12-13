@@ -174,7 +174,7 @@ export default function AddDataDialog(props) {
                                                         </React.Fragment>
                                                     )
                                             }}
-                                                placeholder="نوع محصول (اجباری)"
+                                                placeholder="نام محصول (اجباری)"
                                             />}
                                     />
                                 </div>

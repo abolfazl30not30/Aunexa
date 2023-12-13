@@ -235,7 +235,7 @@ export default function EditItemInfoDialog(props) {
                                                         </React.Fragment>
                                                     )
                                                 }}
-                                                placeholder="نوع محصول (اجباری)"
+                                                placeholder="نام محصول (اجباری)"
                                             />}/>
                                     </div>
                                     <div className="flex w-full">

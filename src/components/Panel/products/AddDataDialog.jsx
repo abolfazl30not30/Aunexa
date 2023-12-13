@@ -96,7 +96,7 @@ export default function AddDataDialog(props) {
     //submit data
     const [submitData, { isLoading:isSubmitLoading ,error}] = useSaveProductMutation()
     const schema = yup.object().shape({
-        type: yup.string().required("لطفا نوع محصول را وارد کنید"),
+        type: yup.string().required("لطفا نام محصول را وارد کنید"),
         persianName: yup.string().required("لطفا نام فارسی محصول را وارد کنید"),
         defaultUnit: yup.string().required("لطفا واحد پیش فرض را وارد کنید"),
     });
@@ -264,13 +264,13 @@ export default function AddDataDialog(props) {
                                 </div>
                                 <div>
                                     <FormControl fullWidth error={formik.touched.type && Boolean(formik.errors.type)}>
-                                        <InputLabel id="demo-simple-select-label" sx={{fontFamily: "__fonts_2f4189,__fonts_Fallback_2f4189", fontSize: "0.8rem",color:"#9F9F9F"}}>نوع محصول </InputLabel>
+                                        <InputLabel id="demo-simple-select-label" sx={{fontFamily: "__fonts_2f4189,__fonts_Fallback_2f4189", fontSize: "0.8rem",color:"#9F9F9F"}}>نام محصول </InputLabel>
                                         <Select
                                             labelId="demo-simple-select-label"
                                             id="demo-simple-select"
                                             value={formik.values.type}
                                             name="type"
-                                            input={<OutlinedInput sx={{fontFamily: "__fonts_2f4189,__fonts_Fallback_2f4189", fontSize: "0.8rem"}} label="نوع محصول" />}
+                                            input={<OutlinedInput sx={{fontFamily: "__fonts_2f4189,__fonts_Fallback_2f4189", fontSize: "0.8rem"}} label="نام محصول" />}
                                             sx={{fontFamily: "__fonts_2f4189,__fonts_Fallback_2f4189", fontSize: "0.8rem"}}
                                             onChange={formik.handleChange}>
                                             <MenuItem value="PRIMARY" sx={{fontFamily: "__fonts_2f4189,__fonts_Fallback_2f4189", fontSize: "0.8rem"}}>ماده اولیه</MenuItem>

@@ -367,7 +367,7 @@ export default function EditInfoDialog(props) {
                                                         </React.Fragment>
                                                     )
                                                 }}
-                                                placeholder="نوع محصول (اجباری)"
+                                                placeholder="نام محصول (اجباری)"
                                             />}
                                     />
                                 </div>
