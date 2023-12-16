@@ -184,28 +184,22 @@ function Ticket() {
                   <div className="flex justify-center gap-2 my-2">
                     <div>
                       <button
-                        className="flex bg-mainRed text-white items-center text- px-3 py-2 rounded-full md:rounded"
+                        className="flex bg-mainRed text-white items-center md:text-base text-sm text- px-3 py-2 rounded-full md:rounded"
                         onClick={() => {
                           setTicketMethod("source");
                         }}
                       >
-                        <span className="hidden md:inline">
-                          {" "}
-                          تیکت های ارسالی
-                        </span>
+                        <span className="inline"> تیکت های ارسالی</span>
                       </button>
                     </div>
                     <div>
                       <button
-                        className="flex bg-mainRed text-white items-center text- px-3 py-2 rounded-full md:rounded"
+                        className="flex bg-mainRed text-white items-center md:text-base text-sm text- px-3 py-2 rounded-full md:rounded"
                         onClick={() => {
                           setTicketMethod("target");
                         }}
                       >
-                        <span className="hidden md:inline">
-                          {" "}
-                          تیکت های دریافتی
-                        </span>
+                        <span className="inline"> تیکت های دریافتی</span>
                       </button>
                     </div>
                   </div>
