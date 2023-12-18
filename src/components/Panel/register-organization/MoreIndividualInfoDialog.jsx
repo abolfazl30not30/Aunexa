@@ -279,7 +279,198 @@ export default function MoreIndividualInfoDialog(props) {
            
                             </div>
                         </div>
-                        
+                        <div className="md:hidden flex justify-center">
+                            <div className="w-full md:w-[70%] flex flex-col gap-3 ">
+                                
+                                <div>
+                                    <span className="ml-1 text-gray9F text-[0.8rem]">
+                                          نام و نام خانوادگی :
+                                    </span>
+                                    <span className="text-[#29262A] text-[0.8rem]">
+                                    {props.moreInfoIndividualTarget?.fullName}
+                                    </span>
+                                </div>
+                                <div>
+                                    <span className="ml-1 text-gray9F text-[0.8rem]">
+                                          کد ملی :
+                                    </span>
+                                    <span className="text-[#29262A] text-[0.8rem]">
+                                    {props.moreInfoIndividualTarget?.nationalCode}
+                                    </span>
+                                </div>
+                              
+                                <div>
+                                    <span className="ml-1 text-gray9F text-[0.8rem]">
+                                          کد پرسنلی :
+                                    </span>
+                                    <span className="text-[#29262A] text-[0.8rem]">
+                                    {props.moreInfoIndividualTarget?.personalCode}
+                                    </span>
+                                </div>
+                                
+                                <div>
+                                    <span className="ml-1 text-gray9F text-[0.8rem]">
+                                          تاریخ تولد :
+                                    </span>
+                                    <span className="text-[#29262A] text-[0.8rem]">
+                                        {props.moreInfoIndividualTarget?.birthDate}
+                                    </span>
+                                </div>
+                                <div>
+                                    <span className="ml-1 text-gray9F text-[0.8rem]">
+                                           نام پدر :
+                                    </span>
+                                    <span className="text-[#29262A] text-[0.8rem]">
+                                        {props.moreInfoIndividualTarget?.fatherName}
+                                    </span>
+                                </div>
+                                <div>
+                                    <span className="ml-1 text-gray9F text-[0.8rem]">
+                                            جنسیت :
+                                    </span>
+                                    <span className="text-[#29262A] text-[0.8rem]">
+                                        {props.moreInfoIndividualTarget?.gender==="male" ? "مرد" : props.moreInfoIndividualTarget?.gender==="female" ? "زن" : props.moreInfoIndividualTarget?.gender==="other" ? "دیگر" :null }
+                                    </span>
+                                </div>
+                                <div>
+                                    <span className="ml-1 text-gray9F text-[0.8rem]">
+                                            نقش :
+                                    </span>
+                                    <span className="text-[#29262A] text-[0.8rem]">
+                                        {props.moreInfoIndividualTarget?.role }
+                                    </span>
+                                </div>
+                                <div>
+                                    <span className="ml-1 text-gray9F text-[0.8rem]">
+                                            شماره همراه اصلی :
+                                    </span>
+                                    <span className="text-[#29262A] text-[0.8rem]">
+                                        {props.moreInfoIndividualTarget?.originalPhoneNumber}
+                                    </span>
+                                </div>
+                                <div>
+                                    <span className="ml-1 text-gray9F text-[0.8rem]">
+                                            شماره همراه دوم :
+                                    </span>
+                                    <span className="text-[#29262A] text-[0.8rem]">
+                                        {props.moreInfoIndividualTarget?.anotherPhoneNumber}
+                                    </span>
+                                </div>
+                                <div>
+                                    <span className="ml-1 text-gray9F text-[0.8rem]">
+                                            شماره ثابت  :
+                                    </span>
+                                    <span className="text-[#29262A] text-[0.8rem]">
+                                        {props.moreInfoIndividualTarget?.telephoneNumber}
+                                    </span>
+                                </div>
+                                <div>
+                                    <span className="ml-1 text-gray9F text-[0.8rem]">
+                                             تحصیلات  :
+                                    </span>
+                                    <span className="text-[#29262A] text-[0.8rem]">
+                                        {props.moreInfoIndividualTarget?.education}
+                                    </span>
+                                </div>
+                                <div>
+                                    <span className="ml-1 text-gray9F text-[0.8rem]">
+                                             ایمیل  :
+                                    </span>
+                                    <span className="text-[#29262A] text-[0.8rem]">
+                                        {props.moreInfoIndividualTarget?.email}
+                                    </span>
+                                </div>
+                                <div>
+                                    <span className="ml-1 text-gray9F text-[0.8rem]">
+                                             آدرس  :
+                                    </span>
+                                    <span className="text-[#29262A] text-[0.8rem]">
+                                        {props.moreInfoIndividualTarget?.address}
+                                    </span>
+                                </div>
+                                {props.moreInfoIndividualTarget?.relationshipsInformation[0]?.fullName &&
+                                     <div className="flex flex-col gap-5 text-sm my-4 py-3">
+                                     <div>
+                                         <span>
+                                              اطلاعات آشنای اول 
+                                         </span>
+                                     </div>
+                                     <div>
+                                    <span className="ml-1 text-gray9F text-[0.8rem]">
+                                             نام و نام خانوادگی  :
+                                    </span>
+                                    <span className="text-[#29262A] text-[0.8rem]">
+                                        {props.moreInfoIndividualTarget?.relationshipsInformation[0]?.fullName}
+                                    </span>
+                                </div>
+                                <div>
+                                    <span className="ml-1 text-gray9F text-[0.8rem]">
+                                              شماره تماس    :
+                                    </span>
+                                    <span className="text-[#29262A] text-[0.8rem]">
+                                        {props.moreInfoIndividualTarget?.relationshipsInformation[0]?.phoneNumber}
+                                    </span>
+                                </div>
+                                <div>
+                                    <span className="ml-1 text-gray9F text-[0.8rem]">
+                                               نسبت    :
+                                    </span>
+                                    <span className="text-[#29262A] text-[0.8rem]">
+                                        {props.moreInfoIndividualTarget?.relationshipsInformation[0]?.relationship}
+                                    </span>
+                                </div>
+                                <div>
+                                    <span className="ml-1 text-gray9F text-[0.8rem]">
+                                               آدرس    :
+                                    </span>
+                                    <span className="text-[#29262A] text-[0.8rem]">
+                                        {props.moreInfoIndividualTarget?.relationshipsInformation[0]?.address}
+                                    </span>
+                                </div>
+                                     </div>}
+                                     {props.moreInfoIndividualTarget?.relationshipsInformation[1]?.fullName &&
+                                     <div className="flex flex-col gap-5 text-sm my-4 py-3">
+                                     <div>
+                                         <span>
+                                              اطلاعات آشنای دوم 
+                                         </span>
+                                     </div>
+                                     <div>
+                                    <span className="ml-1 text-gray9F text-[0.8rem]">
+                                             نام و نام خانوادگی  :
+                                    </span>
+                                    <span className="text-[#29262A] text-[0.8rem]">
+                                        {props.moreInfoIndividualTarget?.relationshipsInformation[1]?.fullName}
+                                    </span>
+                                </div>
+                                <div>
+                                    <span className="ml-1 text-gray9F text-[0.8rem]">
+                                              شماره تماس    :
+                                    </span>
+                                    <span className="text-[#29262A] text-[0.8rem]">
+                                        {props.moreInfoIndividualTarget?.relationshipsInformation[1]?.phoneNumber}
+                                    </span>
+                                </div>
+                                <div>
+                                    <span className="ml-1 text-gray9F text-[0.8rem]">
+                                               نسبت    :
+                                    </span>
+                                    <span className="text-[#29262A] text-[0.8rem]">
+                                        {props.moreInfoIndividualTarget?.relationshipsInformation[1]?.relationship}
+                                    </span>
+                                </div>
+                                <div>
+                                    <span className="ml-1 text-gray9F text-[0.8rem]">
+                                               آدرس    :
+                                    </span>
+                                    <span className="text-[#29262A] text-[0.8rem]">
+                                        {props.moreInfoIndividualTarget?.relationshipsInformation[1]?.address}
+                                    </span>
+                                </div>
+                                     </div>}
+                                
+                            </div>
+                        </div>
                         <div className=" flex  justify-center mt-5 gap-3">
                             <button onClick={()=>{props.handleOpenDeleteIndividual(props.moreInfoIndividualTarget.id);props.handleCloseMoreInfoIndividual()}} className="px-6 py-2 text-[0.8rem] text-mainRed border border-mainRed rounded hover:bg-mainRed hover:text-white">
                                 حذف

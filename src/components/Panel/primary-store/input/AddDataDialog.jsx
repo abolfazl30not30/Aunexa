@@ -524,7 +524,7 @@ export default function AddDataDialog(props) {
                                         value={machine}
                                         onChange={(event, newValue) => {
                                             setMachine(newValue)
-
+                        
                                             formik.setFieldValue("machineCode", newValue?.code)
                                           
                                         }}

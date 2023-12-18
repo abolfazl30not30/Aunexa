@@ -228,7 +228,119 @@ export default function RegisterUserDialog(props) {
                                 </div>
                             </div>
                         </div>
-                        
+                        <div className="md:hidden flex justify-center">
+                            <div className="w-full md:w-[70%] flex flex-col gap-3 ">
+                                
+                                <div>
+                                    <span className="ml-1 text-gray9F text-[0.8rem]">
+                                          نام و نام خانوادگی :
+                                    </span>
+                                    <span className="text-[#29262A] text-[0.8rem]">
+                                    {props.registerIndividualTarget?.fullName}
+                                    </span>
+                                </div>
+                                <div>
+                                    <span className="ml-1 text-gray9F text-[0.8rem]">
+                                          کد ملی :
+                                    </span>
+                                    <span className="text-[#29262A] text-[0.8rem]">
+                                    {props.registerIndividualTarget?.nationalCode}
+                                    </span>
+                                </div>
+                              
+                                <div>
+                                    <span className="ml-1 text-gray9F text-[0.8rem]">
+                                          کد پرسنلی :
+                                    </span>
+                                    <span className="text-[#29262A] text-[0.8rem]">
+                                    {props.registerIndividualTarget?.personalCode}
+                                    </span>
+                                </div>
+                                
+                                <div>
+                                    <span className="ml-1 text-gray9F text-[0.8rem]">
+                                          تاریخ تولد :
+                                    </span>
+                                    <span className="text-[#29262A] text-[0.8rem]">
+                                        {props.registerIndividualTarget?.birthDate}
+                                    </span>
+                                </div>
+                                <div>
+                                    <span className="ml-1 text-gray9F text-[0.8rem]">
+                                           نام پدر :
+                                    </span>
+                                    <span className="text-[#29262A] text-[0.8rem]">
+                                        {props.registerIndividualTarget?.fatherName}
+                                    </span>
+                                </div>
+                                <div>
+                                    <span className="ml-1 text-gray9F text-[0.8rem]">
+                                            جنسیت :
+                                    </span>
+                                    <span className="text-[#29262A] text-[0.8rem]">
+                                        {props.registerIndividualTarget?.gender==="male" ? "مرد" : props.registerIndividualTarget?.gender==="female" ? "زن" : props.registerIndividualTarget?.gender==="other" ? "دیگر" :null }
+                                    </span>
+                                </div>
+                                <div>
+                                    <span className="ml-1 text-gray9F text-[0.8rem]">
+                                            نقش :
+                                    </span>
+                                    <span className="text-[#29262A] text-[0.8rem]">
+                                        {props.registerIndividualTarget?.role }
+                                    </span>
+                                </div>
+                                <div>
+                                    <span className="ml-1 text-gray9F text-[0.8rem]">
+                                            شماره همراه اصلی :
+                                    </span>
+                                    <span className="text-[#29262A] text-[0.8rem]">
+                                        {props.registerIndividualTarget?.originalPhoneNumber}
+                                    </span>
+                                </div>
+                                <div>
+                                    <span className="ml-1 text-gray9F text-[0.8rem]">
+                                            شماره همراه دوم :
+                                    </span>
+                                    <span className="text-[#29262A] text-[0.8rem]">
+                                        {props.registerIndividualTarget?.anotherPhoneNumber}
+                                    </span>
+                                </div>
+                                <div>
+                                    <span className="ml-1 text-gray9F text-[0.8rem]">
+                                            شماره ثابت  :
+                                    </span>
+                                    <span className="text-[#29262A] text-[0.8rem]">
+                                        {props.registerIndividualTarget?.telephoneNumber}
+                                    </span>
+                                </div>
+                                <div>
+                                    <span className="ml-1 text-gray9F text-[0.8rem]">
+                                             تحصیلات  :
+                                    </span>
+                                    <span className="text-[#29262A] text-[0.8rem]">
+                                        {props.registerIndividualTarget?.education}
+                                    </span>
+                                </div>
+                                <div>
+                                    <span className="ml-1 text-gray9F text-[0.8rem]">
+                                             ایمیل  :
+                                    </span>
+                                    <span className="text-[#29262A] text-[0.8rem]">
+                                        {props.registerIndividualTarget?.email}
+                                    </span>
+                                </div>
+                                <div>
+                                    <span className="ml-1 text-gray9F text-[0.8rem]">
+                                             آدرس  :
+                                    </span>
+                                    <span className="text-[#29262A] text-[0.8rem]">
+                                        {props.registerIndividualTarget?.address}
+                                    </span>
+                                </div>
+                               
+                                
+                            </div>
+                            </div>
                         <div className=" flex  justify-center mt-5 gap-3">
                         <form  onSubmit={formik.handleSubmit} method="POST">
                             {isSubmitLoading ? (<button type="submit" disabled  className="px-5 py-2 text-[0.8rem] text-[#4087DB] border border-[#4087DB] rounded hover:bg-[#4087DB] hover:text-white">

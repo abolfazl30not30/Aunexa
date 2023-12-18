@@ -171,8 +171,8 @@ export default function AddIndividualRelationshipDialog(props) {
                                         inputProps={{style: {fontFamily: "__fonts_2f4189,__fonts_Fallback_2f4189", fontSize: "0.8rem"}}}
                                         InputLabelProps={{style: {fontFamily: "__fonts_2f4189,__fonts_Fallback_2f4189"}}}/>
                                 </div>
-                                <div className="flex justify-between">
-                                  <div className="w-[45%]">
+                                <div className="flex justify-between sm:flex-row flex-col gap-5">
+                                  <div className="sm:w-[45%]">
                                     <TextField
                                         fullWidth
                                         placeholder="شماره تماس"
@@ -185,7 +185,7 @@ export default function AddIndividualRelationshipDialog(props) {
                                         inputProps={{style: {fontFamily: "__fonts_2f4189,__fonts_Fallback_2f4189", fontSize: "0.8rem"}}}
                                         InputLabelProps={{style: {fontFamily: "__fonts_2f4189,__fonts_Fallback_2f4189"}}}/>
                                   </div>
-                                  <div className="w-[45%]">
+                                  <div className="sm:w-[45%]">
                                     <TextField
                                         fullWidth
                                         placeholder="نسبت"
@@ -233,8 +233,8 @@ export default function AddIndividualRelationshipDialog(props) {
                                         inputProps={{style: {fontFamily: "__fonts_2f4189,__fonts_Fallback_2f4189", fontSize: "0.8rem"}}}
                                         InputLabelProps={{style: {fontFamily: "__fonts_2f4189,__fonts_Fallback_2f4189"}}}/>
                                 </div>
-                                <div className="flex justify-between">
-                                  <div className="w-[45%]">
+                                <div className="flex justify-between sm:flex-row flex-col gap-5">
+                                  <div className="sm:w-[45%]">
                                     <TextField
                                         fullWidth
                                         placeholder="شماره تماس"
@@ -247,7 +247,7 @@ export default function AddIndividualRelationshipDialog(props) {
                                         inputProps={{style: {fontFamily: "__fonts_2f4189,__fonts_Fallback_2f4189", fontSize: "0.8rem"}}}
                                         InputLabelProps={{style: {fontFamily: "__fonts_2f4189,__fonts_Fallback_2f4189"}}}/>
                                   </div>
-                                  <div className="w-[45%]">
+                                  <div className="sm:w-[45%]">
                                     <TextField
                                         fullWidth
                                         placeholder="نسبت"
