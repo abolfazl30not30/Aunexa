@@ -1,20 +1,18 @@
 'use client'
-import React from "react"
-import {useSelector} from "react-redux";
+import React, {useEffect} from "react"
+import {useDispatch, useSelector} from "react-redux";
 import {useRouter} from "next/navigation";
+import {useLazyGetAccessQuery} from "@/redux/features/access/getAccessSlice";
+import {setAccess} from "@/redux/permission/accessSlice";
 
-export default function RootLayout({children}) {
-    const pages = useSelector((state)=> state.access.pages)
+export default function RootLayout({children}){
+
     const router = useRouter()
-    if(pages.hasOwnProperty("primaryStoreInput")){
+    if(pages.hasOwnProperty("Employee")){
         return (
             <>{children}</>
         );
     }else {
-        return (
-            <>{children}</>
-        );
-        // router.push("/panel")
+        router.push("/panel")
     }
-
 }

@@ -12,4 +12,4 @@ export const getAccessSlice = apiAuthServerSlice.injectEndpoints({
   }),
 });
 
-export const { useLazyGetAccessQuery } = getAccessSlice;
+export const { useGetAccessQuery } = getAccessSlice;

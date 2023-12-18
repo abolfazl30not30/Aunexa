@@ -40,10 +40,8 @@ const login = async () => {
 
 const baseQueryWithReauth = async (args, api, extraOptions) => {
   let result = await baseQuery(args, api, extraOptions);
-
   if (result?.error?.status === 401 || result?.error?.status === 500) {
     const refreshResult = await login();
-    console.log(refreshResult);
     api.dispatch(setAccessToken(refreshResult?.data?.access_token));
     if (refreshResult?.data) {
       result = await baseQuery(args, api, extraOptions);
@@ -51,7 +49,6 @@ const baseQueryWithReauth = async (args, api, extraOptions) => {
       api.dispatch(logOut());
     }
   }
-
   return result;
 };
 

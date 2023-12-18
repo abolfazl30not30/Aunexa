@@ -22,8 +22,6 @@ export default function redirect() {
 
   const [login, { isLoading: isLoadingLogin, error: errorLogin }] =
     useLoginMutation();
-  const [getAccess, { isLoading: isLoadingAccess, error: errorAccess }] =
-    useLazyGetAccessQuery();
 
   const code = searchParams.get("code");
 
@@ -39,9 +37,6 @@ export default function redirect() {
     try {
       const userData = await login(formData);
       dispatch(setAccessToken(userData?.data?.access_token));
-      const accessData = await getAccess();
-      dispatch(setAccess(accessData?.data));
-      console.log(accessData?.data);
       let tokenContent = jwt_decode(userData?.data?.access_token);
       window.sessionStorage.setItem("name", tokenContent.name);
       window.sessionStorage.setItem("role", tokenContent.role);

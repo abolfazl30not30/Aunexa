@@ -11,6 +11,7 @@ import { CacheProvider } from "@emotion/react";
 import createCache from "@emotion/cache";
 import { Drawer, Menu } from "@mui/material";
 import { useDispatch, useSelector } from "react-redux";
+import {useGetAccessQuery} from "@/redux/features/access/getAccessSlice";
 
 const cacheRtl = createCache({
   key: "muirtl",
@@ -53,8 +54,9 @@ export default function RootLayout({ children }) {
   const handleCloseSidebar = () => {
     setOpenSidebar(false);
   };
-  const pages = useSelector((state) => state.access.pages);
 
+  const { data : accessData={},isLoading: isLoadingAccess, error: errorAccess } = useGetAccessQuery();
+  console.log(accessData)
   return (
     <>
       <div className="">
@@ -356,6 +358,8 @@ export default function RootLayout({ children }) {
                       </span>
                     </Link>
                   </div>
+                    {
+                        (accessData.hasOwnProperty("PrimaryStoreInput") || accessData.hasOwnProperty("PrimaryStoreOutput")) && (
                   <div>
                     <details className="group py-3 border-b border-b-1 border-b-solid  border-b-borderGray">
                       <summary className="flex items-center justify-between gap-2 p-2 font-medium marker:content-none hover:cursor-pointer">
@@ -379,6 +383,8 @@ export default function RootLayout({ children }) {
                         </svg>
                       </summary>
                       <ul className="flex flex-col gap-1 pr-2">
+                          {accessData.hasOwnProperty("PrimaryStoreInput") && (
+
                         <li>
                           <Link
                             onClick={handleCloseSidebar}
@@ -395,7 +401,8 @@ export default function RootLayout({ children }) {
                               بخش ورودی
                             </span>
                           </Link>
-                        </li>
+                        </li>)}
+                          {accessData.hasOwnProperty("PrimaryStoreOutput") && (
                         <li>
                           <Link
                             onClick={handleCloseSidebar}
@@ -412,10 +419,12 @@ export default function RootLayout({ children }) {
                               بخش خروجی
                             </span>
                           </Link>
-                        </li>
+                        </li>)}
                       </ul>
                     </details>
-                  </div>
+                  </div>)}
+                    {
+                        (accessData.hasOwnProperty("EquipmentStoreInput") || accessData.hasOwnProperty("EquipmentStoreOutput")) && (
                   <div>
                     <details className="group py-3 border-b border-b-1 border-b-solid  border-b-borderGray">
                       <summary className="flex items-center justify-between gap-2 p-2 font-medium marker:content-none hover:cursor-pointer">
@@ -439,6 +448,7 @@ export default function RootLayout({ children }) {
                         </svg>
                       </summary>
                       <ul className="flex flex-col gap-1 pr-2">
+                          {accessData.hasOwnProperty("EquipmentStoreInput") && (
                         <li>
                           <Link
                             onClick={handleCloseSidebar}
@@ -455,7 +465,8 @@ export default function RootLayout({ children }) {
                               بخش ورودی
                             </span>
                           </Link>
-                        </li>
+                        </li>)}
+                          {accessData.hasOwnProperty("EquipmentStoreOutput") && (
                         <li>
                           <Link
                             onClick={handleCloseSidebar}
@@ -472,10 +483,12 @@ export default function RootLayout({ children }) {
                               بخش خروجی
                             </span>
                           </Link>
-                        </li>
+                        </li>)}
                       </ul>
                     </details>
-                  </div>
+                  </div>)}
+                    {
+                        (accessData.hasOwnProperty("ProductStoreInput") || accessData.hasOwnProperty("ProductStoreOutput")) && (
                   <div>
                     <details className="group py-3 border-b border-b-1 border-b-solid  border-b-borderGray">
                       <summary className="flex items-center justify-between gap-2 p-2 font-medium marker:content-none hover:cursor-pointer">
@@ -499,6 +512,7 @@ export default function RootLayout({ children }) {
                         </svg>
                       </summary>
                       <ul className="flex flex-col gap-1 pr-2">
+                          {accessData.hasOwnProperty("ProductStoreInput") && (
                         <li>
                           <Link
                             onClick={handleCloseSidebar}
@@ -515,7 +529,8 @@ export default function RootLayout({ children }) {
                               بخش ورودی
                             </span>
                           </Link>
-                        </li>
+                        </li>)}
+                          {accessData.hasOwnProperty("ProductStoreOutput") && (
                         <li>
                           <Link
                             onClick={handleCloseSidebar}
@@ -532,10 +547,12 @@ export default function RootLayout({ children }) {
                               بخش خروجی
                             </span>
                           </Link>
-                        </li>
+                        </li>)}
                       </ul>
                     </details>
-                  </div>
+                  </div>)}
+                    {
+                        (accessData.hasOwnProperty("VehicleAndEquipment") || accessData.hasOwnProperty("ProductStoreOutput") || accessData.hasOwnProperty("HistoryOfReport")) && (
                   <div>
                     <details className="group py-3 border-b border-b-1 border-b-solid  border-b-borderGray">
                       <summary className="flex items-center justify-between gap-2 p-2 font-medium marker:content-none hover:cursor-pointer">
@@ -559,6 +576,7 @@ export default function RootLayout({ children }) {
                         </svg>
                       </summary>
                       <ul className="flex flex-col gap-1 pr-2">
+                          {accessData.hasOwnProperty("VehicleAndEquipment") && (
                         <li>
                           <Link
                             onClick={handleCloseSidebar}
@@ -575,7 +593,8 @@ export default function RootLayout({ children }) {
                               وسایل و تجهیزات
                             </span>
                           </Link>
-                        </li>
+                        </li>)}
+                          {accessData.hasOwnProperty("FailureAndRepairReport") && (
                         <li>
                           <Link
                             onClick={handleCloseSidebar}
@@ -592,7 +611,8 @@ export default function RootLayout({ children }) {
                               گزارش خرابی و تعمیرات
                             </span>
                           </Link>
-                        </li>
+                        </li>)}
+                          {accessData.hasOwnProperty("HistoryOfReport") && (
                         <li>
                           <Link
                             onClick={handleCloseSidebar}
@@ -609,11 +629,11 @@ export default function RootLayout({ children }) {
                               سابقه گزارشات
                             </span>
                           </Link>
-                        </li>
+                        </li>)}
                       </ul>
                     </details>
-                  </div>
-
+                  </div>)}
+                    {accessData.hasOwnProperty("PurchaseRequest") && (
                   <div>
                     <Link
                       onClick={handleCloseSidebar}
@@ -630,7 +650,8 @@ export default function RootLayout({ children }) {
                         درخواست خرید
                       </span>
                     </Link>
-                  </div>
+                  </div>)}
+                    {accessData.hasOwnProperty("Product") && (
                   <div>
                     <Link
                       onClick={handleCloseSidebar}
@@ -647,7 +668,9 @@ export default function RootLayout({ children }) {
                         کالا و محصولات
                       </span>
                     </Link>
-                  </div>
+                  </div>)}
+                    {
+                        (accessData.hasOwnProperty("ProductionInput") || accessData.hasOwnProperty("ProductionOutput")) && (
                   <div>
                     <details className="group py-3 border-b border-b-1 border-b-solid  border-b-borderGray">
                       <summary className="flex items-center justify-between gap-2 p-2 font-medium marker:content-none hover:cursor-pointer">
@@ -671,6 +694,7 @@ export default function RootLayout({ children }) {
                         </svg>
                       </summary>
                       <ul className="flex flex-col gap-1 pr-2">
+                          {accessData.hasOwnProperty("ProductionInput") && (
                         <li>
                           <Link
                             onClick={handleCloseSidebar}
@@ -687,7 +711,8 @@ export default function RootLayout({ children }) {
                               بخش ورودی
                             </span>
                           </Link>
-                        </li>
+                        </li>)}
+                          {accessData.hasOwnProperty("ProductionOutput") && (
                         <li>
                           <Link
                             onClick={handleCloseSidebar}
@@ -704,10 +729,13 @@ export default function RootLayout({ children }) {
                               بخش خروجی
                             </span>
                           </Link>
-                        </li>
+                        </li>)}
                       </ul>
                     </details>
-                  </div>
+                  </div>)}
+
+                    {
+                        (accessData.hasOwnProperty("PurchaseRequestList") || accessData.hasOwnProperty("PendingPurchaseRequestList") || accessData.hasOwnProperty("SuccessfulPurchaseRequestList") || accessData.hasOwnProperty("UnsuccessfulPurchaseRequestList")) && (
                   <div>
                     <details className="group py-3 border-b border-b-1 border-b-solid  border-b-borderGray">
                       <summary className="flex items-center justify-between gap-2 p-2 font-medium marker:content-none hover:cursor-pointer">
@@ -731,6 +759,7 @@ export default function RootLayout({ children }) {
                         </svg>
                       </summary>
                       <ul className="flex flex-col gap-1 pr-2">
+                          {accessData.hasOwnProperty("PurchaseRequestList") && (
                         <li>
                           <Link
                             onClick={handleCloseSidebar}
@@ -748,7 +777,9 @@ export default function RootLayout({ children }) {
                               لیست درخواست‌های خرید
                             </span>
                           </Link>
-                        </li>
+                        </li>)}
+
+                          {accessData.hasOwnProperty("PendingPurchaseRequestList") && (
                         <li>
                           <Link
                             onClick={handleCloseSidebar}
@@ -766,7 +797,8 @@ export default function RootLayout({ children }) {
                               صفحه در انتظار خرید
                             </span>
                           </Link>
-                        </li>
+                        </li>)}
+                          {accessData.hasOwnProperty("SuccessfulPurchaseRequestList") && (
                         <li>
                           <Link
                             onClick={handleCloseSidebar}
@@ -784,7 +816,8 @@ export default function RootLayout({ children }) {
                               صفحه کالاهای خریداری شده
                             </span>
                           </Link>
-                        </li>
+                        </li>)}
+                          {accessData.hasOwnProperty("UnsuccessfulPurchaseRequestList") && (
                         <li>
                           <Link
                             onClick={handleCloseSidebar}
@@ -802,10 +835,10 @@ export default function RootLayout({ children }) {
                               صفحه درخواستهای رد شده
                             </span>
                           </Link>
-                        </li>
+                        </li>)}
                       </ul>
                     </details>
-                  </div>
+                  </div>)}
                   <div>
                     <Link
                       onClick={handleCloseSidebar}
