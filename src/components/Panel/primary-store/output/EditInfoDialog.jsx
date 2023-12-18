@@ -23,7 +23,8 @@ import "react-multi-date-picker/styles/colors/red.css"
 import {
     useLazyGetAllProductQuery, useLazyGetAllSubOrganizationQuery,
     useLazyGetAllUnitQuery,
-    useLazyGetAllVehicleQuery
+    useLazyGetAllVehicleQuery,
+    useLazyGetAllMachineQuery
 } from "@/redux/features/category/CategorySlice";
 import {
     useLazyGetOneVehiclesByCodeQuery,
@@ -95,7 +96,24 @@ export default function EditInfoDialog(props) {
             getSubOrganizationList()
         }
     },[openSubOrganizationList])
+//machine code 
 
+
+const [machine,setMachine] = useState(null)
+const [openMachineList,setOpenMachineList] = useState(false)
+
+const [getMachineList,
+   { data:machineList = {content:[{}]},
+    isLoading: isMachineLoading,
+    isError: isMachineError,}
+ ] = useLazyGetAllMachineQuery( 
+    
+  );
+  useEffect(()=>{
+    if(openMachineList){
+        getMachineList()
+    }
+},[openMachineList])
     // //vehicle input
     // const [vehicle,setVehicle] = useState(null)
     // const [openVehicleList,setOpenVehicleList] = useState(false)
@@ -169,6 +187,7 @@ export default function EditInfoDialog(props) {
         formik.resetForm()
         setDate("")
         setProduct(null)
+        setMachine(null)
         setUnit(null)
         setSubOrganization(null)
         setmachineTag({
@@ -256,7 +275,10 @@ export default function EditInfoDialog(props) {
         const units= unitList.filter((unit)=> unit.persianName === ab)
         setUnit(units[0])
     }
-
+    const handleSetMachineInput = (code) =>{
+        const machine = machineList.content.filter((machine)=> machine.code === code)
+        setMachine(machine[0])
+    }
     const handleSetMachineTagInput = (machineTag) =>{
         if(machineTag !== "") {
             const tag = {
@@ -283,6 +305,7 @@ export default function EditInfoDialog(props) {
     }
 
     useEffect(()=>{
+        getMachineList()
         getProductList()
         getUnitList()
         getSubOrganizationList()
@@ -303,6 +326,7 @@ export default function EditInfoDialog(props) {
             description:props.editInfoTarget?.description
         })
         handleSetProductInput(props.editInfoTarget?.productId)
+        handleSetMachineInput(props.editInfoTarget?.machineCode)
         handleSetSubOrganizationInput(props.editInfoTarget?.destinationSubOrganizationId)
         handleSetUnitInput(props.editInfoTarget?.unit)
         handleSetMachineTagInput(props.editInfoTarget?.machineTag)
@@ -379,7 +403,7 @@ export default function EditInfoDialog(props) {
                                                         </React.Fragment>
                                                     )
                                                 }}
-                                                placeholder="نوع محصول (اجباری)"
+                                                placeholder="نام محصول (اجباری)"
                                             />}
                                     />
                                 </div>
@@ -492,7 +516,7 @@ export default function EditInfoDialog(props) {
                                         <div className="plate w-full md:w-[47%] flex items-center pl-4">
                                             <div>
                                                 <div className="w-[55px] h-full pt-3  pl-1 pr-3">
-                                                    <input disabled={formik.values.machineCode !== ""} name="part1"
+                                                    <input disabled={machine!==null }  name="part1"
                                                            onChange={handlemachineTag} value={machineTag.part1}
                                                            type="text" placeholder="55" maxLength="2"
                                                            className="w-full h-full placeholder-neutral-300 text-center rounded"/>
@@ -500,7 +524,7 @@ export default function EditInfoDialog(props) {
                                             </div>
                                             <div className="flex">
                                                 <div className="w-[60px] h-full py-1 pl-1 pr-3 h-full">
-                                                    <input disabled={formik.values.machineCode !== ""} name="part2"
+                                                    <input disabled={machine!==null }  name="part2"
                                                            onChange={handlemachineTag} value={machineTag.part2}
                                                            type="text" placeholder="555" maxLength="3"
                                                            className="w-full h-full placeholder-neutral-300 text-center rounded"/>
@@ -509,7 +533,7 @@ export default function EditInfoDialog(props) {
                                                     <FormControl sx={{width: "58px", bgcolor: "#fff"}} size="small">
                                                         <Select
                                                         sx={{fontFamily: "__fonts_2f4189,__fonts_Fallback_2f4189", fontSize: "0.8rem"}}
-                                                            disabled={formik.values.machineCode !== ""}
+                                                            disabled={machine!==null } 
                                                             name="part3"
                                                             value={machineTag.part3}
                                                             onChange={handlemachineTag}
@@ -524,7 +548,7 @@ export default function EditInfoDialog(props) {
                                                     </FormControl>
                                                 </div>
                                                 <div className="w-[50px] h-full py-1 pl-2 pr-1 h-full">
-                                                    <input disabled={formik.values.machineCode !== ""} name="part4"
+                                                    <input disabled={machine!==null }  name="part4"
                                                            onChange={handlemachineTag} value={machineTag.part4}
                                                            type="text" placeholder="55" maxLength="2"
                                                            className="w-full h-full placeholder-neutral-300 text-center rounded"/>
@@ -537,18 +561,51 @@ export default function EditInfoDialog(props) {
                                             </span>
                                         </div>
                                         <div className="w-full md:w-[47%]">
+                                        <Autocomplete
+                                                 disabled={formik.values.machineTag !== ""}
+                                        open={openMachineList}
+                                        onOpen={() => {
+                                            setOpenMachineList(true);
+                                            
+                                            
+                                        }}
+                                        onClose={() => {
+                                            setOpenMachineList(false);
+                                        }}
+                                        fullWidth
+                                        clearOnEscape
+                                        disablePortal
+                                        id="combo-box-demo"
+                                        ListboxProps={{
+                                            sx: {fontFamily: "__fonts_2f4189,__fonts_Fallback_2f4189", fontSize: "0.8rem"},
+                                        }}
+                                        options={machineList?.content}
+                                        getOptionLabel={(option) => option?.code}
+                                        value={machine}
+                                        onChange={(event, newValue) => {
+                                            
+                                            setMachine(newValue)
+                                            formik.setFieldValue("machineCode", newValue?.code)
+                                        }}
+                                        renderInput={(params) =>
                                             <TextField
-                                                disabled={formik.values.machineTag !== ""}
-                                                fullWidth
-                                                placeholder="کد وسیله نقلیه(اجباری)"
-                                                type="text"
-                                                name="machineCode"
-                                                value={formik.values.machineCode}
-                                                onChange={formik.handleChange}
-                                                error={formik.touched.machineCode && Boolean(formik.errors.machineCode)}
-                                                // helperText={formik.touched.machineTag && formik.errors.machineTag}
-                                                inputProps={{style: {fontFamily: "__fonts_2f4189,__fonts_Fallback_2f4189", fontSize: "0.8rem"}}}
-                                                InputLabelProps={{style: {fontFamily: "__fonts_2f4189,__fonts_Fallback_2f4189"}}}/>
+                                           
+                                            error={formik.touched.machineCode && Boolean(formik.errors.machineCode)}
+                                            helperText={formik.touched.machineTag && formik.errors.machineTag}
+                                                {...params}
+                                                InputProps={{
+                                                    ...params.InputProps,
+                                                    style: {fontFamily: "__fonts_2f4189,__fonts_Fallback_2f4189", fontSize: "0.8rem"},
+                                                    endAdornment:(
+                                                        <React.Fragment>
+                                                            {isMachineLoading ? <CircularProgress color="inherit" size={20} /> : null}
+                                                            
+                                                        </React.Fragment>
+                                                    )
+                                            }}
+                                                placeholder="  کد وسیله "
+                                            />}
+                                    />
                                         </div>
                                     </div>
                                     <div>

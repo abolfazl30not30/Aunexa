@@ -21,9 +21,14 @@ import { useUploadFileCloudMutation } from "@/redux/features/file/FileSlice";
 import {
     useSavePendingPurchaseRequestListMutation
 } from "@/redux/features/purchase/pending-purchase-request-list/PendingPurchaseRequestListSlice";
-import { useUploadFileMinioMutation } from "@/redux/features/file/FileSlice";
+import { useUploadFileMinioMutation} from "@/redux/features/file/FileSlice";
+import {useDeleteFileMinioMutation} from "@/redux/features/file/FileSlice";
 export default function RegisterFactorDialog(props) {
-  
+    const [handleDelete ,{isLoading}] = useDeleteFileMinioMutation()
+    const handleDeleteUpload = async () =>{
+        const res = await handleDelete(uploadedImage)
+       setUploadedImage(null)
+    } 
     const [organization,setOrganization] = useState(null)
     const [uploadedImage,setUploadedImage] = useState(null)
     const [uploadFile, { isLoading:isLoadingUpload ,error:errorUpload}] = useUploadFileMinioMutation()
@@ -36,9 +41,7 @@ export default function RegisterFactorDialog(props) {
             setUploadedImage(res.data?.name)
         }
     }
-    const handleDeleteUpload = () =>{
-        setUploadedImage(null)
-    }
+    
 
     // const [paymentMethod,setPaymentMethod] = useState(null)
     // const [openPaymentMethodList,setOpenPaymentMethodList] = useState(false)
@@ -62,7 +65,9 @@ export default function RegisterFactorDialog(props) {
 
     const handleReset = () =>{
         formik.resetForm()
+        setUploadedImage(null)
         setOrganization(null)
+        
     }
 
     const [submitData, { isLoading:isSubmitLoading ,error}] = useSavePendingPurchaseRequestListMutation()

@@ -1,29 +1,29 @@
-'use client'
-import { createSlice } from "@reduxjs/toolkit"
+"use client";
+import { createSlice } from "@reduxjs/toolkit";
 
 const authSlice = createSlice({
-    name: 'auth',
-    initialState: {
-        accessToken: "",
+  name: "auth",
+  initialState: {
+    accessToken: "",
+  },
+  reducers: {
+    setCredentials: (state, action) => {
+      return action.payload;
     },
-    reducers: {
-        setCredentials: (state, action) => {
-            return action.payload
-        },
-        setAccessToken:(state,action) => {
-            state.accessToken = action.payload
-        },
-        logOut: (state, action) => {
-            state.accessToken = ""
-            window.sessionStorage.clear()
-            window.location.href = "https://auth.prod.vipsoftware1.com/logout"
-        }
+    setAccessToken: (state, action) => {
+      state.accessToken = action.payload;
     },
-})
+    logOut: (state, action) => {
+      state.accessToken = "";
+      window.sessionStorage.clear();
+      window.location.href = "https://auth.vipsoftware1.com/logout";
+    },
+  },
+});
 
-export const { setCredentials,setAccessToken, logOut } = authSlice.actions
+export const { setCredentials, setAccessToken, logOut } = authSlice.actions;
 
-export default authSlice.reducer
+export default authSlice.reducer;
 
-export const selectCurrentRole = (state) => state.auth.role
-export const selectCurrentAccessToken = (state) => state.auth.accessToken
+export const selectCurrentRole = (state) => state.auth.role;
+export const selectCurrentAccessToken = (state) => state.auth.accessToken;

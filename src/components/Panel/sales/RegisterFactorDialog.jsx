@@ -22,11 +22,12 @@ import {
     useLazyGetAllUnitQuery
 } from "@/redux/features/category/CategorySlice";
 import { useUploadFileMinioMutation } from "@/redux/features/file/FileSlice";
+import { useDeleteFileMinioMutation } from "@/redux/features/file/FileSlice";
 import { useSaveSalesMutation } from "@/redux/features/sales/SalesSlice";
 import AddProduct from "@/components/Panel/sales/AddProduct";
 import { Box } from "@material-ui/core";
 export default function RegisterFactorDialog(props) {
-
+    
     const [openAddProduct,setOpenAddProduct] = useState(false)
     const handleOpenAddProduct = () => {
         setOpenAddProduct(true);
@@ -57,7 +58,7 @@ export default function RegisterFactorDialog(props) {
     },[openUnitList])
 
     const [organization,setOrganization] = useState(null)
-    const [uploadedImage,setUploadedImage] = useState(null)
+    const [uploadedImage,setUploadedImage] = useState("")
     const [uploadFile, { isLoading:isLoadingUpload ,error:errorUpload}] = useUploadFileMinioMutation()
 
     const [invoiceItemInput,setInvoiceItemInput] = useState([])
@@ -70,10 +71,13 @@ export default function RegisterFactorDialog(props) {
             setUploadedImage(res.data?.name)
         }
     }
-    const handleDeleteUpload = () =>{
-        setUploadedImage(null)
-    }
-
+   
+    const [handleDelete ,{isLoading:isDeleteLoading}] = useDeleteFileMinioMutation()
+    const handleDeleteUpload = async (e) =>{
+        e.preventDefault()
+        const res = await handleDelete(uploadedImage)
+       setUploadedImage("")
+    } 
     // const [paymentMethod,setPaymentMethod] = useState(null)
     // const [openPaymentMethodList,setOpenPaymentMethodList] = useState(false)
     // const [getPaymentMethodList,{ data : paymentMethodList  = [] , isLoading : isPaymentMethodLoading, isError: paymentMethodIsError }] = useLazyGetAllPaymentMethodQuery()
@@ -97,7 +101,7 @@ export default function RegisterFactorDialog(props) {
     const handleReset = () =>{
         formik.resetForm()
         setOrganization(null)
-        setUploadedImage(null)
+        setUploadedImage("")
     }
     const validate = (values, props) => {
         const errors = {};
@@ -124,7 +128,7 @@ export default function RegisterFactorDialog(props) {
             customer:"",
             invoiceItems:[],
             receiptCode:"",
-            receiptFile:null,
+            receiptFile:"",
             description:""
         },
        
@@ -297,10 +301,10 @@ export default function RegisterFactorDialog(props) {
                                                 </div>
                                             </div>
                                         ) : (
-                                            uploadedImage !== null ? (
+                                            uploadedImage !== "" ? (
                                                 <div>
                                                     <div className="relative  rounded border border-dashed border-[#D9D9D9]">
-                                                        <button onClick={handleDeleteUpload} className="shadow hover:bg-red-400 absolute z-10 top-0 right-0 rounded-full bg-mainRed p-1">
+                                                        <button onClick={(e)=>{handleDeleteUpload(e)}} className="shadow hover:bg-red-400 absolute z-10 top-0 right-0 rounded-full bg-mainRed p-1">
                                                             <svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" viewBox="0 0 24 24" fill="none"><path d="M18 6L6 18M6 6L18 18" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
                                                         </button>
                                                         <img className="object-cover w-full h-full" src={uploadedImage} alt="uploadedImage"/>
@@ -369,6 +373,7 @@ export default function RegisterFactorDialog(props) {
                                             <button type="submit" 
                                                     className="w-full rounded-[0.5rem] py-3 hover:border hover:opacity-80 font-bold  bg-mainRed text-white">ثبت
                                             </button>
+                                        
                                         )
                                     }
                                     </div>

@@ -6,6 +6,10 @@ export const CategorySlice = apiSlice.injectEndpoints({
       query: () => "inventory/product/find-all",
       providesTags: ["category"],
     }),
+    getAllMachine: builder.query({
+      query: () => "vehicle/machine/filter",
+      providesTags: ["category"],
+    }),
     getAllUnit: builder.query({
       query: () => "inventory/unit/find-all",
       providesTags: ["category"],
@@ -44,6 +48,7 @@ export const CategorySlice = apiSlice.injectEndpoints({
 
 export const {
   useLazyGetAllProductQuery,
+  useLazyGetAllMachineQuery,
   useLazyGetAllUnitQuery,
   useLazyGetAllVehicleCategoryQuery,
   useLazyGetAllVehicleQuery,

@@ -137,7 +137,7 @@ export default function page({ params }) {
           </Link>
         </div>
       </header>
-      <section className="py-4 lg:px-10 px-5 mt-5 bg-white h-[53rem] flex flex-col justify-between ">
+      <section className="py-4 lg:px-10 px-5 mt-5 bg-white h-[46rem] flex flex-col justify-between ">
         <Scrollbars
           autoHide
           ref={scrollbars}

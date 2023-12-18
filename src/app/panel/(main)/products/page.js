@@ -420,7 +420,7 @@ function vehiclesAndEquipment() {
                     <th className="table-cell px-2 md:px-6 px-6 py-4">
                       <span>منقضی شونده</span>
                     </th>
-                    <th className="px-6 py-4">نوع محصول</th>
+                    <th className="px-6 py-4">نام محصول</th>
                     <th className="hidden md:table-cell px-6 py-4">عملیات</th>
                   </tr>
                 </thead>

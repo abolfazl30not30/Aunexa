@@ -161,8 +161,8 @@ export default function AddIndividualDialog(props) {
                     inputProps={{style: {fontFamily: "__fonts_2f4189,__fonts_Fallback_2f4189", fontSize: "0.8rem"}}}
                                         InputLabelProps={{style: {fontFamily: "__fonts_2f4189,__fonts_Fallback_2f4189"}}}/>
                                         </div>
-                <div className="flex justify-between">
-                  <div className="w-[45%]">
+                <div className="flex sm:flex-row flex-col gap-5 justify-between">
+                  <div className="sm:w-[45%]">
                     <TextField
                       fullWidth
                       placeholder="کدملی"
@@ -175,7 +175,7 @@ export default function AddIndividualDialog(props) {
                       inputProps={{style: {fontFamily: "__fonts_2f4189,__fonts_Fallback_2f4189", fontSize: "0.8rem"}}}
                                         InputLabelProps={{style: {fontFamily: "__fonts_2f4189,__fonts_Fallback_2f4189"}}}/>
                   </div>
-                  <div className="w-[45%]">
+                  <div className="sm:w-[45%]">
                     <TextField
                       fullWidth
                       placeholder="کد پرسنلی"
@@ -189,8 +189,8 @@ export default function AddIndividualDialog(props) {
                       InputLabelProps={{style: {fontFamily: "__fonts_2f4189,__fonts_Fallback_2f4189"}}}/>
                   </div>
                 </div>
-                <div className="flex justify-between">
-                  <div className=" flex w-[45%] flex-col">
+                <div className="flex justify-between sm:flex-row flex-col gap-5">
+                  <div className=" flex  sm:w-[45%] flex-col">
                     <DatePicker
                       
                       calendarPosition={`bottom`}
@@ -250,7 +250,7 @@ export default function AddIndividualDialog(props) {
                                     </div>
                   </div>
                   
-                  <div className="w-[45%]">
+                  <div className="sm:w-[45%]">
 
                     <TextField
                       fullWidth
@@ -267,10 +267,10 @@ export default function AddIndividualDialog(props) {
 
                   </div>
                 </div>
-                <div className="flex justify-between">
+                <div className="flex justify-between sm:flex-row flex-col gap-5">
 
 
-                  <div className="w-[45%]">
+                  <div className="sm:w-[45%]">
                   <FormControl fullWidth error={formik.touched.gender && Boolean(formik.errors.gender)}>
                     <InputLabel id="demo-simple-select-label" sx={{fontFamily: "__fonts_2f4189,__fonts_Fallback_2f4189", fontSize: "0.8rem",color:"#9F9F9F"}}>جنسیت</InputLabel>
                             <Select
@@ -289,7 +289,7 @@ export default function AddIndividualDialog(props) {
                                         
                   </FormControl>
                   </div>
-                  <div className="w-[45%]">
+                  <div className="sm:w-[45%]">
                   <Autocomplete
                                         open={openRoleList}
                                         onOpen={() => {
@@ -334,8 +334,8 @@ export default function AddIndividualDialog(props) {
                   </div>
 
                 </div>
-                <div className="flex justify-between">
-                  <div className="w-[45%]">
+                <div className="flex justify-between sm:flex-row flex-col gap-5">
+                  <div className="sm:w-[45%]">
                     <TextField
                       fullWidth
                       placeholder="شماره همراه"
@@ -348,7 +348,7 @@ export default function AddIndividualDialog(props) {
                       inputProps={{style: {fontFamily: "__fonts_2f4189,__fonts_Fallback_2f4189", fontSize: "0.8rem"}}}
                                         InputLabelProps={{style: {fontFamily: "__fonts_2f4189,__fonts_Fallback_2f4189"}}}/>
                   </div>
-                  <div className="w-[45%]">
+                  <div className="sm:w-[45%]">
                        <TextField
                          
                          fullWidth

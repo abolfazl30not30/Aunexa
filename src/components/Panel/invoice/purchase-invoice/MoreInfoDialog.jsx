@@ -131,27 +131,25 @@ export default function MoreInfoDialog(props) {
                                         </div>))
                                     }
                                 </div>
-                                <div className="flex flex-col md:flex-row justify-between gap-2  pb-6">
-                                    <div className="w-1/2  flex flex-col">
-                                        <div className="mb-2">
-                                            <span className="text-[0.9rem] text-gray70 "> شماره فاکتور </span>
-                                        </div>
-                                        <div className="border border-[#D9D9D9]  flex justify-between px-4">
-                                            <div className="p-2">
-                                                <span className="text-[#29262A] text-[0.9rem]">{props.moreInfoTarget?.receiptCode}</span>
-                                            </div>
+                                {props.moreInfoTarget?.receiptCode?(<div className="flex flex-col">
+                                    <div className="mb-2">
+                                        <span className="text-[0.9rem] text-gray70 "> شماره فاکتور </span>
+                                    </div>
+                                    <div className="border border-[#D9D9D9]  flex justify-start px-4">
+                                        <div className="p-2">
+                                            <span className="text-[#29262A] text-[0.9rem]">{props.moreInfoTarget?.receiptCode}</span>
                                         </div>
                                     </div>
-                                    {props.moreInfoTarget?.receiptFile && <div className="w-1/2  flex flex-col">
-                                        <div className="mb-2">
-                                            <span className="text-[0.9rem] text-gray70 ">دانلود فاکتور</span>
-                                        </div>
-                                        <button onClick={(e)=>{handleImageName(e)}}  className="p-2 border border-[#D9D9D9]">
+                                </div>):null}
+                                {props.moreInfoTarget?.receiptFile && <div className="mb-2">
+                                        
+                                    
+                                        <div className="border border-[#D9D9D9]  flex justify-center px-4">
+                                            <button onClick={(e)=>{handleImageName(e)}}  className="p-2">
                                                 <span className="text-[#29262A] text-[0.9rem]">دانلود فاکتور</span>
                                             </button>
+                                        </div>
                                     </div>}
-                                    
-                                </div>
                                 
                                 
                             </div>
@@ -220,7 +218,7 @@ export default function MoreInfoDialog(props) {
                                           {props.moreInfoTarget?.receiptCode}
                                     </span>
                                 </div>
-                                {props.moreInfoTarget?.receiptFile && <div>
+                                {props.moreInfoTarget?.receiptFile &&<div>
                                     <button  onClick={(e)=>{handleImageName(e)}}  className="ml-1 text-gray9F text-[0.8rem]">
                                          دانلود فاکتور
                                     </button>

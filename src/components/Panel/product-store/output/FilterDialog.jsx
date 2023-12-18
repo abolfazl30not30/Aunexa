@@ -277,7 +277,7 @@ export default function FilterDialog(props) {
                                                         </React.Fragment>
                                                     )
                                                 }}
-                                                placeholder="نوع محصول"
+                                                placeholder="نام محصول"
                                             />}
                                     />
                                 </div>

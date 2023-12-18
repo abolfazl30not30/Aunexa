@@ -71,7 +71,7 @@ export default function MoreInfoDialog(props) {
                                     </div>
                                     <div className="border border-[#D9D9D9]   px-4">
                                         <div className="p-2">
-                                            <span className="text-[#29262A] text-[0.9rem]">{props.moreInfoTarget?.salesDate}</span>
+                                            <span className="text-[#29262A] text-[0.9rem]"><span>{props.moreInfoTarget?.salesDate}</span><span className="pl-2">{props.moreInfoTarget?.salesTime}</span></span>
                                         </div>
                                         
                                        
@@ -94,11 +94,11 @@ export default function MoreInfoDialog(props) {
                                 </div>
                                 <div className="flex flex-col">
                                     <div className="mb-2">
-                                        <span className="text-[0.9rem] text-gray70 ">نام مسئول فروش </span>
+                                        <span className="text-[0.9rem] text-gray70 ">  مشتری </span>
                                     </div>
                                     <div className="border border-[#D9D9D9]  flex justify-start px-4">
                                         <div className="p-2">
-                                            <span className="text-[#29262A] text-[0.9rem]">{props.moreInfoTarget?.sellerName}</span>
+                                            <span className="text-[#29262A] text-[0.9rem]">{props.moreInfoTarget?.customer}</span>
                                         </div>
                                     </div>
                                 </div>
@@ -156,10 +156,10 @@ export default function MoreInfoDialog(props) {
                                 
                                 <div>
                                     <span className="ml-1 text-gray9F text-[0.8rem]">
-                                        نام مسئول فروش :
+                                          مشتری :
                                     </span>
                                     <span className="text-[#29262A] text-[0.8rem]">
-                                        {props.moreInfoTarget?.sellerName}
+                                        {props.moreInfoTarget?.customer}
                                     </span>
                                 </div>
                                

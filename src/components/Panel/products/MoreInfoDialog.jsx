@@ -103,7 +103,7 @@ export default function MoreInfoDialog(props) {
                                 }
                                 <div className="flex flex-col">
                                     <div className="mb-2">
-                                        <span className="text-[0.9rem] text-gray70 ">نوع محصول</span>
+                                        <span className="text-[0.9rem] text-gray70 ">نام محصول</span>
                                     </div>
                                     <div className="border border-[#D9D9D9]  flex justify-between px-4">
                                         <div className="p-2">
@@ -187,7 +187,7 @@ export default function MoreInfoDialog(props) {
                                 }
                                 <div>
                                     <span className="ml-1 text-gray9F text-[0.8rem]">
-                                        نوع محصول :
+                                        نام محصول :
                                     </span>
                                     <span className="text-[#29262A] text-[0.8rem]">
                                         {props.moreInfoTarget?.type === "PRIMARY" ? (<span>ماده اولیه</span>) : (

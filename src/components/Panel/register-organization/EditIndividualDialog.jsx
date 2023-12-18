@@ -135,7 +135,7 @@ export default function EditIndividualInfoDialog(props) {
             birthDate: props.editIndividualInfoTarget?.birthDate,
             fatherName: props.editIndividualInfoTarget?.fatherName,
             gender: props.editIndividualInfoTarget?.gender,
-            roleId: props.editIndividualInfoTarget?.roleId,
+            role: props.editIndividualInfoTarget?.role,
             originalPhoneNumber: props.editIndividualInfoTarget?.originalPhoneNumber,
             anotherPhoneNumber: props.editIndividualInfoTarget?.anotherPhoneNumber,
             telephoneNumber: props.editIndividualInfoTarget?.telephoneNumber,
@@ -214,8 +214,8 @@ export default function EditIndividualInfoDialog(props) {
                     inputProps={{style: {fontFamily: "__fonts_2f4189,__fonts_Fallback_2f4189", fontSize: "0.8rem"}}}
                                         InputLabelProps={{style: {fontFamily: "__fonts_2f4189,__fonts_Fallback_2f4189"}}}/>
                                         </div>
-                <div className="flex justify-between">
-                  <div className="w-[45%]">
+                <div className="flex justify-between sm:flex-row flex-col gap-5">
+                  <div className="sm:w-[45%]">
                     <TextField
                       fullWidth
                       placeholder="کدملی"
@@ -228,7 +228,7 @@ export default function EditIndividualInfoDialog(props) {
                       inputProps={{style: {fontFamily: "__fonts_2f4189,__fonts_Fallback_2f4189", fontSize: "0.8rem"}}}
                                         InputLabelProps={{style: {fontFamily: "__fonts_2f4189,__fonts_Fallback_2f4189"}}}/>
                   </div>
-                  <div className="w-[45%]">
+                  <div className="sm:w-[45%]">
                     <TextField
                       fullWidth
                       placeholder="کد پرسنلی"
@@ -242,8 +242,8 @@ export default function EditIndividualInfoDialog(props) {
                       InputLabelProps={{style: {fontFamily: "__fonts_2f4189,__fonts_Fallback_2f4189"}}}/>
                   </div>
                 </div>
-                <div className="flex justify-between">
-                  <div className="flex flex-col w-[45%]">
+                <div className="flex justify-between sm:flex-row flex-col gap-5">
+                  <div className="flex flex-col sm:w-[45%]">
                     <DatePicker
                       
                       calendarPosition={`bottom`}
@@ -302,7 +302,7 @@ export default function EditIndividualInfoDialog(props) {
                                         }
                                     </div>
                   </div>
-                  <div className="w-[45%]">
+                  <div className="sm:w-[45%]">
 
                     <TextField
                       fullWidth
@@ -319,10 +319,10 @@ export default function EditIndividualInfoDialog(props) {
 
                   </div>
                 </div>
-                <div className="flex justify-between">
+                <div className="flex justify-between sm:flex-row flex-col gap-5">
 
 
-                  <div className="w-[45%]">
+                  <div className="sm:w-[45%]">
                   <FormControl fullWidth error={formik.touched.gender && Boolean(formik.errors.gender)}>
                     <InputLabel id="demo-simple-select-label" sx={{fontFamily: "__fonts_2f4189,__fonts_Fallback_2f4189", fontSize: "0.8rem",color:"#9F9F9F"}}>جنسیت</InputLabel>
                             <Select
@@ -341,7 +341,7 @@ export default function EditIndividualInfoDialog(props) {
                                         
                   </FormControl>
                   </div>
-                  <div className="w-[45%]">
+                  <div className="sm:w-[45%]">
                   <Autocomplete
                                         open={openRoleList}
                                         onOpen={() => {
@@ -386,8 +386,8 @@ export default function EditIndividualInfoDialog(props) {
                   </div>
 
                 </div>
-                <div className="flex justify-between">
-                  <div className="w-[45%]">
+                <div className="flex justify-between sm:flex-row flex-col gap-5">
+                  <div className="sm:w-[45%]">
                     <TextField
                       fullWidth
                       placeholder="شماره همراه"
@@ -400,7 +400,7 @@ export default function EditIndividualInfoDialog(props) {
                       inputProps={{style: {fontFamily: "__fonts_2f4189,__fonts_Fallback_2f4189", fontSize: "0.8rem"}}}
                                         InputLabelProps={{style: {fontFamily: "__fonts_2f4189,__fonts_Fallback_2f4189"}}}/>
                   </div>
-                  <div className="w-[45%]">
+                  <div className="sm:w-[45%]">
                        <TextField
                          
                          fullWidth
