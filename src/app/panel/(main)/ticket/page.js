@@ -184,7 +184,11 @@ function Ticket() {
                   <div className="flex justify-center gap-2 my-2">
                     <div>
                       <button
-                        className="flex bg-mainRed text-white items-center md:text-base text-sm text- px-3 py-2 rounded-full md:rounded"
+                        className={
+                          ticketMethod === "source"
+                            ? "flex bg-mainRed text-white items-center md:text-base text-sm text- px-3 py-2 rounded-full md:rounded"
+                            : "flex bg-gray70 text-white items-center md:text-base text-sm text- px-3 py-2 rounded-full md:rounded"
+                        }
                         onClick={() => {
                           setTicketMethod("source");
                         }}
@@ -194,7 +198,11 @@ function Ticket() {
                     </div>
                     <div>
                       <button
-                        className="flex bg-mainRed text-white items-center md:text-base text-sm text- px-3 py-2 rounded-full md:rounded"
+                        className={
+                          ticketMethod === "target"
+                            ? "flex bg-mainRed text-white items-center md:text-base text-sm text- px-3 py-2 rounded-full md:rounded"
+                            : "flex bg-gray70 text-white items-center md:text-base text-sm text- px-3 py-2 rounded-full md:rounded"
+                        }
                         onClick={() => {
                           setTicketMethod("target");
                         }}

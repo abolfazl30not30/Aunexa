@@ -277,8 +277,8 @@ export default function RegisterFactorDialog(props) {
                                             )
                                             }
                                 
-                                <div className="flex justify-between gap-2 items-center border-t pt-4 border-gray50">
-                                    <div className="w-[45%]">
+                                <div className="flex justify-between sm:flex-row  flex-col gap-4 items-center border-t py-2 border-gray50">
+                                    <div className="w-full">
                                     <TextField
                                         fullWidth
                                         placeholder="شماره فاکتور (اجباری )"
@@ -292,7 +292,7 @@ export default function RegisterFactorDialog(props) {
                                         InputLabelProps={{style: {fontFamily: "__fonts_2f4189,__fonts_Fallback_2f4189"}}}/>
 
                                     </div>
-                                    <div className="w-[45%]">
+                                    <div className="w-full">
                                     {
                                         isLoadingUpload ? (
                                             <div >

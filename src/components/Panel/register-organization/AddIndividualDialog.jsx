@@ -57,7 +57,7 @@ export default function AddIndividualDialog(props) {
       /^[۰۱۲۳۴۵۶۷۸۹0-9]+$/,
       "لطفا فقط عدد وارد نمایید"
     ).min(11, "تعداد رقم وارد شده کم می باشد").max(11, "تعداد رقم وارد شده زیاد می باشد"),
-    anotherPhoneNumber: yup.string().required("لطفا شماره همراه را وارد نمایید").matches(
+    anotherPhoneNumber: yup.string().matches(
       /^[۰۱۲۳۴۵۶۷۸۹0-9]+$/,
       "لطفا فقط عدد وارد نمایید"
     ).min(11, "تعداد رقم وارد شده کم می باشد").max(11, "تعداد رقم وارد شده زیاد می باشد"),
@@ -66,8 +66,8 @@ export default function AddIndividualDialog(props) {
       "لطفا فقط عدد وارد نمایید"
     ).min(11, "لطفا شماره تلفن ثابت خود را به همراه کد استان وارد کنید برای مثال برای تهران 021").max(11, "تعداد رقم وارد شده زیاد می باشد"),
     education: yup.string().required(),
-    email: yup.string().email("فرمت ایمیل باید صحیح باشد").required("لطفا ایمیل را وارد نمایید"),
-    address: yup.string().required("لطفا آدرس را وارد کنید"),
+    email: yup.string().email("فرمت ایمیل باید صحیح باشد"),
+    address: yup.string(),
 
   });
 
