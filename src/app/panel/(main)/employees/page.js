@@ -32,9 +32,9 @@ import { useSelector } from "react-redux";
 import RegisterUserDialog from "@/components/Panel/register-organization/RegisterUserDialog";
 import UnregisterUserDialog from "@/components/Panel/register-organization/UnregisterUserDialog";
 import { useSaveCodeMutation } from "@/redux/features/organization/individual/RegisterIndividualSlice";
+
 export default function registerOrganization() {
   /* search bar */
-
   const [filter, setFilter] = useState("organization");
   /* search bar */
   const [expanded, setExpanded] = React.useState(false);

@@ -24,6 +24,7 @@ function primaryStoreInput() {
   let permission = useSelector(
     (state) => state.access?.pages?.primaryStoreInput
   );
+
   const [page, setPage] = useState(1);
   const [sort, setSort] = useState("desc");
   const [openAddData, setOpenAddData] = useState(false);

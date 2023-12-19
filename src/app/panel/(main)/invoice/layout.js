@@ -11,10 +11,7 @@ export default function RootLayout({children}) {
             <>{children}</>
         );
     }else {
-        return (
-            <>{children}</>
-        );
-        // router.push("/panel")
+        router.push("/panel")
     }
 
 }

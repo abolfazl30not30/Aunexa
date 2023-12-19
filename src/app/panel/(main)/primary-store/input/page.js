@@ -107,6 +107,7 @@ function primaryStoreInput() {
     });
     setOpenMoreInfo(false);
   };
+
   const handleOpenDelete = (id) => {
     setDeleteTargetId(id);
     setOpenDelete(true);
@@ -121,6 +122,7 @@ function primaryStoreInput() {
     setEditInfoTarget(info);
     setOpenEditInfo(true);
   };
+
   const handleCloseEditInfo = () => {
     setEditInfoTarget({
       productId: "",
@@ -156,6 +158,8 @@ function primaryStoreInput() {
     { page, sort, filterItem },
     { refetchOnMountOrArgChange: true }
   );
+
+
 
   return (
     <>

@@ -2,18 +2,17 @@
 import React from "react"
 import {useSelector} from "react-redux";
 import {useRouter} from "next/navigation";
+import {useGetAccessQuery} from "@/redux/features/access/getAccessSlice";
 
 export default function RootLayout({children}) {
-    const pages = useSelector((state)=> state.access.pages)
+    const { data : accessData={},isLoading: isLoadingAccess, error: errorAccess } = useGetAccessQuery();
     const router = useRouter()
-    if(pages.hasOwnProperty("primaryStoreInput")){
+
+    if(accessData.hasOwnProperty("SuccessfulPurchaseRequestList")){
         return (
             <>{children}</>
         );
     }else {
-        return (
-            <>{children}</>
-        );
-        // router.push("/panel")
+        router.push("/panel")
     }
 }
