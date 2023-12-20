@@ -8,7 +8,7 @@ import * as yup from "yup";
 import {useFormik} from "formik";
 import CircularProgress from '@mui/material/CircularProgress';
 
-
+import { PersianToEnglish } from "@/helper/PersianToEnglish";
 
 import { useUpdateRelationshipMutation } from "@/redux/features/organization/individual/IndividualRelationshipSlice";
 
@@ -67,7 +67,7 @@ export default function AddIndividualRelationshipDialog(props) {
                     id:props.editIndividualRelationshipInfoTarget?.relationshipsInformation[0]?.id,
                     individualId:props.editIndividualRelationshipInfoTarget?.id,
                     fullName: individualRelationShip?.firstFullName,
-                    phoneNumber:individualRelationShip?.firstPhoneNumber,
+                    phoneNumber:individualRelationShip?.PersianToEnglish(firstPhoneNumber),
                     relationship:individualRelationShip?.firstRelationship,
                     address:individualRelationShip?.firstAddress
                 },
@@ -75,7 +75,7 @@ export default function AddIndividualRelationshipDialog(props) {
                     id:props.editIndividualRelationshipInfoTarget?.relationshipsInformation[1]?.id,
                     individualId:props.editIndividualRelationshipInfoTarget.id,
                     fullName:individualRelationShip?.secondFullName,
-                    phoneNumber:individualRelationShip?.secondPhoneNumber,
+                    phoneNumber:individualRelationShip?.PersianToEnglish(secondPhoneNumber),
                     relationship:individualRelationShip?.secondRelationship,
                     address:individualRelationShip?.secondAddress
                 }

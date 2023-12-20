@@ -13,7 +13,7 @@ import DatePicker from "react-multi-date-picker";
 import AddIndividualRelationshipDialog from "./AddIndividualRelationshipDialog";
 import { useSaveIndividualMutation } from "@/redux/features/organization/individual/IndividualSlice";
 import { useLazyGetAllRoleListQuery } from "@/redux/features/category/CategoryRoleSlice";
-
+import { PersianToEnglish } from "@/helper/PersianToEnglish";
 export default function AddIndividualDialog(props) {
 
   const [individual, setIndividual] = useState(null)
@@ -98,7 +98,7 @@ export default function AddIndividualDialog(props) {
     validationSchema: schema,
 
     onSubmit: async (individual, helpers) => {
-      let updateIndividual = { ...individual,organizationId:props.organizationIdTarget,subOrganizationId:props.subOrganizationIdTarget,cLevel:cLevel }
+      let updateIndividual = { ...individual,organizationId:props.organizationIdTarget,subOrganizationId:props.subOrganizationIdTarget,cLevel:cLevel,originalPhoneNumber:PersianToEnglish(individual.originalPhoneNumber),anotherPhoneNumber:PersianToEnglish(individual.anotherPhoneNumber),telephoneNumber:PersianToEnglish(individual.telephoneNumber),nationalCode:PersianToEnglish(individual.nationalCode),personalCode:PersianToEnglish(individual.personalCode)   }
       const userData = await submitData(updateIndividual)
       handleReset()
       

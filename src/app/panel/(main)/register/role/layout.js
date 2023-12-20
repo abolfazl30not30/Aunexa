@@ -1,17 +1,15 @@
-'use client'
-import React from "react"
-import {useRouter} from "next/navigation";
+"use client";
+import React from "react";
+import { useRouter } from "next/navigation";
+import { useSelector } from "react-redux";
 
+export default function RootLayout({ children }) {
+  const pages = useSelector((state) => state.access.pages);
+  const router = useRouter();
 
-export default function RootLayout({children}) {
-  const pages = useSelector((state)=> state.access.pages)
-  const router = useRouter()
-
-  if(pages.hasOwnProperty("PurchaseRequest")){
-    return (
-        <>{children}</>
-    );
-  }else {
-    router.push("/panel")
+  if (pages.hasOwnProperty("PurchaseRequest")) {
+    return <>{children}</>;
+  } else {
+    router.push("/panel");
   }
 }

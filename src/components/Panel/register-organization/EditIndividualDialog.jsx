@@ -13,7 +13,7 @@ import persian_fa from "react-date-object/locales/persian_fa";
 import DatePicker,{DateObject} from "react-multi-date-picker";
 import { useLazyGetAllRoleListQuery } from "@/redux/features/category/CategoryRoleSlice";
 import CircularProgress from '@mui/material/CircularProgress';
-
+import { PersianToEnglish } from "@/helper/PersianToEnglish";
 export default function EditIndividualInfoDialog(props) {
     
   const [individual,setIndividual] = useState(null)
@@ -92,7 +92,7 @@ export default function EditIndividualInfoDialog(props) {
         validationSchema: schema,
 
         onSubmit: async (individual,helpers) => {
-            const body = {...individual,cLevel:cLevel,
+            const body = {...individual,cLevel:cLevel,originalPhoneNumber:PersianToEnglish(individual.originalPhoneNumber),anotherPhoneNumber:PersianToEnglish(individual.anotherPhoneNumber),telephoneNumber:PersianToEnglish(individual.telephoneNumber),nationalCode:PersianToEnglish(individual.nationalCode),personalCode:PersianToEnglish(individual.personalCode),
                 organizationId:window.sessionStorage.getItem("organizationId"),
                 subOrganizationId:window.sessionStorage.getItem("subOrganizationId"),
                 
