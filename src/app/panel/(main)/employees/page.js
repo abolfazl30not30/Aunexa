@@ -35,7 +35,7 @@ import { useSaveCodeMutation } from "@/redux/features/organization/individual/Re
 
 export default function registerOrganization() {
   /* search bar */
-  const [filter, setFilter] = useState("organization");
+  const [filter, setFilter] = useState("sub-organization");
   /* search bar */
   const [expanded, setExpanded] = React.useState(false);
   const [organizationIdTarget, setOrganizationIdTarget] = useState("");
@@ -382,9 +382,9 @@ export default function registerOrganization() {
     editIndividualRelationshipInfoTarget;
     setOpenEditIndividualRelationshipInfo(false);
   };
-  const [filterItem, setFilterItem] = useState("organization");
+  const [filterItem, setFilterItem] = useState("sub-organization");
   const [searchValue, setSearchValue] = useState("");
-  const [filterType, setFilterType] = useState("organization");
+  const [filterType, setFilterType] = useState("sub-organization");
   const handleFilterType = (e) => {
     setFilterType(e.target.value);
     let params = new URLSearchParams();
@@ -542,15 +542,6 @@ export default function registerOrganization() {
                     }}
                     onChange={handleFilterType}
                   >
-                    <MenuItem
-                      value="organization"
-                      sx={{
-                        fontFamily: "__fonts_2f4189,__fonts_Fallback_2f4189",
-                        fontSize: "0.8rem",
-                      }}
-                    >
-                      سازمان
-                    </MenuItem>
                     <MenuItem
                       value="sub-organization"
                       sx={{
