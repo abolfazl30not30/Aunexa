@@ -2,14 +2,14 @@
 import React from "react"
 import {useSelector} from "react-redux";
 import {useRouter} from "next/navigation";
-import {useGetAccessQuery} from "@/redux/features/access/getAccessSlice";
+
 
 export default function RootLayout({children}) {
 
-    const { data : accessData={},isLoading: isLoadingAccess, error: errorAccess } = useGetAccessQuery();
+    const pages = useSelector((state)=> state.access.pages)
     const router = useRouter()
 
-    if(accessData.hasOwnProperty("primaryStoreOutput")){
+    if(pages.hasOwnProperty("PrimaryStoreOutput")){
         return (
             <>{children}</>
         );

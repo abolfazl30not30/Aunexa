@@ -1,5 +1,5 @@
 "use client";
-import React, { useState } from "react";
+import React, {useEffect, useState} from "react";
 import "../../../styles/login.css";
 import Image from "next/image";
 import Link from "next/link";
@@ -11,7 +11,8 @@ import { CacheProvider } from "@emotion/react";
 import createCache from "@emotion/cache";
 import { Drawer, Menu } from "@mui/material";
 import { useDispatch, useSelector } from "react-redux";
-import {useGetAccessQuery} from "@/redux/features/access/getAccessSlice";
+import { useLazyGetAccessQuery} from "@/redux/features/access/getAccessSlice";
+import {setAccess} from "@/redux/permission/accessSlice";
 
 const cacheRtl = createCache({
   key: "muirtl",
@@ -55,8 +56,15 @@ export default function RootLayout({ children }) {
     setOpenSidebar(false);
   };
 
-  const { data : accessData={},isLoading: isLoadingAccess, error: errorAccess } = useGetAccessQuery();
+  const [getAccess,{ data : accessData={},isLoading: isLoadingAccess, error: errorAccess }] = useLazyGetAccessQuery();
 
+  const handleGetAccess = async () => {
+    const access = await getAccess();
+    dispatch(setAccess(access.data))
+  }
+  useEffect(()=>{
+    handleGetAccess()
+  },[])
   return (
     <>
       <div className="">
@@ -470,7 +478,7 @@ export default function RootLayout({ children }) {
                         <li>
                           <Link
                             onClick={handleCloseSidebar}
-                            href="/panel/equipment-store/input"
+                            href="/panel/equipment-store/output"
                             className="block py-2 px-5"
                           >
                             <span
@@ -1156,8 +1164,7 @@ export default function RootLayout({ children }) {
                                   pathname === "/panel/equipment-store/input"
                                       ? "text-mainRed text-[0.9rem]"
                                       : "text-gray9F hover:text-textGray text-[0.9rem]"
-                                }
-                            >
+                                }>
                               بخش ورودی
                             </span>
                                   </Link>
@@ -1166,7 +1173,7 @@ export default function RootLayout({ children }) {
                                 <li>
                                   <Link
                                       onClick={handleCloseSidebar}
-                                      href="/panel/equipment-store/input"
+                                      href="/panel/equipment-store/Output"
                                       className="block py-2 px-5"
                                   >
                             <span

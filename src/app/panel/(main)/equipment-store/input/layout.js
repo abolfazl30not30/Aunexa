@@ -1,16 +1,15 @@
 'use client'
 import React, {useEffect} from "react"
-import {useDispatch, useSelector} from "react-redux";
 import {useRouter} from "next/navigation";
-import {useGetAccessQuery, useLazyGetAccessQuery} from "@/redux/features/access/getAccessSlice";
-import {setAccess} from "@/redux/permission/accessSlice";
+import {useSelector} from "react-redux";
+
 
 export default function RootLayout({children}){
 
-    const { data : accessData={},isLoading: isLoadingAccess, error: errorAccess } = useGetAccessQuery();
+    const pages = useSelector((state)=> state.access.pages)
     const router = useRouter()
 
-    if(accessData.hasOwnProperty("EquipmentStoreInput")){
+    if(pages.hasOwnProperty("EquipmentStoreInput")){
         return (
             <>{children}</>
         );

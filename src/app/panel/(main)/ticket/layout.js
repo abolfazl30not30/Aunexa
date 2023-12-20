@@ -1,14 +1,14 @@
 "use client";
 import React from "react";
-import {useGetAccessQuery} from "@/redux/features/access/getAccessSlice";
+
 import {useRouter} from "next/navigation";
 
 
 export default function RootLayout({ children }) {
-  const { data : accessData={},isLoading: isLoadingAccess, error: errorAccess } = useGetAccessQuery();
+  const pages = useSelector((state)=> state.access.pages)
   const router = useRouter()
 
-  if(accessData.hasOwnProperty("Ticket")){
+  if(pages.hasOwnProperty("Ticket")){
     return (
         <>{children}</>
     );

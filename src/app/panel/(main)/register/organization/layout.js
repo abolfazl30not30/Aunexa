@@ -1,15 +1,17 @@
-"use client";
-import React from "react";
-import { useSelector } from "react-redux";
-import { useRouter } from "next/navigation";
+'use client'
+import React from "react"
+import {useRouter} from "next/navigation";
 
-export default function RootLayout({ children }) {
-  const pages = useSelector((state) => state.access.pages);
-  const router = useRouter();
-  if (pages.hasOwnProperty("registerOrgan")) {
-    return <>{children}</>;
-  } else {
-    return <>{children}</>;
-    // router.push("/panel")
+
+export default function RootLayout({children}) {
+  const pages = useSelector((state)=> state.access.pages)
+  const router = useRouter()
+
+  if(pages.hasOwnProperty("PurchaseRequest")){
+    return (
+        <>{children}</>
+    );
+  }else {
+    router.push("/panel")
   }
 }
