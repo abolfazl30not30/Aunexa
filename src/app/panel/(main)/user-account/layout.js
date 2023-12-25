@@ -1,15 +1,16 @@
-"use client";
-import React from "react";
+"use client"
 
-import { useRouter } from "next/navigation";
+import React from "react";
+import { redirect } from 'next/navigation';
 import { useSelector } from "react-redux";
+
 export default function RootLayout({ children }) {
   const pages = useSelector((state) => state.access.pages);
-  const router = useRouter();
+
 
   if (pages.hasOwnProperty("UserAccount")) {
     return <>{children}</>;
   } else {
-    router.push("/panel");
+    redirect('/panel');
   }
 }

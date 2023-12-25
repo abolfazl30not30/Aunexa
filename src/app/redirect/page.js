@@ -3,7 +3,7 @@ import MainForm from "@/components/Login/MainForm";
 import { useSearchParams } from "next/navigation";
 import { useEffect } from "react";
 import { useLoginMutation } from "../../redux/api/loginSlice";
-import { useRouter } from "next/navigation";
+import { useRouter } from 'next/navigation';
 import axios from "axios";
 import Image from "next/image";
 import React from "react";
