@@ -1,19 +1,15 @@
-'use client'
-import React, {useEffect} from "react"
-import {useRouter} from "next/navigation";
-import {useSelector} from "react-redux";
+"use client";
+import React, { useEffect } from "react";
+import { useRouter } from "next/navigation";
+import { useSelector } from "react-redux";
 
+export default function RootLayout({ children }) {
+  const router = useRouter();
+  const pages = useSelector((state) => state.access.pages);
 
-export default function RootLayout({children}){
-
-    const router = useRouter()
-    const pages = useSelector((state)=> state.access.pages)
-
-    if(pages.hasOwnProperty("Employee")){
-        return (
-            <>{children}</>
-        );
-    }else {
-        router.push("/panel")
-    }
+  if (pages.hasOwnProperty("Employees")) {
+    return <>{children}</>;
+  } else {
+    router.push("/panel");
+  }
 }

@@ -234,7 +234,7 @@ export default function AddDataDialog(props) {
 
     const formik = useFormik({
         initialValues: {
-            type:"PRIMARY",
+            
             productId: "",
             productName: "",
             value: "",
@@ -253,7 +253,7 @@ export default function AddDataDialog(props) {
         validationSchema: schema,
 
         onSubmit: async (product, helpers) => {
-            let updateProduct = {...product,value:PersianToEnglish(product.value)}
+            let updateProduct = {...product,value:PersianToEnglish(product.value),status:"UNKNOWN"}
 
             if (product.machineTag !== "") {
                 const res = await getVehicleByTag(product.machineTag)

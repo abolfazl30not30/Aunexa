@@ -213,7 +213,7 @@ export default function RegisterFactorDialog(props) {
                                                     </div>
                                                     <div>
                                             <span className="text-[#29262A] font-semibold">
-                                              {item?.bill?.billCycle?.value} {item?.bill?.billCycle?.unit}
+                                              {item?.bill?.quantity?.value} {item?.bill?.quantity?.unit}
                                             </span>
                                                     </div>
                                                 </div>

@@ -7,7 +7,7 @@ export default function RootLayout({ children }) {
   const pages = useSelector((state) => state.access.pages);
   const router = useRouter();
 
-  if (pages.hasOwnProperty("PurchaseRequest")) {
+  if (pages.hasOwnProperty("RegisterRole")) {
     return <>{children}</>;
   } else {
     router.push("/panel");

@@ -1,11 +1,15 @@
 "use client";
-import React, { useEffect } from "react";
-import { useRouter } from "next/navigation";
+import React from "react";
 import { useSelector } from "react-redux";
+import { useRouter } from "next/navigation";
 
 export default function RootLayout({ children }) {
   const pages = useSelector((state) => state.access.pages);
   const router = useRouter();
 
-  return <>{children}</>;
+  if (pages.hasOwnProperty("notification")) {
+    return <>{children}</>;
+  } else {
+    router.push("/panel");
+  }
 }

@@ -131,7 +131,10 @@ function registerRole() {
                 placeholder="جستجو نقش"
                 id="outlined-adornment-amount"
                 inputProps={{
-                  style: { fontFamily: "IRANYekan", fontSize: "0.9rem" },
+                  style: {
+                    fontFamily: "__fonts_2f4189,__fonts_Fallback_2f4189",
+                    fontSize: "0.9rem",
+                  },
                 }}
                 startAdornment={
                   <InputAdornment position="start">

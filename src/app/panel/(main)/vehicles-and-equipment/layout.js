@@ -8,7 +8,7 @@ export default function RootLayout({ children }) {
   const pages = useSelector((state) => state.access.pages);
   const router = useRouter();
 
-  if (pages.hasOwnProperty("VehicleAndEquipment")) {
+  if (pages.hasOwnProperty("VehiclesAndEquipment")) {
     return <>{children}</>;
   } else {
     router.push("/panel");

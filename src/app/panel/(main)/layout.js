@@ -108,8 +108,10 @@ export default function RootLayout({ children }) {
             >
               <div className="relative">
                 <img src="/icons/bell.svg" alt="bell" />
-                <div className="absolute top-0">
-                  <span className="block rounded-full bg-mainRed w-[0.5rem] h-[0.5rem]"></span>
+                <div className="absolute -top-1.5 -right-1">
+                  <span className=" rounded-full bg-mainRed w-[1rem] h-[1rem] text-[0.49rem] flex  items-center justify-center text-center text-white">
+                    79
+                  </span>
                 </div>
               </div>
             </button>
@@ -128,7 +130,7 @@ export default function RootLayout({ children }) {
                   overflow: "visible",
                   filter: "drop-shadow(0px 2px 3px rgba(0,0,0,0.1))",
                   mt: 1.5,
-                  fontFamily: "IRANYekan",
+                  fontFamily: "__fonts_2f4189,__fonts_Fallback_2f4189",
                   "& .MuiAvatar-root": {
                     width: 32,
                     height: 32,
@@ -229,7 +231,7 @@ export default function RootLayout({ children }) {
                     overflow: "visible",
                     filter: "drop-shadow(0px 2px 3px rgba(0,0,0,0.1))",
                     mt: 1.5,
-                    fontFamily: "IRANYekan",
+                    fontFamily: "__fonts_2f4189,__fonts_Fallback_2f4189",
                     "& .MuiAvatar-root": {
                       width: 32,
                       height: 32,
@@ -494,7 +496,7 @@ export default function RootLayout({ children }) {
                               >
                                 <span
                                   className={
-                                    pathname === "/panel/equipment-store/input"
+                                    pathname === "/panel/equipment-store/output"
                                       ? "text-mainRed text-[0.9rem]"
                                       : "text-gray9F hover:text-textGray text-[0.9rem]"
                                   }
@@ -575,9 +577,9 @@ export default function RootLayout({ children }) {
                       </details>
                     </div>
                   )}
-                  {(accessData.hasOwnProperty("VehicleAndEquipment") ||
-                    accessData.hasOwnProperty("ProductStoreOutput") ||
-                    accessData.hasOwnProperty("HistoryOfReport")) && (
+                  {(accessData.hasOwnProperty("VehiclesAndEquipment") ||
+                    accessData.hasOwnProperty("FailureAndRepairReport") ||
+                    accessData.hasOwnProperty("HistoryOfReports")) && (
                     <div>
                       <details className="group py-3 border-b border-b-1 border-b-solid  border-b-borderGray">
                         <summary className="flex items-center justify-between gap-2 p-2 font-medium marker:content-none hover:cursor-pointer">
@@ -601,7 +603,9 @@ export default function RootLayout({ children }) {
                           </svg>
                         </summary>
                         <ul className="flex flex-col gap-1 pr-2">
-                          {accessData.hasOwnProperty("VehicleAndEquipment") && (
+                          {accessData.hasOwnProperty(
+                            "VehiclesAndEquipment"
+                          ) && (
                             <li>
                               <Link
                                 onClick={handleCloseSidebar}
@@ -642,7 +646,7 @@ export default function RootLayout({ children }) {
                               </Link>
                             </li>
                           )}
-                          {accessData.hasOwnProperty("HistoryOfReport") && (
+                          {accessData.hasOwnProperty("HistoryOfReports") && (
                             <li>
                               <Link
                                 onClick={handleCloseSidebar}
@@ -684,7 +688,7 @@ export default function RootLayout({ children }) {
                       </Link>
                     </div>
                   )}
-                  {accessData.hasOwnProperty("Product") && (
+                  {accessData.hasOwnProperty("Products") && (
                     <div>
                       <Link
                         onClick={handleCloseSidebar}
@@ -913,10 +917,8 @@ export default function RootLayout({ children }) {
                     </div>
                   )}
 
-                  {(accessData.hasOwnProperty("PurchaseRequestList") ||
-                    accessData.hasOwnProperty(
-                      "PendingPurchaseRequestList"
-                    )) && (
+                  {(accessData.hasOwnProperty("SalesInvoice") ||
+                    accessData.hasOwnProperty("PurchaseInvoice")) && (
                     <div>
                       <details className="group py-3 border-b border-b-1 border-b-solid  border-b-borderGray">
                         <summary className="flex items-center justify-between gap-2 p-2 font-medium marker:content-none hover:cursor-pointer">
@@ -960,7 +962,7 @@ export default function RootLayout({ children }) {
                             </li>
                           )}
 
-                          {accessData.hasOwnProperty("SalesInvoice") && (
+                          {accessData.hasOwnProperty("PurchaseInvoice") && (
                             <li>
                               <Link
                                 onClick={handleCloseSidebar}
@@ -1004,26 +1006,26 @@ export default function RootLayout({ children }) {
                       </Link>
                     </div>
                   )}
-
-                  <div>
-                    <Link
-                      onClick={handleCloseSidebar}
-                      href="/panel/register/organization"
-                      className="block py-4 px-2 border-b border-b-1 border-b-solid  border-b-borderGray"
-                    >
-                      <span
-                        className={
-                          pathname === "/panel/register/organization"
-                            ? "text-mainRed text-[0.9rem]"
-                            : "text-gray9F hover:text-textGray text-[0.9rem]"
-                        }
+                  {accessData.hasOwnProperty("RegisterOrganization") && (
+                    <div>
+                      <Link
+                        onClick={handleCloseSidebar}
+                        href="/panel/register/organization"
+                        className="block py-4 px-2 border-b border-b-1 border-b-solid  border-b-borderGray"
                       >
-                        ثبت سازمان
-                      </span>
-                    </Link>
-                  </div>
-
-                  {accessData.hasOwnProperty("Employee") && (
+                        <span
+                          className={
+                            pathname === "/panel/register/organization"
+                              ? "text-mainRed text-[0.9rem]"
+                              : "text-gray9F hover:text-textGray text-[0.9rem]"
+                          }
+                        >
+                          ثبت سازمان
+                        </span>
+                      </Link>
+                    </div>
+                  )}
+                  {accessData.hasOwnProperty("Employees") && (
                     <div>
                       <Link
                         onClick={handleCloseSidebar}
@@ -1042,24 +1044,25 @@ export default function RootLayout({ children }) {
                       </Link>
                     </div>
                   )}
-
-                  <div>
-                    <Link
-                      onClick={handleCloseSidebar}
-                      href="/panel/register/role"
-                      className="block py-4 px-2 border-b border-b-1 border-b-solid  border-b-borderGray"
-                    >
-                      <span
-                        className={
-                          pathname === "/panel/register/role"
-                            ? "text-mainRed text-[0.9rem]"
-                            : "text-gray9F hover:text-textGray text-[0.9rem]"
-                        }
+                  {accessData.hasOwnProperty("RegisterRole") && (
+                    <div>
+                      <Link
+                        onClick={handleCloseSidebar}
+                        href="/panel/register/role"
+                        className="block py-4 px-2 border-b border-b-1 border-b-solid  border-b-borderGray"
                       >
-                        ثبت نقش
-                      </span>
-                    </Link>
-                  </div>
+                        <span
+                          className={
+                            pathname === "/panel/register/role"
+                              ? "text-mainRed text-[0.9rem]"
+                              : "text-gray9F hover:text-textGray text-[0.9rem]"
+                          }
+                        >
+                          ثبت نقش
+                        </span>
+                      </Link>
+                    </div>
+                  )}
 
                   {accessData.hasOwnProperty("UserAccount") && (
                     <div>
@@ -1080,25 +1083,25 @@ export default function RootLayout({ children }) {
                       </Link>
                     </div>
                   )}
-
-                  <div>
-                    <Link
-                      onClick={handleCloseSidebar}
-                      href="/panel/notification"
-                      className="block py-4 px-2 border-b border-b-1 border-b-solid  border-b-borderGray"
-                    >
-                      <span
-                        className={
-                          pathname === "/panel/notification"
-                            ? "text-mainRed text-[0.9rem]"
-                            : "text-gray9F hover:text-textGray text-[0.9rem]"
-                        }
+                  {accessData.hasOwnProperty("notification") && (
+                    <div>
+                      <Link
+                        onClick={handleCloseSidebar}
+                        href="/panel/notification"
+                        className="block py-4 px-2 border-b border-b-1 border-b-solid  border-b-borderGray"
                       >
-                        اطلاعیه
-                      </span>
-                    </Link>
-                  </div>
-
+                        <span
+                          className={
+                            pathname === "/panel/notification"
+                              ? "text-mainRed text-[0.9rem]"
+                              : "text-gray9F hover:text-textGray text-[0.9rem]"
+                          }
+                        >
+                          اطلاعیه
+                        </span>
+                      </Link>
+                    </div>
+                  )}
                   <div>
                     <Link
                       onClick={handleCloseSidebar}
@@ -1251,12 +1254,12 @@ export default function RootLayout({ children }) {
                         <li>
                           <Link
                             onClick={handleCloseSidebar}
-                            href="/panel/equipment-store/Output"
+                            href="/panel/equipment-store/output"
                             className="block py-2 px-5"
                           >
                             <span
                               className={
-                                pathname === "/panel/equipment-store/input"
+                                pathname === "/panel/equipment-store/output"
                                   ? "text-mainRed text-[0.9rem]"
                                   : "text-gray9F hover:text-textGray text-[0.9rem]"
                               }
@@ -1339,9 +1342,9 @@ export default function RootLayout({ children }) {
                 </div>
               )}
 
-              {(accessData.hasOwnProperty("VehicleAndEquipment") ||
-                accessData.hasOwnProperty("ProductStoreOutput") ||
-                accessData.hasOwnProperty("HistoryOfReport")) && (
+              {(accessData.hasOwnProperty("VehiclesAndEquipment") ||
+                accessData.hasOwnProperty("FailureAndRepairReport") ||
+                accessData.hasOwnProperty("HistoryOfReports")) && (
                 <div>
                   <details className="group py-3 border-b border-b-1 border-b-solid  border-b-borderGray">
                     <summary className="flex items-center justify-between gap-2 p-2 font-medium marker:content-none hover:cursor-pointer">
@@ -1365,7 +1368,7 @@ export default function RootLayout({ children }) {
                       </svg>
                     </summary>
                     <ul className="flex flex-col gap-1 pr-2">
-                      {accessData.hasOwnProperty("VehicleAndEquipment") && (
+                      {accessData.hasOwnProperty("VehiclesAndEquipment") && (
                         <li>
                           <Link
                             onClick={handleCloseSidebar}
@@ -1403,7 +1406,7 @@ export default function RootLayout({ children }) {
                           </Link>
                         </li>
                       )}
-                      {accessData.hasOwnProperty("HistoryOfReport") && (
+                      {accessData.hasOwnProperty("HistoryOfReports") && (
                         <li>
                           <Link
                             onClick={handleCloseSidebar}
@@ -1447,7 +1450,7 @@ export default function RootLayout({ children }) {
                 </div>
               )}
 
-              {accessData.hasOwnProperty("Product") && (
+              {accessData.hasOwnProperty("Products") && (
                 <div>
                   <Link
                     onClick={handleCloseSidebar}
@@ -1676,8 +1679,8 @@ export default function RootLayout({ children }) {
                 </div>
               )}
 
-              {(accessData.hasOwnProperty("PurchaseRequestList") ||
-                accessData.hasOwnProperty("PendingPurchaseRequestList")) && (
+              {(accessData.hasOwnProperty("SalesInvoice") ||
+                accessData.hasOwnProperty("PurchaseInvoice")) && (
                 <div>
                   <details className="group py-3 border-b border-b-1 border-b-solid  border-b-borderGray">
                     <summary className="flex items-center justify-between gap-2 p-2 font-medium marker:content-none hover:cursor-pointer">
@@ -1721,7 +1724,7 @@ export default function RootLayout({ children }) {
                         </li>
                       )}
 
-                      {accessData.hasOwnProperty("SalesInvoice") && (
+                      {accessData.hasOwnProperty("PurchaseInvoice") && (
                         <li>
                           <Link
                             onClick={handleCloseSidebar}
@@ -1764,26 +1767,27 @@ export default function RootLayout({ children }) {
                   </Link>
                 </div>
               )}
-
-              <div>
-                <Link
-                  onClick={handleCloseSidebar}
-                  href="/panel/register/organization"
-                  className="block py-4 px-2 border-b border-b-1 border-b-solid  border-b-borderGray"
-                >
-                  <span
-                    className={
-                      pathname === "/panel/register/organization"
-                        ? "text-mainRed text-[0.9rem]"
-                        : "text-gray9F hover:text-textGray text-[0.9rem]"
-                    }
+              {accessData.hasOwnProperty("RegisterOrganization") && (
+                <div>
+                  <Link
+                    onClick={handleCloseSidebar}
+                    href="/panel/register/organization"
+                    className="block py-4 px-2 border-b border-b-1 border-b-solid  border-b-borderGray"
                   >
-                    ثبت سازمان
-                  </span>
-                </Link>
-              </div>
+                    <span
+                      className={
+                        pathname === "/panel/register/organization"
+                          ? "text-mainRed text-[0.9rem]"
+                          : "text-gray9F hover:text-textGray text-[0.9rem]"
+                      }
+                    >
+                      ثبت سازمان
+                    </span>
+                  </Link>
+                </div>
+              )}
 
-              {accessData.hasOwnProperty("Employee") && (
+              {accessData.hasOwnProperty("Employees") && (
                 <div>
                   <Link
                     onClick={handleCloseSidebar}
@@ -1802,24 +1806,25 @@ export default function RootLayout({ children }) {
                   </Link>
                 </div>
               )}
-
-              <div>
-                <Link
-                  onClick={handleCloseSidebar}
-                  href="/panel/register/role"
-                  className="block py-4 px-2 border-b border-b-1 border-b-solid  border-b-borderGray"
-                >
-                  <span
-                    className={
-                      pathname === "/panel/register/role"
-                        ? "text-mainRed text-[0.9rem]"
-                        : "text-gray9F hover:text-textGray text-[0.9rem]"
-                    }
+              {accessData.hasOwnProperty("RegisterRole") && (
+                <div>
+                  <Link
+                    onClick={handleCloseSidebar}
+                    href="/panel/register/role"
+                    className="block py-4 px-2 border-b border-b-1 border-b-solid  border-b-borderGray"
                   >
-                    ثبت نقش
-                  </span>
-                </Link>
-              </div>
+                    <span
+                      className={
+                        pathname === "/panel/register/role"
+                          ? "text-mainRed text-[0.9rem]"
+                          : "text-gray9F hover:text-textGray text-[0.9rem]"
+                      }
+                    >
+                      ثبت نقش
+                    </span>
+                  </Link>
+                </div>
+              )}
 
               {accessData.hasOwnProperty("UserAccount") && (
                 <div>
@@ -1840,25 +1845,25 @@ export default function RootLayout({ children }) {
                   </Link>
                 </div>
               )}
-
-              <div>
-                <Link
-                  onClick={handleCloseSidebar}
-                  href="/panel/notification"
-                  className="block py-4 px-2 border-b border-b-1 border-b-solid  border-b-borderGray"
-                >
-                  <span
-                    className={
-                      pathname === "/panel/notification"
-                        ? "text-mainRed text-[0.9rem]"
-                        : "text-gray9F hover:text-textGray text-[0.9rem]"
-                    }
+              {accessData.hasOwnProperty("notification") && (
+                <div>
+                  <Link
+                    onClick={handleCloseSidebar}
+                    href="/panel/notification"
+                    className="block py-4 px-2 border-b border-b-1 border-b-solid  border-b-borderGray"
                   >
-                    اطلاعیه
-                  </span>
-                </Link>
-              </div>
-
+                    <span
+                      className={
+                        pathname === "/panel/notification"
+                          ? "text-mainRed text-[0.9rem]"
+                          : "text-gray9F hover:text-textGray text-[0.9rem]"
+                      }
+                    >
+                      اطلاعیه
+                    </span>
+                  </Link>
+                </div>
+              )}
               <div>
                 <Link
                   onClick={handleCloseSidebar}

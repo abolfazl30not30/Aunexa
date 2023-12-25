@@ -236,7 +236,7 @@ export default function AddDataDialog(props) {
 
     const formik = useFormik({
         initialValues: {
-            type:"PRODUCT",
+           
             productId: "",
             productName: "",
             value: "",
