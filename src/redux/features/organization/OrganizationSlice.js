@@ -3,8 +3,8 @@ import { apiSlice } from "@/redux/api/apiSlice";
 export const OrganizationSlice = apiSlice.injectEndpoints({
   endpoints: (builder) => ({
     getAllOrganization: builder.query({
-      query: ({ filterItem, filter }) => ({
-        url: `party/organization/find-all`,
+      query: ({ filterItem }) => ({
+        url: `party/organization/filter?${filterItem}`,
       }),
       providesTags: ["organization"],
     }),

@@ -3,17 +3,13 @@ import React from "react";
 import { useSelector } from "react-redux";
 import { useRouter } from "next/navigation";
 
-
 export default function RootLayout({ children }) {
-  const pages = useSelector((state)=> state.access.pages)
-  const router = useRouter()
+  const pages = useSelector((state) => state.access.pages);
+  const router = useRouter();
 
-  if(pages.hasOwnProperty("HistoryOfReport")){
-    return (
-        <>{children}</>
-    );
-  }else {
-    router.push("/panel")
+  if (pages.hasOwnProperty("HistoryOfReports")) {
+    return <>{children}</>;
+  } else {
+    router.push("/panel");
   }
-
 }

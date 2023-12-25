@@ -1,13 +1,13 @@
 "use client";
 import React from "react";
-import { useRouter } from "next/navigation";
 import { useSelector } from "react-redux";
+import { useRouter } from "next/navigation";
 
 export default function RootLayout({ children }) {
   const pages = useSelector((state) => state.access.pages);
   const router = useRouter();
 
-  if (pages.hasOwnProperty("RegisterOrganization")) {
+  if (pages.hasOwnProperty("notification")) {
     return <>{children}</>;
   } else {
     router.push("/panel");
