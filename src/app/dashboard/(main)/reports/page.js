@@ -24,8 +24,8 @@ import RegisterFactorDialog from "@/components/Panel/sales/RegisterFactorDialog"
 import { AccordionDetails } from "@material-ui/core";
 import DeleteItemDialog from "@/components/Panel/sales/DeleteItemDialog";
 import EditItemInfoDialog from "@/components/Panel/sales/EditItemInfoDialog";
-import {MapContainer, Marker, Popup, TileLayer, useMap} from 'react-leaflet'
-import 'leaflet/dist/leaflet.css';
+import dynamic from "next/dynamic"
+const ReportMap = dynamic(() => import("../../../../components/Dashboard/reports/ReportMap"), { ssr:false })
 
 export default function page() {
   let permission = useSelector(
@@ -489,17 +489,7 @@ export default function page() {
             </div>
           </div>
         <div className="mt-10">
-          <MapContainer  center={[51.505, -0.09]} zoom={13} scrollWheelZoom={false}>
-            <TileLayer
-                attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
-                url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
-            />
-            <Marker position={[51.505, -0.09]}>
-              <Popup>
-                A pretty CSS3 popup. <br /> Easily customizable.
-              </Popup>
-            </Marker>
-          </MapContainer>
+          <ReportMap/>
         </div>
       </section>
       <FilterDialog

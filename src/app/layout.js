@@ -5,6 +5,7 @@ import "../styles/main.css";
 import {store} from '../redux/store'
 import {Provider} from 'react-redux'
 import localFont from 'next/font/local'
+import 'leaflet/dist/leaflet.css';
 
 const fonts = localFont({
     src: [
