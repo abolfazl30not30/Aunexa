@@ -290,7 +290,7 @@ export default function RootLayout({ children }) {
                       </span>
                     </Link>
                     <Link
-                      href="https://auth.prod.vipsoftware1.com/logout"
+                      href="https://auth.vipsoftware1.com/logout"
                       className="flex gap-2 py-3 px-4 hover:bg-neutral-100 border-t border-t-[#D9D9D9]"
                     >
                       <div>
