@@ -7,10 +7,10 @@ import { useSelector } from "react-redux";
 export default function RootLayout({ children }) {
   const pages = useSelector((state) => state.access.pages);
 
-  if (pages.hasOwnProperty("Sales")) {
+  if (pages.hasOwnProperty("PurchaseRequest")) {
     return <>{children}</>;
   } else {
     return <>{children}</>;
-    // redirect('/dashboard');
+    // redirect('/panel');
   }
 }

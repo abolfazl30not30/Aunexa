@@ -106,6 +106,9 @@ margin:0px !important;}
 .example::-webkit-scrollbar {
     display: none;
 }
-.leaflet-container{
+.geofence-map .leaflet-container{
+    height:20rem
+}
+.report-map .leaflet-container{
     height:30rem
 }
