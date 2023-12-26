@@ -27,6 +27,7 @@ import {
 import { styled } from '@mui/material/styles';
 import Switch from '@mui/material/Switch';
 import {useSaveVehiclesMutation} from "@/redux/features/vehicles-and-equipment/VehiclesAndEquipmentSlice";
+import { ConvertToNull } from "@/helper/ConvertToNull";
 
 const AntSwitch = styled(Switch)(({ theme }) => ({
     width: 35,
@@ -221,8 +222,9 @@ export default function AddDataDialog(props) {
         validationSchema: schema,
 
         onSubmit: async (vehicle) => {
-            console.log(vehicle)
-            const userData = await submitData(vehicle)
+            const updateVehicle = ConvertToNull(vehicle)
+            console.log(updateVehicle)
+            const userData = await submitData(updateVehicle)
             handleReset()
             props.handleCloseAddData()
         },

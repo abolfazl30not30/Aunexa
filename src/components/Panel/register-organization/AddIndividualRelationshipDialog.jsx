@@ -69,14 +69,14 @@ export default function AddIndividualRelationshipDialog(props) {
                 {
                     individualId:props.individualIdTarget,
                     fullName: individualRelationShip.firstFullName,
-                    phoneNumber:individualRelationShip.PersianToEnglish(firstPhoneNumber),
+                    phoneNumber:PersianToEnglish(individualRelationShip.firstPhoneNumber),
                     relationship:individualRelationShip.firstRelationship,
                     address:individualRelationShip.firstAddress
                 },
                 {
                     individualId:props.individualIdTarget,
                     fullName:individualRelationShip.secondFullName,
-                    phoneNumber:individualRelationShip.PersianToEnglish(secondPhoneNumber),
+                    phoneNumber:PersianToEnglish(individualRelationShip.secondPhoneNumber),
                     relationship:individualRelationShip.secondRelationship,
                     address:individualRelationShip.secondAddress
                 }

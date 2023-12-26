@@ -410,7 +410,7 @@ function vehiclesAndEquipment() {
                           <td className="px-2 md:px-6 py-4  text-gray70 whitespace-nowrap ">
                             <div>{data.type}</div>
                             <div className="mt-1 text-gray9F text-[0.75rem]">
-                              {data?.code === ""
+                              {data?.code === null
                                 ? data?.tag?.slice(2, 5) +
                                   "-" +
                                   data?.tag?.slice(5, 7) +

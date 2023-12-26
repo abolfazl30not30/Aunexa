@@ -35,7 +35,7 @@ export default function EditSubOrganizationInfoDialog(props) {
       ),
       
     });
-
+   
     const formik = useFormik({
         initialValues: {
           SubOrganizationId: "",
@@ -75,7 +75,7 @@ export default function EditSubOrganizationInfoDialog(props) {
         formik.setValues({
             id:props.editSubOrganizationInfoTarget?.id,
             name: props.editSubOrganizationInfoTarget?.name,
-            capacity: props.editSubOrganizationInfoTarget?.capacity,
+            capacity: props.editSubOrganizationInfoTarget?.capacity === null ? "" : props.editSubOrganizationInfoTarget?.capacity ,
             unit: props.editSubOrganizationInfoTarget?.unit,
             type: props.editSubOrganizationInfoTarget?.type,
         })

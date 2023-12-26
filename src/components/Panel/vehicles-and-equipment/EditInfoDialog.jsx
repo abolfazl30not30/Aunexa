@@ -30,6 +30,8 @@ import {
     useSaveVehiclesMutation,
     useUpdateVehiclesMutation
 } from "@/redux/features/vehicles-and-equipment/VehiclesAndEquipmentSlice";
+import { ConvertToNull } from "@/helper/ConvertToNull";
+import { ConvertToEmpty } from "@/helper/ConvertToEmpty";
 
 const AntSwitch = styled(Switch)(({ theme }) => ({
     width: 35,
@@ -223,8 +225,9 @@ export default function EditInfoDialog(props) {
         validationSchema: schema,
 
         onSubmit: async (vehicle) => {
-            console.log(vehicle)
-            const userData = await submitData(vehicle)
+            const updateVehicle = ConvertToNull(vehicle)
+            console.log(updateVehicle)
+            const userData = await submitData(updateVehicle)
             handleReset()
             props.handleCloseEditInfo()
         },
@@ -267,17 +270,18 @@ export default function EditInfoDialog(props) {
     useEffect(()=>{
         getVehicleCategoryList()
         getSubOrganizationList()
+        const editInfoObj = ConvertToEmpty(props.editInfoTarget)
         formik.setValues({
-            id:props.editInfoTarget?.id,
-            type: props.editInfoTarget?.type,
-            tag: props.editInfoTarget?.tag,
-            code: props.editInfoTarget?.code,
-            hasGps:props.editInfoTarget?.hasGps,
-            gpsURL: props.editInfoTarget?.gpsURL,
-            status:props.editInfoTarget?.status,
-            subOrganizationId:props.editInfoTarget?.subOrganizationId,
-            subOrganizationName:props.editInfoTarget?.subOrganizationName,
-            purchaseDate:props.editInfoTarget?.purchaseDate
+            id:editInfoObj.id,
+            type: editInfoObj.type,
+            tag: editInfoObj.tag,
+            code: editInfoObj.code,
+            hasGps:editInfoObj.hasGps,
+            gpsURL: editInfoObj.gpsURL,
+            status:editInfoObj.status,
+            subOrganizationId:editInfoObj.subOrganizationId,
+            subOrganizationName:editInfoObj.subOrganizationName,
+            purchaseDate:editInfoObj.purchaseDate
         })
         handleSetTypeInput(props.editInfoTarget?.type)
         handleSetSubOrganizationInput(props.editInfoTarget?.subOrganizationId)

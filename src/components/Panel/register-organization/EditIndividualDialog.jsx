@@ -123,7 +123,11 @@ export default function EditIndividualInfoDialog(props) {
           setDate(newDate)
       }
   }
-    
+  const handleSetRole = (ab) =>{
+    console.log(roleList)
+    const roles= roleList.filter((role)=> role.role === ab)
+    setRole(roles[0])
+}
     useEffect(()=>{
         
         
@@ -146,7 +150,7 @@ export default function EditIndividualInfoDialog(props) {
           
         })
         handleSetBirthDate(props.editIndividualInfoTarget?.birthDate)
-        
+        handleSetRole(props.editIndividualInfoTarget?.role)
     },[props.openEditIndividualInfo])
    
     

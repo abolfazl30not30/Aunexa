@@ -115,7 +115,7 @@ export default function MoreIndividualInfoDialog(props) {
                                     </div>
                                 </div>
                                 
-                                    <div className="flex flex-col">
+                                    {props.moreInfoIndividualTarget?.anotherPhoneNumber &&<div className="flex flex-col">
                                     <div className="mb-2">
                                         <span className="text-[0.9rem] text-gray70 ">شماره همراه دوم</span>
                                     </div>
@@ -124,7 +124,7 @@ export default function MoreIndividualInfoDialog(props) {
                                             <span className="text-[#29262A] text-[0.9rem]">{props.moreInfoIndividualTarget?.anotherPhoneNumber}</span>
                                         </div>
                                     </div>
-                                </div>
+                                </div>}
                                 
                                 <div className="flex flex-col">
                                     <div className="mb-2">
@@ -146,7 +146,7 @@ export default function MoreIndividualInfoDialog(props) {
                                         </div>
                                     </div>
                                 </div>
-                                <div className="flex flex-col">
+                                {props.moreInfoIndividualTarget?.email && <div className="flex flex-col">
                                     <div className="mb-2">
                                         <span className="text-[0.9rem] text-gray70 ">ایمیل</span>
                                     </div>
@@ -155,8 +155,8 @@ export default function MoreIndividualInfoDialog(props) {
                                             <span className="text-[#29262A] text-[0.9rem]">{props.moreInfoIndividualTarget?.email}</span>
                                         </div>
                                     </div>
-                                </div>
-                                <div className="flex flex-col">
+                                </div>}
+                                {props.moreInfoIndividualTarget?.address && <div className="flex flex-col">
                                     <div className="mb-2">
                                         <span className="text-[0.9rem] text-gray70 ">آدرس</span>
                                     </div>
@@ -165,7 +165,7 @@ export default function MoreIndividualInfoDialog(props) {
                                             <span className="text-[#29262A] text-[0.9rem]">{props.moreInfoIndividualTarget?.address}</span>
                                         </div>
                                     </div>
-                                </div>
+                                </div>}
                                            
                                    
                                   {props.moreInfoIndividualTarget?.relationshipsInformation[0]?.fullName ?
@@ -471,7 +471,7 @@ export default function MoreIndividualInfoDialog(props) {
                                 
                             </div>
                         </div>
-                        <div className=" flex  justify-center mt-5 gap-3">
+                        <div className="flex md:hidden  justify-center mt-5 gap-3">
                             <button onClick={()=>{props.handleOpenDeleteIndividual(props.moreInfoIndividualTarget.id);props.handleCloseMoreInfoIndividual()}} className="px-6 py-2 text-[0.8rem] text-mainRed border border-mainRed rounded hover:bg-mainRed hover:text-white">
                                 حذف
                             </button>

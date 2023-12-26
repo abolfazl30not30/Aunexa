@@ -67,7 +67,7 @@ export default function AddIndividualRelationshipDialog(props) {
                     id:props.editIndividualRelationshipInfoTarget?.relationshipsInformation[0]?.id,
                     individualId:props.editIndividualRelationshipInfoTarget?.id,
                     fullName: individualRelationShip?.firstFullName,
-                    phoneNumber:individualRelationShip?.PersianToEnglish(firstPhoneNumber),
+                    phoneNumber:PersianToEnglish(individualRelationShip?.firstPhoneNumber),
                     relationship:individualRelationShip?.firstRelationship,
                     address:individualRelationShip?.firstAddress
                 },
@@ -75,7 +75,7 @@ export default function AddIndividualRelationshipDialog(props) {
                     id:props.editIndividualRelationshipInfoTarget?.relationshipsInformation[1]?.id,
                     individualId:props.editIndividualRelationshipInfoTarget.id,
                     fullName:individualRelationShip?.secondFullName,
-                    phoneNumber:individualRelationShip?.PersianToEnglish(secondPhoneNumber),
+                    phoneNumber:PersianToEnglish(individualRelationShip?.secondPhoneNumber),
                     relationship:individualRelationShip?.secondRelationship,
                     address:individualRelationShip?.secondAddress
                 }
