@@ -36,7 +36,7 @@ export default function MoreInfoDialog(props) {
                             <div className="w-full md:w-[70%] flex flex-col gap-2">
                                 <div>
                                 {
-                                    props.moreInfoTarget?.productImage !== "" && (
+                                    props.moreInfoTarget?.productImage !== null && (
                                         <div className="flex justify-center items-center gap-4">
                                             <div>
                                                 <span className="text-[0.9rem] text-gray70"> تصویر محصول :</span>

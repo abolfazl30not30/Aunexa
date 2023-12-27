@@ -100,14 +100,14 @@ export default function MoreInfoDialog(props) {
                                     </div>
                                 </div>
                                 {
-                                    props.moreInfoTarget?.failureReason?.description && (
+                                    props.moreInfoTarget?.description && (
                                         <div className="flex flex-col">
                                             <div className="mb-2">
                                                 <span className="text-[0.9rem] text-gray70 ">توضیحات رد</span>
                                             </div>
                                             <div className="border border-[#D9D9D9]  flex justify-start px-4">
                                                 <div className="p-2">
-                                                    <span className="text-[#29262A] text-[0.9rem]">{props.moreInfoTarget?.failureReason?.description}</span>
+                                                    <span className="text-[#29262A] text-[0.9rem]">{props.moreInfoTarget?.description}</span>
                                                 </div>
                                             </div>
                                         </div>
@@ -170,13 +170,13 @@ export default function MoreInfoDialog(props) {
                                         )}
                                     </span>
                                 </div>
-                                {props.moreInfoTarget?.failureReason?.description&&
+                                {props.moreInfoTarget?.description&&
                                     <div>
                                     <span className="ml-1 text-gray9F text-[0.8rem]">
                                         توضیحات رد  :
                                     </span>
                                     <span className="text-[#29262A] text-[0.8rem]">
-                                        {props.moreInfoTarget?.failureReason?.description}
+                                        {props.moreInfoTarget?.description}
                                     </span>
                                 </div>
                                 }

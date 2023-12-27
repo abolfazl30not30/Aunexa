@@ -31,6 +31,8 @@ import {
 } from "@/redux/features/vehicles-and-equipment/VehiclesAndEquipmentSlice";
 import { useUpdateProductionOutputMutation } from "@/redux/features/production/output/ProductionOutputSlice";
 import { PersianToEnglish } from "@/helper/PersianToEnglish";
+import { ConvertToNull } from "@/helper/ConvertToNull";
+import { ConvertToEmpty } from "@/helper/ConvertToEmpty";
 export default function EditInfoDialog(props) {
    
 
@@ -116,7 +118,7 @@ export default function EditInfoDialog(props) {
         onSubmit: async (product,helpers) => {
             let updateProduct = {...product,type:"PRIMARY",value:PersianToEnglish(`${product.value}`)}
 
-
+updateProduct=ConvertToNull(updateProduct)
             const userData = await submitData(updateProduct)
             handleReset()
             props.handleCloseEditInfo()
@@ -136,7 +138,7 @@ export default function EditInfoDialog(props) {
 
    
     const handleSetExpirationDate = (date)=>{
-        if(date !== ""){
+        if(date !== null && date !==""){
             const newDate = new DateObject({
                 date: date,
                 format: "YYYY/MM/DD",
@@ -150,14 +152,14 @@ export default function EditInfoDialog(props) {
     useEffect(()=>{
         getProductList()
         getUnitList()
-        
+        const editInfoObj = ConvertToEmpty(props.editInfoTarget)
         formik.setValues({
-            id:props.editInfoTarget?.id,
-            productId: props.editInfoTarget?.productId,
-            productName:props.editInfoTarget?.productName,
-            value: props.editInfoTarget?.value,
-            unit: props.editInfoTarget?.unit,
-            expirationDate: props.editInfoTarget?.expirationDate,
+            id:editInfoObj?.id,
+            productId: editInfoObj?.productId,
+            productName:editInfoObj?.productName,
+            value: editInfoObj?.value,
+            unit: editInfoObj?.unit,
+            expirationDate: editInfoObj?.expirationDate,
            
         })
         handleSetProductInput(props.editInfoTarget?.productId)

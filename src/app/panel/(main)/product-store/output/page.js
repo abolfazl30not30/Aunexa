@@ -425,7 +425,7 @@ function primaryStoreInput() {
                           <td className="px-2 md:px-6 py-2  text-gray70 whitespace-nowrap ">
                             <div>{data.machineType}</div>
                             <div className="mt-1 text-gray9F text-[0.75rem]">
-                              {data?.machineTag === ""
+                              {data?.machineTag === null
                                 ? data?.machineCode
                                 : data?.machineTag?.slice(2, 5) +
                                   "-" +

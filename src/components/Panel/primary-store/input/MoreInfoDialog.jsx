@@ -76,7 +76,7 @@ export default function MoreInfoDialog(props) {
                                         <div className="p-2 ">
                                             <span className="text-[#29262A] text-[0.9rem]">
                                                 {
-                                                    props.moreInfoTarget?.machineTag === "" ? (props.moreInfoTarget?.machineCode) : (
+                                                    props.moreInfoTarget?.machineTag === null ? (props.moreInfoTarget?.machineCode) : (
                                                         props.moreInfoTarget?.machineTag.slice(2, 5) + "-" + props.moreInfoTarget?.machineTag.slice(5, 7) + " " + props.moreInfoTarget?.machineTag.slice(7, 8) + " " + props.moreInfoTarget?.machineTag.slice(0, 2)
                                                     )
                                                 }
@@ -188,7 +188,7 @@ export default function MoreInfoDialog(props) {
                                     </span>
                                     <span className="text-[#29262A] text-[0.8rem]">
                                         {
-                                            props.moreInfoTarget?.machineTag === "" ? (props.moreInfoTarget?.machineCode) : (
+                                            props.moreInfoTarget?.machineTag === null ? (props.moreInfoTarget?.machineCode) : (
                                                 props.moreInfoTarget?.machineTag.slice(2, 5) + "-" + props.moreInfoTarget?.machineTag.slice(5, 7) + " " + props.moreInfoTarget?.machineTag.slice(7, 8) + " " + props.moreInfoTarget?.machineTag.slice(0, 2)
                                             )
                                         }
@@ -202,7 +202,7 @@ export default function MoreInfoDialog(props) {
                                     </span>
                                     <span className="text-[#29262A] text-[0.8rem]">
                                         {
-                                            props.moreInfoTarget?.machineTag === "" ? (props.moreInfoTarget?.machineCode) : (
+                                            props.moreInfoTarget?.machineTag === null ? (props.moreInfoTarget?.machineCode) : (
                                                 props.moreInfoTarget?.machineTag.slice(2, 5) + "-" + props.moreInfoTarget?.machineTag.slice(5, 7) + " " + props.moreInfoTarget?.machineTag.slice(7, 8) + " " + props.moreInfoTarget?.machineTag.slice(0, 2)
                                             )
                                         }

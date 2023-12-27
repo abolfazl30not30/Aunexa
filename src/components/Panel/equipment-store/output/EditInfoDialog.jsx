@@ -33,6 +33,8 @@ import {
 import {useUpdatePSOMutation} from "@/redux/features/primary-store/output/PSOapiSlice";
 import {useUpdateESOMutation} from "@/redux/features/equipment-store/output/ESOapiSlice";
 import { PersianToEnglish } from "@/helper/PersianToEnglish";
+import { ConvertToNull } from "@/helper/ConvertToNull";
+import { ConvertToEmpty } from "@/helper/ConvertToEmpty";
 export default function EditInfoDialog(props) {
     const alphabeticalList = [
         {value: "هیچ کدام"},
@@ -256,7 +258,7 @@ const [getMachineList,
                     updateProduct = {...updateProduct,machineType:"نا معلوم",machineId:""}
                 }
             }
-
+updateProduct=ConvertToNull(updateProduct)
             const userData = await submitData(updateProduct)
             handleReset()
             props.handleCloseEditInfo()
@@ -282,7 +284,7 @@ const [getMachineList,
     }
 
     const handleSetMachineTagInput = (machineTag) =>{
-        if(machineTag !== "") {
+        if(machineTag !== null) {
             const tag = {
                 part1: machineTag.slice(5, 7),
                 part2: machineTag.slice(2, 5),
@@ -311,21 +313,22 @@ const [getMachineList,
         getProductList()
         getUnitList()
         getSubOrganizationList()
+        const editInfoObj = ConvertToEmpty(props.editInfoTarget)
         formik.setValues({
-            id:props.editInfoTarget?.id,
-            productId: props.editInfoTarget?.productId,
-            productName:props.editInfoTarget?.productName,
-            value: props.editInfoTarget?.value,
-            unit: props.editInfoTarget?.unit,
-            expirationDate: props.editInfoTarget?.expirationDate,
-            machineTag: props.editInfoTarget?.machineTag,
-            machineCode: props.editInfoTarget?.machineCode,
-            machineType:props.editInfoTarget?.machineType,
-            driverName: props.editInfoTarget?.driverName,
-            destinationSubOrganizationId: props.editInfoTarget?.destinationSubOrganizationId,
-            destinationOrganizationId: props.editInfoTarget?.destinationOrganizationId,
-            destinationSubOrganizationName: props.editInfoTarget?.destinationSubOrganizationName,
-            description:props.editInfoTarget?.description
+            id:editInfoObj?.id,
+            productId: editInfoObj?.productId,
+            productName:editInfoObj?.productName,
+            value: editInfoObj?.value,
+            unit: editInfoObj?.unit,
+            expirationDate: editInfoObj?.expirationDate,
+            machineTag: editInfoObj?.machineTag,
+            machineCode: editInfoObj?.machineCode,
+            machineType:editInfoObj?.machineType,
+            driverName: editInfoObj?.driverName,
+            destinationSubOrganizationId: editInfoObj?.destinationSubOrganizationId,
+            destinationOrganizationId: editInfoObj?.destinationOrganizationId,
+            destinationSubOrganizationName: editInfoObj?.destinationSubOrganizationName,
+            description:editInfoObj?.description
         })
         handleSetProductInput(props.editInfoTarget?.productId)
         handleSetMachineInput(props.editInfoTarget?.machineCode)

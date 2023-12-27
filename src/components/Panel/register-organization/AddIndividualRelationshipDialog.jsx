@@ -8,7 +8,7 @@ import * as yup from "yup";
 import {useFormik} from "formik";
 import CircularProgress from '@mui/material/CircularProgress';
 import { PersianToEnglish } from "@/helper/PersianToEnglish";
-
+import { ConvertToNull } from "@/helper/ConvertToNull";
 
 import { useSaveRelationshipMutation } from "@/redux/features/organization/individual/IndividualRelationshipSlice";
 
@@ -66,20 +66,20 @@ export default function AddIndividualRelationshipDialog(props) {
         onSubmit: async (individualRelationShip) => {
            
             let updateIndividualRelationShip = {relationshipsInformation:[
-                {
-                    individualId:props.individualIdTarget,
-                    fullName: individualRelationShip.firstFullName,
-                    phoneNumber:PersianToEnglish(individualRelationShip.firstPhoneNumber),
-                    relationship:individualRelationShip.firstRelationship,
-                    address:individualRelationShip.firstAddress
-                },
-                {
-                    individualId:props.individualIdTarget,
-                    fullName:individualRelationShip.secondFullName,
-                    phoneNumber:PersianToEnglish(individualRelationShip.secondPhoneNumber),
-                    relationship:individualRelationShip.secondRelationship,
-                    address:individualRelationShip.secondAddress
-                }
+               ConvertToNull( {
+                individualId:props.individualIdTarget,
+                fullName: individualRelationShip.firstFullName,
+                phoneNumber:PersianToEnglish(individualRelationShip.firstPhoneNumber),
+                relationship:individualRelationShip.firstRelationship,
+                address:individualRelationShip.firstAddress
+            }),
+             ConvertToNull(   {
+                individualId:props.individualIdTarget,
+                fullName:individualRelationShip.secondFullName,
+                phoneNumber:PersianToEnglish(individualRelationShip.secondPhoneNumber),
+                relationship:individualRelationShip.secondRelationship,
+                address:individualRelationShip.secondAddress
+            })
                ]}
            
             const userData = await submitData(updateIndividualRelationShip)

@@ -72,7 +72,7 @@ const AntSwitch = styled(Switch)(({ theme }) => ({
         boxSizing: 'border-box',
     },
 }));
-
+import { ConvertToNull } from "@/helper/ConvertToNull";
 export default function AddDataDialog(props) {
 
     //unit input
@@ -90,7 +90,7 @@ export default function AddDataDialog(props) {
     const handleReset = () =>{
         formik.resetForm()
         setUnit(null)
-        setUploadedImage("")
+        setUploadedImage(null)
     }
 
     //submit data
@@ -116,7 +116,8 @@ export default function AddDataDialog(props) {
         validationSchema: schema,
 
         onSubmit: async (product) => {
-            const updatedProduct = {...product,imageURL:uploadedImage}
+            let updatedProduct = {...product,imageURL:uploadedImage}
+            updatedProduct=ConvertToNull(updatedProduct)
             const userData = await submitData(updatedProduct)
             handleReset()
             props.handleCloseAddData()
@@ -134,7 +135,7 @@ export default function AddDataDialog(props) {
         }
     }
     const handleDeleteUpload = () =>{
-        setUploadedImage("")
+        setUploadedImage(null)
     }
     return (
         <>
@@ -177,7 +178,7 @@ export default function AddDataDialog(props) {
                                                 </div>
                                             </div>
                                         ) : (
-                                            uploadedImage !== '' ? (
+                                            (uploadedImage !=="" && uploadedImage !==null)? (
                                                 <div>
                                                     <div className="relative w-16 h-16 rounded border border-dashed border-[#D9D9D9]">
                                                         <button onClick={handleDeleteUpload} className="shadow hover:bg-red-400 absolute z-10 top-0 right-0 rounded-full bg-mainRed p-1">
@@ -264,13 +265,13 @@ export default function AddDataDialog(props) {
                                 </div>
                                 <div>
                                     <FormControl fullWidth error={formik.touched.type && Boolean(formik.errors.type)}>
-                                        <InputLabel id="demo-simple-select-label" sx={{fontFamily: "__fonts_2f4189,__fonts_Fallback_2f4189", fontSize: "0.8rem",color:"#9F9F9F"}}>نام محصول </InputLabel>
+                                        <InputLabel id="demo-simple-select-label" sx={{fontFamily: "__fonts_2f4189,__fonts_Fallback_2f4189", fontSize: "0.8rem",color:"#9F9F9F"}}>نوع محصول </InputLabel>
                                         <Select
                                             labelId="demo-simple-select-label"
                                             id="demo-simple-select"
                                             value={formik.values.type}
                                             name="type"
-                                            input={<OutlinedInput sx={{fontFamily: "__fonts_2f4189,__fonts_Fallback_2f4189", fontSize: "0.8rem"}} label="نام محصول" />}
+                                            input={<OutlinedInput sx={{fontFamily: "__fonts_2f4189,__fonts_Fallback_2f4189", fontSize: "0.8rem"}} label="نوع محصول" />}
                                             sx={{fontFamily: "__fonts_2f4189,__fonts_Fallback_2f4189", fontSize: "0.8rem"}}
                                             onChange={formik.handleChange}>
                                             <MenuItem value="PRIMARY" sx={{fontFamily: "__fonts_2f4189,__fonts_Fallback_2f4189", fontSize: "0.8rem"}}>ماده اولیه</MenuItem>

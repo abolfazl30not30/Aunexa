@@ -22,7 +22,8 @@ import Switch from "@mui/material/Switch";
 import { useUpdateSalesMutation } from "@/redux/features/sales/SalesSlice";
 import { useUploadFileMinioMutation } from "@/redux/features/file/FileSlice";
 import { useDeleteFileMinioMutation } from "@/redux/features/file/FileSlice";
-
+import { ConvertToNull } from "@/helper/ConvertToNull";
+import { ConvertToEmpty } from "@/helper/ConvertToEmpty";
 const AntSwitch = styled(Switch)(({ theme }) => ({
     width: 35,
     height: 18,
@@ -123,12 +124,13 @@ export default function EditInfoDialog(props) {
     useEffect(()=>{
         // getProductList()
         // getUnitList()
+        const editInfoObj = ConvertToEmpty(props.editInfoTarget)
         formik.setValues({
-            id:props.editInfoTarget?.id,
-            customer:props.editInfoTarget?.customer,
-            receiptCode:props.editInfoTarget?.receiptCode,
-            description:props.editInfoTarget?.description,
-            receiptFile:props.editInfoTarget?.receiptFile,
+            id:editInfoObj?.id,
+            customer:editInfoObj?.customer,
+            receiptCode:editInfoObj?.receiptCode,
+            description:editInfoObj?.description,
+            receiptFile:editInfoObj?.receiptFile,
             
             // unit:props.editInfoTarget?.quantity?.unit,
             // value:props.editInfoTarget?.quantity?.value,
@@ -168,6 +170,7 @@ export default function EditInfoDialog(props) {
 
         onSubmit: async (product,helpers) => {
             let updateProduct = {...product,id:props.editInfoTarget?.id,receiptFile:uploadedImage}
+            updateProduct=ConvertToNull(updateProduct)
             const userData = await submitData(updateProduct)
             handleReset()
             props.handleCloseEditInfo()

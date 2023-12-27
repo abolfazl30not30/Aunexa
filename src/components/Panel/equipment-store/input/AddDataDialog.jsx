@@ -32,7 +32,7 @@ import {
 } from "@/redux/features/vehicles-and-equipment/VehiclesAndEquipmentSlice";
 import {useSaveESIMutation} from "@/redux/features/equipment-store/input/ESIapiSlice";
 import { PersianToEnglish } from "@/helper/PersianToEnglish";
-
+import { ConvertToNull } from "@/helper/ConvertToNull";
 export default function AddDataDialog(props) {
     const alphabeticalList = [
         {value: "هیچ کدام"},
@@ -244,7 +244,7 @@ export default function AddDataDialog(props) {
                     updateProduct = {...updateProduct,machineType:"نا معلوم",machineId:""}
                 }
             }
-
+            updateProduct=ConvertToNull(updateProduct)
             const userData = await submitData(updateProduct)
             handleReset()
             props.handleCloseAddData()

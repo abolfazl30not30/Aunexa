@@ -362,7 +362,7 @@ function FailureAndRepairReport() {
                           <td className="px-2 md:px-6 py-4  text-gray70 whitespace-nowrap ">
                             <div>{data?.machine?.type}</div>
                             <div className="mt-1 text-gray9F text-[0.75rem]">
-                              {data?.machine?.code === ""
+                              {data?.machine?.code === null
                                 ? data?.machine?.tag?.slice(2, 5) +
                                   "-" +
                                   data?.machine?.tag?.slice(5, 7) +

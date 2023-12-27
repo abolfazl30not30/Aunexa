@@ -23,6 +23,7 @@ import {
 } from "@/redux/features/purchase/pending-purchase-request-list/PendingPurchaseRequestListSlice";
 import { useUploadFileMinioMutation} from "@/redux/features/file/FileSlice";
 import {useDeleteFileMinioMutation} from "@/redux/features/file/FileSlice";
+import { ConvertToNull } from "@/helper/ConvertToNull";
 export default function RegisterFactorDialog(props) {
     const [handleDelete ,{isLoading}] = useDeleteFileMinioMutation()
     const handleDeleteUpload = async () =>{
@@ -103,6 +104,7 @@ export default function RegisterFactorDialog(props) {
         onSubmit: async (registerFactor,helpers) => {
 
             let updateRegisterFactor = {...registerFactor,receiptFile:uploadedImage}
+            updateRegisterFactor=ConvertToNull(updateRegisterFactor)
             const userData = await submitData(updateRegisterFactor)
             handleReset()
             props.handleCloseRegisterFactor()

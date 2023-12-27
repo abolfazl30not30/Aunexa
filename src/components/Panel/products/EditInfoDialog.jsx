@@ -29,7 +29,8 @@ import { styled } from '@mui/material/styles';
 import Switch from '@mui/material/Switch';
 import {useSaveProductMutation} from "@/redux/features/product/ProductSlice";
 import {useUploadFileCloudMutation} from "@/redux/features/file/FileSlice";
-
+import { ConvertToEmpty } from "@/helper/ConvertToEmpty";
+import { ConvertToNull } from "@/helper/ConvertToNull";
 
 const AntSwitch = styled(Switch)(({ theme }) => ({
     width: 35,
@@ -78,7 +79,7 @@ export default function EditInfoDialog(props) {
     //unit input
     const [unit,setUnit] = useState(null)
     const [openUnitList,setOpenUnitList] = useState(false)
-    const [uploadedImage,setUploadedImage] = useState("")
+    const [uploadedImage,setUploadedImage] = useState(null)
     const [getUnitList,{ data : unitList  = [] , isLoading : isUnitLoading, isError: unitIsError }] = useLazyGetAllUnitQuery()
     useEffect(()=>{
         if(openUnitList){
@@ -90,7 +91,7 @@ export default function EditInfoDialog(props) {
     const handleReset = () =>{
         formik.resetForm()
         setUnit(null)
-        setUploadedImage("")
+        setUploadedImage(null)
     }
 
     //submit data
@@ -113,11 +114,10 @@ export default function EditInfoDialog(props) {
             imageURL:"",
             abbreviation:"",
         },
-
         validationSchema: schema,
-
         onSubmit: async (product) => {
-            const updatedProduct = {...product,imageURL:uploadedImage}
+            let updatedProduct = {...product,imageURL:uploadedImage}
+            updatedProduct=ConvertToNull(updatedProduct)
             const userData = await submitData(updatedProduct)
             handleReset()
             props.handleCloseEditInfo()
@@ -136,7 +136,7 @@ export default function EditInfoDialog(props) {
     }
 
     const handleDeleteUpload = () =>{
-        setUploadedImage("")
+        setUploadedImage(null)
     }
 
     const handleSetUnitInput = (ab) =>{
@@ -145,19 +145,20 @@ export default function EditInfoDialog(props) {
     }
     useEffect(()=>{
         getUnitList()
+        const editInfoObj = ConvertToEmpty(props.editInfoTarget)
         formik.setValues({
-            id:props.editInfoTarget.id,
-            type: props.editInfoTarget.type,
-            code:props.editInfoTarget.code,
-            persianName: props.editInfoTarget.persianName,
-            englishName: props.editInfoTarget.englishName,
-            isExpirable:props.editInfoTarget.isExpirable,
-            defaultUnit: props.editInfoTarget.defaultUnit,
-            imageURL:props.editInfoTarget.imageURL,
-            abbreviation:props.editInfoTarget.abbreviation,
+            id:editInfoObj?.id,
+            type: editInfoObj?.type,
+            code:editInfoObj?.code,
+            persianName: editInfoObj?.persianName,
+            englishName: editInfoObj?.englishName,
+            isExpirable:editInfoObj?.isExpirable,
+            defaultUnit: editInfoObj?.defaultUnit,
+            imageURL:editInfoObj?.imageURL,
+            abbreviation:editInfoObj?.abbreviation,
         })
         handleSetUnitInput(props.editInfoTarget?.defaultUnit)
-        setUploadedImage(props.editInfoTarget.imageURL)
+        setUploadedImage(props.editInfoTarget?.imageURL)
 
     },[props.openEditInfo])
 
@@ -202,7 +203,7 @@ export default function EditInfoDialog(props) {
                                                 </div>
                                             </div>
                                         ) : (
-                                            uploadedImage !== '' ? (
+                                            (uploadedImage !=="" && uploadedImage !==null) ? (
                                                 <div>
                                                     <div className="relative w-16 h-16 rounded border border-dashed border-[#D9D9D9]">
                                                         <button onClick={handleDeleteUpload} className="shadow hover:bg-red-400 absolute z-10 top-0 right-0 rounded-full bg-mainRed p-1">
@@ -289,13 +290,13 @@ export default function EditInfoDialog(props) {
                                 </div>
                                 <div>
                                     <FormControl fullWidth error={formik.touched.type && Boolean(formik.errors.type)}>
-                                        <InputLabel id="demo-simple-select-label" sx={{fontFamily: "__fonts_2f4189,__fonts_Fallback_2f4189", fontSize: "0.8rem",color:"#9F9F9F"}}>نام محصول </InputLabel>
+                                        <InputLabel id="demo-simple-select-label" sx={{fontFamily: "__fonts_2f4189,__fonts_Fallback_2f4189", fontSize: "0.8rem",color:"#9F9F9F"}}>نوع محصول </InputLabel>
                                         <Select
                                             labelId="demo-simple-select-label"
                                             id="demo-simple-select"
                                             value={formik.values.type}
                                             name="type"
-                                            input={<OutlinedInput sx={{fontFamily: "__fonts_2f4189,__fonts_Fallback_2f4189", fontSize: "0.8rem"}} label="نام محصول" />}
+                                            input={<OutlinedInput sx={{fontFamily: "__fonts_2f4189,__fonts_Fallback_2f4189", fontSize: "0.8rem"}} label="نوع محصول" />}
                                             sx={{fontFamily: "__fonts_2f4189,__fonts_Fallback_2f4189", fontSize: "0.8rem"}}
                                             onChange={formik.handleChange}>
                                             <MenuItem value="PRIMARY" sx={{fontFamily: "__fonts_2f4189,__fonts_Fallback_2f4189", fontSize: "0.8rem"}}>ماده اولیه</MenuItem>

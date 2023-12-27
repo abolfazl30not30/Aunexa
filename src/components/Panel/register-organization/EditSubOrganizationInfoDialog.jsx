@@ -10,7 +10,8 @@ import * as yup from "yup";
 import {useFormik} from "formik";
 import { useUpdateSubOrganizationMutation } from "@/redux/features/organization/sub-organization/SubOrganizationSlice";
 import { PersianToEnglish } from "@/helper/PersianToEnglish";
-
+import { ConvertToNull } from "@/helper/ConvertToNull";
+import { ConvertToEmpty } from "@/helper/ConvertToEmpty";
 export default function EditSubOrganizationInfoDialog(props) {
     
   const [subOrganization,setSubOrganization] = useState(null)
@@ -50,11 +51,12 @@ export default function EditSubOrganizationInfoDialog(props) {
         validationSchema: schema,
 
         onSubmit: async (subOrganization,helpers) => {
-            const body = {...subOrganization,
+            let body = {...subOrganization,
                 organizationId:window.sessionStorage.getItem("organizationId"),
                 subOrganizationId:window.sessionStorage.getItem("subOrganizationId"),
                 capacity:PersianToEnglish(`${subOrganization.capacity}`)
             }
+            body=ConvertToNull(body)
             const userData = await submitData(body)
             console.log(error)
             console.log(userData)
@@ -72,12 +74,13 @@ export default function EditSubOrganizationInfoDialog(props) {
    
     
     useEffect(()=>{
+        const editInfoObj = ConvertToEmpty(props.editSubOrganizationInfoTarget)
         formik.setValues({
-            id:props.editSubOrganizationInfoTarget?.id,
-            name: props.editSubOrganizationInfoTarget?.name,
-            capacity: props.editSubOrganizationInfoTarget?.capacity === null ? "" : props.editSubOrganizationInfoTarget?.capacity ,
-            unit: props.editSubOrganizationInfoTarget?.unit,
-            type: props.editSubOrganizationInfoTarget?.type,
+            id:editInfoObj?.id,
+            name: editInfoObj?.name,
+            capacity: editInfoObj?.capacity ,
+            unit: editInfoObj?.unit,
+            type: editInfoObj?.type,
         })
     },[props.openEditSubOrganizationInfo])
 

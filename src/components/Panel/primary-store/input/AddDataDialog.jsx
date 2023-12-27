@@ -33,7 +33,7 @@ import {
     
 } from "@/redux/features/vehicles-and-equipment/VehiclesAndEquipmentSlice";
 import { PersianToEnglish } from "@/helper/PersianToEnglish";
-
+import { ConvertToNull } from "@/helper/ConvertToNull";
 
 export default function AddDataDialog(props) {
     const alphabeticalList = [
@@ -252,6 +252,7 @@ export default function AddDataDialog(props) {
                     updateProduct = {...updateProduct,machineType:"نا معلوم",machineId:""}
                 }
             }
+            updateProduct=ConvertToNull(updateProduct)
             const userData = await submitData(updateProduct)
             handleReset()
             props.handleCloseAddData()
