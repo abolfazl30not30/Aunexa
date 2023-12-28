@@ -156,6 +156,7 @@ function PurchaseRequest() {
                 onClick={handleOpenAddData}
               >
                 <span className="hidden md:inline">ثبت گروه</span>
+
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
                   width="24"
@@ -183,49 +184,49 @@ function PurchaseRequest() {
           </div>
         </header>
         <section className="py-4 md:px-8 mt-5 bg-white h-[55rem]">
-          <div className="px-4 flex justify-end">
-            {/*<div className="w-[50%] md:w-[37%]">*/}
-            {/*    <FormControl fullWidth>*/}
-            {/*        <OutlinedInput*/}
-            {/*            size="small"*/}
-            {/*            sx={{py: "0.2rem"}}*/}
-            {/*            placeholder="جستوجو..."*/}
-            {/*            id="outlined-adornment-amount"*/}
-            {/*            inputProps={{style: {fontFamily: "__fonts_2f4189,__fonts_Fallback_2f4189", fontSize: "0.9rem"}}}*/}
-            {/*            startAdornment={<InputAdornment position="start">*/}
-            {/*                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"*/}
-            {/*                     viewBox="0 0 24 24" fill="none">*/}
-            {/*                    <path*/}
-            {/*                        d="M21 21L16.65 16.65M11 6C13.7614 6 16 8.23858 16 11M19 11C19 15.4183 15.4183 19 11 19C6.58172 19 3 15.4183 3 11C3 6.58172 6.58172 3 11 3C15.4183 3 19 6.58172 19 11Z"*/}
-            {/*                        stroke="#9F9F9F" stroke-width="1.5" stroke-linecap="round"*/}
-            {/*                        stroke-linejoin="round"/>*/}
-            {/*                </svg>*/}
-            {/*            </InputAdornment>}*/}
-            {/*        />*/}
-            {/*    </FormControl>*/}
-            {/*</div>*/}
+          <div className="px-4 flex justify-between">
+            <div className="w-[50%] md:w-[37%]">
+                <FormControl fullWidth>
+                    <OutlinedInput
+                        size="small"
+                        sx={{py: "0.2rem"}}
+                        placeholder="جستوجو..."
+                        id="outlined-adornment-amount"
+                        inputProps={{style: {fontFamily: "__fonts_2f4189,__fonts_Fallback_2f4189", fontSize: "0.9rem"}}}
+                        startAdornment={<InputAdornment position="start">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"
+                                 viewBox="0 0 24 24" fill="none">
+                                <path
+                                    d="M21 21L16.65 16.65M11 6C13.7614 6 16 8.23858 16 11M19 11C19 15.4183 15.4183 19 11 19C6.58172 19 3 15.4183 3 11C3 6.58172 6.58172 3 11 3C15.4183 3 19 6.58172 19 11Z"
+                                    stroke="#9F9F9F" stroke-width="1.5" stroke-linecap="round"
+                                    stroke-linejoin="round"/>
+                            </svg>
+                        </InputAdornment>}
+                    />
+                </FormControl>
+            </div>
             <div className="flex gap-3">
-              <button
-                onClick={handleOpenFilter}
-                className="flex items-center gap-2 text-[0.9rem] text-gray9F border border-1 border-solid border-borderGray rounded px-2 md:px-4 py-2"
-              >
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  width="24"
-                  height="24"
-                  viewBox="0 0 24 24"
-                  fill="none"
-                >
-                  <path
-                    d="M3.38589 5.66687C2.62955 4.82155 2.25138 4.39889 2.23712 4.03968C2.22473 3.72764 2.35882 3.42772 2.59963 3.22889C2.87684 3 3.44399 3 4.57828 3H19.4212C20.5555 3 21.1227 3 21.3999 3.22889C21.6407 3.42772 21.7748 3.72764 21.7624 4.03968C21.7481 4.39889 21.3699 4.82155 20.6136 5.66687L14.9074 12.0444C14.7566 12.2129 14.6812 12.2972 14.6275 12.3931C14.5798 12.4781 14.5448 12.5697 14.5236 12.6648C14.4997 12.7721 14.4997 12.8852 14.4997 13.1113V18.4584C14.4997 18.6539 14.4997 18.7517 14.4682 18.8363C14.4403 18.911 14.395 18.9779 14.336 19.0315C14.2692 19.0922 14.1784 19.1285 13.9969 19.2012L10.5969 20.5612C10.2293 20.7082 10.0455 20.7817 9.89802 20.751C9.76901 20.7242 9.6558 20.6476 9.583 20.5377C9.49975 20.4122 9.49975 20.2142 9.49975 19.8184V13.1113C9.49975 12.8852 9.49975 12.7721 9.47587 12.6648C9.45469 12.5697 9.41971 12.4781 9.37204 12.3931C9.31828 12.2972 9.2429 12.2129 9.09213 12.0444L3.38589 5.66687Z"
-                    stroke="#9F9F9F"
-                    stroke-width="1.5"
-                    stroke-linecap="round"
-                    stroke-linejoin="round"
-                  />
-                </svg>
-                <span className="hidden md:inline">فیلتر کردن</span>
-              </button>
+              {/*<button*/}
+              {/*  onClick={handleOpenFilter}*/}
+              {/*  className="flex items-center gap-2 text-[0.9rem] text-gray9F border border-1 border-solid border-borderGray rounded px-2 md:px-4 py-2"*/}
+              {/*>*/}
+              {/*  <svg*/}
+              {/*    xmlns="http://www.w3.org/2000/svg"*/}
+              {/*    width="24"*/}
+              {/*    height="24"*/}
+              {/*    viewBox="0 0 24 24"*/}
+              {/*    fill="none"*/}
+              {/*  >*/}
+              {/*    <path*/}
+              {/*      d="M3.38589 5.66687C2.62955 4.82155 2.25138 4.39889 2.23712 4.03968C2.22473 3.72764 2.35882 3.42772 2.59963 3.22889C2.87684 3 3.44399 3 4.57828 3H19.4212C20.5555 3 21.1227 3 21.3999 3.22889C21.6407 3.42772 21.7748 3.72764 21.7624 4.03968C21.7481 4.39889 21.3699 4.82155 20.6136 5.66687L14.9074 12.0444C14.7566 12.2129 14.6812 12.2972 14.6275 12.3931C14.5798 12.4781 14.5448 12.5697 14.5236 12.6648C14.4997 12.7721 14.4997 12.8852 14.4997 13.1113V18.4584C14.4997 18.6539 14.4997 18.7517 14.4682 18.8363C14.4403 18.911 14.395 18.9779 14.336 19.0315C14.2692 19.0922 14.1784 19.1285 13.9969 19.2012L10.5969 20.5612C10.2293 20.7082 10.0455 20.7817 9.89802 20.751C9.76901 20.7242 9.6558 20.6476 9.583 20.5377C9.49975 20.4122 9.49975 20.2142 9.49975 19.8184V13.1113C9.49975 12.8852 9.49975 12.7721 9.47587 12.6648C9.45469 12.5697 9.41971 12.4781 9.37204 12.3931C9.31828 12.2972 9.2429 12.2129 9.09213 12.0444L3.38589 5.66687Z"*/}
+              {/*      stroke="#9F9F9F"*/}
+              {/*      stroke-width="1.5"*/}
+              {/*      stroke-linecap="round"*/}
+              {/*      stroke-linejoin="round"*/}
+              {/*    />*/}
+              {/*  </svg>*/}
+              {/*  <span className="hidden md:inline">فیلتر کردن</span>*/}
+              {/*</button>*/}
               <div>
                 <button
                   onClick={handleOpenSortMenu}
@@ -309,14 +310,9 @@ function PurchaseRequest() {
                   <tr>
                     <th className="hidden md:table-cell px-6 py-4">#</th>
                     <th className="hidden md:table-cell px-2 md:px-6 py-4">
-                      کد درخواست
+                      نام
                     </th>
-                    <th className="px-2 md:px-6 px-6 py-4">محصول</th>
-                    <th className="px-2 md:px-6 px-6 py-4">مقدار</th>
-                    <th className="table-cell px-6 py-4">فوری</th>
-                    <th className="px-2 md:px-6 px-6 py-4">
-                      <span className="inline">وضعیت</span>
-                    </th>
+                    <th className="px-2 md:px-6 px-6 py-4">توضیحات</th>
                     <th className="hidden md:table-cell px-6 py-4">عملیات</th>
                   </tr>
                 </thead>
@@ -341,33 +337,6 @@ function PurchaseRequest() {
                               variant="text"
                               sx={{ fontSize: "1rem" }}
                             />
-                          </td>
-                          <td className="px-2 md:px-6 py-2  text-gray70 whitespace-nowrap ">
-                            <Skeleton
-                              variant="text"
-                              sx={{ fontSize: "1rem" }}
-                            />
-                          </td>
-                          <td className="hidden md:table-cell px-6 py-4  text-gray70 whitespace-nowrap ">
-                            <Skeleton
-                              variant="text"
-                              sx={{ fontSize: "1rem" }}
-                            />
-                          </td>
-                          <td className="hidden md:table-cell px-6 py-4  text-gray70 whitespace-nowrap ">
-                            <Skeleton
-                              variant="text"
-                              sx={{ fontSize: "1rem" }}
-                            />
-                          </td>
-                          <td className="px-2 md:px-6 py-4  text-gray70 whitespace-nowrap ">
-                            <div className="flex justify-center">
-                              <Skeleton
-                                variant="rounded"
-                                width={50}
-                                height={20}
-                              />
-                            </div>
                           </td>
                           <td
                             scope="row"
@@ -402,57 +371,10 @@ function PurchaseRequest() {
                             {index + 1}
                           </td>
                           <td className="hidden md:table-cell px-2 md:px-6 py-4  text-gray70 whitespace-nowrap ">
-                            {data?.code}
+                            {data?.productName}
                           </td>
                           <td className="px-6 py-4  text-gray70 whitespace-nowrap ">
                             {data?.productName}
-                          </td>
-                          <td className="px-2 md:px-6 py-4  text-gray70 whitespace-nowrap ">
-                            {data?.value} {data?.unit}
-                          </td>
-                          <td className="flex  justify-center px-2 md:px-6 py-4  text-gray70 whitespace-nowrap ">
-                            {data?.priority ? (
-                              <svg
-                                xmlns="http://www.w3.org/2000/svg"
-                                width="16"
-                                height="16"
-                                viewBox="0 0 16 16"
-                                fill="none"
-                              >
-                                <circle
-                                  cx="8"
-                                  cy="8"
-                                  r="7.5"
-                                  fill="#DB3746"
-                                  stroke="#DB3746"
-                                />
-                              </svg>
-                            ) : (
-                              <svg
-                                xmlns="http://www.w3.org/2000/svg"
-                                width="16"
-                                height="16"
-                                viewBox="0 0 16 16"
-                                fill="none"
-                              >
-                                <circle cx="8" cy="8" r="8" fill="#D9D9D9" />
-                              </svg>
-                            )}
-                          </td>
-                          <td className="px-2 md:px-6 py-4  text-gray70 whitespace-nowrap ">
-                            {data.status === "DONE" ? (
-                              <span className="text-[0.8rem] bg-greenBg text-greenText py-1 px-2 rounded-xl">
-                                تایید شده
-                              </span>
-                            ) : data.status === "IN_PROGRESS" ? (
-                              <span className="text-[0.8rem] bg-[#EBEBEB] text-gray70 py-1 px-2 rounded-xl">
-                                درحال بررسی
-                              </span>
-                            ) : (
-                              <span className="text-[0.8rem] bg-orangeBg text-orangeText py-1 px-2 rounded-xl">
-                                رد شده
-                              </span>
-                            )}
                           </td>
                           <td
                             scope="row"
@@ -491,38 +413,38 @@ function PurchaseRequest() {
                                 />
                               </svg>
                             </button>
-                              {/*<button*/}
-                              {/*  onClick={() => {*/}
-                              {/*    handleOpenEditInfo(data);*/}
-                              {/*  }}*/}
-                              {/*  className="border border-1 border-solid border-[#2492FF] rounded p-[0.4rem] hover:bg-blue-100"*/}
-                              {/*>*/}
-                              {/*  <svg*/}
-                              {/*    xmlns="http://www.w3.org/2000/svg"*/}
-                              {/*    width="16"*/}
-                              {/*    height="16"*/}
-                              {/*    viewBox="0 0 16 16"*/}
-                              {/*    fill="none"*/}
-                              {/*  >*/}
-                              {/*    <g clip-path="url(#clip0_197_250)">*/}
-                              {/*      <path*/}
-                              {/*        d="M7.3335 2.66666H4.5335C3.41339 2.66666 2.85334 2.66666 2.42552 2.88464C2.04919 3.07639 1.74323 3.38235 1.55148 3.75867C1.3335 4.1865 1.3335 4.74655 1.3335 5.86666V11.4667C1.3335 12.5868 1.3335 13.1468 1.55148 13.5746C1.74323 13.951 2.04919 14.2569 2.42552 14.4487C2.85334 14.6667 3.41339 14.6667 4.5335 14.6667H10.1335C11.2536 14.6667 11.8137 14.6667 12.2415 14.4487C12.6178 14.2569 12.9238 13.951 13.1155 13.5746C13.3335 13.1468 13.3335 12.5868 13.3335 11.4667V8.66666M5.33348 10.6667H6.44984C6.77596 10.6667 6.93902 10.6667 7.09247 10.6298C7.22852 10.5972 7.35858 10.5433 7.47788 10.4702C7.61243 10.3877 7.72773 10.2724 7.95833 10.0418L14.3335 3.66666C14.8858 3.11437 14.8858 2.21894 14.3335 1.66666C13.7812 1.11437 12.8858 1.11437 12.3335 1.66665L5.95832 8.04182C5.72772 8.27242 5.61241 8.38772 5.52996 8.52228C5.45685 8.64157 5.40298 8.77163 5.37032 8.90768C5.33348 9.06113 5.33348 9.22419 5.33348 9.55031V10.6667Z"*/}
-                              {/*        stroke="#2492FF"*/}
-                              {/*        stroke-linecap="round"*/}
-                              {/*        stroke-linejoin="round"*/}
-                              {/*      />*/}
-                              {/*    </g>*/}
-                              {/*    <defs>*/}
-                              {/*      <clipPath id="clip0_197_250">*/}
-                              {/*        <rect*/}
-                              {/*          width="16"*/}
-                              {/*          height="16"*/}
-                              {/*          fill="white"*/}
-                              {/*        />*/}
-                              {/*      </clipPath>*/}
-                              {/*    </defs>*/}
-                              {/*  </svg>*/}
-                              {/*</button>*/}
+                              <button
+                                onClick={() => {
+                                  handleOpenEditInfo(data);
+                                }}
+                                className="border border-1 border-solid border-[#2492FF] rounded p-[0.4rem] hover:bg-blue-100"
+                              >
+                                <svg
+                                  xmlns="http://www.w3.org/2000/svg"
+                                  width="16"
+                                  height="16"
+                                  viewBox="0 0 16 16"
+                                  fill="none"
+                                >
+                                  <g clip-path="url(#clip0_197_250)">
+                                    <path
+                                      d="M7.3335 2.66666H4.5335C3.41339 2.66666 2.85334 2.66666 2.42552 2.88464C2.04919 3.07639 1.74323 3.38235 1.55148 3.75867C1.3335 4.1865 1.3335 4.74655 1.3335 5.86666V11.4667C1.3335 12.5868 1.3335 13.1468 1.55148 13.5746C1.74323 13.951 2.04919 14.2569 2.42552 14.4487C2.85334 14.6667 3.41339 14.6667 4.5335 14.6667H10.1335C11.2536 14.6667 11.8137 14.6667 12.2415 14.4487C12.6178 14.2569 12.9238 13.951 13.1155 13.5746C13.3335 13.1468 13.3335 12.5868 13.3335 11.4667V8.66666M5.33348 10.6667H6.44984C6.77596 10.6667 6.93902 10.6667 7.09247 10.6298C7.22852 10.5972 7.35858 10.5433 7.47788 10.4702C7.61243 10.3877 7.72773 10.2724 7.95833 10.0418L14.3335 3.66666C14.8858 3.11437 14.8858 2.21894 14.3335 1.66666C13.7812 1.11437 12.8858 1.11437 12.3335 1.66665L5.95832 8.04182C5.72772 8.27242 5.61241 8.38772 5.52996 8.52228C5.45685 8.64157 5.40298 8.77163 5.37032 8.90768C5.33348 9.06113 5.33348 9.22419 5.33348 9.55031V10.6667Z"
+                                      stroke="#2492FF"
+                                      stroke-linecap="round"
+                                      stroke-linejoin="round"
+                                    />
+                                  </g>
+                                  <defs>
+                                    <clipPath id="clip0_197_250">
+                                      <rect
+                                        width="16"
+                                        height="16"
+                                        fill="white"
+                                      />
+                                    </clipPath>
+                                  </defs>
+                                </svg>
+                              </button>
                               <button
                                 onClick={() => {
                                   handleOpenDelete(data.id);
