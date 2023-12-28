@@ -374,6 +374,23 @@ export default function RootLayout({ children }) {
                       </span>
                     </Link>
                   </div>
+                  <div>
+                    <Link
+                      onClick={handleCloseSidebar}
+                      href="/panel/fleet"
+                      className="block py-4 px-2 border-b border-b-1 border-b-solid  border-b-borderGray"
+                    >
+                      <span
+                        className={
+                          pathname === "/panel/fleet"
+                            ? "text-mainRed text-[0.9rem]"
+                            : "text-gray9F hover:text-textGray text-[0.9rem]"
+                        }
+                      >
+                        ناوگان
+                      </span>
+                    </Link>
+                  </div>
                   {(accessData.hasOwnProperty("PrimaryStoreInput") ||
                     accessData.hasOwnProperty("PrimaryStoreOutput")) && (
                     <div>
@@ -1083,25 +1100,28 @@ export default function RootLayout({ children }) {
                       </Link>
                     </div>
                   )}
-                  {accessData.hasOwnProperty("notification") && (
-                    <div>
-                      <Link
-                        onClick={handleCloseSidebar}
-                        href="/panel/notification"
-                        className="block py-4 px-2 border-b border-b-1 border-b-solid  border-b-borderGray"
+
+                  <div>
+                    <Link
+                      onClick={handleCloseSidebar}
+                      href="/panel/notification"
+                      className=" py-4 px-2 border-b border-b-1 border-b-solid  border-b-borderGray flex justify-between"
+                    >
+                      <span
+                        className={
+                          pathname === "/panel/notification"
+                            ? "text-mainRed text-[0.9rem]"
+                            : "text-gray9F hover:text-textGray text-[0.9rem]"
+                        }
                       >
-                        <span
-                          className={
-                            pathname === "/panel/notification"
-                              ? "text-mainRed text-[0.9rem]"
-                              : "text-gray9F hover:text-textGray text-[0.9rem]"
-                          }
-                        >
-                          اطلاعیه
-                        </span>
-                      </Link>
-                    </div>
-                  )}
+                        اطلاعیه
+                      </span>
+                      <span className=" rounded-full bg-mainRed w-[1.2rem] text-[0.59rem] h-[1.2rem]  flex  items-center justify-center text-center text-white">
+                        79
+                      </span>
+                    </Link>
+                  </div>
+
                   <div>
                     <Link
                       onClick={handleCloseSidebar}
@@ -1137,7 +1157,23 @@ export default function RootLayout({ children }) {
                   </span>
                 </Link>
               </div>
-
+              <div>
+                <Link
+                  onClick={handleCloseSidebar}
+                  href="/panel/fleet"
+                  className="block py-4 px-2 border-b border-b-1 border-b-solid  border-b-borderGray"
+                >
+                  <span
+                    className={
+                      pathname === "/panel/fleet"
+                        ? "text-mainRed text-[0.9rem]"
+                        : "text-gray9F hover:text-textGray text-[0.9rem]"
+                    }
+                  >
+                    ناوگان
+                  </span>
+                </Link>
+              </div>
               {(accessData.hasOwnProperty("PrimaryStoreInput") ||
                 accessData.hasOwnProperty("PrimaryStoreOutput")) && (
                 <div>
@@ -1845,25 +1881,28 @@ export default function RootLayout({ children }) {
                   </Link>
                 </div>
               )}
-              {accessData.hasOwnProperty("notification") && (
-                <div>
-                  <Link
-                    onClick={handleCloseSidebar}
-                    href="/panel/notification"
-                    className="block py-4 px-2 border-b border-b-1 border-b-solid  border-b-borderGray"
+
+              <div>
+                <Link
+                  onClick={handleCloseSidebar}
+                  href="/panel/notification"
+                  className="flex justify-between items-center py-4 px-2 border-b border-b-1 border-b-solid  border-b-borderGray"
+                >
+                  <span
+                    className={
+                      pathname === "/panel/notification"
+                        ? "text-mainRed text-[0.9rem]"
+                        : "text-gray9F hover:text-textGray text-[0.9rem]"
+                    }
                   >
-                    <span
-                      className={
-                        pathname === "/panel/notification"
-                          ? "text-mainRed text-[0.9rem]"
-                          : "text-gray9F hover:text-textGray text-[0.9rem]"
-                      }
-                    >
-                      اطلاعیه
-                    </span>
-                  </Link>
-                </div>
-              )}
+                    اطلاعیه
+                  </span>
+                  <span className=" rounded-full bg-mainRed w-[1.2rem] text-[0.59rem] h-[1.2rem]  flex  items-center justify-center text-center text-white">
+                    79
+                  </span>
+                </Link>
+              </div>
+
               <div>
                 <Link
                   onClick={handleCloseSidebar}

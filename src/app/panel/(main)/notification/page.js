@@ -305,22 +305,22 @@ function primaryStoreInput() {
                             {index + 1}
                           </td>
                           <td className="px-2 md:px-6 py-4  text-gray70 whitespace-nowrap ">
-                            {data.date}
+                            {data.message}
                           </td>
                           <td className="px-2 md:px-6 py-4  text-gray70 whitespace-nowrap ">
                             {data.type === "ERROR" ? (
                               <span className="text-[0.8rem] bg-[#f0d2d8] text-[#f5516f] py-1 px-2 rounded-xl">
                                 اخطار
                               </span>
-                            ) : data.status === "WARN" ? (
+                            ) : data.type === "WARN" ? (
                               <span className="text-[0.8rem] bg-[#f7f0da] text-[#f1d150] py-1 px-2 rounded-xl">
                                 هشدار
                               </span>
-                            ) : data.status === "INFO" ? (
+                            ) : data.type === "INFO" ? (
                               <span className="text-[0.8rem] bg-[#EBEBEB] text-gray70 py-1 px-2 rounded-xl">
                                 اطلاعات
                               </span>
-                            ) : data.status === "TRACE" ? (
+                            ) : data.type === "TRACE" ? (
                               <span className="text-[0.8rem] bg-[#d6e9f1] text-[#5ac0f0] py-1 px-2 rounded-xl">
                                 دنبال کردن
                               </span>
@@ -331,11 +331,11 @@ function primaryStoreInput() {
                               <span className="text-[0.8rem] bg-[#f0d2d8] text-[#f5516f] py-1 px-2 rounded-xl">
                                 بالا
                               </span>
-                            ) : data.status === "MEDIUM" ? (
+                            ) : data.priority === "MEDIUM" ? (
                               <span className="text-[0.8rem] bg-[#f7f0da] text-[#f1d150] py-1 px-2 rounded-xl">
                                 متوسط
                               </span>
-                            ) : data.status === "LOW" ? (
+                            ) : data.priority === "LOW" ? (
                               <span className="text-[0.8rem] bg-greenBg text-greenText py-1 px-2 rounded-xl">
                                 پایین
                               </span>
