@@ -35,6 +35,7 @@ import {useSaveESOMutation} from "@/redux/features/equipment-store/output/ESOapi
 import {useSavePOSIMutation} from "@/redux/features/product-store/input/POSIapiSlice";
 
 import { PersianToEnglish } from "@/helper/PersianToEnglish";
+import { ConvertToNull } from "@/helper/ConvertToNull";
 export default function AddDataDialog(props) {
     const alphabeticalList = [
         {value: "هیچ کدام"},
@@ -275,7 +276,7 @@ export default function AddDataDialog(props) {
                     updateProduct = {...updateProduct, machineType: "نا معلوم", machineId: ""}
                 }
             }
-
+            updateProduct=ConvertToNull(updateProduct)
             const userData = await submitData(updateProduct)
             handleReset()
             props.handleCloseAddData()

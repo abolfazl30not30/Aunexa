@@ -44,8 +44,7 @@ export default function MoreInfoDialog(props) {
                                         <div className="p-2">
                                             <span className="text-[#29262A] text-[0.9rem]">{props.moreInfoTarget?.message}</span>
                                         </div>
-                                        <div className="border border-[#D9D9D9]">
-                                        </div>
+                                      
                                         
                                     </div>
                                 </div>
@@ -107,14 +106,7 @@ export default function MoreInfoDialog(props) {
                                 
                             </div>
                         </div>
-                        <div className="md:hidden flex  justify-center mt-5 gap-3">
-                            <button onClick={()=>{props.handleOpenDelete(props.moreInfoTarget.id);props.handleCloseMoreInfo()}} className="px-6 py-2 text-[0.8rem] text-mainRed border border-mainRed rounded hover:bg-mainRed hover:text-white">
-                                حذف
-                            </button>
-                            <button onClick={()=>{props.handleOpenEditInfo(props.moreInfoTarget);props.handleCloseMoreInfo()}}  className="px-5 py-2 text-[0.8rem] text-[#4087DB] border border-[#4087DB] rounded hover:bg-[#4087DB] hover:text-white">
-                                ویرایش
-                            </button>
-                        </div>
+                       
                     </DialogContentText>
                 </DialogContent>
             </Dialog>

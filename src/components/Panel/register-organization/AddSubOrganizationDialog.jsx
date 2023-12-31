@@ -19,6 +19,7 @@ import CircularProgress from '@mui/material/CircularProgress';
 
 import { useSaveSubOrganizationMutation } from "@/redux/features/organization/sub-organization/SubOrganizationSlice";
 import { PersianToEnglish } from "@/helper/PersianToEnglish";
+import { ConvertToNull } from "@/helper/ConvertToNull";
 export default function AddSubOrganizationDialog(props) {
 
     const handleReset = () =>{
@@ -49,7 +50,7 @@ export default function AddSubOrganizationDialog(props) {
         onSubmit: async (subOrganization,helpers) => {
             
             let updateSubOrganization = {...subOrganization,organizationId:props.organizationIdTarget,capacity:PersianToEnglish(subOrganization.capacity)}
-            
+            updateSubOrganization=ConvertToNull(updateSubOrganization)
             const userData = await submitData(updateSubOrganization)
             handleReset()
             props.handleCloseAddSubOrganization()

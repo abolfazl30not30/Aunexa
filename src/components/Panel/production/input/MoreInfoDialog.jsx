@@ -72,21 +72,7 @@ export default function MoreInfoDialog(props) {
                                                 </div>
                                             </div>
                                         </div>
-                                 
-                                {
-                                    props.moreInfoTarget.expirationDate && (
-                                        <div className="flex flex-col">
-                                            <div className="mb-2">
-                                                <span className="text-[0.9rem] text-gray70 "> محصول تولیدی</span>
-                                            </div>
-                                            <div className="border border-[#D9D9D9]  flex justify-start px-4">
-                                                <div className="p-2">
-                                                    <span className="text-[#29262A] text-[0.9rem]">{props.moreInfoTarget?.expirationDate}</span>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    )
-                                }
+                             
                                
                              
                                 <div className="flex flex-col">

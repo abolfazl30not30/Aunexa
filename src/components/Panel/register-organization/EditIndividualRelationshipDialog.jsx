@@ -11,7 +11,8 @@ import CircularProgress from '@mui/material/CircularProgress';
 import { PersianToEnglish } from "@/helper/PersianToEnglish";
 
 import { useUpdateRelationshipMutation } from "@/redux/features/organization/individual/IndividualRelationshipSlice";
-
+import { ConvertToNull } from "@/helper/ConvertToNull";
+import { ConvertToEmpty } from "@/helper/ConvertToEmpty";
 export default function AddIndividualRelationshipDialog(props) {
   
     const [individualRelationShip,setIndividualRelationship] = useState(null)
@@ -63,22 +64,22 @@ export default function AddIndividualRelationshipDialog(props) {
         onSubmit: async (individualRelationShip) => {
           
             let updateIndividualRelationShip = {  relationshipsInformation:[
-                {
+                ConvertToNull({
                     id:props.editIndividualRelationshipInfoTarget?.relationshipsInformation[0]?.id,
                     individualId:props.editIndividualRelationshipInfoTarget?.id,
                     fullName: individualRelationShip?.firstFullName,
                     phoneNumber:PersianToEnglish(individualRelationShip?.firstPhoneNumber),
                     relationship:individualRelationShip?.firstRelationship,
                     address:individualRelationShip?.firstAddress
-                },
-                {
+                }),
+                ConvertToNull({
                     id:props.editIndividualRelationshipInfoTarget?.relationshipsInformation[1]?.id,
                     individualId:props.editIndividualRelationshipInfoTarget.id,
                     fullName:individualRelationShip?.secondFullName,
                     phoneNumber:PersianToEnglish(individualRelationShip?.secondPhoneNumber),
                     relationship:individualRelationShip?.secondRelationship,
                     address:individualRelationShip?.secondAddress
-                }
+                })
                ] }
            
            
@@ -91,18 +92,19 @@ export default function AddIndividualRelationshipDialog(props) {
     
     useEffect(()=>{
         
-        
+        const editInfoRelationshipOneObj = ConvertToEmpty(props.editIndividualRelationshipInfoTarget?.relationshipsInformation[0])
+        const editInfoRelationshipTwoObj = ConvertToEmpty(props.editIndividualRelationshipInfoTarget?.relationshipsInformation[1])
         formik.setValues({
             
             individualId:props.editIndividualRelationshipInfoTarget?.id,
-            firstFullName:props.editIndividualRelationshipInfoTarget?.relationshipsInformation[0]?.fullName,
-            firstRelationship:props.editIndividualRelationshipInfoTarget?.relationshipsInformation[0]?.relationship,
-            firstAddress:props.editIndividualRelationshipInfoTarget?.relationshipsInformation[0]?.address,
-            firstPhoneNumber:props.editIndividualRelationshipInfoTarget?.relationshipsInformation[0]?.phoneNumber,
-            secondFullName:props.editIndividualRelationshipInfoTarget?.relationshipsInformation[1]?.fullName,
-            secondRelationship:props.editIndividualRelationshipInfoTarget?.relationshipsInformation[1]?.relationship,
-            secondAddress:props.editIndividualRelationshipInfoTarget?.relationshipsInformation[1]?.address,
-            secondPhoneNumber:props.editIndividualRelationshipInfoTarget?.relationshipsInformation[1]?.phoneNumber,
+            firstFullName:editInfoRelationshipOneObj?.fullName,
+            firstRelationship:editInfoRelationshipOneObj?.relationship,
+            firstAddress:editInfoRelationshipOneObj?.address,
+            firstPhoneNumber:editInfoRelationshipOneObj?.phoneNumber,
+            secondFullName:editInfoRelationshipTwoObj?.fullName,
+            secondRelationship:editInfoRelationshipTwoObj?.relationship,
+            secondAddress:editInfoRelationshipTwoObj?.address,
+            secondPhoneNumber:editInfoRelationshipTwoObj?.phoneNumber,
             
         })
         

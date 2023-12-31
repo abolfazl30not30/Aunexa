@@ -96,7 +96,7 @@ export default function RejectionDialog(props) {
                                         InputLabelProps={{style: {fontFamily: "__fonts_2f4189,__fonts_Fallback_2f4189"}}}/>
                                 </div>
                                 <div className="flex justify-between gap-3">
-                                    <button onClick={props.handleCloseConfirm}
+                                    <button onClick={props.handleCloseRejection}
                                             className="w-full rounded-[0.5rem] py-3 border border-gray70 hover:opacity-80 font-bold  bg-transparent text-gray70">انصراف
                                     </button>
                                     {

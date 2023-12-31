@@ -502,15 +502,16 @@ function vehiclesAndEquipment() {
                             {index + 1}
                           </td>
                           <td className="flex items-center justify-center px-2 md:px-6 py-2  text-gray70 whitespace-nowrap ">
-                            {data.imageURL && (
-                              <div className="flex items-center w-12 h-12">
-                                <img
-                                  className="object-cover"
-                                  src={data?.imageURL}
-                                  alt="productImage"
-                                />
-                              </div>
-                            )}
+                            {data?.imageURL !== null &&
+                              data?.imageURL !== "" && (
+                                <div className="flex items-center w-12 h-12">
+                                  <img
+                                    className="object-cover"
+                                    src={data?.imageURL}
+                                    alt="productImage"
+                                  />
+                                </div>
+                              )}
                           </td>
                           <td className="px-2 md:px-6 py-2  text-gray70 whitespace-nowrap ">
                             {data?.persianName}

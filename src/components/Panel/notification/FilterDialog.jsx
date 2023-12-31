@@ -63,10 +63,10 @@ export default function FilterDialog(props) {
     const handleURLSearchParams = (values) =>{
         let params = new URLSearchParams()
         if(values.dateFrom){
-            params.set("fromDate",values.dateFrom)
+            params.set("dateFrom",values.dateFrom)
         }
         if(values.dateTo){
-            params.set("toDate",values.dateTo)
+            params.set("dateTo",values.dateTo)
         }
         if(values.priority){
             params.set("priority",values.priority)
@@ -226,7 +226,7 @@ export default function FilterDialog(props) {
                                         </DatePicker>
                                     </div>
                                 </div>
-                                <div className=" flex flex-col">
+                                {/* <div className=" flex flex-col">
                                     <Autocomplete
                                         open={openSubOrganizationList}
                                         onOpen={() => {
@@ -267,7 +267,7 @@ export default function FilterDialog(props) {
                                                 placeholder="دپارتمان"
                                             />}
                                     />
-                                </div>
+                                </div> */}
                                
                                 <div className=" flex flex-col">
                                     <FormControl fullWidth>
@@ -288,24 +288,7 @@ export default function FilterDialog(props) {
                                         </Select>
                                     </FormControl>
                                 </div>
-                                <FormControl fullWidth error={formik.touched.status && Boolean(formik.errors.status)}>
-                                    <InputLabel id="demo-simple-select-label" sx={{fontFamily: "__fonts_2f4189,__fonts_Fallback_2f4189", fontSize: "0.8rem",color:"#9F9F9F"}}>وضعیت</InputLabel>
-                                    <Select
-                                        labelId="demo-simple-select-label"
-                                        id="demo-simple-select"
-                                        defaultValue={formik.values.status}
-                                        value={formik.values.status}
-                                        name="status"
-                                        input={<OutlinedInput sx={{fontFamily: "__fonts_2f4189,__fonts_Fallback_2f4189", fontSize: "0.8rem"}} label="وضعیت" />}
-                                        sx={{fontFamily: "__fonts_2f4189,__fonts_Fallback_2f4189", fontSize: "0.8rem"}}
-                                        onChange={formik.handleChange}>
-                                        <MenuItem value="" sx={{fontFamily: "__fonts_2f4189,__fonts_Fallback_2f4189", fontSize: "0.8rem"}}>همه وضعیت ها</MenuItem>
-                                        <MenuItem value="READ" sx={{fontFamily: "__fonts_2f4189,__fonts_Fallback_2f4189", fontSize: "0.8rem"}}>خوانده شده</MenuItem>
-                                        <MenuItem value="WAITING" sx={{fontFamily: "__fonts_2f4189,__fonts_Fallback_2f4189", fontSize: "0.8rem"}}>خوانده نشده</MenuItem>
-                                        
-                                    </Select>
-                                    <FormHelperText>{formik.touched.status && formik.errors.status}</FormHelperText>
-                                </FormControl>
+                               
                                 
                                 <div className="mt-4">
                                     <button type="submit"

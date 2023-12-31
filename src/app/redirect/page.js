@@ -3,7 +3,7 @@ import MainForm from "@/components/Login/MainForm";
 import { useSearchParams } from "next/navigation";
 import { useEffect } from "react";
 import { useLoginMutation } from "../../redux/api/loginSlice";
-import { useRouter } from 'next/navigation';
+import { useRouter } from "next/navigation";
 import axios from "axios";
 import Image from "next/image";
 import React from "react";
@@ -40,6 +40,10 @@ export default function redirect() {
       let tokenContent = jwt_decode(userData?.data?.access_token);
       window.sessionStorage.setItem("name", tokenContent.name);
       window.sessionStorage.setItem("role", tokenContent.role);
+      window.sessionStorage.setItem(
+        "organizationName",
+        tokenContent.organizationName
+      );
       window.sessionStorage.setItem("profile", tokenContent.profile);
       window.sessionStorage.setItem(
         "subOrganizationName",
@@ -58,6 +62,7 @@ export default function redirect() {
         "refresh_token",
         userData.data.refresh_token
       );
+
       router.push("/panel");
     } catch (err) {
       console.log(err);

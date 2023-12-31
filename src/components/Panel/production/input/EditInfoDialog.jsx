@@ -31,6 +31,8 @@ import {
     useLazyGetOneVehiclesByTagQuery
 } from "@/redux/features/vehicles-and-equipment/VehiclesAndEquipmentSlice";
 import { PersianToEnglish } from "@/helper/PersianToEnglish";
+import { ConvertToEmpty } from "@/helper/ConvertToEmpty";
+import { ConvertToNull } from "@/helper/ConvertToNull";
 export default function EditInfoDialog(props) {
   
 
@@ -48,7 +50,7 @@ export default function EditInfoDialog(props) {
 
     const [producedProduct,setProducedProduct] = useState(null)
     const [openProducedProductList,setOpenProducedProductList] = useState(false)
-    const [getProducedProductList,{ data : ProducedProductList  = [] , isLoading : isProducedProductLoading, isError: producedProductIsError }] = useLazyGetAllProductQuery()
+    const [getProducedProductList,{ data : producedProductList  = [] , isLoading : isProducedProductLoading, isError: producedProductIsError }] = useLazyGetAllProductQuery()
     useEffect(()=>{
         if(openProducedProductList){
             getProducedProductList()
@@ -122,7 +124,7 @@ export default function EditInfoDialog(props) {
             let updateProduct = {...product,value:PersianToEnglish(`${product.value}`)}
 
            
-
+updateProduct=ConvertToNull(updateProduct)
             const userData = await submitData(updateProduct)
             handleReset()
             props.handleCloseEditInfo()
@@ -134,7 +136,7 @@ export default function EditInfoDialog(props) {
         setProduct(product[0])
     }
     const handleSetProducedProductInput = (id) =>{
-        const producedProduct = ProducedProductList.filter((producedProduct)=> producedProduct.id === id)
+        const producedProduct = producedProductList.filter((producedProduct)=> producedProduct.id === id)
         setProducedProduct(producedProduct[0])
     }
     const handleSetUnitInput = (ab) =>{
@@ -148,14 +150,15 @@ export default function EditInfoDialog(props) {
     useEffect(()=>{
         getProductList()
         getUnitList()
+        const editInfoObj = ConvertToEmpty(props.editInfoTarget)
         formik.setValues({
-            id:props.editInfoTarget?.id,
-            productId: props.editInfoTarget?.productId,
-            productName:props.editInfoTarget?.productName,
-            producedProductId: props.editInfoTarget?.producedProductId,
-            producedProductName:props.editInfoTarget?.producedProductName,
-            value: props.editInfoTarget?.value,
-            unit: props.editInfoTarget?.unit,
+            id:editInfoObj?.id,
+            productId: editInfoObj?.productId,
+            productName:editInfoObj?.productName,
+            producedProductId: editInfoObj?.producedProductId,
+            producedProductName:editInfoObj?.producedProductName,
+            value: editInfoObj?.value,
+            unit: editInfoObj?.unit,
           
         })
         handleSetProductInput(props.editInfoTarget?.productId)
@@ -301,7 +304,7 @@ export default function EditInfoDialog(props) {
                                         ListboxProps={{
                                             sx: {fontFamily: "__fonts_2f4189,__fonts_Fallback_2f4189", fontSize: "0.8rem"},
                                         }}
-                                        options={ProducedProductList}
+                                        options={producedProductList}
                                         getOptionLabel={(option) => option.persianName}
                                         value={producedProduct}
                                         onChange={(event, newValue) => {

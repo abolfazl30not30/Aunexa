@@ -116,10 +116,10 @@ export default function AddDataDialog(props) {
                                             sx: {fontFamily: "__fonts_2f4189,__fonts_Fallback_2f4189", fontSize: "0.8rem"},
                                         }}
                                         options={vehicleList}
-                                        getOptionLabel={(option) =>option.code===""?option.tag.slice(2, 5)+ "-" +option.tag.slice(5, 7) + "  " + option.tag.slice(7, 8) + "  " +option.tag.slice(0, 2) +" "+option.type:option.code +" "+ option.type}
+                                        getOptionLabel={(option) =>option.code===null?option.tag.slice(2, 5)+ "-" +option.tag.slice(5, 7) + "  " + option.tag.slice(7, 8) + "  " +option.tag.slice(0, 2) +" "+option.type:option.code +" "+ option.type}
                                         renderOption={(props, option) => (
                                             <Box component="li"  {...props}>
-                                                <span>{option.code===""?option.tag.slice(2, 5) + "-" + option.tag.slice(5, 7) + " " + option.tag.slice(7, 8) + " " + option.tag.slice(0, 2):option.code}</span>  <span className="pr-4">{option.type}</span> 
+                                                <span>{option.code===null?option.tag.slice(2, 5) + "-" + option.tag.slice(5, 7) + " " + option.tag.slice(7, 8) + " " + option.tag.slice(0, 2):option.code}</span>  <span className="pr-4">{option.type}</span> 
                                             </Box>
                                         )}
                                         value={vehicle}

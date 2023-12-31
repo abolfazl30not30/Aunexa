@@ -118,7 +118,7 @@ export default function FixFailureDialog(props) {
                                     </div>
                                     <div className="border border-[#D9D9D9] bg-[#F2EDED] flex justify-start px-4">
                                         <div className="p-2">
-                                            <span className="text-[#29262A] text-[0.9rem]">{"متن پیش فرض"}</span>
+                                            <span className="text-[#29262A] text-[0.9rem]">{"-"}</span>
                                         </div>
                                     </div>
                                     </div>
@@ -212,7 +212,7 @@ export default function FixFailureDialog(props) {
                                         شاخص  عملکرد :
                                     </span>
                                     <span className="text-[#29262A] text-[0.8rem]">
-                                    {"متن پیش فرض"}
+                                    {"-"}
                                     </span>
                                 </div>
                                 {props.fixTarget?.machine?.subOrganizationName&&

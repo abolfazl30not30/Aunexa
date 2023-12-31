@@ -14,6 +14,8 @@ import DatePicker,{DateObject} from "react-multi-date-picker";
 import { useLazyGetAllRoleListQuery } from "@/redux/features/category/CategoryRoleSlice";
 import CircularProgress from '@mui/material/CircularProgress';
 import { PersianToEnglish } from "@/helper/PersianToEnglish";
+import { ConvertToNull } from "@/helper/ConvertToNull";
+import { ConvertToEmpty } from "@/helper/ConvertToEmpty";
 export default function EditIndividualInfoDialog(props) {
     
   const [individual,setIndividual] = useState(null)
@@ -92,11 +94,12 @@ export default function EditIndividualInfoDialog(props) {
         validationSchema: schema,
 
         onSubmit: async (individual,helpers) => {
-            const body = {...individual,cLevel:cLevel,originalPhoneNumber:PersianToEnglish(individual.originalPhoneNumber),anotherPhoneNumber:PersianToEnglish(individual.anotherPhoneNumber),telephoneNumber:PersianToEnglish(individual.telephoneNumber),nationalCode:PersianToEnglish(individual.nationalCode),personalCode:PersianToEnglish(individual.personalCode),
+            let body = {...individual,cLevel:cLevel,originalPhoneNumber:PersianToEnglish(individual.originalPhoneNumber),anotherPhoneNumber:PersianToEnglish(individual.anotherPhoneNumber),telephoneNumber:PersianToEnglish(individual.telephoneNumber),nationalCode:PersianToEnglish(individual.nationalCode),personalCode:PersianToEnglish(individual.personalCode),
                 organizationId:window.sessionStorage.getItem("organizationId"),
                 subOrganizationId:window.sessionStorage.getItem("subOrganizationId"),
                 
             }
+            body=ConvertToNull(body)
             const userData = await submitData(body)
             
             console.log(userData)
@@ -113,7 +116,7 @@ export default function EditIndividualInfoDialog(props) {
     });
     
     const handleSetBirthDate = (date)=>{
-      if(date !== ""){
+      if(date !== "" && date!==null){
           const newDate = new DateObject({
               date: date,
               format: "YYYY/MM/DD",
@@ -130,23 +133,23 @@ export default function EditIndividualInfoDialog(props) {
 }
     useEffect(()=>{
         
-        
+      const editInfoObj = ConvertToEmpty(props.editIndividualInfoTarget)
         formik.setValues({
-            id:props.editIndividualInfoTarget?.id,
-            fullName: props.editIndividualInfoTarget?.fullName,
-            nationalCode: props.editIndividualInfoTarget?.nationalCode,
-            personalCode: props.editIndividualInfoTarget?.personalCode,
-            birthDate: props.editIndividualInfoTarget?.birthDate,
-            fatherName: props.editIndividualInfoTarget?.fatherName,
-            gender: props.editIndividualInfoTarget?.gender,
-            role: props.editIndividualInfoTarget?.role,
-            originalPhoneNumber: props.editIndividualInfoTarget?.originalPhoneNumber,
-            anotherPhoneNumber: props.editIndividualInfoTarget?.anotherPhoneNumber,
-            telephoneNumber: props.editIndividualInfoTarget?.telephoneNumber,
-            education: props.editIndividualInfoTarget?.education,
-            email: props.editIndividualInfoTarget?.email,
-            address: props.editIndividualInfoTarget?.address,
-            cLevel:props.editIndividualInfoTarget?.cLevel
+            id:editInfoObj?.id,
+            fullName: editInfoObj?.fullName,
+            nationalCode: editInfoObj?.nationalCode,
+            personalCode: editInfoObj?.personalCode,
+            birthDate: editInfoObj?.birthDate,
+            fatherName: editInfoObj?.fatherName,
+            gender: editInfoObj?.gender,
+            role: editInfoObj?.role,
+            originalPhoneNumber: editInfoObj?.originalPhoneNumber,
+            anotherPhoneNumber: editInfoObj?.anotherPhoneNumber,
+            telephoneNumber: editInfoObj?.telephoneNumber,
+            education: editInfoObj?.education,
+            email: editInfoObj?.email,
+            address: editInfoObj?.address,
+            cLevel:editInfoObj?.cLevel
           
         })
         handleSetBirthDate(props.editIndividualInfoTarget?.birthDate)

@@ -81,7 +81,7 @@ export default function MoreInfoDialog(props) {
                                         <div className="border border-[#D9D9D9]  flex justify-start px-4">
                                             <div className="p-2">
                                                 <span
-                                                    className="text-[#29262A] text-[0.9rem]">{props.moreInfoTarget?.driverName}</span>
+                                                    className="text-[#29262A] text-[0.9rem]">{"-"}</span>
                                             </div>
                                         </div>
                                     </div>
@@ -161,7 +161,7 @@ export default function MoreInfoDialog(props) {
                                        {props.moreInfoTarget?.machine?.code}
                                     </span>
                                 </div>}
-                                <div>
+                                {props.moreInfoTarget?.machine?.tag && <div>
                                     <span className="ml-1 text-gray9F text-[0.8rem]">
                                         پلاک وسیله نقلیه :
                                     </span>
@@ -170,14 +170,14 @@ export default function MoreInfoDialog(props) {
                                             props.moreInfoTarget?.machine?.tag.slice(2, 5) + "-" + props.moreInfoTarget?.machine?.tag.slice(5, 7) + " " + props.moreInfoTarget?.machine?.tag.slice(7, 8) + " " + props.moreInfoTarget?.machine?.tag.slice(0, 2)
                                         }
                                     </span>
-                                </div>
+                                </div>}
 
                                 <div>
                                     <span className="ml-1 text-gray9F text-[0.8rem]">
                                         شاخص عملکرد :
                                     </span>
                                     <span className="text-[#29262A] text-[0.8rem]">
-                                        {props.moreInfoTarget?.driverName}
+                                        {"-"}
                                     </span>
                                 </div>
                                 <div>
