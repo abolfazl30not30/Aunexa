@@ -16,6 +16,12 @@ export const NotificationSlice = apiSlice.injectEndpoints({
       query: () => ({
         url: `notification/check-all`,
       }),
+    }),
+    providesTags: ["notification"],
+    getLastFiveNotificationList: builder.query({
+      query: () => ({
+        url: `notification/panel/find-all`,
+      }),
       providesTags: ["notification"],
     }),
   }),
@@ -23,5 +29,6 @@ export const NotificationSlice = apiSlice.injectEndpoints({
 
 export const {
   useGetAllNotificationListQuery,
+  useLazyGetLastFiveNotificationListQuery,
   useGetCheckAllNotificationListQuery,
 } = NotificationSlice;

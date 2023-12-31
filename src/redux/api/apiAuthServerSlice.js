@@ -4,7 +4,7 @@ import { logOut, setAccessToken } from "./authSlice";
 import axios from "axios";
 //https://auth.vipsoftware1.com
 const baseQuery = fetchBaseQuery({
-  baseUrl: "https://auth.vipsoftware1.com/",
+  baseUrl: "https://auth.aunexa.net/",
   prepareHeaders: (headers, { getState }) => {
     const token = getState().auth.accessToken;
     if (token) {
@@ -24,16 +24,12 @@ const login = async () => {
     grant_type: "refresh_token",
   };
 
-  return await axios.post(
-    "https://auth.vipsoftware1.com/oauth2/token",
-    formData,
-    {
-      headers: {
-        "Content-Type": "application/x-www-form-urlencoded",
-        Authorization: "Basic " + base64encodedData,
-      },
-    }
-  );
+  return await axios.post("https://auth.aunexa.net/oauth2/token", formData, {
+    headers: {
+      "Content-Type": "application/x-www-form-urlencoded",
+      Authorization: "Basic " + base64encodedData,
+    },
+  });
 };
 
 const baseQueryWithReauth = async (args, api, extraOptions) => {

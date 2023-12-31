@@ -13,6 +13,7 @@ import { Drawer, Menu } from "@mui/material";
 import { useDispatch, useSelector } from "react-redux";
 import { useLazyGetAccessQuery } from "@/redux/features/access/getAccessSlice";
 import { setAccess } from "@/redux/permission/accessSlice";
+import { useLazyGetLastFiveNotificationListQuery } from "@/redux/features/notification/NotificationSlice";
 
 const cacheRtl = createCache({
   key: "muirtl",
@@ -23,6 +24,33 @@ const theme = createTheme({
 });
 
 export default function RootLayout({ children }) {
+  const [LatestNotification, setLatestNotification] = useState(null);
+  const [openLatestNotificationList, setOpenLatestNotificationList] =
+    useState(false);
+
+  const [
+    getLatestNotificationList,
+    {
+      data: latestNotificationList = [],
+      isLoading: isLatestNotificationListLoading,
+      isError: latestNotificationListIsError,
+    },
+  ] = useLazyGetLastFiveNotificationListQuery();
+  useEffect(() => {
+    getLatestNotificationList();
+  }, [openLatestNotificationList]);
+  // Trigger initial fetch of notifications and keep the websocket open to receive updates
+  // useGetNotificationsQuery();
+
+  // const notificationsMetadata = useSelector(selectNotificationsMetadata);
+  // const numUnreadNotifications = notificationsMetadata.filter(
+  //   (n) => !n.read
+  // ).length;
+
+  // const fetchNewNotifications = () => {
+  //   dispatch(fetchNotificationsWebsocket());
+  // };
+
   const pathname = usePathname();
   const dispatch = useDispatch();
 
@@ -37,6 +65,7 @@ export default function RootLayout({ children }) {
 
   const handleOpenAlertMenu = (event) => {
     setAnchorEl(event.currentTarget);
+    setOpenLatestNotificationList(!openLatestNotificationList);
   };
   const handleCloseAlertMenu = () => {
     setAnchorEl(null);
@@ -68,6 +97,7 @@ export default function RootLayout({ children }) {
   useEffect(() => {
     handleGetAccess();
   }, []);
+
   return (
     <>
       <div className="">
@@ -146,7 +176,66 @@ export default function RootLayout({ children }) {
                 <div className="flex justify-center items-center pt-2 pb-4">
                   <h4 className="text-[0.9rem] text-">آخرین پیام ها</h4>
                 </div>
-                <div className="py-3 border-t border-t-[#D9D9D9]">
+                {latestNotificationList?.content?.map((item, index) => (
+                  <div className="py-3 border-t border-t-[#D9D9D9]">
+                    <div className="flex justify-between">
+                      <h4 className="text-[0.9rem]">تیکت جدید</h4>
+                      <span className="text-[0.7rem] text-[#9F9F9F]">
+                        {item?.date}
+                      </span>
+                    </div>
+                    <div className="mt-2 ">
+                      <div className="flex justify-between items-center">
+                        <p className="text-[0.8rem] text-gray70">
+                          {item?.message}
+                        </p>
+                        {item?.priority === "HIGH" ? (
+                          <svg
+                            fill="#f5516f"
+                            width="13px"
+                            height="13px"
+                            viewBox="0 0 15 15"
+                            version="1.1"
+                            id="circle"
+                            xmlns="http://www.w3.org/2000/svg"
+                          >
+                            <path d="M14,7.5c0,3.5899-2.9101,6.5-6.5,6.5S1,11.0899,1,7.5S3.9101,1,7.5,1S14,3.9101,14,7.5z" />
+                          </svg>
+                        ) : item?.priority === "MEDIUM" ? (
+                          <svg
+                            fill="#f1d150"
+                            width="13px"
+                            height="13px"
+                            viewBox="0 0 15 15"
+                            version="1.1"
+                            id="circle"
+                            xmlns="http://www.w3.org/2000/svg"
+                          >
+                            <path d="M14,7.5c0,3.5899-2.9101,6.5-6.5,6.5S1,11.0899,1,7.5S3.9101,1,7.5,1S14,3.9101,14,7.5z" />
+                          </svg>
+                        ) : (
+                          <svg
+                            fill="#22e032"
+                            width="13px"
+                            height="13px"
+                            viewBox="0 0 15 15"
+                            version="1.1"
+                            id="circle"
+                            xmlns="http://www.w3.org/2000/svg"
+                          >
+                            <path d="M14,7.5c0,3.5899-2.9101,6.5-6.5,6.5S1,11.0899,1,7.5S3.9101,1,7.5,1S14,3.9101,14,7.5z" />
+                          </svg>
+                        )}
+                      </div>
+                    </div>
+                  </div>
+                ))}
+                {latestNotificationList?.numberOfElements === 0 && (
+                  <div className="flex justify-center pb-1 tex-sm">
+                    <p>پیام جدیدی موجود نیست</p>
+                  </div>
+                )}
+                {/* <div className="py-3 border-t border-t-[#D9D9D9]">
                   <div className="flex justify-between">
                     <h4 className="text-[0.9rem]">تیکت جدید</h4>
                     <span className="text-[0.7rem] text-[#9F9F9F]">
@@ -158,20 +247,7 @@ export default function RootLayout({ children }) {
                       لورم ایپسوم متن ساختگی با تولید آن را سادگیا{" "}
                     </p>
                   </div>
-                </div>
-                <div className="py-3 border-t border-t-[#D9D9D9]">
-                  <div className="flex justify-between">
-                    <h4 className="text-[0.9rem]">تیکت جدید</h4>
-                    <span className="text-[0.7rem] text-[#9F9F9F]">
-                      1402/09/03
-                    </span>
-                  </div>
-                  <div className="mt-2">
-                    <p className="text-[0.8rem] text-gray70">
-                      لورم ایپسوم متن ساختگی با تولید آن را سادگیا{" "}
-                    </p>
-                  </div>
-                </div>
+                </div> */}
                 <div className="py-3 border-t border-t-[#D9D9D9] flex justify-center">
                   <Link
                     href="/panel/notification"
@@ -288,7 +364,7 @@ export default function RootLayout({ children }) {
                       </span>
                     </Link>
                     <Link
-                      href="https://auth.vipsoftware1.com/logout"
+                      href="https://auth.aunexa.net/logout"
                       className="flex gap-2 py-3 px-4 hover:bg-neutral-100 border-t border-t-[#D9D9D9]"
                     >
                       <div>
@@ -1114,7 +1190,7 @@ export default function RootLayout({ children }) {
                             : "text-gray9F hover:text-textGray text-[0.9rem]"
                         }
                       >
-                        اطلاعیه
+                        اعلانیه
                       </span>
                       <span className=" rounded-full bg-mainRed w-[1.2rem] text-[0.59rem] h-[1.2rem]  flex  items-center justify-center text-center text-white">
                         79
@@ -1125,7 +1201,7 @@ export default function RootLayout({ children }) {
                   <div>
                     <Link
                       onClick={handleCloseSidebar}
-                      href="https://auth.vipsoftware1.com/logout"
+                      href="https://auth.aunexa.net/logout"
                       className="block py-4 px-2 border-b border-b-1 border-b-solid  border-b-borderGray"
                     >
                       <span className="text-gray9F hover:text-textGray text-[0.9rem]">
@@ -1895,7 +1971,7 @@ export default function RootLayout({ children }) {
                         : "text-gray9F hover:text-textGray text-[0.9rem]"
                     }
                   >
-                    اطلاعیه
+                    اعلانیه
                   </span>
                   <span className=" rounded-full bg-mainRed w-[1.2rem] text-[0.59rem] h-[1.2rem]  flex  items-center justify-center text-center text-white">
                     79
@@ -1906,7 +1982,7 @@ export default function RootLayout({ children }) {
               <div>
                 <Link
                   onClick={handleCloseSidebar}
-                  href="https://auth.vipsoftware1.com/logout"
+                  href="https://auth.aunexa.net/logout"
                   className="block py-4 px-2 border-b border-b-1 border-b-solid  border-b-borderGray"
                 >
                   <span className="text-gray9F hover:text-textGray text-[0.9rem]">
