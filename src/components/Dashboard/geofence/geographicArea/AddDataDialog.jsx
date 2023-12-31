@@ -81,10 +81,10 @@ const AntSwitch = styled(Switch)(({ theme }) => ({
 }));
 
 export default function AddDataDialog(props) {
-    const [center, setCenter] = useState({ lat: 24.4539, lng: 54.3773 });
+    const [center, setCenter] = useState({ lat: 35.7219, lng: 51.3347 });
     const ZOOM_LEVEL = 12;
 
-    const _created = (e) => console.log(e);
+    const log = (e) => console.log(e);
 
     //product input
     const [product,setProduct] = useState(null)
@@ -256,7 +256,9 @@ export default function AddDataDialog(props) {
                                         <FeatureGroup>
                                             <EditControl
                                                 position="topright"
-                                                onCreated={_created}
+                                                onCreated={log}
+                                                onEdited={(e)=>{console.log(e)}}
+                                                onMounted={log}
                                                 draw={
                                                     {
                                                          rectangle: false,
