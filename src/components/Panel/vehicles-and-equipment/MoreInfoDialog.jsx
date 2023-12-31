@@ -48,7 +48,7 @@ export default function MoreInfoDialog(props) {
                                         <div className="p-2 ">
                                             <span className="text-[#29262A] text-[0.9rem]">
                                                 {
-                                                    props.moreInfoTarget?.code === "" ? ( props.moreInfoTarget?.tag.slice(2, 5) + "-" + props.moreInfoTarget?.tag.slice(5, 7) + " " + props.moreInfoTarget?.tag.slice(7, 8) + " " + props.moreInfoTarget?.tag.slice(0, 2)) : (
+                                                    props.moreInfoTarget?.code === null ? ( props.moreInfoTarget?.tag.slice(2, 5) + "-" + props.moreInfoTarget?.tag.slice(5, 7) + " " + props.moreInfoTarget?.tag.slice(7, 8) + " " + props.moreInfoTarget?.tag.slice(0, 2)) : (
                                                         props.moreInfoTarget?.code
                                                     )
                                                 }

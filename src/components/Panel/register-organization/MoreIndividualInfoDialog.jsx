@@ -243,7 +243,7 @@ export default function MoreIndividualInfoDialog(props) {
                                                 </div>
                                             </div>
                                         </div>
-                                        <div className="flex flex-col">
+                                        { props.moreInfoIndividualTarget?.relationshipsInformation[0]?.phoneNumber && <div className="flex flex-col">
                                             <div className="mb-2">
                                                 <span className="text-[0.9rem] text-gray70 ">شماره تماس</span>
                                             </div>
@@ -252,8 +252,8 @@ export default function MoreIndividualInfoDialog(props) {
                                                     <span className="text-[#29262A] text-[0.9rem]">{props.moreInfoIndividualTarget?.relationshipsInformation[1]?.phoneNumber}</span>
                                                 </div>
                                             </div>
-                                        </div>
-                                        <div className="flex flex-col">
+                                        </div>}
+                                        {props.moreInfoIndividualTarget?.relationshipsInformation[1]?.relationship&& <div className="flex flex-col">
                                             <div className="mb-2">
                                                 <span className="text-[0.9rem] text-gray70 ">نسبت</span>
                                             </div>
@@ -262,8 +262,8 @@ export default function MoreIndividualInfoDialog(props) {
                                                     <span className="text-[#29262A] text-[0.9rem]">{props.moreInfoIndividualTarget?.relationshipsInformation[1]?.relationship}</span>
                                                 </div>
                                             </div>
-                                        </div>
-                                        <div className="flex flex-col">
+                                        </div>}
+                                        {props.moreInfoIndividualTarget?.relationshipsInformation[1]?.address&&  <div className="flex flex-col">
                                             <div className="mb-2">
                                                 <span className="text-[0.9rem] text-gray70 ">آدرس</span>
                                             </div>
@@ -272,7 +272,7 @@ export default function MoreIndividualInfoDialog(props) {
                                                     <span className="text-[#29262A] text-[0.9rem]">{props.moreInfoIndividualTarget?.relationshipsInformation[1]?.address}</span>
                                                 </div>
                                             </div>
-                                        </div>
+                                        </div>}
                                         
                                    </div> :null
                                    }
@@ -348,14 +348,14 @@ export default function MoreIndividualInfoDialog(props) {
                                         {props.moreInfoIndividualTarget?.originalPhoneNumber}
                                     </span>
                                 </div>
-                                <div>
+                                {props.moreInfoIndividualTarget?.anotherPhoneNumber && <div>
                                     <span className="ml-1 text-gray9F text-[0.8rem]">
                                             شماره همراه دوم :
                                     </span>
                                     <span className="text-[#29262A] text-[0.8rem]">
                                         {props.moreInfoIndividualTarget?.anotherPhoneNumber}
                                     </span>
-                                </div>
+                                </div>}
                                 <div>
                                     <span className="ml-1 text-gray9F text-[0.8rem]">
                                             شماره ثابت  :
@@ -372,22 +372,22 @@ export default function MoreIndividualInfoDialog(props) {
                                         {props.moreInfoIndividualTarget?.education}
                                     </span>
                                 </div>
-                                <div>
+                                {props.moreInfoIndividualTarget?.email && <div>
                                     <span className="ml-1 text-gray9F text-[0.8rem]">
                                              ایمیل  :
                                     </span>
                                     <span className="text-[#29262A] text-[0.8rem]">
                                         {props.moreInfoIndividualTarget?.email}
                                     </span>
-                                </div>
-                                <div>
+                                </div>}
+                                {props.moreInfoIndividualTarget?.address&& <div>
                                     <span className="ml-1 text-gray9F text-[0.8rem]">
                                              آدرس  :
                                     </span>
                                     <span className="text-[#29262A] text-[0.8rem]">
                                         {props.moreInfoIndividualTarget?.address}
                                     </span>
-                                </div>
+                                </div>}
                                 {props.moreInfoIndividualTarget?.relationshipsInformation[0]?.fullName &&
                                      <div className="flex flex-col gap-5 text-sm my-4 py-3">
                                      <div>
@@ -403,30 +403,30 @@ export default function MoreIndividualInfoDialog(props) {
                                         {props.moreInfoIndividualTarget?.relationshipsInformation[0]?.fullName}
                                     </span>
                                 </div>
-                                <div>
+                                {props.moreInfoIndividualTarget?.relationshipsInformation[0]?.phoneNumber && <div>
                                     <span className="ml-1 text-gray9F text-[0.8rem]">
                                               شماره تماس    :
                                     </span>
                                     <span className="text-[#29262A] text-[0.8rem]">
                                         {props.moreInfoIndividualTarget?.relationshipsInformation[0]?.phoneNumber}
                                     </span>
-                                </div>
-                                <div>
+                                </div>}
+                                {props.moreInfoIndividualTarget?.relationshipsInformation[0]?.relationship && <div>
                                     <span className="ml-1 text-gray9F text-[0.8rem]">
                                                نسبت    :
                                     </span>
                                     <span className="text-[#29262A] text-[0.8rem]">
                                         {props.moreInfoIndividualTarget?.relationshipsInformation[0]?.relationship}
                                     </span>
-                                </div>
-                                <div>
+                                </div>}
+                                {props.moreInfoIndividualTarget?.relationshipsInformation[0]?.address&& <div>
                                     <span className="ml-1 text-gray9F text-[0.8rem]">
                                                آدرس    :
                                     </span>
                                     <span className="text-[#29262A] text-[0.8rem]">
                                         {props.moreInfoIndividualTarget?.relationshipsInformation[0]?.address}
                                     </span>
-                                </div>
+                                </div>}
                                      </div>}
                                      {props.moreInfoIndividualTarget?.relationshipsInformation[1]?.fullName &&
                                      <div className="flex flex-col gap-5 text-sm my-4 py-3">
@@ -443,30 +443,30 @@ export default function MoreIndividualInfoDialog(props) {
                                         {props.moreInfoIndividualTarget?.relationshipsInformation[1]?.fullName}
                                     </span>
                                 </div>
-                                <div>
+                                {props.moreInfoIndividualTarget?.relationshipsInformation[1]?.phoneNumber && <div>
                                     <span className="ml-1 text-gray9F text-[0.8rem]">
                                               شماره تماس    :
                                     </span>
                                     <span className="text-[#29262A] text-[0.8rem]">
                                         {props.moreInfoIndividualTarget?.relationshipsInformation[1]?.phoneNumber}
                                     </span>
-                                </div>
-                                <div>
+                                </div>}
+                                {props.moreInfoIndividualTarget?.relationshipsInformation[1]?.relationship&& <div>
                                     <span className="ml-1 text-gray9F text-[0.8rem]">
                                                نسبت    :
                                     </span>
                                     <span className="text-[#29262A] text-[0.8rem]">
                                         {props.moreInfoIndividualTarget?.relationshipsInformation[1]?.relationship}
                                     </span>
-                                </div>
-                                <div>
+                                </div>}
+                                {props.moreInfoIndividualTarget?.relationshipsInformation[1]?.address && <div>
                                     <span className="ml-1 text-gray9F text-[0.8rem]">
                                                آدرس    :
                                     </span>
                                     <span className="text-[#29262A] text-[0.8rem]">
                                         {props.moreInfoIndividualTarget?.relationshipsInformation[1]?.address}
                                     </span>
-                                </div>
+                                </div>}
                                      </div>}
                                 
                             </div>

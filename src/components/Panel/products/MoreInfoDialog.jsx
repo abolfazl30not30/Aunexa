@@ -36,7 +36,7 @@ export default function MoreInfoDialog(props) {
                         <div className="hidden md:flex md:justify-center mb-4">
                             <div className="w-full md:w-[70%] flex flex-col gap-2">
                                 {
-                                    props.moreInfoTarget.imageURL !== "" && (
+                                    props.moreInfoTarget.imageURL !== null && (
                                         <div className="flex justify-center items-center gap-4">
                                             <div>
                                                 <span className="text-[0.9rem] text-gray70"> تصویر محصول :</span>
@@ -103,7 +103,7 @@ export default function MoreInfoDialog(props) {
                                 }
                                 <div className="flex flex-col">
                                     <div className="mb-2">
-                                        <span className="text-[0.9rem] text-gray70 ">نام محصول</span>
+                                        <span className="text-[0.9rem] text-gray70 ">نوع محصول</span>
                                     </div>
                                     <div className="border border-[#D9D9D9]  flex justify-between px-4">
                                         <div className="p-2">
@@ -187,7 +187,7 @@ export default function MoreInfoDialog(props) {
                                 }
                                 <div>
                                     <span className="ml-1 text-gray9F text-[0.8rem]">
-                                        نام محصول :
+                                        نوع محصول :
                                     </span>
                                     <span className="text-[#29262A] text-[0.8rem]">
                                         {props.moreInfoTarget?.type === "PRIMARY" ? (<span>ماده اولیه</span>) : (

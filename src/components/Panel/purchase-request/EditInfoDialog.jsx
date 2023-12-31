@@ -23,7 +23,8 @@ import {
     useSavePurchaseRequestMutation,
     useUpdatePurchaseRequestMutation
 } from "@/redux/features/purchase-request/PurchaseRequestSlice";
-
+import { ConvertToNull } from "@/helper/ConvertToNull";
+import { ConvertToEmpty } from "@/helper/ConvertToEmpty";
 const AntSwitch = styled(Switch)(({ theme }) => ({
     width: 35,
     height: 18,
@@ -106,15 +107,16 @@ export default function EditInfoDialog(props) {
     useEffect(()=>{
         getProductList()
         getUnitList()
+        const editInfoObj = ConvertToEmpty(props.editInfoTarget)
         formik.setValues({
-            id:props.editInfoTarget?.id,
-            productId: props.editInfoTarget?.productId,
-            productName:props.editInfoTarget?.productName,
-            value: props.editInfoTarget?.value,
-            unit: props.editInfoTarget?.unit,
-            priority: props.editInfoTarget?.priority,
-            description:props.editInfoTarget?.description,
-            productImage:props.editInfoTarget?.productImage
+            id:editInfoObj?.id,
+            productId: editInfoObj?.productId,
+            productName:editInfoObj?.productName,
+            value: editInfoObj?.value,
+            unit: editInfoObj?.unit,
+            priority: editInfoObj?.priority,
+            description:editInfoObj?.description,
+            productImage:editInfoObj?.productImage
         })
         handleSetProductInput(props.editInfoTarget?.productId)
         handleSetUnitInput(props.editInfoTarget?.unit)
@@ -149,6 +151,7 @@ export default function EditInfoDialog(props) {
 
         onSubmit: async (product,helpers) => {
             let updateProduct = {...product,value:PersianToEnglish(`${product.value}`)}
+            updateProduct=ConvertToNull(updateProduct)
             const userData = await submitData(updateProduct)
             handleReset()
             props.handleCloseEditInfo()

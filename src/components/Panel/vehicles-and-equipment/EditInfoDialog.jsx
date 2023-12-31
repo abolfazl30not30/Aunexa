@@ -245,7 +245,7 @@ export default function EditInfoDialog(props) {
     }
 
     const handleSetMachineTagInput = (machineTag) =>{
-        if(machineTag !== "") {
+        if(machineTag !== null) {
             const tag = {
                 part1: machineTag?.slice(5, 7),
                 part2: machineTag?.slice(2, 5),
@@ -256,7 +256,7 @@ export default function EditInfoDialog(props) {
         }
     }
     const handleSetPurchaseDate = (date)=>{
-        if(date !== ""){
+        if(date !== ""&& date!==null){
             const newDate = new DateObject({
                 date: date,
                 format: "YYYY/MM/DD",
@@ -272,16 +272,16 @@ export default function EditInfoDialog(props) {
         getSubOrganizationList()
         const editInfoObj = ConvertToEmpty(props.editInfoTarget)
         formik.setValues({
-            id:editInfoObj.id,
-            type: editInfoObj.type,
-            tag: editInfoObj.tag,
-            code: editInfoObj.code,
-            hasGps:editInfoObj.hasGps,
-            gpsURL: editInfoObj.gpsURL,
-            status:editInfoObj.status,
-            subOrganizationId:editInfoObj.subOrganizationId,
-            subOrganizationName:editInfoObj.subOrganizationName,
-            purchaseDate:editInfoObj.purchaseDate
+            id:editInfoObj?.id,
+            type: editInfoObj?.type,
+            tag: editInfoObj?.tag,
+            code: editInfoObj?.code,
+            hasGps:editInfoObj?.hasGps,
+            gpsURL: editInfoObj?.gpsURL,
+            status:editInfoObj?.status,
+            subOrganizationId:editInfoObj?.subOrganizationId,
+            subOrganizationName:editInfoObj?.subOrganizationName,
+            purchaseDate:editInfoObj?.purchaseDate
         })
         handleSetTypeInput(props.editInfoTarget?.type)
         handleSetSubOrganizationInput(props.editInfoTarget?.subOrganizationId)

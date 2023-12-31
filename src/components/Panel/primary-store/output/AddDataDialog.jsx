@@ -34,6 +34,7 @@ import {
 import {useSavePSOMutation} from "@/redux/features/primary-store/output/PSOapiSlice";
 
 import { PersianToEnglish } from "@/helper/PersianToEnglish";
+import { ConvertToNull } from "@/helper/ConvertToNull";
 export default function AddDataDialog(props) {
     const alphabeticalList = [
         {value: "هیچ کدام"},
@@ -272,7 +273,7 @@ export default function AddDataDialog(props) {
                     updateProduct = {...updateProduct, machineType: "نا معلوم", machineId: ""}
                 }
             }
-
+            updateProduct=ConvertToNull(updateProduct)
             const userData = await submitData(updateProduct)
             handleReset()
             props.handleCloseAddData()

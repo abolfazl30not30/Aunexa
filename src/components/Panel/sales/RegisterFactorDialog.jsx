@@ -26,6 +26,7 @@ import { useDeleteFileMinioMutation } from "@/redux/features/file/FileSlice";
 import { useSaveSalesMutation } from "@/redux/features/sales/SalesSlice";
 import AddProduct from "@/components/Panel/sales/AddProduct";
 import { Box } from "@material-ui/core";
+import { ConvertToNull } from "@/helper/ConvertToNull";
 export default function RegisterFactorDialog(props) {
     
     const [openAddProduct,setOpenAddProduct] = useState(false)
@@ -140,9 +141,8 @@ export default function RegisterFactorDialog(props) {
             
             if(!openAddProduct){
                 let updateRegisterFactor = {...registerFactor,receiptFile:uploadedImage, invoiceItems:invoiceItemInput}
-           
+                updateRegisterFactor=ConvertToNull(updateRegisterFactor)
                 const userData = await submitData(updateRegisterFactor)
-            
             setInvoiceItemInput([])
             handleReset()
             props.handleCloseRegisterFactor()

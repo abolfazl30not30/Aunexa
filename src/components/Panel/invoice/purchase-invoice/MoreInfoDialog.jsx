@@ -50,7 +50,7 @@ export default function MoreInfoDialog(props) {
                         </div>
                         <div className="hidden md:flex md:justify-center mb-4">
                             <div className="w-full md:w-[70%] flex flex-col gap-2">
-                                <div className="flex flex-col">
+                            {props.moreInfoTarget?.buyerName&&<div className="flex flex-col">
                                     <div className="mb-2">
                                         <span className="text-[0.9rem] text-gray70 ">مسئول خرید</span>
                                     </div>
@@ -60,8 +60,8 @@ export default function MoreInfoDialog(props) {
                                         </div>
                                        
                                     </div>
-                                </div>
-                                <div className="flex flex-col md:flex-row justify-between gap-2 border-b border-[#D9D9D9] pb-6">
+                                </div>}
+                                {props.moreInfoTarget?.producer&&<div className="flex flex-col md:flex-row justify-between gap-2 border-b border-[#D9D9D9] pb-6">
                                     <div className="w-full  flex flex-col">
                                         <div className="mb-2">
                                             <span className="text-[0.9rem] text-gray70 "> تامین کننده</span>
@@ -73,7 +73,7 @@ export default function MoreInfoDialog(props) {
                                         </div>
                                     </div>
                                     
-                                </div>
+                                </div>}
                                 <div className="flex flex-col gap-2 pt-4 border-b border-[#D9D9D9] pb-6">
                                     {props.moreInfoTarget?.paymentItems?.map((item,index)=>(
                                         <div className="border border-gray50 px-4 py-3 gap-4 flex flex-col ">
@@ -156,22 +156,22 @@ export default function MoreInfoDialog(props) {
                         </div>
                         <div className="md:hidden flex justify-center">
                             <div className="w-full md:w-[70%] flex flex-col gap-3">
-                                <div>
+                            {props.moreInfoTarget?.buyerName&&<div>
                                     <span className="ml-1 text-gray9F text-[0.8rem]">
                                          مسئول خرید :
                                     </span>
                                     <span className="text-[#29262A] text-[0.8rem]">
                                        {props.moreInfoTarget?.buyerName}
                                     </span>
-                                </div>
-                                <div>
+                                </div>}
+                                {props.moreInfoTarget?.producer&&<div>
                                     <span className="ml-1 text-gray9F text-[0.8rem]">
                                         تامین کننده :
                                     </span>
                                     <span className="text-[#29262A] text-[0.8rem]">
                                     {props.moreInfoTarget?.producer}  
                                     </span>
-                                </div>
+                                </div>}
                                 {props.moreInfoTarget?.paymentItems?.map((item)=>(
                                <div className="border-r flex flex-col gap-2 text-[0.8rem] border-dashed pr-3 border-black py-1 my-2">
                                <div>
@@ -212,7 +212,7 @@ export default function MoreInfoDialog(props) {
                                
                                 <div>
                                     <span className="ml-1 text-gray9F text-[0.8rem]">
-                                        کد فاکتور:
+                                        شماره فاکتور:
                                     </span>
                                     <span className="text-[#29262A] text-[0.8rem]">
                                           {props.moreInfoTarget?.receiptCode}

@@ -16,11 +16,10 @@ const authSlice = createSlice({
     logOut: (state, action) => {
       state.accessToken = "";
       window.sessionStorage.clear();
-      window.location.href = "https://auth.vipsoftware1.com/logout";
+      window.location.href = "https://auth.aunexa.net/logout";
     },
   },
 });
-
 
 export const { setCredentials, setAccessToken, logOut } = authSlice.actions;
 

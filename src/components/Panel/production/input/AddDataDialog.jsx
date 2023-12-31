@@ -31,6 +31,7 @@ import {
 } from "@/redux/features/vehicles-and-equipment/VehiclesAndEquipmentSlice";
 import { useSaveProductionInputMutation } from "@/redux/features/production/input/ProductionInputSlice";
 import { PersianToEnglish } from "@/helper/PersianToEnglish";
+import { ConvertToNull } from "@/helper/ConvertToNull";
 export default function AddDataDialog(props) {
 
     //product input
@@ -100,7 +101,7 @@ export default function AddDataDialog(props) {
 
         onSubmit: async (product,helpers) => {
             let updateProduct = {...product,value:PersianToEnglish(product.value)}
-
+updateProduct=ConvertToNull(updateProduct)
             const userData = await submitData(updateProduct)
             handleReset()
             props.handleCloseAddData()
