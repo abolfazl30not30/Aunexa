@@ -69,31 +69,36 @@ export default function registerOrganization() {
                   {isDataLoading
                     ? [...Array(6)].map(() => (
                         <tr className="border-b">
-                          <div className="hidden md:table-cell px-6   text-gray70 whitespace-nowrap ">
+                          <div
+                            scope="row"
+                            className="lg:flex hidden gap-2 px-6  justify-start text-gray70 whitespace-nowrap "
+                          >
+                            <Skeleton
+                              variant="rounded"
+                              width={23}
+                              height={23}
+                            />
+                          </div>
+                          <div className="table-cell px-6   text-gray70 whitespace-nowrap ">
                             <Skeleton
                               variant="text"
                               sx={{ fontSize: "1rem" }}
                             />
                           </div>
-                          <div className="px-2 md:px-6   text-gray70 whitespace-nowrap ">
+                          <div className="px-2 md:px-6  hidden xl:table-cell  text-gray70 whitespace-nowrap ">
                             <Skeleton
                               variant="text"
                               sx={{ fontSize: "1rem" }}
                             />
                           </div>
-                          <div className="px-2 md:px-6   text-gray70 whitespace-nowrap ">
+                          <div className="px-2 md:px-6 hidden xl:table-cell  text-gray70 whitespace-nowrap ">
                             <Skeleton
                               variant="text"
                               sx={{ fontSize: "1rem" }}
                             />
                           </div>
-                          <div className="px-2 md:px-6 py-2  text-gray70 whitespace-nowrap ">
-                            <Skeleton
-                              variant="text"
-                              sx={{ fontSize: "1rem" }}
-                            />
-                          </div>
-                          <div className="hidden md:table-cell px-6   text-gray70 whitespace-nowrap ">
+
+                          <div className="table-cell px-6   text-gray70 whitespace-nowrap ">
                             <Skeleton
                               variant="text"
                               sx={{ fontSize: "1rem" }}
@@ -101,18 +106,8 @@ export default function registerOrganization() {
                           </div>
                           <div
                             scope="row"
-                            className="hidden md:flex gap-2 px-6  justify-center text-gray70 whitespace-nowrap "
+                            className="flex gap-2 px-6  justify-end text-gray70 whitespace-nowrap "
                           >
-                            <Skeleton
-                              variant="rounded"
-                              width={23}
-                              height={23}
-                            />
-                            <Skeleton
-                              variant="rounded"
-                              width={23}
-                              height={23}
-                            />
                             <Skeleton
                               variant="rounded"
                               width={23}
@@ -257,13 +252,20 @@ export default function registerOrganization() {
                                                   پلاک:
                                                 </span>
                                                 <span className=" text-sm">
-                                                  {machine?.tag?.slice(2, 5) +
-                                                    "-" +
-                                                    machine?.tag?.slice(5, 7) +
-                                                    " " +
-                                                    machine?.tag?.slice(7, 8) +
-                                                    " " +
-                                                    machine?.tag?.slice(0, 2)}
+                                                  {machine?.tag &&
+                                                    machine?.tag?.slice(2, 5) +
+                                                      "-" +
+                                                      machine?.tag?.slice(
+                                                        5,
+                                                        7
+                                                      ) +
+                                                      " " +
+                                                      machine?.tag?.slice(
+                                                        7,
+                                                        8
+                                                      ) +
+                                                      " " +
+                                                      machine?.tag?.slice(0, 2)}
                                                 </span>
                                               </Typography>
                                               <Typography
@@ -361,7 +363,9 @@ export default function registerOrganization() {
                                 <span className="text-[#4E4E4E]">
                                   اسم گروه :{" "}
                                 </span>
-                                <span className=" ">{item.name}</span>
+                                <span className=" ">
+                                  {item.subOrganizationName}
+                                </span>
                               </div>
                               <div className=" flex gap-2 text-xs text-gray70 whitespace-nowrap ">
                                 <span className="text-[#4E4E4E]">نوع : </span>
@@ -514,13 +518,14 @@ export default function registerOrganization() {
                                         پلاک :{" "}
                                       </span>
                                       <span className=" text-sm">
-                                        {machine?.tag?.slice(2, 5) +
-                                          "-" +
-                                          machine?.tag?.slice(5, 7) +
-                                          " " +
-                                          machine?.tag?.slice(7, 8) +
-                                          " " +
-                                          machine?.tag?.slice(0, 2)}
+                                        {machine?.tag &&
+                                          machine?.tag?.slice(2, 5) +
+                                            "-" +
+                                            machine?.tag?.slice(5, 7) +
+                                            " " +
+                                            machine?.tag?.slice(7, 8) +
+                                            " " +
+                                            machine?.tag?.slice(0, 2)}
                                       </span>
                                     </div>
                                   </div>

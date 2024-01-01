@@ -1972,9 +1972,11 @@ export default function RootLayout({ children }) {
                 <div className="">
                   <Link
                     href="/dashboard"
-                    className="flex  text-white items-center bg-mainRed border px-3 py-2 rounded-full md:rounded"
+                    className="flex  text-white items-center bg-mainRed border px-3 py-2 rounded"
                   >
-                    <span className="hidden md:inline">داشبورد پیشرفته</span>
+                    <span className="inline text-[0.9rem]">
+                      داشبورد پیشرفته
+                    </span>
                   </Link>
                 </div>
               </div>

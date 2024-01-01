@@ -154,7 +154,7 @@ export default function page({ params }) {
               <div className="flex flex-col gap-2  lg:px-4 py-2 px-2 ">
                 {data.senderName === window.sessionStorage.getItem("name") ? (
                   <div className="xl:w-1/3 lg:w-2/5 md:w-3/4 sm:w-3/5 w-7/8 ">
-                    <div className="bg-[#9E9E9E] rounded-lg rounded-tr-none px-3 py-2 space-y-3 text-white">
+                    <div className="bg-[#9E9E9E] rounded-lg rounded-tr-none lg:px-3 px-6 py-2 space-y-3 text-white">
                       <div>
                         <span> {data?.senderName} :</span>
                       </div>
@@ -173,7 +173,7 @@ export default function page({ params }) {
                   </div>
                 ) : (
                   <div className="xl:w-1/3 lg:w-2/5 md:w-3/4 sm:w-3/5 w-7/8 self-end">
-                    <div className=" space-y-3 rounded-lg rounded-tl-none bg-[#F2EDED] px-3 py-2 text-[#29262A]">
+                    <div className=" space-y-3 rounded-lg rounded-tl-none bg-[#F2EDED] lg:px-3 px-6 py-2 text-[#29262A]">
                       <div>
                         <span>{data?.senderName} :</span>
                       </div>
