@@ -4,7 +4,7 @@ export const FailureAndRepairReportSlice = apiSlice.injectEndpoints({
   endpoints: (builder) => ({
     getAllFailureVehicles: builder.query({
       query: ({ page, sort, filterItem }) => ({
-        url: `vehicle/machine-report/filter/latest?page=${
+        url: `party/machine-report/filter/latest?page=${
           page - 1
         }&size=10&sort=date&sort=time,${sort}&${filterItem}`,
       }),
@@ -12,7 +12,7 @@ export const FailureAndRepairReportSlice = apiSlice.injectEndpoints({
     }),
     saveFailureVehicles: builder.mutation({
       query: (body) => ({
-        url: "vehicle/machine-report",
+        url: "party/machine-report",
         method: "POST",
         body: body,
       }),

@@ -17,14 +17,13 @@ import AccordionSummary from "@mui/material/AccordionSummary";
 import * as yup from "yup";
 import { useFormik } from "formik";
 import Typography from "@mui/material/Typography";
-import MoreIndividualInfoDialog from "@/components/Panel/register-organization/MoreIndividualInfoDialog";
+
 import Link from "next/link";
 import { useGetAllFleetListQuery } from "@/redux/features/fleet/FleetSlice";
 
 export default function registerOrganization() {
   const [expanded, setExpanded] = React.useState(false);
-  const [organizationIdTarget, setOrganizationIdTarget] = useState("");
-  const [subOrganizationIdTarget, setSubOrganizationIdTarget] = useState("");
+
   const handleChangeIndividualList = (panel) => (event, isExpanded) => {
     setExpanded(isExpanded ? panel : false);
   };
@@ -32,101 +31,12 @@ export default function registerOrganization() {
   const handlePagination = (event, value) => {
     setPage(value);
   };
-  const handleOpenAddIndividual = (organizationId, subOrganizationId) => {
-    setSubOrganizationIdTarget(subOrganizationId);
-    setOrganizationIdTarget(organizationId);
-  };
-
-  const [openMoreInfoIndividual, setOpenMoreInfoIndividual] = useState(false);
-  const [moreInfoIndividualTarget, setMoreInfoIndividualTarget] = useState({
-    fullName: "",
-    nationalCode: "",
-    personalCode: "",
-    birthDate: "",
-    fatherName: "",
-    gender: "",
-    role: "",
-    originalPhoneNumber: "",
-    anotherPhoneNumber: "",
-    telephoneNumber: "",
-    education: "",
-    email: "",
-    address: "",
-    cLevel: "",
-    relationshipsInformation: [
-      {
-        fullName: "",
-        phoneNumber: "",
-        address: "",
-        relationship: "",
-      },
-      {
-        fullName: "",
-        phoneNumber: "",
-        address: "",
-        relationship: "",
-      },
-    ],
-  });
-  const handleCloseMoreInfoIndividual = () => {
-    setMoreInfoIndividualTarget({
-      fullName: "",
-      nationalCode: "",
-      personalCode: "",
-      birthDate: "",
-      fatherName: "",
-      gender: "",
-      role: "",
-      originalPhoneNumber: "",
-      anotherPhoneNumber: "",
-      telephoneNumber: "",
-      education: "",
-      email: "",
-      address: "",
-      cLevel: "",
-      relationshipsInformation: [
-        {
-          fullName: "",
-          phoneNumber: "",
-          address: "",
-          relationship: "",
-        },
-        {
-          fullName: "",
-          phoneNumber: "",
-          address: "",
-          relationship: "",
-        },
-      ],
-    });
-    setOpenMoreInfoIndividual(false);
-  };
 
   const {
     data: organizationList = [],
     isLoading: isDataLoading,
     isError: isDataError,
   } = useGetAllFleetListQuery({ page }, { refetchOnMountOrArgChange: true });
-
-  const [
-    moreInfoIndividualRelationshipTarget,
-    setMoreInfoIndividualRelationshipTarget,
-  ] = useState({
-    relationshipsInformation: [
-      {
-        fullName: "",
-        phoneNumber: "",
-        relationship: "",
-        address: "",
-      },
-      {
-        fullName: "",
-        phoneNumber: "",
-        relationship: "",
-        address: "",
-      },
-    ],
-  });
 
   const [showPage, setShowPage] = useState("organ");
   return (
@@ -637,15 +547,6 @@ export default function registerOrganization() {
           />
         </div>
       </div>
-
-      <MoreIndividualInfoDialog
-        moreInfoIndividualTarget={moreInfoIndividualTarget}
-        openMoreInfoIndividual={openMoreInfoIndividual}
-        handleCloseMoreInfoIndividual={handleCloseMoreInfoIndividual}
-        moreInfoIndividualRelationshipTarget={
-          moreInfoIndividualRelationshipTarget
-        }
-      />
     </div>
   );
 }

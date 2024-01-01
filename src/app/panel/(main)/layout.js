@@ -393,7 +393,7 @@ export default function RootLayout({ children }) {
           </div>
         </header>
 
-        <div className="flex justify-center px-3 md:px-0  ">
+        <div className="flex justify-start  px-3 md:px-0  ">
           <div className="">
             <Drawer
               anchor={"right"}
@@ -450,23 +450,7 @@ export default function RootLayout({ children }) {
                       </span>
                     </Link>
                   </div>
-                  <div>
-                    <Link
-                      onClick={handleCloseSidebar}
-                      href="/panel/fleet"
-                      className="block py-4 px-2 border-b border-b-1 border-b-solid  border-b-borderGray"
-                    >
-                      <span
-                        className={
-                          pathname === "/panel/fleet"
-                            ? "text-mainRed text-[0.9rem]"
-                            : "text-gray9F hover:text-textGray text-[0.9rem]"
-                        }
-                      >
-                        ناوگان
-                      </span>
-                    </Link>
-                  </div>
+
                   {(accessData.hasOwnProperty("PrimaryStoreInput") ||
                     accessData.hasOwnProperty("PrimaryStoreOutput")) && (
                     <div>
@@ -1233,23 +1217,7 @@ export default function RootLayout({ children }) {
                   </span>
                 </Link>
               </div>
-              <div>
-                <Link
-                  onClick={handleCloseSidebar}
-                  href="/panel/fleet"
-                  className="block py-4 px-2 border-b border-b-1 border-b-solid  border-b-borderGray"
-                >
-                  <span
-                    className={
-                      pathname === "/panel/fleet"
-                        ? "text-mainRed text-[0.9rem]"
-                        : "text-gray9F hover:text-textGray text-[0.9rem]"
-                    }
-                  >
-                    ناوگان
-                  </span>
-                </Link>
-              </div>
+
               {(accessData.hasOwnProperty("PrimaryStoreInput") ||
                 accessData.hasOwnProperty("PrimaryStoreOutput")) && (
                 <div>
@@ -1993,9 +1961,38 @@ export default function RootLayout({ children }) {
             </div>
           </div>
           <div className="mt-4 mx-1 md:m-5 h-screen w-full md:w-[70%] lg:w-[85%]">
-            <CacheProvider value={cacheRtl}>
-              <ThemeProvider theme={theme}>{children}</ThemeProvider>
-            </CacheProvider>
+            {pathname === "/panel" && (
+              <div className="flex justify-between items-center text-[0.9rem] bg-white py-6 px-5 md:px-10">
+                <div className="">
+                  <h2 className="font-[800] text-[0.9rem] md:text-[1.1rem]">
+                    انتقال به داشبورد پیشرفته
+                  </h2>
+                </div>
+
+                <div className="">
+                  <Link
+                    href="/dashboard"
+                    className="flex  text-white items-center bg-mainRed border px-3 py-2 rounded-full md:rounded"
+                  >
+                    <span className="hidden md:inline">داشبورد پیشرفته</span>
+                  </Link>
+                </div>
+              </div>
+            )}
+            {pathname === "/panel" && (
+              <div className="mt-4">
+                <CacheProvider value={cacheRtl}>
+                  <ThemeProvider theme={theme}>{children}</ThemeProvider>
+                </CacheProvider>
+              </div>
+            )}
+            {pathname !== "/panel" && (
+              <div className="">
+                <CacheProvider value={cacheRtl}>
+                  <ThemeProvider theme={theme}>{children}</ThemeProvider>
+                </CacheProvider>
+              </div>
+            )}
           </div>
         </div>
       </div>
