@@ -219,6 +219,8 @@ export default function AddRoleDialog(props) {
                                         sx={{
                                             bgcolor: 'background.paper',
                                             border: "1px solid #D9D9D9",
+                                            borderBottom:"0px solid #FFF",
+                                            paddingBottom:0,
                                             color: "#29262A"}}
                                         component="nav"
                                         aria-labelledby="nested-list-subheader"
