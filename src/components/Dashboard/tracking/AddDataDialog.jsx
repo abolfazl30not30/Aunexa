@@ -255,7 +255,7 @@ export default function AddRoleDialog(props) {
                                                                 />
                    
                                                                 </span>
-                                                        <span className="text-gray9F group-open:text-textGray text-[0.9rem] text-sm">{item?.subOrganizationName}</span>
+                                                        <span className="text-textGray  text-[0.9rem] text-sm">{item?.subOrganizationName}</span>
                                                     </div>
                                                         <svg
                                                             className="transition group-open:rotate-90"
