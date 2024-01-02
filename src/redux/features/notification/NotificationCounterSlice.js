@@ -11,7 +11,7 @@ export const api = createApi({
         { updateCachedData, cacheDataLoaded, cacheEntryRemoved }
       ) {
         // create a websocket connection when the cache subscription starts
-        const ws = new WebSocket("https://gateway.aunexa.net/api/v1/");
+        const ws = new WebSocket("https://gateway.prod.aunexa.net/api/v1/");
         try {
           // wait for the initial query to resolve before proceeding
           await cacheDataLoaded;

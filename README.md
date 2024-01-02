@@ -12,7 +12,7 @@ yarn dev
 pnpm dev
 ```
 
-Open [https://auth.vipsoftware1.com3000](http://localhost:3000) with your browser to see the result.
+Open [https://auth.vipsoftware1.com3000](https://msc.aunexa.net) with your browser to see the result.
 
 You can start editing the page by modifying `app/page.js`. The page auto-updates as you edit the file.
 
