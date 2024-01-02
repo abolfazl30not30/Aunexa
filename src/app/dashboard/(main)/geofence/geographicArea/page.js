@@ -11,14 +11,18 @@ import {
   Skeleton,
 } from "@mui/material";
 
-import AddDataDialog from "@/components/Dashboard/geofence/geographicArea/AddDataDialog";
 import FilterDialog from "@/components/Dashboard/geofence/geographicArea/FilterDialog";
 import MoreInfoDialog from "@/components/Dashboard/geofence/geographicArea/MoreInfoDialog";
 import DeleteDialog from "@/components/Dashboard/geofence/geographicArea/DeleteDialog";
 import Link from "next/link";
 import { useSelector } from "react-redux";
 import { useGetAllPurchaseRequestQuery } from "@/redux/features/purchase-request/PurchaseRequestSlice";
+import dynamic from "next/dynamic";
 
+const AddDataDialog = dynamic(
+    () => import("../../../../../components/Dashboard/geofence/geographicArea/AddDataDialog"),
+    { ssr: false }
+);
 
 function PurchaseRequest() {
 

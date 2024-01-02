@@ -1,33 +1,8 @@
 "use client";
 import React, { useEffect, useState } from "react";
-
-import { useGetAllSalesListQuery } from "@/redux/features/sales/SalesSlice";
-import Link from "next/link";
-import FilterDialog from "@/components/Panel/sales/FilterDialog";
-import MoreInfoDialog from "@/components/Panel/sales/MoreInfoDialog";
-import DeleteDialog from "@/components/Panel/sales/DeleteDialog";
-import EditInfoDialog from "@/components/Panel/sales/EditInfoDialog";
-import { useSelector } from "react-redux";
-import Checkbox from "@mui/material/Checkbox";
-import RegisterFactorDialog from "@/components/Panel/sales/RegisterFactorDialog";
-import { AccordionDetails } from "@material-ui/core";
-import DeleteItemDialog from "@/components/Panel/sales/DeleteItemDialog";
-import EditItemInfoDialog from "@/components/Panel/sales/EditItemInfoDialog";
 import dynamic from "next/dynamic";
 import { useRef } from "react";
 import AddDataDialog from "@/components/Dashboard/tracking/AddDataDialog";
-import { Scrollbars } from "react-custom-scrollbars";
-import {
-  FormControl,
-  InputAdornment,
-  Menu,
-  OutlinedInput,
-  Pagination,
-  Skeleton,
-  Accordion,
-  AccordionSummary,
-  Typography,
-} from "@material-ui/core";
 const ReportMap = dynamic(
   () => import("../../../../components/Dashboard/reports/ReportMap"),
   { ssr: false }

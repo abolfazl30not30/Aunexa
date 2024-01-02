@@ -1,17 +1,12 @@
 
 
 'use client'
-import TextField from "@mui/material/TextField";
+
 import {
     FormControl,
     InputAdornment,
     Menu,
     OutlinedInput,
-    Pagination,
-    Skeleton,
-    Accordion,
-    AccordionSummary,
-    Typography,
   } from "@material-ui/core";
 import React, {useEffect, useState} from "react";
 import {DialogContent, DialogContentText} from "@mui/material";
@@ -19,24 +14,15 @@ import Dialog from "@mui/material/Dialog";
 import {TailSpin} from "react-loader-spinner";
 import * as yup from "yup";
 import {useFormik} from "formik";
-import { useLazyGetPageAccessQuery, useSaveRoleMutation} from "@/redux/features/role/RoleSlice";
-import ExpandLess from '@mui/icons-material/ExpandLess';
-import ExpandMore from '@mui/icons-material/ExpandMore';
-import Collapse from '@mui/material/Collapse';
+import {useSaveRoleMutation} from "@/redux/features/role/RoleSlice";
 import ListSubheader from '@mui/material/ListSubheader';
-import List from '@mui/material/List';
-import ListItemButton from '@mui/material/ListItemButton';
-import Box from '@mui/material/Box';
 import Checkbox from '@mui/material/Checkbox';
-import FormControlLabel from '@mui/material/FormControlLabel';
 import {useSelector} from "react-redux";
-import Link from "next/link";
 import { useGetAllTrackingMachineListQuery } from "@/redux/features/tracking/TrackingSlice";
-export default function AddRoleDialog(props) {
-   
-    
-    const [listOfChecked,setListOfChecked] = useState({})
+import List from "@mui/material/List";
 
+export default function AddDataDialog(props) {
+    const [listOfChecked,setListOfChecked] = useState({})
 
     const handleReset = () => {
         formik.resetForm()
@@ -83,18 +69,11 @@ export default function AddRoleDialog(props) {
 
     const token = useSelector((state) => state.auth.accessToken)
 
+    const [nameOfFleet,setNameOfFleet]= useState("")
+    useEffect(()=>{
+        setNameOfFleet(window.sessionStorage.getItem("organizationName"))
+    },[])
 
-    
-
-
-   
-
-    // useEffect(()=>{
-    //     if(props.openAddData === true){
-            
-    //         setBooleanList()
-    //     }
-    // },[props.openAddData])
     const [trackingMachineList, setTrackingMachineList] = useState([]);
     const handleChangeChecked = (event, machine) => {
         if (event.target.checked) {
@@ -226,7 +205,7 @@ export default function AddRoleDialog(props) {
                                         aria-labelledby="nested-list-subheader"
                                         subheader={
                                             <ListSubheader sx={ {fontFamily: "__fonts_2f4189,__fonts_Fallback_2f4189"}} component="div" id="nested-list-subheader">
-                                                 ناوگان : {window.sessionStorage.getItem("organizationName")}
+                                                 ناوگان : {nameOfFleet}
                                             </ListSubheader>}>
                                         {
                                             organizationList?.map((item,page)=>(

@@ -478,23 +478,23 @@ export default function RootLayout({ children }) {
                             </span>
                           </Link>
                         </li>
-                        <li>
-                          <Link
-                            onClick={handleCloseSidebar}
-                            href="/dashboard/geofence/group"
-                            className="block py-2 px-5"
-                          >
-                            <span
-                              className={
-                                pathname === "/dashboard/geofence/group"
-                                  ? "text-mainRed text-[0.9rem]"
-                                  : "text-gray9F hover:text-textGray text-[0.9rem]"
-                              }
-                            >
-                              گروه
-                            </span>
-                          </Link>
-                        </li>
+                        {/*<li>*/}
+                        {/*  <Link*/}
+                        {/*    onClick={handleCloseSidebar}*/}
+                        {/*    href="/dashboard/geofence/group"*/}
+                        {/*    className="block py-2 px-5"*/}
+                        {/*  >*/}
+                        {/*    <span*/}
+                        {/*      className={*/}
+                        {/*        pathname === "/dashboard/geofence/group"*/}
+                        {/*          ? "text-mainRed text-[0.9rem]"*/}
+                        {/*          : "text-gray9F hover:text-textGray text-[0.9rem]"*/}
+                        {/*      }*/}
+                        {/*    >*/}
+                        {/*      گروه*/}
+                        {/*    </span>*/}
+                        {/*  </Link>*/}
+                        {/*</li>*/}
                       </ul>
                     </details>
                   </div>
@@ -894,22 +894,22 @@ export default function RootLayout({ children }) {
                         </span>
                       </Link>
                     </li>
-                    <li>
-                      <Link
-                        href="/dashboard/geofence/group"
-                        className="block py-2 px-5"
-                      >
-                        <span
-                          className={
-                            pathname === "/dashboard/geofence/group"
-                              ? "text-mainRed text-[0.9rem]"
-                              : "text-gray9F hover:text-textGray text-[0.9rem]"
-                          }
-                        >
-                          گروه
-                        </span>
-                      </Link>
-                    </li>
+                    {/*<li>*/}
+                    {/*  <Link*/}
+                    {/*    href="/dashboard/geofence/group"*/}
+                    {/*    className="block py-2 px-5"*/}
+                    {/*  >*/}
+                    {/*    <span*/}
+                    {/*      className={*/}
+                    {/*        pathname === "/dashboard/geofence/group"*/}
+                    {/*          ? "text-mainRed text-[0.9rem]"*/}
+                    {/*          : "text-gray9F hover:text-textGray text-[0.9rem]"*/}
+                    {/*      }*/}
+                    {/*    >*/}
+                    {/*      گروه*/}
+                    {/*    </span>*/}
+                    {/*  </Link>*/}
+                    {/*</li>*/}
                   </ul>
                 </details>
               </div>

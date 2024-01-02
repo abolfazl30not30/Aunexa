@@ -1,25 +1,16 @@
 "use client";
-import React, { useEffect, useRef, useState } from "react";
+import React, { useState } from "react";
 import {
-  FormControl,
-  InputAdornment,
-  Menu,
-  OutlinedInput,
   Pagination,
   Skeleton,
-  InputLabel,
-  MenuItem,
-  Select,
 } from "@mui/material";
 import Accordion from "@mui/material/Accordion";
 import AccordionDetails from "@mui/material/AccordionDetails";
 import AccordionSummary from "@mui/material/AccordionSummary";
-import * as yup from "yup";
-import { useFormik } from "formik";
 import Typography from "@mui/material/Typography";
 
-import Link from "next/link";
 import { useGetAllFleetListQuery } from "@/redux/features/fleet/FleetSlice";
+import {useEffect} from "react";
 
 export default function registerOrganization() {
   const [expanded, setExpanded] = React.useState(false);
@@ -37,6 +28,12 @@ export default function registerOrganization() {
     isLoading: isDataLoading,
     isError: isDataError,
   } = useGetAllFleetListQuery({ page }, { refetchOnMountOrArgChange: true });
+
+  const [nameOfFleet,setNameOfFleet]= useState("")
+  useEffect(()=>{
+    setNameOfFleet(window.sessionStorage.getItem("organizationName"))
+  },[])
+
 
   const [showPage, setShowPage] = useState("organ");
   return (
@@ -57,7 +54,7 @@ export default function registerOrganization() {
               <div className="flex justify-start items-center gap-2 font-[800] text-[0.9rem] md:text-[1.1rem]">
                 <span>ناوگان :</span>
                 <h2 className="">
-                  {window.sessionStorage.getItem("organizationName")}
+                  {nameOfFleet}
                 </h2>
               </div>
             </div>
@@ -440,9 +437,7 @@ export default function registerOrganization() {
                                     ناوگان :
                                   </span>
                                   <h2 className="font-[800] md:text-[1.1rem] text-black text-[0.9rem]">
-                                    {window.sessionStorage.getItem(
-                                      "organizationName"
-                                    )}
+                                    {nameOfFleet}
                                   </h2>
                                 </div>
                               </header>
