@@ -198,7 +198,7 @@ export default function AddDataDialog(props) {
     const [submitData, { isLoading:isSubmitLoading ,error}] = useSaveVehiclesMutation()
     const schema = yup.object().shape({
         type: yup.string().required("لطفا نوع وسیله را وارد کنید"),
-        subOrganizationId: yup.string().required("لطفا دپارتمان مورد نظر را انتخاب کنید"),
+        subOrganizationId: yup.string().required("لطفا گروه مورد نظر را انتخاب کنید"),
         status: yup.string().required("لطفا وضعیت را انتخاب کنید"),
     
     });
@@ -445,7 +445,7 @@ export default function AddDataDialog(props) {
                                                         </React.Fragment>
                                                     )
                                                 }}
-                                                placeholder="دپارتمان"
+                                                placeholder="گروه"
                                             />}
                                     />
                                 </div>

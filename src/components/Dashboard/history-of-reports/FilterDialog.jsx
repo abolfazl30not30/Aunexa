@@ -2,7 +2,7 @@
 import TextField from "@mui/material/TextField";
 import React, {useState} from "react";
 import {
-    Autocomplete, FormControl, FormHelperText, InputLabel, MenuItem, OutlinedInput, Select,
+    Autocomplete, Box, FormControl, FormHelperText, InputLabel, MenuItem, OutlinedInput, Select,
 } from "@mui/material";
 import {
     DialogContent,
@@ -20,66 +20,34 @@ import CircularProgress from "@mui/material/CircularProgress";
 import {
     useLazyGetAllProductQuery,
     useLazyGetAllSubOrganizationQuery,
-    useLazyGetAllVehicleCategoryQuery
+    useLazyGetAllVehicleQuery
 } from "@/redux/features/category/CategorySlice";
 import {useEffect} from "react";
-import {styled} from "@mui/material/styles";
-import Switch from "@mui/material/Switch";
 
-const AntSwitch = styled(Switch)(({ theme }) => ({
-    width: 35,
-    height: 18,
-    padding: 0,
-    display: 'flex',
-    '&:active': {
-        '& .MuiSwitch-thumb': {
-            width: 12,
-        },
-        '& .MuiSwitch-switchBase.Mui-checked': {
-            transform: 'translateX(10px)',
-        },
-    },
-    '& .MuiSwitch-switchBase': {
-        padding: 2,
-        '&.Mui-checked': {
-            transform: 'translateX(17px)',
-            color: '#fff',
-            '& + .MuiSwitch-track': {
-                opacity: 1,
-                backgroundColor: theme.palette.mode === 'dark' ? '#DB3746' : '#DB3746',
-            },
-        },
-    },
-    '& .MuiSwitch-thumb': {
-        boxShadow: '0 2px 4px 0 rgb(0 35 11 / 20%)',
-        width: 12,
-        height: 13,
-        borderRadius: 4,
-        transition: theme.transitions.create(['width'], {
-            duration: 200,
-        }),
-    },
-    '& .MuiSwitch-track': {
-        borderRadius: 16 / 2,
-        opacity: 1,
-        backgroundColor:
-            theme.palette.mode === 'dark' ? 'rgba(255,255,255,.35)' : 'rgba(0,0,0,.25)',
-        boxSizing: 'border-box',
-    },
-}));
 
 export default function FilterDialog(props) {
-//product input
-    const [vehicleCategory,setVehicleCategory] = useState(null)
-    const [openVehicleCategoryList,setOpenVehicleCategoryList] = useState(false)
-    const [getVehicleCategoryList,{ data : vehicleCategoryList  = [] , isLoading : isVehicleCategoryLoading, isError: isVehicleCategoryError }] = useLazyGetAllVehicleCategoryQuery()
-    useEffect(()=>{
-        if(openVehicleCategoryList){
-            getVehicleCategoryList()
-        }
-    },[openVehicleCategoryList])
+    const [dateFrom,setDateFrom] = useState("")
+    const [dateTo,setDateTo] = useState("")
 
-    //product input
+    const [product,setProduct] = useState(null)
+    const [openProductList,setOpenProductList] = useState(false)
+    const [getProductList,{ data : productList  = [] , isLoading : isProductLoading, isError: productIsError }] = useLazyGetAllProductQuery()
+    useEffect(()=>{
+        if(openProductList){
+            getProductList()
+        }
+    },[openProductList])
+
+    const [vehicle,setVehicle] = useState(null)
+    const [openVehicleList,setOpenVehicleList] = useState(false)
+    const [getVehicleList,{ data : vehicleList  = [] , isLoading : isVehicleLoading, isError: IsVehicleError }] = useLazyGetAllVehicleQuery()
+    useEffect(()=>{
+        if(openVehicleList){
+            getVehicleList()
+        }
+    },[openVehicleList])
+
+    //subOrganization input
     const [subOrganization,setSubOrganization] = useState(null)
     const [openSubOrganizationList,setOpenSubOrganizationList] = useState(false)
     const [getSubOrganizationList,{ data : subOrganizationList  = [] , isLoading : isSubOrganizationLoading, isError: isSubOrganizationError }] = useLazyGetAllSubOrganizationQuery()
@@ -89,35 +57,66 @@ export default function FilterDialog(props) {
         }
     },[openSubOrganizationList])
 
+    const handleDateFromInput = (value) => {
+        if(value){
+            setDateFrom(value)
+            let month = value?.month < 10 ? ('0' + value?.month) : value?.month;
+            let day = value?.day < 10 ? ('0' + value?.day) : value?.day;
+            let convertDate = value?.year + '/' + month + '/' + day;
+            formik.setFieldValue("dateFrom", convertDate)
+        }else {
+            formik.setFieldValue("dateFrom", "")
+        }
+    }
+
+    const handleDateToInput = (value) => {
+        if(value){
+            setDateTo(value)
+            let month = value?.month < 10 ? ('0' + value?.month) : value?.month;
+            let day = value?.day < 10 ? ('0' + value?.day) : value?.day;
+            let convertDate = value?.year + '/' + month + '/' + day;
+            formik.setFieldValue("dateTo", convertDate)
+        }else {
+            formik.setFieldValue("dateTo", "")
+        }
+    }
+
     const handleURLSearchParams = (values) =>{
         let params = new URLSearchParams()
-        if(values.type){
-            params.set("type",values.type)
+        if(values.dateFrom){
+            params.set("fromDate",values.dateFrom)
         }
-        if(values.subOrganizationId){
-            params.set("subOrganizationId",values.subOrganizationId)
+        if(values.dateTo){
+            params.set("toDate",values.dateTo)
+        }
+        if(values.machineId){
+            params.set("machineId",values.machineId)
         }
         if(values.status){
             params.set("status",values.status)
         }
-        if(values.hasGps === true){
-            params.set("hasGps","true")
+        if(values.subOrganizationId){
+            params.set("subOrganizationId",values.subOrganizationId)
         }
         return params
     }
 
     const handleResetForm = () =>{
         formik.resetForm()
-        setVehicleCategory(null)
+        setDateTo("")
+        setDateFrom("")
+        setProduct(null)
+        setVehicle(null)
         setSubOrganization(null)
     }
     const formik = useFormik({
 
         initialValues: {
-            subOrganizationId:"",
-            type: "",
+            dateFrom: "",
+            dateTo: "",
+            machineId:"",
             status:"",
-            hasGps: false,
+            subOrganizationId: "",
         },
 
         onSubmit: (values) => {
@@ -155,15 +154,118 @@ export default function FilterDialog(props) {
                         </div>
                         <form className="flex justify-center " onSubmit={formik.handleSubmit} method="POST">
                             <div className="flex flex-col justify-center w-[80%] gap-3">
+                                <div>
+                                    <span className="text-sm">
+                                    تاریخ
+                                    </span>
+                                </div>
+                                <div className="flex flex-col md:flex-row justify-between gap-3">
+                                    
+                                    <div className="w-full md:w-1/2">
+                                        <DatePicker
+                                            placeholder="از تاریخ"
+                                            calendarPosition={`bottom`}
+                                            className="red"
+                                            digits={['0', '1', '2', '3', '4', '5', '6', '7', '8', '9']}
+                                            format={`YYYY/MM/DD`}
+                                            containerStyle={{
+                                                width: "100%"
+                                            }}
+                                            inputClass={`border border-[#D9D9D9] placeholder-neutral-300 text-gray-900 text-[0.8rem] rounded focus:ring-[#3B82F67F] focus:border-[#3B82F67F] block w-full px-3 py-4`}
+                                            value={formik.values.dateFrom}
+                                            onChange={(value) => {
+                                              handleDateFromInput(value)
+                                            }}
+                                            mapDays={({date}) => {
+                                                let props = {}
+                                                let isWeekend = [6].includes(date.weekDay.index)
 
+                                                if (isWeekend)
+                                                    props.className = "highlight highlight-red";
+
+                                                return props
+                                            }}
+
+                                            weekDays={
+                                                [
+                                                    ["شنبه", "Sat"],
+                                                    ["یکشنبه", "Sun"],
+                                                    ["دوشنبه", "Mon"],
+                                                    ["سه شنبه", "Tue"],
+                                                    ["چهارشنبه", "Wed"],
+                                                    ["پنجشنبه", "Thu"],
+                                                    ["جمعه", "Fri"],
+                                                ]
+                                            }
+
+                                            calendar={persian}
+                                            locale={persian_fa}>
+                                            <button className="px-2 pb-4" onClick={(e) => {
+                                                e.preventDefault()
+                                                setDateFrom("")
+                                                formik.setFieldValue("dateFrom","")
+                                            }}>
+                                                ریست
+                                            </button>
+                                        </DatePicker>
+                                    </div>
+                                    <div className="w-full md:w-1/2">
+                                        <DatePicker
+                                            placeholder="تا تاریخ"
+                                            calendarPosition={`bottom`}
+                                            className="red"
+                                            digits={['0', '1', '2', '3', '4', '5', '6', '7', '8', '9']}
+                                            format={`YYYY/MM/DD`}
+                                            containerStyle={{
+                                                width: "100%"
+                                            }}
+                                            inputClass={`border border-[#D9D9D9] placeholder-neutral-300 text-gray-900 text-[0.8rem] rounded focus:ring-[#3B82F67F] focus:border-[#3B82F67F] block w-full px-3 py-4`}
+                                            value={formik.values.dateTo}
+                                            onChange={(value) => {
+                                                handleDateToInput(value)
+                                            }}
+                                            mapDays={({date}) => {
+                                                let props = {}
+                                                let isWeekend = [6].includes(date.weekDay.index)
+
+                                                if (isWeekend)
+                                                    props.className = "highlight highlight-red";
+
+                                                return props
+                                            }}
+
+                                            weekDays={
+                                                [
+                                                    ["شنبه", "Sat"],
+                                                    ["یکشنبه", "Sun"],
+                                                    ["دوشنبه", "Mon"],
+                                                    ["سه شنبه", "Tue"],
+                                                    ["چهارشنبه", "Wed"],
+                                                    ["پنجشنبه", "Thu"],
+                                                    ["جمعه", "Fri"],
+                                                ]
+                                            }
+
+                                            calendar={persian}
+                                            locale={persian_fa}>
+                                            <button className="px-2 pb-4" onClick={(e) => {
+                                                e.preventDefault()
+                                                setDateTo("")
+                                                formik.setFieldValue("dateTo","")}}>
+                                                ریست
+                                            </button>
+                                        </DatePicker>
+                                    </div>
+                                </div>
+                                
                                 <div className=" flex flex-col">
                                     <Autocomplete
-                                        open={openVehicleCategoryList}
+                                        open={openVehicleList}
                                         onOpen={() => {
-                                            setOpenVehicleCategoryList(true);
+                                            setOpenVehicleList(true);
                                         }}
                                         onClose={() => {
-                                            setOpenVehicleCategoryList(false);
+                                            setOpenVehicleList(false);
                                         }}
                                         fullWidth
                                         clearOnEscape
@@ -172,32 +274,36 @@ export default function FilterDialog(props) {
                                         ListboxProps={{
                                             sx: {fontFamily: "__fonts_2f4189,__fonts_Fallback_2f4189", fontSize: "0.8rem"},
                                         }}
-                                        options={vehicleCategoryList}
-                                        getOptionLabel={(option) => option.name}
-                                        value={vehicleCategory}
+                                        value={vehicle}
+                                        options={vehicleList}
+                                        getOptionLabel={(option) => option.type}
+                                        renderOption={(props, option) => (
+                                            <Box component="li"  {...props}>
+                                                {option.type} ({option.code} {option.tag.slice(2, 5) + "-" + option.tag.slice(5, 7) + " " + option.tag.slice(7, 8) + " " + option.tag.slice(0, 2)} )
+                                            </Box>
+                                        )}
                                         onChange={(event, newValue) => {
-                                            setVehicleCategory(newValue)
-                                            formik.setFieldValue("type", newValue?.name)
+                                            setVehicle(newValue)
+                                            formik.setFieldValue("machineId", newValue?.id)
                                         }}
+
                                         renderInput={(params) =>
                                             <TextField
-                                                error={formik.touched.type && Boolean(formik.errors.type)}
-                                                helperText={formik.touched.type && formik.errors.type}
                                                 {...params}
                                                 InputProps={{
                                                     ...params.InputProps,
                                                     style: {fontFamily: "__fonts_2f4189,__fonts_Fallback_2f4189", fontSize: "0.8rem"},
                                                     endAdornment:(
                                                         <React.Fragment>
-                                                            {isVehicleCategoryLoading ? <CircularProgress color="inherit" size={20} /> : null}
+                                                            {isVehicleLoading ? <CircularProgress color="inherit" size={20} /> : null}
                                                             {params.InputProps.endAdornment}
                                                         </React.Fragment>
                                                     )
                                                 }}
-                                                placeholder="نوع وسیله"
-                                            />}
-                                    />
+                                                placeholder="وسیله "
+                                            />}/>
                                 </div>
+
                                 <div className=" flex flex-col">
                                     <Autocomplete
                                         open={openSubOrganizationList}
@@ -252,26 +358,12 @@ export default function FilterDialog(props) {
                                         sx={{fontFamily: "__fonts_2f4189,__fonts_Fallback_2f4189", fontSize: "0.8rem"}}
                                         onChange={formik.handleChange}>
                                         <MenuItem value="" sx={{fontFamily: "__fonts_2f4189,__fonts_Fallback_2f4189", fontSize: "0.8rem"}}>همه وضعیت ها</MenuItem>
-                                        <MenuItem value="AVAILABLE" sx={{fontFamily: "__fonts_2f4189,__fonts_Fallback_2f4189", fontSize: "0.8rem"}}>در دسترس</MenuItem>
-                                        <MenuItem value="IN_USE" sx={{fontFamily: "__fonts_2f4189,__fonts_Fallback_2f4189", fontSize: "0.8rem"}}>درحال استفاده</MenuItem>
-                                        <MenuItem value="DESTROYED" sx={{fontFamily: "__fonts_2f4189,__fonts_Fallback_2f4189", fontSize: "0.8rem"}}>خراب</MenuItem>
+                                        <MenuItem value="AVAILABLE" sx={{fontFamily: "__fonts_2f4189,__fonts_Fallback_2f4189", fontSize: "0.8rem"}}>رفع خرابی</MenuItem>
+                                        <MenuItem value="BROKEN" sx={{fontFamily: "__fonts_2f4189,__fonts_Fallback_2f4189", fontSize: "0.8rem"}}>گزارش خرابی</MenuItem>
                                     </Select>
                                     <FormHelperText>{formik.touched.status && formik.errors.status}</FormHelperText>
                                 </FormControl>
-                                <div>
-                                    <div className="flex flex-col">
-                                        <div className="flex w-full">
-                                            <div className="border border-[#D9D9D9] py-4 w-1/2 px-3">
-                                                <span className="text-[#9F9F9F] text-[0.8rem]">فقط GPS دار </span>
-                                            </div>
-                                            <div className="border border-[#D9D9D9] py-4 w-1/2">
-                                                <div className="flex justify-center">
-                                                    <AntSwitch checked={formik.values.hasGps} onChange={(e)=>{formik.setFieldValue("hasGps", e.target.checked)}}  inputProps={{ 'aria-label': 'ant design' }} />
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
+
                                 <div className="mt-4">
                                     <button type="submit"
                                             className="w-full text-[0.9rem] rounded-[0.5rem] py-3 hover:border hover:opacity-80 font-bold  bg-mainRed text-white">اعمال فیلتر
