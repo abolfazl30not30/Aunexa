@@ -1,5 +1,8 @@
+"use client";
 import Link from "next/link";
 import React from "react";
+import {useState} from "react";
+import {useSubscription} from "react-stomp-hooks";
 
 export default function Dashboard() {
     return (

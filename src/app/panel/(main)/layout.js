@@ -14,6 +14,8 @@ import { useDispatch, useSelector } from "react-redux";
 import { useLazyGetAccessQuery } from "@/redux/features/access/getAccessSlice";
 import { setAccess } from "@/redux/permission/accessSlice";
 import { useLazyGetLastFiveNotificationListQuery } from "@/redux/features/notification/NotificationSlice";
+import {useSubscription} from "react-stomp-hooks";
+import {toast} from "react-toastify";
 
 const cacheRtl = createCache({
   key: "muirtl",
@@ -24,6 +26,27 @@ const theme = createTheme({
 });
 
 export default function RootLayout({ children }) {
+  const [nameOfSubOrganization,setNameOfSubOrganization]= useState("")
+  useEffect(()=>{
+    setNameOfSubOrganization(window.sessionStorage.getItem("subOrganizationId"))
+  },[])
+
+
+  useSubscription("/queue/latest/1234", (message) => {
+    const obj = JSON.parse(message.body);
+    console.log(obj)
+    toast.info(obj.message, {
+      position: "top-center",
+      autoClose: 5000,
+      hideProgressBar: false,
+      closeOnClick: true,
+      pauseOnHover: true,
+      draggable: true,
+      progress: undefined,
+      theme: "light",
+    });
+  });
+
   const [LatestNotification, setLatestNotification] = useState(null);
   const [openLatestNotificationList, setOpenLatestNotificationList] =
     useState(false);

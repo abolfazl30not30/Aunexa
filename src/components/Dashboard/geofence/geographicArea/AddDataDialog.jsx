@@ -15,7 +15,7 @@ import {useFormik} from "formik";
 import CircularProgress from '@mui/material/CircularProgress';
 import "react-multi-date-picker/styles/colors/red.css"
 import {
-    useLazyGetAllProductQuery,
+    useLazyGetAllProductQuery, useLazyGetAllSubOrganizationQuery,
     useLazyGetAllUnitQuery,
 } from "@/redux/features/category/CategorySlice";
 import {styled} from "@mui/material/styles";
@@ -86,15 +86,18 @@ export default function AddDataDialog(props) {
 
     const log = (e) => console.log(e);
 
-    //product input
-    const [product,setProduct] = useState(null)
-    const [openProductList,setOpenProductList] = useState(false)
-    const [getProductList,{ data : productList  = [] , isLoading : isProductLoading, isError: productIsError }] = useLazyGetAllProductQuery()
+
+
+    //subOrganization input
+    const [subOrganization,setSubOrganization] = useState(null)
+    const [openSubOrganizationList,setOpenSubOrganizationList] = useState(false)
+    const [getSubOrganizationList,{ data : subOrganizationList  = [] , isLoading : isSubOrganizationLoading, isError: isSubOrganizationError }] = useLazyGetAllSubOrganizationQuery()
     useEffect(()=>{
-        if(openProductList){
-            getProductList()
+        if(openSubOrganizationList){
+            getSubOrganizationList()
         }
-    },[openProductList])
+    },[openSubOrganizationList])
+
 
     //unit input
     const [unit,setUnit] = useState(null)
@@ -108,7 +111,7 @@ export default function AddDataDialog(props) {
 
     const handleReset = () =>{
         formik.resetForm()
-        setProduct(null)
+        setSubOrganization(null)
         setUnit(null)
     }
 
@@ -209,12 +212,12 @@ export default function AddDataDialog(props) {
                                 </div>
                                 <div className=" flex flex-col">
                                     <Autocomplete
-                                        open={openProductList}
+                                        open={openSubOrganizationList}
                                         onOpen={() => {
-                                            setOpenProductList(true);
+                                            setOpenSubOrganizationList(true);
                                         }}
                                         onClose={() => {
-                                            setOpenProductList(false);
+                                            setOpenSubOrganizationList(false);
                                         }}
                                         fullWidth
                                         clearOnEscape
@@ -223,26 +226,24 @@ export default function AddDataDialog(props) {
                                         ListboxProps={{
                                             sx: {fontFamily: "__fonts_2f4189,__fonts_Fallback_2f4189", fontSize: "0.8rem"},
                                         }}
-                                        options={productList}
-                                        getOptionLabel={(option) => option.persianName}
-                                        value={product}
+                                        options={subOrganizationList}
+                                        getOptionLabel={(option) => option.name}
+                                        value={subOrganization}
                                         onChange={(event, newValue) => {
-                                            setProduct(newValue)
-                                            formik.setFieldValue("productId", newValue?.id)
-                                            formik.setFieldValue("productName", newValue?.persianName)
-                                            formik.setFieldValue("productImage",newValue?.imageURL)
+                                            setSubOrganization(newValue)
+                                            formik.setFieldValue("subOrganizationId", newValue?.id)
                                         }}
                                         renderInput={(params) =>
                                             <TextField
-                                                error={formik.touched.productId && Boolean(formik.errors.productId)}
-                                                helperText={formik.touched.productId && formik.errors.productId}
+                                                error={formik.touched.subOrganizationId && Boolean(formik.errors.subOrganizationId)}
+                                                helperText={formik.touched.subOrganizationId && formik.errors.subOrganizationId}
                                                 {...params}
                                                 InputProps={{
                                                     ...params.InputProps,
                                                     style: {fontFamily: "__fonts_2f4189,__fonts_Fallback_2f4189", fontSize: "0.8rem"},
                                                     endAdornment:(
                                                         <React.Fragment>
-                                                            {isProductLoading ? <CircularProgress color="inherit" size={20} /> : null}
+                                                            {isSubOrganizationLoading ? <CircularProgress color="inherit" size={20} /> : null}
                                                             {params.InputProps.endAdornment}
                                                         </React.Fragment>
                                                     )

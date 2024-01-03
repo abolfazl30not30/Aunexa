@@ -6,7 +6,8 @@ import {store} from '../redux/store'
 import {Provider} from 'react-redux'
 import localFont from 'next/font/local'
 import 'leaflet/dist/leaflet.css';
-
+import 'react-toastify/dist/ReactToastify.css';
+import {ToastContainer} from "react-toastify";
 const fonts = localFont({
     src: [
         {
@@ -69,6 +70,7 @@ export default function RootLayout({children}) {
         <body>
         <Provider store={store}>
             {children}
+            <ToastContainer />
         </Provider>
         </body>
         </html>
