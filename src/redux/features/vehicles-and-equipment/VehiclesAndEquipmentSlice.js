@@ -4,7 +4,7 @@ export const VehiclesAndEquipmentSlice = apiSlice.injectEndpoints({
   endpoints: (builder) => ({
     getAllVehicles: builder.query({
       query: ({ page, sort, filterItem }) => ({
-        url: `party/machine/filter?page=${
+        url: `vehicle/machine/filter?page=${
           page - 1
         }&size=10&sort=purchaseDate,${sort}&${filterItem}`,
       }),
@@ -12,7 +12,7 @@ export const VehiclesAndEquipmentSlice = apiSlice.injectEndpoints({
     }),
     saveVehicles: builder.mutation({
       query: (body) => ({
-        url: "party/machine",
+        url: "vehicle/machine",
         method: "POST",
         body: body,
       }),
@@ -20,7 +20,7 @@ export const VehiclesAndEquipmentSlice = apiSlice.injectEndpoints({
     }),
     updateVehicles: builder.mutation({
       query: (body) => ({
-        url: `party/machine`,
+        url: `vehicle/machine`,
         method: "PUT",
         body: body,
       }),
@@ -28,7 +28,7 @@ export const VehiclesAndEquipmentSlice = apiSlice.injectEndpoints({
     }),
     deleteVehicles: builder.mutation({
       query: (id) => ({
-        url: `party/machine/${id}`,
+        url: `vehicle/machine/${id}`,
         method: "DELETE",
         body: id,
       }),
@@ -36,13 +36,13 @@ export const VehiclesAndEquipmentSlice = apiSlice.injectEndpoints({
     }),
     getOneVehiclesByTag: builder.query({
       query: (tag) => ({
-        url: `party/machine/tag/${tag}`,
+        url: `vehicle/machine/tag/${tag}`,
       }),
       providesTags: ["vehicle-machine"],
     }),
     getOneVehiclesByCode: builder.query({
       query: (code) => ({
-        url: `party/machine/code/${code}`,
+        url: `vehicle/machine/code/${code}`,
       }),
       providesTags: ["vehicle-machine"],
     }),

@@ -14,8 +14,9 @@ import { useDispatch, useSelector } from "react-redux";
 import { useLazyGetAccessQuery } from "@/redux/features/access/getAccessSlice";
 import { setAccess } from "@/redux/permission/accessSlice";
 import { useLazyGetLastFiveNotificationListQuery } from "@/redux/features/notification/NotificationSlice";
-import {useSubscription} from "react-stomp-hooks";
-import {toast} from "react-toastify";
+import { useSubscription } from "react-stomp-hooks";
+import { toast } from "react-toastify";
+import { useLazyGetCounterOfNotificationQuery } from "@/redux/features/notification/NotificationCounterSlice";
 
 const cacheRtl = createCache({
   key: "muirtl",
@@ -26,15 +27,16 @@ const theme = createTheme({
 });
 
 export default function RootLayout({ children }) {
-  const [nameOfSubOrganization,setNameOfSubOrganization]= useState("")
-  useEffect(()=>{
-    setNameOfSubOrganization(window.sessionStorage.getItem("subOrganizationId"))
-  },[])
-
+  const [nameOfSubOrganization, setNameOfSubOrganization] = useState("");
+  useEffect(() => {
+    setNameOfSubOrganization(
+      window.sessionStorage.getItem("subOrganizationId")
+    );
+  }, []);
 
   useSubscription("/queue/latest/1234", (message) => {
     const obj = JSON.parse(message.body);
-    console.log(obj)
+    console.log(obj);
     toast.info(obj.message, {
       position: "top-center",
       autoClose: 5000,
@@ -76,6 +78,18 @@ export default function RootLayout({ children }) {
 
   const pathname = usePathname();
   const dispatch = useDispatch();
+
+  const [
+    getCounterList,
+    {
+      data: counterList = [],
+      isLoading: isCounterLoading,
+      isError: counterIsError,
+    },
+  ] = useLazyGetCounterOfNotificationQuery();
+  useEffect(() => {
+    getCounterList();
+  }, [pathname]);
 
   const [openAlertMenu, setOpenAlertMenu] = useState(false);
   const [anchorEl, setAnchorEl] = React.useState(null);
@@ -163,7 +177,11 @@ export default function RootLayout({ children }) {
                 <img src="/icons/bell.svg" alt="bell" />
                 <div className="absolute -top-1.5 -right-1">
                   <span className=" rounded-full bg-mainRed w-[1rem] h-[1rem] text-[0.49rem] flex  items-center justify-center text-center text-white">
-                    79
+                    {pathname === "/panel/notification"
+                      ? 0
+                      : counterList > 99
+                      ? "99+"
+                      : counterList}
                   </span>
                 </div>
               </div>
@@ -1199,8 +1217,12 @@ export default function RootLayout({ children }) {
                       >
                         اعلانیه
                       </span>
-                      <span className=" rounded-full bg-mainRed w-[1.2rem] text-[0.59rem] h-[1.2rem]  flex  items-center justify-center text-center text-white">
-                        79
+                      <span className=" rounded-lg bg-mainRed w-[1.5rem] text-[0.59rem] h-[1.2rem]  flex  items-center justify-center text-center text-white">
+                        {pathname === "/panel/notification"
+                          ? 0
+                          : counterList > 99
+                          ? "99+"
+                          : counterList}
                       </span>
                     </Link>
                   </div>
@@ -1964,8 +1986,12 @@ export default function RootLayout({ children }) {
                   >
                     اعلانیه
                   </span>
-                  <span className=" rounded-full bg-mainRed w-[1.2rem] text-[0.59rem] h-[1.2rem]  flex  items-center justify-center text-center text-white">
-                    79
+                  <span className=" rounded-lg bg-mainRed w-[1.5rem] text-[0.59rem] h-[1.2rem]  flex  items-center justify-center text-center text-white">
+                    {pathname === "/panel/notification"
+                      ? 0
+                      : counterList > 99
+                      ? "99+"
+                      : counterList}
                   </span>
                 </Link>
               </div>
@@ -1984,9 +2010,9 @@ export default function RootLayout({ children }) {
             </div>
           </div>
           <div className="mt-4 mx-1 md:m-5 h-screen w-full md:w-[70%] lg:w-[85%]">
-              <CacheProvider value={cacheRtl}>
-                <ThemeProvider theme={theme}>{children}</ThemeProvider>
-              </CacheProvider>
+            <CacheProvider value={cacheRtl}>
+              <ThemeProvider theme={theme}>{children}</ThemeProvider>
+            </CacheProvider>
           </div>
         </div>
       </div>
