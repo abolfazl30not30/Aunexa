@@ -18,6 +18,7 @@ import Link from "next/link";
 import { useSelector } from "react-redux";
 import { useGetAllPurchaseRequestQuery } from "@/redux/features/purchase-request/PurchaseRequestSlice";
 import dynamic from "next/dynamic";
+import {useGetAllGeofenceQuery} from "@/redux/features/geofence/GeofenceSlice";
 
 const AddDataDialog = dynamic(
     () => import("../../../../../components/Dashboard/geofence/geographicArea/AddDataDialog"),
@@ -42,6 +43,7 @@ function GeographicArea() {
   const [moreInfoTarget, setMoreInfoTarget] = useState({
     name: "",
     subOrganizationId: "",
+    subOrganizationName:"",
     fenceType: "",
     description: "",
     centerPoint: {
@@ -59,6 +61,7 @@ function GeographicArea() {
   const [editInfoTarget, setEditInfoTarget] = useState({
     name: "",
     subOrganizationId: "",
+    subOrganizationName:"",
     fenceType: "",
     description: "",
     centerPoint: {
@@ -106,6 +109,7 @@ function GeographicArea() {
     setMoreInfoTarget({
       name: "",
       subOrganizationId: "",
+      subOrganizationName:"",
       fenceType: "",
       description: "",
       centerPoint: {
@@ -138,6 +142,7 @@ function GeographicArea() {
     setEditInfoTarget({
       name: "",
       subOrganizationId: "",
+      subOrganizationName:"",
       fenceType: "",
       description: "",
       centerPoint: {
@@ -167,7 +172,7 @@ function GeographicArea() {
     data: inventoryData = [],
     isLoading: isDataLoading,
     isError: isDataError,
-  } = useGetAllPurchaseRequestQuery(
+  } = useGetAllGeofenceQuery(
     { page, sort, filterItem },
     { refetchOnMountOrArgChange: true }
   );
@@ -340,7 +345,7 @@ function GeographicArea() {
                 <thead className="text-[0.9rem] text-gray80  bg-[#F8F8F8] md:bg-[#F2EDED] ">
                   <tr>
                     <th className="hidden md:table-cell px-6 py-4">#</th>
-                    <th className="hidden md:table-cell px-2 md:px-6 py-4">
+                    <th className="px-2 md:px-6 px-6 py-4">
                       نام
                     </th>
                     <th className="px-2 md:px-6 px-6 py-4">گروه</th>
@@ -401,11 +406,11 @@ function GeographicArea() {
                           <td className="hidden md:table-cell px-6 py-4  text-gray70 whitespace-nowrap ">
                             {index + 1}
                           </td>
-                          <td className="hidden md:table-cell px-2 md:px-6 py-4  text-gray70 whitespace-nowrap ">
-                            {data?.productName}
+                          <td className="px-2 md:px-6 py-4  text-gray70 whitespace-nowrap ">
+                            {data?.name}
                           </td>
                           <td className="px-6 py-4  text-gray70 whitespace-nowrap ">
-                            {data?.productName}
+                            {data?.subOrganizationName}
                           </td>
                           <td
                             scope="row"

@@ -22,6 +22,8 @@ import {TileLayer, FeatureGroup, MapContainer} from "react-leaflet";
 import { EditControl } from "react-leaflet-draw";
 delete L.Icon.Default.prototype._getIconUrl;
 import "leaflet-draw/dist/leaflet.draw.css";
+import {useSaveGeofenceMutation} from "@/redux/features/geofence/GeofenceSlice";
+import {ConvertToNull} from "@/helper/ConvertToNull";
 
 L.Icon.Default.mergeOptions({
     iconRetinaUrl:
@@ -53,17 +55,16 @@ export default function AddDataDialog(props) {
 
 
     let lastAddedPolygonID = null;
+    let layerType = null;
+
     const onCreated = (e) => {
-        console.log(lastAddedPolygonID)
 
         if(lastAddedPolygonID !== null){
             e.sourceTarget._layers[lastAddedPolygonID].remove();
             lastAddedPolygonID = null
         }
 
-
         if (e.layerType === 'circle') {
-
             formik.setFieldValue("fenceType", "CIRCLE")
 
             let radius = e.layer.getRadius()
@@ -82,18 +83,34 @@ export default function AddDataDialog(props) {
             console.log(polygonArr)
         }
         lastAddedPolygonID = e.layer._leaflet_id;
+        layerType = e.layerType;
     }
 
     const OnEdited = (e) => {
-        console.log(e.layers)
-        let layers = e.layers;
-        layers.eachLayer(function (layer) {
+        const layer = e.layers._layers[lastAddedPolygonID]
+        if (layerType === 'circle') {
+            formik.setFieldValue("fenceType", "CIRCLE")
 
-        });
+            let radius = layer.getRadius()
+            formik.setFieldValue("radius", (Math.round(radius * 1000000) / 1000000))
+            const location = layer.getLatLng()
+            const locationObject = {
+                latitude:(Math.round(location.lat * 1000000) / 1000000),
+                longitude:(Math.round(location.lng * 1000000) / 1000000)
+            }
+            formik.setFieldValue("centerPoint", locationObject)
+            console.log(radius,locationObject)
+        } else {
+            formik.setFieldValue("fenceType", "POLYGON")
+            const polygonArr = convertPolygon(layer.getLatLngs())
+            formik.setFieldValue("points", polygonArr)
+            console.log(polygonArr)
+        }
     }
 
     const onDelete = (e) => {
         lastAddedPolygonID = null;
+        layerType = null;
         formik.setFieldValue("fenceType", "")
         formik.setFieldValue("radius", "")
         formik.setFieldValue("centerPoint", "")
@@ -117,7 +134,7 @@ export default function AddDataDialog(props) {
     }
 
     //submit data
-    const [submitData, { isLoading:isSubmitLoading ,error}] = useSavePurchaseRequestMutation()
+    const [submitData, { isLoading:isSubmitLoading ,error}] = useSaveGeofenceMutation()
 
     const schema = yup.object().shape({
         name: yup.string().required("لطفا نام ناحیه جغرافیایی را وارد کنید"),
@@ -129,6 +146,7 @@ export default function AddDataDialog(props) {
         initialValues: {
             name: "",
             subOrganizationId: "",
+            subOrganizationName:"",
             fenceType: "",
             description: "",
             centerPoint: "",
@@ -138,17 +156,14 @@ export default function AddDataDialog(props) {
 
         validationSchema: schema,
 
-        onSubmit: async (product,helpers) => {
-            let updateProduct = {...product,value:PersianToEnglish(product.value)}
-            const userData = await submitData(updateProduct)
+        onSubmit: async (geofence,helpers) => {
+            let updateGeofence = ConvertToNull(geofence)
+            const userData = await submitData(updateGeofence)
             handleReset()
             props.handleCloseAddData()
         },
     });
 
-    const onFeatureGroupReady = reactFGref => {
-        setEditableFG(reactFGref);
-    };
     return (
         <>
             <Dialog
@@ -176,7 +191,7 @@ export default function AddDataDialog(props) {
                             <h3 className="text-[1.1rem]">ثبت ناحیه جغرافیایی</h3>
                         </div>
                         <form className="flex justify-center " onSubmit={formik.handleSubmit} method="POST">
-                            <div className="flex flex-col justify-center w-[90%] gap-5">
+                            <div className="flex flex-col justify-center w-[90%] gap-4">
                                 <div>
                                     <TextField
                                         multiline
@@ -231,6 +246,7 @@ export default function AddDataDialog(props) {
                                         onChange={(event, newValue) => {
                                             setSubOrganization(newValue)
                                             formik.setFieldValue("subOrganizationId", newValue?.id)
+                                            formik.setFieldValue("subOrganizationName", newValue?.name)
                                         }}
                                         renderInput={(params) =>
                                             <TextField
@@ -274,11 +290,19 @@ export default function AddDataDialog(props) {
                                             url={osm.maptiler.url}
                                             attribution={osm.maptiler.attribution}/>
                                     </MapContainer>
+                                    <div>
+                                        {
+                                            Boolean(formik.errors.fenceType) && (
+                                                <span className="mx-3 text-[0.6rem] text-red-600 ">
+                                                    {formik.errors.fenceType}
+                                                </span>)
+                                        }
+                                    </div>
                                 </div>
                                 <div>
                                     {
                                         isSubmitLoading ? (<button disabled type="submit"
-                                                                   className="hidden flex gap-3 items-center justify-center w-full rounded-[0.5rem] py-3  border border-solid border-1 border-neutral-400 font-bold text-textGray bg-neutral-200">
+                                                                   className="hidden flex  items-center justify-center w-full rounded-[0.5rem] py-2  border border-solid border-1 border-neutral-400 font-bold text-textGray bg-neutral-200">
                                             <TailSpin
                                                 height="20"
                                                 width="20"
