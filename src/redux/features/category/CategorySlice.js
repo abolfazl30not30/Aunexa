@@ -23,7 +23,7 @@ export const CategorySlice = apiSlice.injectEndpoints({
       providesTags: ["category"],
     }),
     getAllSubOrganization: builder.query({
-      query: () => "party/sub-organization/find-all",
+      query: () => "party/sub-organization/find-all/dashboard",
       providesTags: ["category"],
     }),
     getAllRole: builder.query({

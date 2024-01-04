@@ -73,7 +73,7 @@ export default function MainForm() {
                     </h3>
                 </div>
                 <form className="flex flex-col gap-5" onSubmit={formik.handleSubmit} method="POST">
-                    <div className=" flex flex-col">
+                    <div className=" flex flex-col ">
                         <label htmlFor="name" className="text-textGray mb-4">کد پرسنلی</label>
                         <TextField
                             type="text"
@@ -86,7 +86,7 @@ export default function MainForm() {
                             inputProps={{style: {fontFamily: "IranSans",fontWeight:"600",letterSpacing:"0.3rem", textAlign: 'center'}}}
                             InputLabelProps={{style: {fontFamily: "IranSans"}}}/>
                     </div>
-                    <div className="flex flex-col">
+                    <div className="flex flex-col ">
                         <label htmlFor="name" className="text-textGray mb-4">رمز عبور</label>
                         <TextField
                             type={showPassword ? "text" : "password"}
@@ -107,9 +107,9 @@ export default function MainForm() {
                                         </InputAdornment>)}}
                             InputLabelProps={{style: {fontFamily: "IranSans"}}}/>
                     </div>
-                    <div>
+                    <div className=''>
                         <button type="submit"
-                                className="w-full rounded-[0.5rem] py-3 border border-solid border-1 border-mainRed font-bold text-mainRed hover:bg-mainRed hover:text-white  ">ورود
+                                className="w-full  rounded-[0.5rem] py-3 border border-solid border-1 border-mainRed font-bold text-mainRed hover:bg-mainRed hover:text-white ">ورود
                         </button>
                         <button disabled type="submit"
                                 className="hidden flex gap-3 items-center justify-center w-full rounded-[0.5rem] py-3  border border-solid border-1 border-neutral-400 font-bold text-textGray bg-neutral-200">

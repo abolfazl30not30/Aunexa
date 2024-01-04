@@ -33,8 +33,12 @@ export default function RootLayout({ children }) {
       window.sessionStorage.getItem("subOrganizationId")
     );
   }, []);
-
-  useSubscription("/queue/latest/1234", (message) => {
+  const [subOrganizationId, setSubOrganizationId] = useState(
+    window.sessionStorage.getItem("subOrganizationId")
+  );
+  const [x, setX] = useState();
+  useSubscription(`/queue/latest/` + subOrganizationId, (message) => {
+    setX(message);
     const obj = JSON.parse(message.body);
     console.log(obj);
     toast.info(obj.message, {
@@ -516,6 +520,7 @@ export default function RootLayout({ children }) {
                             />
                           </svg>
                         </summary>
+                        {console.log(x)}
                         <ul className="flex flex-col gap-1 pr-2">
                           {accessData.hasOwnProperty("PrimaryStoreInput") && (
                             <li>
@@ -524,6 +529,7 @@ export default function RootLayout({ children }) {
                                 href="/panel/primary-store/input"
                                 className="block py-2 px-5"
                               >
+                                {" "}
                                 <span
                                   className={
                                     pathname === "/panel/primary-store/input"
