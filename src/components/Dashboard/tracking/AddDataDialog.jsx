@@ -233,7 +233,7 @@ export default function AddDataDialog(props) {
                                 
                                 
                                 {  type==="movement" &&
-                                    (<div className="w-full  flex flex-col gap-2">
+                                    (<div className="w-full  flex flex-col gap-2 h-48 overflow-y-auto">
                                     <List
                                         sx={{
                                             bgcolor: 'background.paper',
@@ -389,7 +389,7 @@ export default function AddDataDialog(props) {
                                     </List>
                                 </div>)
                                 }
-                                {type==="type" && (<ul className="grid grid-cols-3 gap-1 pr-2 border p-3  border-[#D9D9D9] rounded-sm">
+                                {type==="type" && (<ul className="grid grid-cols-3 gap-1 pr-2 border p-3  border-[#D9D9D9] rounded-sm h-64 overflow-y-auto">
                                                     {vehicleCategoryList?.map(
                                       (vehicle, index) => (
                                                         <li className="flex justify-between items-center px-2 py-0.5">

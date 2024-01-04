@@ -376,7 +376,7 @@ export default function page() {
               className="flex bg-mainRed text-white items-center text- px-3 py-2 rounded-full md:rounded"
               onClick={handleOpenAddData}
             >
-              <span className="hidden md:inline">ثبت گزارش جدید</span>
+              <span className="hidden md:inline"> گزارش گیری</span>
               <svg
                 xmlns="http://www.w3.org/2000/svg"
                 width="24"
