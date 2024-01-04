@@ -6,12 +6,11 @@ import {
 } from "@mui/material";
 import Dialog from "@mui/material/Dialog";
 import {TailSpin} from "react-loader-spinner";
-import {useDeleteESIMutation} from "@/redux/features/equipment-store/input/ESIapiSlice";
-import {useDeletePurchaseRequestMutation} from "@/redux/features/purchase-request/PurchaseRequestSlice";
+import {useDeleteGeofenceMutation} from "@/redux/features/geofence/GeofenceSlice";
 
 
 export default function DeleteDialog(props) {
-    const [handleDelete ,{isLoading}] = useDeletePurchaseRequestMutation()
+    const [handleDelete ,{isLoading}] = useDeleteGeofenceMutation()
     const deleteData = async () =>{
         const res = await handleDelete(props.deleteTargetId)
         props.handleCloseDelete()

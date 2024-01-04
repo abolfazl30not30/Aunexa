@@ -18,13 +18,14 @@ import Link from "next/link";
 import { useSelector } from "react-redux";
 import { useGetAllPurchaseRequestQuery } from "@/redux/features/purchase-request/PurchaseRequestSlice";
 import dynamic from "next/dynamic";
+import {useGetAllGeofenceQuery} from "@/redux/features/geofence/GeofenceSlice";
 
 const AddDataDialog = dynamic(
     () => import("../../../../../components/Dashboard/geofence/geographicArea/AddDataDialog"),
     { ssr: false }
 );
 
-function PurchaseRequest() {
+function GeographicArea() {
 
   let permission = useSelector(
     (state) => state.access?.pages?.primaryStoreInput
@@ -32,6 +33,7 @@ function PurchaseRequest() {
 
   const [page, setPage] = useState(1);
   const [sort, setSort] = useState("desc");
+
   const [openAddData, setOpenAddData] = useState(false);
 
   const [openDelete, setOpenDelete] = useState(false);
@@ -39,24 +41,38 @@ function PurchaseRequest() {
 
   const [openMoreInfo, setOpenMoreInfo] = useState(false);
   const [moreInfoTarget, setMoreInfoTarget] = useState({
-    productId: "",
-    productName: "",
-    time: "",
-    value: "",
-    unit: "",
-    priority: false,
+    name: "",
+    subOrganizationId: "",
+    subOrganizationName:"",
+    fenceType: "",
     description: "",
+    centerPoint: {
+      latitude:"",
+      longitude:""
+    },
+    radius:"",
+    points: [ {
+      latitude:"",
+      longitude:""
+    }],
   });
 
   const [openEditInfo, setOpenEditInfo] = useState(false);
   const [editInfoTarget, setEditInfoTarget] = useState({
-    productId: "",
-    machineTag: "",
-    productName: "",
-    value: "",
-    unit: "",
-    priority: false,
+    name: "",
+    subOrganizationId: "",
+    subOrganizationName:"",
+    fenceType: "",
     description: "",
+    centerPoint: {
+      latitude:"",
+      longitude:""
+    },
+    radius:"",
+    points: [ {
+      latitude:"",
+      longitude:""
+    }],
   });
 
   const [openFilter, setOpenFilter] = useState(false);
@@ -91,13 +107,20 @@ function PurchaseRequest() {
 
   const handleCloseMoreInfo = () => {
     setMoreInfoTarget({
-      productId: "",
-      productName: "",
-      value: "",
-      unit: "",
-      priority: false,
+      name: "",
+      subOrganizationId: "",
+      subOrganizationName:"",
+      fenceType: "",
       description: "",
-      time: "",
+      centerPoint: {
+        latitude:"",
+        longitude:""
+      },
+      radius:"",
+      points: [ {
+        latitude:"",
+        longitude:""
+      }],
     });
     setOpenMoreInfo(false);
   };
@@ -117,12 +140,20 @@ function PurchaseRequest() {
   };
   const handleCloseEditInfo = () => {
     setEditInfoTarget({
-      productId: "",
-      productName: "",
-      value: "",
-      unit: "",
-      priority: false,
+      name: "",
+      subOrganizationId: "",
+      subOrganizationName:"",
+      fenceType: "",
       description: "",
+      centerPoint: {
+        latitude:"",
+        longitude:""
+      },
+      radius:"",
+      points: [ {
+        latitude:"",
+        longitude:""
+      }],
     });
     setOpenEditInfo(false);
   };
@@ -141,7 +172,7 @@ function PurchaseRequest() {
     data: inventoryData = [],
     isLoading: isDataLoading,
     isError: isDataError,
-  } = useGetAllPurchaseRequestQuery(
+  } = useGetAllGeofenceQuery(
     { page, sort, filterItem },
     { refetchOnMountOrArgChange: true }
   );
@@ -189,27 +220,27 @@ function PurchaseRequest() {
           </div>
         </header>
         <section className="py-4 md:px-8 mt-5 bg-white h-[55rem]">
-          <div className="px-4 flex justify-end">
-            {/*<div className="w-[50%] md:w-[37%]">*/}
-            {/*    <FormControl fullWidth>*/}
-            {/*        <OutlinedInput*/}
-            {/*            size="small"*/}
-            {/*            sx={{py: "0.2rem"}}*/}
-            {/*            placeholder="جستوجو..."*/}
-            {/*            id="outlined-adornment-amount"*/}
-            {/*            inputProps={{style: {fontFamily: "__fonts_2f4189,__fonts_Fallback_2f4189", fontSize: "0.9rem"}}}*/}
-            {/*            startAdornment={<InputAdornment position="start">*/}
-            {/*                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"*/}
-            {/*                     viewBox="0 0 24 24" fill="none">*/}
-            {/*                    <path*/}
-            {/*                        d="M21 21L16.65 16.65M11 6C13.7614 6 16 8.23858 16 11M19 11C19 15.4183 15.4183 19 11 19C6.58172 19 3 15.4183 3 11C3 6.58172 6.58172 3 11 3C15.4183 3 19 6.58172 19 11Z"*/}
-            {/*                        stroke="#9F9F9F" stroke-width="1.5" stroke-linecap="round"*/}
-            {/*                        stroke-linejoin="round"/>*/}
-            {/*                </svg>*/}
-            {/*            </InputAdornment>}*/}
-            {/*        />*/}
-            {/*    </FormControl>*/}
-            {/*</div>*/}
+          <div className="px-4 flex justify-between">
+            <div className="w-[50%] md:w-[37%]">
+                {/*<FormControl fullWidth>*/}
+                {/*    <OutlinedInput*/}
+                {/*        size="small"*/}
+                {/*        sx={{py: "0.2rem"}}*/}
+                {/*        placeholder="جستوجو ..."*/}
+                {/*        id="outlined-adornment-amount"*/}
+                {/*        inputProps={{style: {fontFamily: "__fonts_2f4189,__fonts_Fallback_2f4189", fontSize: "0.9rem"}}}*/}
+                {/*        startAdornment={<InputAdornment position="start">*/}
+                {/*            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"*/}
+                {/*                 viewBox="0 0 24 24" fill="none">*/}
+                {/*                <path*/}
+                {/*                    d="M21 21L16.65 16.65M11 6C13.7614 6 16 8.23858 16 11M19 11C19 15.4183 15.4183 19 11 19C6.58172 19 3 15.4183 3 11C3 6.58172 6.58172 3 11 3C15.4183 3 19 6.58172 19 11Z"*/}
+                {/*                    stroke="#9F9F9F" stroke-width="1.5" stroke-linecap="round"*/}
+                {/*                    stroke-linejoin="round"/>*/}
+                {/*            </svg>*/}
+                {/*        </InputAdornment>}*/}
+                {/*    />*/}
+                {/*</FormControl>*/}
+            </div>
             <div className="flex gap-3">
               <button
                 onClick={handleOpenFilter}
@@ -314,7 +345,7 @@ function PurchaseRequest() {
                 <thead className="text-[0.9rem] text-gray80  bg-[#F8F8F8] md:bg-[#F2EDED] ">
                   <tr>
                     <th className="hidden md:table-cell px-6 py-4">#</th>
-                    <th className="hidden md:table-cell px-2 md:px-6 py-4">
+                    <th className="px-2 md:px-6 px-6 py-4">
                       نام
                     </th>
                     <th className="px-2 md:px-6 px-6 py-4">گروه</th>
@@ -375,11 +406,11 @@ function PurchaseRequest() {
                           <td className="hidden md:table-cell px-6 py-4  text-gray70 whitespace-nowrap ">
                             {index + 1}
                           </td>
-                          <td className="hidden md:table-cell px-2 md:px-6 py-4  text-gray70 whitespace-nowrap ">
-                            {data?.productName}
+                          <td className="px-2 md:px-6 py-4  text-gray70 whitespace-nowrap ">
+                            {data?.name}
                           </td>
                           <td className="px-6 py-4  text-gray70 whitespace-nowrap ">
-                            {data?.productName}
+                            {data?.subOrganizationName}
                           </td>
                           <td
                             scope="row"
@@ -523,4 +554,4 @@ function PurchaseRequest() {
   );
 }
 
-export default PurchaseRequest;
+export default GeographicArea;

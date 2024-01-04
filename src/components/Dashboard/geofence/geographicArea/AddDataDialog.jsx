@@ -11,15 +11,9 @@ import Dialog from "@mui/material/Dialog";
 import {TailSpin} from "react-loader-spinner";
 import * as yup from "yup";
 import {useFormik} from "formik";
-
 import CircularProgress from '@mui/material/CircularProgress';
 import "react-multi-date-picker/styles/colors/red.css"
-import {
-    useLazyGetAllProductQuery, useLazyGetAllSubOrganizationQuery,
-    useLazyGetAllUnitQuery,
-} from "@/redux/features/category/CategorySlice";
-import {styled} from "@mui/material/styles";
-import Switch from "@mui/material/Switch";
+import {useLazyGetAllSubOrganizationQuery,} from "@/redux/features/category/CategorySlice";
 import {useSavePurchaseRequestMutation} from "@/redux/features/purchase-request/PurchaseRequestSlice";
 import { PersianToEnglish } from "@/helper/PersianToEnglish";
 import osm from "../../../../helper/osm-providers";
@@ -28,6 +22,8 @@ import {TileLayer, FeatureGroup, MapContainer} from "react-leaflet";
 import { EditControl } from "react-leaflet-draw";
 delete L.Icon.Default.prototype._getIconUrl;
 import "leaflet-draw/dist/leaflet.draw.css";
+import {useSaveGeofenceMutation} from "@/redux/features/geofence/GeofenceSlice";
+import {ConvertToNull} from "@/helper/ConvertToNull";
 
 L.Icon.Default.mergeOptions({
     iconRetinaUrl:
@@ -38,55 +34,88 @@ L.Icon.Default.mergeOptions({
         "https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.3.1/images/marker-shadow.png",
 });
 
-const AntSwitch = styled(Switch)(({ theme }) => ({
-    width: 35,
-    height: 18,
-    padding: 0,
-    display: 'flex',
-    '&:active': {
-        '& .MuiSwitch-thumb': {
-            width: 12,
-        },
-        '& .MuiSwitch-switchBase.Mui-checked': {
-            transform: 'translateX(10px)',
-        },
-    },
-    '& .MuiSwitch-switchBase': {
-        padding: 2,
-        '&.Mui-checked': {
-            transform: 'translateX(17px)',
-            color: '#fff',
-            '& + .MuiSwitch-track': {
-                opacity: 1,
-                backgroundColor: theme.palette.mode === 'dark' ? '#DB3746' : '#DB3746',
-            },
-        },
-    },
-    '& .MuiSwitch-thumb': {
-        boxShadow: '0 2px 4px 0 rgb(0 35 11 / 20%)',
-        width: 12,
-        height: 13,
-        borderRadius: 4,
-        transition: theme.transitions.create(['width'], {
-            duration: 200,
-        }),
-    },
-    '& .MuiSwitch-track': {
-        borderRadius: 16 / 2,
-        opacity: 1,
-        backgroundColor:
-            theme.palette.mode === 'dark' ? 'rgba(255,255,255,.35)' : 'rgba(0,0,0,.25)',
-        boxSizing: 'border-box',
-    },
-}));
 
 export default function AddDataDialog(props) {
+
     const [center, setCenter] = useState({ lat: 35.7219, lng: 51.3347 });
     const ZOOM_LEVEL = 12;
 
-    const log = (e) => console.log(e);
+    const convertPolygon = (arr) =>{
+        let newArr = []
+        for(let location of arr[0]){
+            let obj = {}
+            obj = {
+                latitude:(Math.round(location.lat * 1000000) / 1000000),
+                longitude:(Math.round(location.lng * 1000000) / 1000000)
+            }
+            newArr.push(obj)
+        }
+        return newArr
+    }
 
 
+    let lastAddedPolygonID = null;
+    let layerType = null;
+
+    const onCreated = (e) => {
+
+        if(lastAddedPolygonID !== null){
+            e.sourceTarget._layers[lastAddedPolygonID].remove();
+            lastAddedPolygonID = null
+        }
+
+        if (e.layerType === 'circle') {
+            formik.setFieldValue("fenceType", "CIRCLE")
+
+            let radius = e.layer.getRadius()
+            formik.setFieldValue("radius", (Math.round(radius * 1000000) / 1000000))
+            const location = e.layer.getLatLng()
+            const locationObject = {
+                latitude:(Math.round(location.lat * 1000000) / 1000000),
+                longitude:(Math.round(location.lng * 1000000) / 1000000)
+            }
+            formik.setFieldValue("centerPoint", locationObject)
+            console.log(radius,locationObject)
+        } else {
+            formik.setFieldValue("fenceType", "POLYGON")
+            const polygonArr = convertPolygon(e.layer.getLatLngs())
+            formik.setFieldValue("points", polygonArr)
+            console.log(polygonArr)
+        }
+        lastAddedPolygonID = e.layer._leaflet_id;
+        layerType = e.layerType;
+    }
+
+    const OnEdited = (e) => {
+        const layer = e.layers._layers[lastAddedPolygonID]
+        if (layerType === 'circle') {
+            formik.setFieldValue("fenceType", "CIRCLE")
+
+            let radius = layer.getRadius()
+            formik.setFieldValue("radius", (Math.round(radius * 1000000) / 1000000))
+            const location = layer.getLatLng()
+            const locationObject = {
+                latitude:(Math.round(location.lat * 1000000) / 1000000),
+                longitude:(Math.round(location.lng * 1000000) / 1000000)
+            }
+            formik.setFieldValue("centerPoint", locationObject)
+            console.log(radius,locationObject)
+        } else {
+            formik.setFieldValue("fenceType", "POLYGON")
+            const polygonArr = convertPolygon(layer.getLatLngs())
+            formik.setFieldValue("points", polygonArr)
+            console.log(polygonArr)
+        }
+    }
+
+    const onDelete = (e) => {
+        lastAddedPolygonID = null;
+        layerType = null;
+        formik.setFieldValue("fenceType", "")
+        formik.setFieldValue("radius", "")
+        formik.setFieldValue("centerPoint", "")
+        formik.setFieldValue("points", "")
+    }
 
     //subOrganization input
     const [subOrganization,setSubOrganization] = useState(null)
@@ -99,51 +128,37 @@ export default function AddDataDialog(props) {
     },[openSubOrganizationList])
 
 
-    //unit input
-    const [unit,setUnit] = useState(null)
-    const [openUnitList,setOpenUnitList] = useState(false)
-    const [getUnitList,{ data : unitList  = [] , isLoading : isUnitLoading, isError: unitIsError }] = useLazyGetAllUnitQuery()
-    useEffect(()=>{
-        if(openUnitList){
-            getUnitList()
-        }
-    },[openUnitList])
-
     const handleReset = () =>{
         formik.resetForm()
         setSubOrganization(null)
-        setUnit(null)
     }
 
     //submit data
-    const [submitData, { isLoading:isSubmitLoading ,error}] = useSavePurchaseRequestMutation()
+    const [submitData, { isLoading:isSubmitLoading ,error}] = useSaveGeofenceMutation()
 
     const schema = yup.object().shape({
-        productId: yup.string().required("لطفا نام محصول را وارد کنید"),
-        value: yup.string().required("لطفا مقدار محصول را وارد کنید").matches(
-            /^[۰۱۲۳۴۵۶۷۸۹0.-9]+$/,
-            "لطفا فقط عدد وارد نمایید"
-          ),
-        unit: yup.string().required("لطفا واحد محصول را وارد کنید"),
+        name: yup.string().required("لطفا نام ناحیه جغرافیایی را وارد کنید"),
+        subOrganizationId: yup.string().required("لطفا نام ناحیه جغرافیایی را وارد کنید"),
+        fenceType:yup.string().required("لطفا  ناحیه جغرافیایی مورد نظر  را انتخاب کنید"),
     });
-
 
     const formik = useFormik({
         initialValues: {
-            productId:"",
-            productName:"",
-            value: "",
-            unit: "",
-            priority: false,
-            description:"",
-            productImage:""
+            name: "",
+            subOrganizationId: "",
+            subOrganizationName:"",
+            fenceType: "",
+            description: "",
+            centerPoint: "",
+            radius:"",
+            points:"",
         },
 
         validationSchema: schema,
 
-        onSubmit: async (product,helpers) => {
-            let updateProduct = {...product,value:PersianToEnglish(product.value)}
-            const userData = await submitData(updateProduct)
+        onSubmit: async (geofence,helpers) => {
+            let updateGeofence = ConvertToNull(geofence)
+            const userData = await submitData(updateGeofence)
             handleReset()
             props.handleCloseAddData()
         },
@@ -152,7 +167,6 @@ export default function AddDataDialog(props) {
     return (
         <>
             <Dialog
-
                 fullWidth={true}
                 open={props.openAddData}
                 keepMounted
@@ -177,7 +191,7 @@ export default function AddDataDialog(props) {
                             <h3 className="text-[1.1rem]">ثبت ناحیه جغرافیایی</h3>
                         </div>
                         <form className="flex justify-center " onSubmit={formik.handleSubmit} method="POST">
-                            <div className="flex flex-col justify-center w-[90%] gap-5">
+                            <div className="flex flex-col justify-center w-[90%] gap-4">
                                 <div>
                                     <TextField
                                         multiline
@@ -186,11 +200,11 @@ export default function AddDataDialog(props) {
                                         fullWidth
                                         placeholder="نام"
                                         type="text"
-                                        name="description"
-                                        value={formik.values.description}
+                                        name="name"
+                                        value={formik.values.name}
                                         onChange={formik.handleChange}
-                                        error={formik.touched.description && Boolean(formik.errors.description)}
-                                        helperText={formik.touched.description && formik.errors.description}
+                                        error={formik.touched.name && Boolean(formik.errors.name)}
+                                        helperText={formik.touched.name && formik.errors.name}
                                         inputProps={{style: {fontFamily: "__fonts_2f4189,__fonts_Fallback_2f4189", fontSize: "0.8rem"}}}
                                         InputLabelProps={{style: {fontFamily: "__fonts_2f4189,__fonts_Fallback_2f4189"}}}/>
                                 </div>
@@ -232,6 +246,7 @@ export default function AddDataDialog(props) {
                                         onChange={(event, newValue) => {
                                             setSubOrganization(newValue)
                                             formik.setFieldValue("subOrganizationId", newValue?.id)
+                                            formik.setFieldValue("subOrganizationName", newValue?.name)
                                         }}
                                         renderInput={(params) =>
                                             <TextField
@@ -257,9 +272,9 @@ export default function AddDataDialog(props) {
                                         <FeatureGroup>
                                             <EditControl
                                                 position="topright"
-                                                onCreated={log}
-                                                onEdited={(e)=>{console.log(e)}}
-                                                onMounted={log}
+                                                onCreated={onCreated}
+                                                onEdited={(e)=>{OnEdited(e)}}
+                                                onDeleted={onDelete}
                                                 draw={
                                                     {
                                                          rectangle: false,
@@ -275,11 +290,19 @@ export default function AddDataDialog(props) {
                                             url={osm.maptiler.url}
                                             attribution={osm.maptiler.attribution}/>
                                     </MapContainer>
+                                    <div>
+                                        {
+                                            Boolean(formik.errors.fenceType) && (
+                                                <span className="mx-3 text-[0.6rem] text-red-600 ">
+                                                    {formik.errors.fenceType}
+                                                </span>)
+                                        }
+                                    </div>
                                 </div>
                                 <div>
                                     {
                                         isSubmitLoading ? (<button disabled type="submit"
-                                                                   className="hidden flex gap-3 items-center justify-center w-full rounded-[0.5rem] py-3  border border-solid border-1 border-neutral-400 font-bold text-textGray bg-neutral-200">
+                                                                   className="hidden flex  items-center justify-center w-full rounded-[0.5rem] py-2  border border-solid border-1 border-neutral-400 font-bold text-textGray bg-neutral-200">
                                             <TailSpin
                                                 height="20"
                                                 width="20"
