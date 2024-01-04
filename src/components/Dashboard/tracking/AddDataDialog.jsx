@@ -20,7 +20,7 @@ import Checkbox from '@mui/material/Checkbox';
 import {useSelector} from "react-redux";
 import { useGetAllTrackingMachineListQuery } from "@/redux/features/tracking/TrackingSlice";
 import List from "@mui/material/List";
-
+import { useLazyGetAllVehicleCategoryQuery } from "@/redux/features/category/CategorySlice";
 export default function AddDataDialog(props) {
     const [listOfChecked,setListOfChecked] = useState({})
 
@@ -74,6 +74,20 @@ export default function AddDataDialog(props) {
         setNameOfFleet(window.sessionStorage.getItem("organizationName"))
     },[])
 
+    const [trackingVehicleList, setTrackingVehicleList] = useState([]);
+    const handleChangeCheckedVehicle = (event, vehicle) => {
+        if (event.target.checked) {
+          const obj = { ...vehicle };
+          let updateList = [...trackingVehicleList, obj];
+          setTrackingVehicleList(updateList);
+        } else {
+          let temp = trackingVehicleList.filter((item) => item.name !== vehicle.name);
+          setTrackingVehicleList(temp);
+         
+        }
+       
+      };
+
     const [trackingMachineList, setTrackingMachineList] = useState([]);
     const handleChangeChecked = (event, machine) => {
         if (event.target.checked) {
@@ -114,6 +128,17 @@ export default function AddDataDialog(props) {
         isLoading: isDataLoading,
         isError: isDataError,
       } = useGetAllTrackingMachineListQuery({filterItem},{ refetchOnMountOrArgChange: true });
+      const [type,setType]=useState("movement")
+
+      //
+
+     
+      const [getVehicleCategoryList,{ data : vehicleCategoryList  = [] , isLoading : isVehicleCategoryLoading, isError: isVehicleCategoryError }] = useLazyGetAllVehicleCategoryQuery()
+      useEffect(()=>{
+          if(type==="type"){
+              getVehicleCategoryList()
+          }
+      },[type])
     return (
         <>
             <Dialog
@@ -144,56 +169,71 @@ export default function AddDataDialog(props) {
                                 </svg>
                             </button>
                         </div>
-                        <div className="flex justify-center mb-7">
+                        <div className="flex justify-center mb-4">
                             <h3 className="text-[1.1rem]"> انتخاب محرک</h3>
                         </div>
-                        <div className="flex justify-center w-full mb-5">
-                        <div className="w-[90%]  ">
-<FormControl fullWidth>
-  <OutlinedInput
-    value={searchValue}
-    onChange={handleSearchBox}
-    className=""
-    size="small"
-    sx={{
-      py: "0.2rem",
-      borderRadius: 0,
-    }}
-    placeholder="جست و جو ..."
-    id="outlined-adornment-amount"
-    inputProps={{
-      style: {
-        fontFamily: "__fonts_2f4189,__fonts_Fallback_2f4189",
-        fontSize: "0.9rem",
-      },
-    }}
-    startAdornment={
-      <InputAdornment position="start">
-        <svg
-          xmlns="http://www.w3.org/2000/svg"
-          width="24"
-          height="24"
-          viewBox="0 0 24 24"
-          fill="none"
-        >
-          <path
-            d="M21 21L16.65 16.65M11 6C13.7614 6 16 8.23858 16 11M19 11C19 15.4183 15.4183 19 11 19C6.58172 19 3 15.4183 3 11C3 6.58172 6.58172 3 11 3C15.4183 3 19 6.58172 19 11Z"
-            stroke="#9F9F9F"
-            stroke-width="1.5"
-            stroke-linecap="round"
-            stroke-linejoin="round"
-          />
-        </svg>
-      </InputAdornment>
-    }
-  />
-</FormControl>
-</div>
-                        </div>
+                        <div className="flex items-center justify-evenly py-3">
+                                    <div>
+                                        <button onClick={()=>{setType("movement")}} 
+                                                    className={type==="movement" ? "w-full text-sm px-4  py-2  hover:opacity-80 font-bold   text-mainRed border-b border-mainRed":"w-full text-sm px-4  py-2  hover:opacity-80 font-bold   text-[#9F9F9F] border-b border-[#9F9F9F]"}>متحرک
+                                            </button>
+                                    </div>
+                                    <div>
+                                        <button   onClick={()=>{setType("type")}} 
+                                                    className={type==="type" ? "w-full text-sm px-4  py-2  hover:opacity-80 font-bold   text-mainRed border-b border-mainRed":"w-full text-sm px-4  py-2  hover:opacity-80 font-bold   text-[#9F9F9F] border-b border-[#9F9F9F]"}>نوع وسیله
+                                            </button>
+                                    </div>
+                                </div>
+                       {type==="movement" &&  <div className="flex justify-center w-full mb-5">
+                            
+                            <div className="w-[90%]  ">
+    <FormControl fullWidth>
+      <OutlinedInput
+        value={searchValue}
+        onChange={handleSearchBox}
+        className=""
+        size="small"
+        sx={{
+          py: "0.2rem",
+          borderRadius: 0,
+        }}
+        placeholder="جست و جو ..."
+        id="outlined-adornment-amount"
+        inputProps={{
+          style: {
+            fontFamily: "__fonts_2f4189,__fonts_Fallback_2f4189",
+            fontSize: "0.9rem",
+          },
+        }}
+        startAdornment={
+          <InputAdornment position="start">
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              width="24"
+              height="24"
+              viewBox="0 0 24 24"
+              fill="none"
+            >
+              <path
+                d="M21 21L16.65 16.65M11 6C13.7614 6 16 8.23858 16 11M19 11C19 15.4183 15.4183 19 11 19C6.58172 19 3 15.4183 3 11C3 6.58172 6.58172 3 11 3C15.4183 3 19 6.58172 19 11Z"
+                stroke="#9F9F9F"
+                stroke-width="1.5"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+              />
+            </svg>
+          </InputAdornment>
+        }
+      />
+    </FormControl>
+    </div>
+                            </div>}
                         <form className="flex justify-center " onSubmit={formik.handleSubmit} method="POST">
                             <div className="flex flex-col justify-center w-[90%] gap-5">
                                 
-                                <div className="w-full  flex flex-col gap-2">
+                                
+                                {  type==="movement" &&
+                                    (<div className="w-full  flex flex-col gap-2">
                                     <List
                                         sx={{
                                             bgcolor: 'background.paper',
@@ -254,7 +294,7 @@ export default function AddDataDialog(props) {
                                                     <ul className="flex flex-col gap-1 pr-2">
                                                     {item.machines?.map(
                                       (machine, index) => (
-                                                        <li className="flex justify-between items-center px-2 py-0.5">
+                                                        <li className="flex gap-4 items-center px-2 py-0.5">
                                                             <div className="gap-1.5 flex items-center">
                                                                 <span  className="table-cell     text-gray70 whitespace-nowrap ">
                                                                 
@@ -347,7 +387,46 @@ export default function AddDataDialog(props) {
                                             ))
                                         }
                                     </List>
-                                </div>
+                                </div>)
+                                }
+                                {type==="type" && (<ul className="grid grid-cols-3 gap-1 pr-2 border p-3  border-[#D9D9D9] rounded-sm">
+                                                    {vehicleCategoryList?.map(
+                                      (vehicle, index) => (
+                                                        <li className="flex justify-between items-center px-2 py-0.5">
+                                                            <div className="gap-1.5 flex items-center px-4 ">
+                                                                <span  className="table-cell     text-gray70 whitespace-nowrap ">
+                                                                
+                                                                <Checkbox
+                                                                  
+                                                                  checked={trackingVehicleList.some(
+                                                                    (item) => item?.name === vehicle.name
+                                                                  )}
+                                                                  onClick={(e) => {
+                                                                    handleChangeCheckedVehicle(e, vehicle);
+                                                                  
+                                                                  }}
+                                                                  style={{
+                                                                    
+                                                                    width: 10,
+                                                                    height: 10
+                                                                  }}
+                                                              
+                                                                         inputProps={{ "aria-label": "controlled" }}
+                                                                />
+                   
+                                                                </span>
+                                                                <span  className="table-cell text-sm   text-gray70 whitespace-nowrap ">
+                                                                
+                                                                {vehicle?.name}
+                   
+                                                                </span>
+                                                            </div>
+                                                            
+                                                         
+                                                        </li>))}
+                                                      
+                                                    </ul>)}
+                               
                                 <div>
                                     {
                                         isSubmitLoading ? (<button disabled type="submit"
@@ -363,7 +442,7 @@ export default function AddDataDialog(props) {
                                                 visible={true}/>
                                             ثبت
                                         </button>) : (
-                                            <button  type="submit"
+                                            <button type="submit"
                                                     className="w-full rounded-[0.5rem] py-3 hover:border hover:opacity-80 font-bold  bg-mainRed text-white">ثبت
                                             </button>
                                         )

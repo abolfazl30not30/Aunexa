@@ -4,7 +4,7 @@ import dynamic from "next/dynamic";
 import { useRef } from "react";
 import AddDataDialog from "@/components/Dashboard/tracking/AddDataDialog";
 const ReportMap = dynamic(
-  () => import("../../../../components/Dashboard/reports/ReportMap"),
+  () => import("../../../../components/Dashboard/reports/new-report/ReportMap"),
   { ssr: false }
 );
 

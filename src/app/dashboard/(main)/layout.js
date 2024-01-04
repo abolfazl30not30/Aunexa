@@ -13,7 +13,7 @@ import { Drawer, Menu } from "@mui/material";
 import { useDispatch, useSelector } from "react-redux";
 import { useLazyGetAccessQuery } from "@/redux/features/access/getAccessSlice";
 import { setAccess } from "@/redux/permission/accessSlice";
-
+import { useLazyGetCounterOfDashboardNotificationQuery } from "@/redux/features/notification/NotificationCounterDashboardSlice";
 
 const cacheRtl = createCache({
   key: "muirtl",
@@ -26,6 +26,17 @@ const theme = createTheme({
 export default function RootLayout({ children }) {
   const pathname = usePathname();
   const dispatch = useDispatch();
+  const [
+    getCounterList,
+    {
+      data: counterList = [],
+      isLoading: isCounterLoading,
+      isError: counterIsError,
+    },
+  ] = useLazyGetCounterOfDashboardNotificationQuery();
+  useEffect(() => {
+    getCounterList();
+  }, [pathname]);
 
   const [openAlertMenu, setOpenAlertMenu] = useState(false);
   const [anchorEl, setAnchorEl] = React.useState(null);
@@ -113,7 +124,7 @@ export default function RootLayout({ children }) {
                 <img src="/icons/bell.svg" alt="bell" />
                 <div className="absolute -top-1.5 -right-1">
                   <span className=" rounded-full bg-mainRed w-[1rem] h-[1rem] text-[0.49rem] flex  items-center justify-center text-center text-white">
-                    79
+                    {counterList > 99 ? "99+" : counterList}
                   </span>
                 </div>
               </div>
@@ -565,7 +576,8 @@ export default function RootLayout({ children }) {
                           >
                             <span
                               className={
-                                pathname === "/dashboard/failure-and-repair-report"
+                                pathname ===
+                                "/dashboard/failure-and-repair-report"
                                   ? "text-mainRed text-[0.9rem]"
                                   : "text-gray9F hover:text-textGray text-[0.9rem]"
                               }
@@ -1058,7 +1070,8 @@ export default function RootLayout({ children }) {
                       >
                         <span
                           className={
-                            pathname === "/dashboard/purchase/purchase-request-list"
+                            pathname ===
+                            "/dashboard/purchase/purchase-request-list"
                               ? "text-mainRed text-[0.8rem]"
                               : "text-gray9F hover:text-textGray text-[0.8rem]"
                           }
