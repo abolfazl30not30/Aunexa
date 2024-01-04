@@ -1,38 +1,42 @@
 'use client'
-import React, {useEffect} from "react";
+import React, {useEffect, useRef, useState} from "react";
 import {DialogContent, DialogContentText,} from "@mui/material";
 import Dialog from "@mui/material/Dialog";
-import { MapContainer, TileLayer} from "react-leaflet";
+import {Circle, MapContainer, Polygon, TileLayer, useMap} from "react-leaflet";
 import osm from "@/helper/osm-providers";
-import {useState} from "react";
+
 
 export default function MoreInfoDialog(props) {
-    const [center, setCenter] = useState({ lat: 35.7219, lng: 51.3347 });
+
+    const [center, setCenter] = useState([29.120738496597934, 55.33779332882627]);
 
 
-    const changePolygonFormat = (pointArray)=>{
+    const changePolygonFormat = (pointArray) => {
         let points = []
-        for(let location of pointArray){
+        for (let location of pointArray) {
             let loc = []
-            loc = [location.latitude,location.longitude]
+            loc = [location.latitude, location.longitude]
             points.push(loc)
         }
         return points
     }
-    const changeCirCleCenterFormat = (center)=>{
 
-    }
-    const DrawVector = () =>{
-        if(props.moreInfoTarget.fenceType === "CIRCLE"){
+    const DrawVector = () => {
 
-        }else {
+        if (props.moreInfoTarget.fenceType === "CIRCLE") {
+            let centerPoint = [props.moreInfoTarget?.centerPoint.latitude, props.moreInfoTarget?.centerPoint.longitude]
+            const map = useMap();
+            map.setView(centerPoint);
+            return <Circle center={centerPoint} pathOptions={{fillColor: 'blue'}}
+                           radius={props.moreInfoTarget?.radius}/>
+        } else {
             const points = changePolygonFormat(props.moreInfoTarget?.points)
-            console.log(points)
+            const map = useMap();
+            map.setView(points[0]);
+            return <Polygon pathOptions={{fillColor: 'blue'}} positions={points}/>
         }
     }
-    useEffect(()=>{
 
-    },[])
     const ZOOM_LEVEL = 12;
     return (
         <>
@@ -87,6 +91,7 @@ export default function MoreInfoDialog(props) {
                                         </div>
                                     </div>
                                 </div>
+
                                 {
                                     props.moreInfoTarget?.description && (
                                         <div className="flex flex-col">
@@ -104,12 +109,12 @@ export default function MoreInfoDialog(props) {
                                     )
                                 }
 
-                                <div className="geofence-map">
-                                    <MapContainer center={center} zoom={ZOOM_LEVEL} >
+                                <div className="geofence-map mt-2">
+                                    <MapContainer center={center} zoom={ZOOM_LEVEL}>
                                         <TileLayer
                                             url={osm.maptiler.url}
                                             attribution={osm.maptiler.attribution}/>
-
+                                        <DrawVector/>
                                     </MapContainer>
                                 </div>
                             </div>
@@ -121,7 +126,7 @@ export default function MoreInfoDialog(props) {
                                         نام  :
                                     </span>
                                     <span className="text-[#29262A] text-[0.8rem]">
-                                       {props.moreInfoTarget?.productName}
+                                       {props.moreInfoTarget?.name}
                                     </span>
                                 </div>
                                 <div>
@@ -129,16 +134,28 @@ export default function MoreInfoDialog(props) {
                                         گروه  :
                                     </span>
                                     <span className="text-[#29262A] text-[0.8rem]">
-                                       {props.moreInfoTarget?.productName}
+                                       {props.moreInfoTarget?.subOrganizationName}
                                     </span>
                                 </div>
-                                <div>
-                                    <span className="ml-1 text-gray9F text-[0.8rem]">
-                                        توضیحات  :
-                                    </span>
-                                    <span className="text-[#29262A] text-[0.8rem]">
-                                       {props.moreInfoTarget?.productName}
-                                    </span>
+                                {
+                                    props.moreInfoTarget?.description && (
+                                        <div>
+                                            <span className="ml-1 text-gray9F text-[0.8rem]">
+                                     توضیحات  :
+                                            </span>
+                                            <span className="text-[#29262A] text-[0.8rem]">
+                                                {props.moreInfoTarget?.description}
+                                            </span>
+                                        </div>
+                                    )
+                                }
+                                <div className="geofence-map mt-2">
+                                    <MapContainer center={center} zoom={ZOOM_LEVEL}>
+                                        <TileLayer
+                                            url={osm.maptiler.url}
+                                            attribution={osm.maptiler.attribution}/>
+                                        <DrawVector/>
+                                    </MapContainer>
                                 </div>
                             </div>
                         </div>
@@ -150,13 +167,13 @@ export default function MoreInfoDialog(props) {
                                     className="px-6 py-2 text-[0.8rem] text-mainRed border border-mainRed rounded hover:bg-mainRed hover:text-white">
                                 حذف
                             </button>
-                            <button onClick={() => {
-                                props.handleOpenEditInfo(props.moreInfoTarget);
-                                props.handleCloseMoreInfo()
-                            }}
-                                    className="px-5 py-2 text-[0.8rem] text-[#4087DB] border border-[#4087DB] rounded hover:bg-[#4087DB] hover:text-white">
-                                ویرایش
-                            </button>
+                            {/*<button onClick={() => {*/}
+                            {/*    props.handleOpenEditInfo(props.moreInfoTarget);*/}
+                            {/*    props.handleCloseMoreInfo()*/}
+                            {/*}}*/}
+                            {/*        className="px-5 py-2 text-[0.8rem] text-[#4087DB] border border-[#4087DB] rounded hover:bg-[#4087DB] hover:text-white">*/}
+                            {/*    ویرایش*/}
+                            {/*</button>*/}
                         </div>
                     </DialogContentText>
                 </DialogContent>

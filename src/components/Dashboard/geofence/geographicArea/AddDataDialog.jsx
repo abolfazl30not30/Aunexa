@@ -24,6 +24,7 @@ delete L.Icon.Default.prototype._getIconUrl;
 import "leaflet-draw/dist/leaflet.draw.css";
 import {useSaveGeofenceMutation} from "@/redux/features/geofence/GeofenceSlice";
 import {ConvertToNull} from "@/helper/ConvertToNull";
+import {useRef} from "react";
 
 L.Icon.Default.mergeOptions({
     iconRetinaUrl:
@@ -36,9 +37,24 @@ L.Icon.Default.mergeOptions({
 
 
 export default function AddDataDialog(props) {
+    const [center, setCenter] = useState([29.120738496597934,55.33779332882627]);
 
-    const [center, setCenter] = useState({ lat: 35.7219, lng: 51.3347 });
+    const edit = useRef(null);
+
     const ZOOM_LEVEL = 12;
+
+    const removeAllEditControlLayers = () => {
+        console.log(edit)
+        // let layerContainer = edit.options.edit.featureGroup,
+        //     layers = layerContainer._layers,
+        //     layer_ids = Object.keys(layers),
+        //     layer;
+        //
+        // layer_ids.forEach(id => {
+        //     layer = layers[id]
+        //     layerContainer.removeLayer(layer);
+        // })
+    }
 
     const convertPolygon = (arr) =>{
         let newArr = []
@@ -129,8 +145,10 @@ export default function AddDataDialog(props) {
 
 
     const handleReset = () =>{
+        removeAllEditControlLayers()
         formik.resetForm()
         setSubOrganization(null)
+
     }
 
     //submit data
@@ -271,6 +289,7 @@ export default function AddDataDialog(props) {
                                     <MapContainer center={center} zoom={ZOOM_LEVEL} >
                                         <FeatureGroup>
                                             <EditControl
+                                                ref={edit}
                                                 position="topright"
                                                 onCreated={onCreated}
                                                 onEdited={(e)=>{OnEdited(e)}}
@@ -283,8 +302,7 @@ export default function AddDataDialog(props) {
                                                          marker: false,
                                                          polyline: false,
                                                     }
-                                                }
-                                            />
+                                                }/>
                                         </FeatureGroup>
                                         <TileLayer
                                             url={osm.maptiler.url}

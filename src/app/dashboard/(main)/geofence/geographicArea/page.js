@@ -12,7 +12,6 @@ import {
 } from "@mui/material";
 
 import FilterDialog from "@/components/Dashboard/geofence/geographicArea/FilterDialog";
-import MoreInfoDialog from "@/components/Dashboard/geofence/geographicArea/MoreInfoDialog";
 import DeleteDialog from "@/components/Dashboard/geofence/geographicArea/DeleteDialog";
 import Link from "next/link";
 import { useSelector } from "react-redux";
@@ -24,6 +23,12 @@ const AddDataDialog = dynamic(
     () => import("../../../../../components/Dashboard/geofence/geographicArea/AddDataDialog"),
     { ssr: false }
 );
+
+const MoreInfoDialog = dynamic(
+    () => import("../../../../../components/Dashboard/geofence/geographicArea/MoreInfoDialog"),
+    { ssr: false }
+);
+
 
 function GeographicArea() {
 

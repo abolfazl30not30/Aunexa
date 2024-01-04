@@ -7,7 +7,9 @@ import osm from "@/helper/osm-providers";
 import {useState} from "react";
 
 export default function ReportMap(props) {
-    const [center, setCenter] = useState({ lat: 35.7219, lng: 51.3347 });
+
+    const [center, setCenter] = useState([29.120738496597934,55.33779332882627]);
+
     const ZOOM_LEVEL = 12;
 
     return(
