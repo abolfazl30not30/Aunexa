@@ -35,7 +35,7 @@ export default function MoreInfoDialog(props) {
                         </div>
                         <div className="hidden md:flex md:justify-center md:flex-col mb-4">
                             <div className="w-full md:w-[100%] grid grid-cols-2 gap-4 justify-between items-center">
-                            <div className="flex flex-col">
+                            {props.moreInfoTarget?.machine?.type && <div className="flex flex-col">
                                     <div className="mb-2">
                                         <span className="text-[0.9rem] text-gray70 ">نوع وسیله</span>
                                     </div>
@@ -43,14 +43,14 @@ export default function MoreInfoDialog(props) {
                                         <div className="p-2">
                                             <span className="text-[#29262A] text-[0.9rem] space-x-2">
                                                 <span>
-                                                    {/* {props.moreInfoTarget?.type} */}
-                                                      خاور
+                                                    {props.moreInfoTarget?.machine?.type}
+                                                      
                                                 </span> 
                                             </span>
                                         </div>
                                     </div>
-                                </div>
-                                <div className="flex flex-col">
+                                </div>}
+                               {props.moreInfoTarget?.machine?.tag && <div className="flex flex-col">
                                     <div className="mb-2">
                                         <span className="text-[0.9rem] text-gray70 "> پلاک وسیله</span>
                                     </div>
@@ -58,22 +58,22 @@ export default function MoreInfoDialog(props) {
                                         <div className="p-2">
                                             <span className="text-[#29262A] text-[0.9rem] space-x-2">
                                                 <span>
-                                                     {/* {machine?.tag?.slice(2, 5) +
+                                                     {props.moreInfoTarget?.machine?.tag?.slice(2, 5) +
                                                 "-" +
-                                                machine?.tag?.slice(5, 7) +
+                                                props.moreInfoTarget?.machine?.tag?.slice(5, 7) +
                                                 " " +
-                                                machine?.tag?.slice(7, 8) +
+                                                props.moreInfoTarget?.machine?.tag?.slice(7, 8) +
                                                 " " +
-                                                machine?.tag?.slice(0, 2)} */}
-                                                12 ب 123 12
+                                                props.moreInfoTarget?.machine?.tag?.slice(0, 2)}
+                                                   
                                         
                                                       
                                                 </span> 
                                             </span>
                                         </div>
                                     </div>
-                                </div>
-                                <div className="flex flex-col">
+                                </div>}
+                                {props.moreInfoTarget?.machine?.code && <div className="flex flex-col">
                                     <div className="mb-2">
                                         <span className="text-[0.9rem] text-gray70 ">کد وسیله</span>
                                     </div>
@@ -81,14 +81,14 @@ export default function MoreInfoDialog(props) {
                                         <div className="p-2">
                                             <span className="text-[#29262A] text-[0.9rem] space-x-2">
                                                 <span>
-                                                    {/* {props.moreInfoTarget?.code} */}
-                                                      15
+                                                    {props.moreInfoTarget?.machine?.code}
+                                                      
                                                 </span> 
                                             </span>
                                         </div>
                                     </div>
-                                </div>
-                                <div className="flex flex-col">
+                                </div>}
+                                {props.moreInfoTarget?.subOrganizationName && <div className="flex flex-col">
                                     <div className="mb-2">
                                         <span className="text-[0.9rem] text-gray70 "> گروه</span>
                                     </div>
@@ -96,14 +96,14 @@ export default function MoreInfoDialog(props) {
                                         <div className="p-2">
                                             <span className="text-[#29262A] text-[0.9rem] space-x-2">
                                                 <span>
-                                                    {/* {props.moreInfoTarget?.group} */}
-                                                      13
+                                                    {props.moreInfoTarget?.subOrganizationName}
+                                                      
                                                 </span> 
                                             </span>
                                         </div>
                                     </div>
-                                </div>
-                            <div className="flex flex-col">
+                                </div>}
+                                {props.moreInfoTarget?.geofenceName && <div className="flex flex-col">
                                     <div className="mb-2">
                                         <span className="text-[0.9rem] text-gray70 ">ناحیه</span>
                                     </div>
@@ -111,22 +111,22 @@ export default function MoreInfoDialog(props) {
                                         <div className="p-2">
                                             <span className="text-[#29262A] text-[0.9rem] space-x-2">
                                                 <span>
-                                                    {/* {props.moreInfoTarget?.geofence} */}
-                                                     زئوفنس یک
+                                                    {props.moreInfoTarget?.geofenceName}
+                                                      
                                                 </span> 
                                             </span>
                                         </div>
                                     </div>
-                                </div>
+                                </div>}
                                 <div className="flex flex-col">
                                     <div className="mb-2">
                                         <span className="text-[0.9rem] text-gray70 ">زمان ورود</span>
                                     </div>
                                     <div className=" flex  border border-[#D9D9D9]  justify-evenly px-4">
                                         <div className="p-2 text-[#29262A] text-[0.9rem]">
-                                            {/* <span>{props.moreInfoTarget?.entryTime}</span> */}
-                                            <span className="pr-1">1390/02/21</span>
-                          <span>11:15</span>
+                                            <span>{props.moreInfoTarget?.entryTime}</span>
+                                           
+                         
                                         </div>
                                       
                                     </div>
@@ -137,9 +137,8 @@ export default function MoreInfoDialog(props) {
                                     </div>
                                     <div className="border border-[#D9D9D9]  flex justify-evenly px-4">
                                         <div className="p-2 text-[#29262A] text-[0.9rem]">
-                                             {/* <span>{props.moreInfoTarget?.exitTime}</span> */}
-                                            <span className="pr-1">1390/02/21</span>
-                          <span>11:15</span>
+                                             <span>{props.moreInfoTarget?.exitTime}</span>
+                                            
                                         </div>
                                       
                                     </div>
@@ -151,8 +150,8 @@ export default function MoreInfoDialog(props) {
                                     <div className="border border-[#D9D9D9]  flex justify-start px-4">
                                         <div className="p-2">
                                             <span className="text-[#29262A] text-[0.9rem]">
-                                                {/* {props.moreInfoTarget?.duration} */}
-                                                06:19
+                                                {props.moreInfoTarget?.duration}
+                                               
                                             </span>
                                         </div>
                                     </div>
@@ -165,8 +164,8 @@ export default function MoreInfoDialog(props) {
                                         <div className="p-2">
                                             <span className="text-[#29262A] text-[0.9rem] space-x-2">
                                                 <span>
-                                                    {/* {props.moreInfoTarget?.onDuration} */}
-                                                    05:17
+                                                    {props.moreInfoTarget?.onDuration}
+                                                 
                                                 </span> 
                                             </span>
                                         </div>
@@ -180,14 +179,14 @@ export default function MoreInfoDialog(props) {
                                         <div className="p-2">
                                             <span className="text-[#29262A] text-[0.9rem] space-x-2">
                                                 <span>
-                                                    {/* {props.moreInfoTarget?.offDuration} */}
-                                                    01:02
+                                                    {props.moreInfoTarget?.offDuration}
+                                                    
                                                 </span> 
                                             </span>
                                         </div>
                                     </div>
                                 </div>
-                                <div className="flex flex-col">
+                                {props.moreInfoTarget?.stopDuration && <div className="flex flex-col">
                                     <div className="mb-2">
                                         <span className="text-[0.9rem] text-gray70 ">مدت زمان توقف ماشین</span>
                                     </div>
@@ -195,14 +194,14 @@ export default function MoreInfoDialog(props) {
                                         <div className="p-2">
                                             <span className="text-[#29262A] text-[0.9rem] space-x-2">
                                                 <span>
-                                                    {/* {props.moreInfoTarget?.stopsDuration} */}
-                                                    00:13
+                                                    {props.moreInfoTarget?.stopDuration}
+                                                    
                                                 </span> 
                                             </span>
                                         </div>
                                     </div>
-                                </div>
-                                <div className="flex flex-col">
+                                </div>}
+                                {props.moreInfoTarget?.speed && <div className="flex flex-col">
                                     <div className="mb-2">
                                         <span className="text-[0.9rem] text-gray70 ">تعداد تخلفات سرعت</span>
                                     </div>
@@ -210,14 +209,14 @@ export default function MoreInfoDialog(props) {
                                         <div className="p-2">
                                             <span className="text-[#29262A] text-[0.9rem] space-x-2">
                                                 <span>
-                                                    {/* {props.moreInfoTarget?.speed} */}
-                                                    3
+                                                    {props.moreInfoTarget?.speed}
+                                                    
                                                 </span> 
                                             </span>
                                         </div>
                                     </div>
-                                </div>
-                                <div className="flex flex-col">
+                                </div>}
+                                {props.moreInfoTarget?.fuel && <div className="flex flex-col">
                                     <div className="mb-2">
                                         <span className="text-[0.9rem] text-gray70 ">میزان سوخت مصرفی</span>
                                     </div>
@@ -225,13 +224,13 @@ export default function MoreInfoDialog(props) {
                                         <div className="p-2">
                                             <span className="text-[#29262A] text-[0.9rem] space-x-2">
                                                 <span>
-                                                    {/* {props.moreInfoTarget?.fuel} */}
-                                                    10 لیتر
+                                                    {props.moreInfoTarget?.fuel}
+                                                     
                                                 </span> 
                                             </span>
                                         </div>
                                     </div>
-                                </div>
+                                </div>}
                               
                                         <div className="flex flex-col">
                                             <div className="mb-2">
@@ -240,8 +239,8 @@ export default function MoreInfoDialog(props) {
                                             <div className="border border-[#D9D9D9]  flex justify-start px-4">
                                                 <div className="p-2">
                                                     <span className="text-[#29262A] text-[0.9rem]">
-                                                        {/* {props.moreInfoTarget?.distance} */}
-                                                        10 کیلومتر
+                                                        {props.moreInfoTarget?.distance}
+                                                         
                                                         </span>
                                                 </div>
                                             </div>
@@ -252,158 +251,157 @@ export default function MoreInfoDialog(props) {
                         </div>
                         <div className="md:hidden flex justify-center">
                             <div className="w-full md:w-[70%] flex flex-col gap-3">
-                            <div>
+                            {props.moreInfoTarget?.machine?.type &&  <div>
                                     <span className="ml-1 text-gray9F text-[0.8rem]">
                                          نوع وسیله :
                                     </span>
                                     <span className="text-[#29262A] text-[0.8rem]">
-                                        {/* <span>{props.moreInfoTarget?.type}</span> */}
-                                        <span className="pr-1">خاور</span>
+                                        <span>{props.moreInfoTarget?.machine?.type}</span>
+                                      
                           
                                     </span>
-                                </div>
-                                <div>
+                                </div>}
+                                {props?.moreInfoTarget?.machine?.tag && <div>
                                     <span className="ml-1 text-gray9F text-[0.8rem]">
                                         پلاک وسیله نقلیه  :
                                     </span>
                                     <span className="text-[#29262A] text-[0.8rem]">
                                        
                                         <span className="pr-1">
-                                        {/* {machine?.tag?.slice(2, 5) +
+                                        {props?.moreInfoTarget?.machine?.tag?.slice(2, 5) +
                                                 "-" +
-                                                machine?.tag?.slice(5, 7) +
+                                                props?.moreInfoTarget?.machine?.tag?.slice(5, 7) +
                                                 " " +
-                                                machine?.tag?.slice(7, 8) +
+                                                props?.moreInfoTarget?.machine?.tag?.slice(7, 8) +
                                                 " " +
-                                                machine?.tag?.slice(0, 2)} */}
-                                                12 ب 123 12
+                                                props?.moreInfoTarget?.machine?.tag?.slice(0, 2)}
+                                            
                                         </span>
                           
                                     </span>
-                                </div>
-                                <div>
+                                </div> }
+                                {props.moreInfoTarget?.machine?.code &&   <div>
                                     <span className="ml-1 text-gray9F text-[0.8rem]">
                                         کد وسیله   :
                                     </span>
                                     <span className="text-[#29262A] text-[0.8rem]">
                                         
                                         <span className="pr-1">
-                                        {/* {props.moreInfoTarget?.code} */}
-                                        12
+                                        {props.moreInfoTarget?.machine?.code}
+                                        
                                         </span>
                           
                                     </span>
-                                </div>
-                                <div>
+                                </div> }
+                                {props.moreInfoTarget?.geofenceName &&<div>
                                     <span className="ml-1 text-gray9F text-[0.8rem]">
                                              ناحیه  :
                                     </span>
                                     <span className="text-[#29262A] text-[0.8rem] space-x-2">
                                                 <span>
-                                                    {/* {props.moreInfoTarget?.geofence} */}
-                                                     زئوفنس یک
+                                                    {props.moreInfoTarget?.geofenceName}
+                                                      
                                                 </span> 
                                             </span>
-                                </div>
-                                <div>
+                                </div>}
+                                {props.moreInfoTarget?.subOrganizationName &&  <div>
                                     <span className="ml-1 text-gray9F text-[0.8rem]">
                                          گروه   :
                                     </span>
                                     <span className="text-[#29262A] text-[0.8rem]">
                                         
                                         <span className="pr-1">
-                                        {/* {props.moreInfoTarget?.group} */}
-                                        موناکو
+                                        {props.moreInfoTarget?.subOrganizationName}
+                                        
                                         </span>
                           
                                     </span>
-                                </div>
-                                <div>
+                                </div>}
+                                {props.moreInfoTarget?.exitTime &&<div>
                                     <span className="ml-1 text-gray9F text-[0.8rem]">
                                         زمان خروج :
                                     </span>
                                     <span className="text-[#29262A] text-[0.8rem]">
-                                    {/* <span>{props.moreInfoTarget?.exitTime}</span> */}
-                                    <span className="pr-1">1390/02/21</span>
-                          <span>11:15</span>
+                                    <span>{props.moreInfoTarget?.exitTime}</span>
+                                    
                                     </span>
-                                </div>
-                                <div>
+                                </div>}
+                                {props.moreInfoTarget?.duration && <div>
                                     <span className="ml-1 text-gray9F text-[0.8rem]">
                                           مدت زمان حضور در ناحیه :
                                     </span>
                                     <span className="text-[#29262A] text-[0.8rem]">
-                                                {/* {props.moreInfoTarget?.duration} */}
-                                                06:19
+                                                {props.moreInfoTarget?.duration}
+                                                
                                             </span>
-                                </div>
-                                <div>
+                                </div>}
+                                {props.moreInfoTarget?.onDuration &&   <div>
                                     <span className="ml-1 text-gray9F text-[0.8rem]">
                                           مدت زمان روشن بودن ماشین :
                                     </span>
                                     <span className="text-[#29262A] text-[0.8rem] space-x-2">
                                                 <span>
-                                                    {/* {props.moreInfoTarget?.onDuration} */}
-                                                    05:17
+                                                    {props.moreInfoTarget?.onDuration}
+                                                    
                                                 </span> 
                                             </span>
-                                </div>
-                                <div>
+                                </div> }
+                                {props.moreInfoTarget?.offDuration && <div>
                                     <span className="ml-1 text-gray9F text-[0.8rem]">
                                           مدت زمان خاموش بودن ماشین :
                                     </span>
                                     <span className="text-[#29262A] text-[0.8rem] space-x-2">
                                                 <span>
-                                                    {/* {props.moreInfoTarget?.offDuration} */}
-                                                    01:02
+                                                    {props.moreInfoTarget?.offDuration}
+                                                    
                                                 </span> 
                                             </span>
-                                </div>
-                                <div>
+                                </div> }
+                                {props.moreInfoTarget?.stopDuration && <div>
                                     <span className="ml-1 text-gray9F text-[0.8rem]">
                                           مدت زمان  توقف ماشین :
                                     </span>
                                     <span className="text-[#29262A] text-[0.8rem] space-x-2">
                                                 <span>
-                                                    {/* {props.moreInfoTarget?.stopsDuration} */}
-                                                    00:13
+                                                    {props.moreInfoTarget?.stopDuration}
+                                                    
                                                 </span> 
                                             </span>
-                                </div>
-                                <div>
+                                </div> }
+                                {props.moreInfoTarget?.speed && <div>
                                     <span className="ml-1 text-gray9F text-[0.8rem]">
                                            تعداد تخلفات سرعت  :
                                     </span>
                                     <span className="text-[#29262A] text-[0.8rem] space-x-2">
                                                 <span>
-                                                    {/* {props.moreInfoTarget?.speed} */}
-                                                    3
+                                                    {props.moreInfoTarget?.speed}
+                                                    
                                                 </span> 
                                             </span>
-                                </div>
-                                <div>
+                                </div> }
+                                {props.moreInfoTarget?.fuel && <div>
                                     <span className="ml-1 text-gray9F text-[0.8rem]">
                                              میزان سوخت مصرفی  :
                                     </span>
                                     <span className="text-[#29262A] text-[0.8rem] space-x-2">
                                                 <span>
-                                                    {/* {props.moreInfoTarget?.fuel} */}
-                                                    10 لیتر
+                                                    {props.moreInfoTarget?.fuel}
+                                                     
                                                 </span> 
                                             </span>
-                                </div>
+                                </div> }
                                
                                 
                                 
-                                    <div>
+                                {props.moreInfoTarget?.distance &&   <div>
                                     <span className="ml-1 text-gray9F text-[0.8rem]">
                                         مسافت   :
                                     </span>
                                     <span className="text-[#29262A] text-[0.8rem]">
-                                                        {/* {props.moreInfoTarget?.distance} */}
-                                                        10 کیلومتر
+                                                        {props.moreInfoTarget?.distance}
+                                                         
                                                         </span>
-                                </div>
+                                </div> }
                                 
                                 
                             </div>

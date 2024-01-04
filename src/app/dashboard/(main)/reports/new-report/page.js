@@ -12,7 +12,7 @@ import {
   AccordionSummary,
   Typography,
 } from "@mui/material";
-import { useGetAllSalesListQuery } from "@/redux/features/sales/SalesSlice";
+import { useGetAllNewReportsQuery } from "@/redux/features/new-reports/NewReportsSlice";
 import Link from "next/link";
 import AddDataDialog from "@/components/Dashboard/reports/new-report/AddDataDialog";
 import FilterDialog from "@/components/Panel/sales/FilterDialog";
@@ -55,7 +55,7 @@ export default function page() {
     data: inventoryData = [],
     isLoading: isDataLoading,
     isError: isDataError,
-  } = useGetAllSalesListQuery(
+  } = useGetAllNewReportsQuery(
     { page, sort, filterItem },
     { refetchOnMountOrArgChange: true }
   );
@@ -572,26 +572,19 @@ export default function page() {
                           {index + 1}
                         </td>
                         <td className="px-2 md:px-6 py-4  text-gray70 whitespace-nowrap  items-center justify-center ">
-                          <span className="pr-1">1390/02/21</span>
-                          <span>11:15</span>
-                          {/* {data.entryTime} */}
+                          {data.entryTime}
                         </td>
                         <td className="px-2 md:px-6 py-4  text-gray70 whitespace-nowrap  items-center justify-center ">
-                          <span className="pr-1">1390/02/21</span>
-                          <span>19:34</span>
-                          {/* {data.exitTime}  */}
+                          {data.exitTime}
                         </td>
                         <td className="px-2 md:px-6 py-2 xl:table-cell hidden text-gray70 whitespace-nowrap ">
-                          {/* {data.duration} */}
-                          06:19
+                          {data.duration}
                         </td>
                         <td className="table-cell px-6 py-4  text-gray70 whitespace-nowrap ">
-                          {/* {data.geofence} */}
-                          ژئوفنس یک
+                          {data.geofenceName}
                         </td>
                         <td className="hidden md:table-cell px-6 py-4  text-gray70 whitespace-nowrap ">
-                          {/* {data?.distance} */}
-                          10 کیلومتر
+                          {data?.distance}
                         </td>
                         {/* <td className="px-2 md:px-6 py-4  text-gray70 whitespace-nowrap ">
                           {data.status === "CONFIRMED" ? (
@@ -698,6 +691,8 @@ export default function page() {
         openEditInfo={openEditInfo}
       />
       <AddDataDialog
+        filterItem={filterItem}
+        setFilterItem={setFilterItem}
         handleCloseAddData={handleCloseAddData}
         openAddData={openAddData}
       />

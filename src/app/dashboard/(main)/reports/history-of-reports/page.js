@@ -17,7 +17,7 @@ import { boolean } from "yup";
 import FixFailureDialog from "@/components/Panel/failure-and-repair-report/FixFailureDialog";
 import FilterDialog from "@/components/Dashboard/reports/history-of-reports/FilterDialog";
 import MoreInfoDialog from "@/components/Panel/history-of-reports/MoreInfoDialog";
-import { useGetAllHistoryOfReportsQuery } from "@/redux/features/history-of-reports/HistoryOfReportsSlice";
+import { useGetAllHistoryOfReportQuery } from "@/redux/features/new-reports/HistoryOfReportSlice";
 
 function vehiclesAndEquipment() {
   const [searchValue, setSearchValue] = useState("");
@@ -111,7 +111,7 @@ function vehiclesAndEquipment() {
     data: inventoryData = [],
     isLoading: isDataLoading,
     isError: isDataError,
-  } = useGetAllHistoryOfReportsQuery(
+  } = useGetAllHistoryOfReportQuery(
     { page, sort, filterItem },
     { refetchOnMountOrArgChange: true }
   );
@@ -233,15 +233,12 @@ function vehiclesAndEquipment() {
                 <thead className="text-[0.9rem] text-gray80  bg-[#F8F8F8] md:bg-[#F2EDED] ">
                   <tr>
                     <th className="hidden md:table-cell px-6 py-4">#</th>
-                    <th className="px-2 md:px-6 py-4">وسیله و پلاک</th>
-                    <th className="px-2 md:px-6 px-6 py-4">دپارتمان</th>
+                    <th className="px-2 md:px-6 py-4">وسیله / گروه / نوع</th>
+
+                    <th className="px-2 md:px-6 px-6 py-4"> تاریخ ثبت گزارش</th>
+
                     <th className="px-2 md:px-6 px-6 py-4">
-                      {" "}
-                      تاریخ خرابی / تعمیر
-                    </th>
-                    <th className="hidden md:table-cell px-6 py-4">توضیحات</th>
-                    <th className="px-2 md:px-6 px-6 py-4">
-                      <span className="inline">وضعیت</span>
+                      <span className="inline">بازه گزارش گیری </span>
                     </th>
                     <th className="hidden md:table-cell px-6 py-4">عملیات</th>
                   </tr>
@@ -274,30 +271,11 @@ function vehiclesAndEquipment() {
                               sx={{ fontSize: "1rem" }}
                             />
                           </td>
-                          <td className="hidden md:table-cell px-6 py-4  text-gray70 whitespace-nowrap ">
-                            <Skeleton
-                              variant="text"
-                              sx={{ fontSize: "1rem" }}
-                            />
-                          </td>
-                          <td className="px-2 md:px-6 py-4  text-gray70 whitespace-nowrap ">
-                            <div className="flex justify-center">
-                              <Skeleton
-                                variant="rounded"
-                                width={50}
-                                height={20}
-                              />
-                            </div>
-                          </td>
+
                           <td
                             scope="row"
                             className="hidden md:flex gap-2 px-6 py-4 justify-center text-gray70 whitespace-nowrap "
                           >
-                            <Skeleton
-                              variant="rounded"
-                              width={23}
-                              height={23}
-                            />
                             <Skeleton
                               variant="rounded"
                               width={23}
@@ -316,45 +294,74 @@ function vehiclesAndEquipment() {
                           <td className="hidden md:table-cell px-6 py-4  text-gray70 whitespace-nowrap ">
                             {index + 1}
                           </td>
-                          <td className="px-2 md:px-6 py-4  text-gray70 whitespace-nowrap ">
-                            <div>{data?.machine?.type}</div>
-                            <div className="mt-1 text-gray9F text-[0.75rem]">
-                              {data?.tag === ""
-                                ? data?.machine?.code
-                                : data?.machine?.tag?.slice(2, 5) +
-                                  "-" +
-                                  data?.machine?.tag?.slice(5, 7) +
-                                  " " +
-                                  data?.machine?.tag?.slice(7, 8) +
-                                  " " +
-                                  data?.machine?.tag?.slice(0, 2)}
-                            </div>
-                          </td>
+                          {data?.machine ? (
+                            <td className="px-2 md:px-6 py-4  text-gray70 whitespace-nowrap ">
+                              <div>{data?.type}</div>
+                              <div className="mt-1 text-gray9F text-[0.75rem]">
+                                {data?.tag === null
+                                  ? data?.machine?.code
+                                  : data?.machine?.tag?.slice(2, 5) +
+                                    "-" +
+                                    data?.machine?.tag?.slice(5, 7) +
+                                    " " +
+                                    data?.machine?.tag?.slice(7, 8) +
+                                    " " +
+                                    data?.machine?.tag?.slice(0, 2)}
+                              </div>
+                            </td>
+                          ) : data?.type ? (
+                            <td className="px-2 md:px-6 py-4  text-gray70 whitespace-nowrap ">
+                              <span>نوع :</span>
+                              <span>{data?.type} </span>
+                            </td>
+                          ) : data?.subOrganizationName ? (
+                            <td className="px-2 md:px-6 py-4  text-gray70 whitespace-nowrap ">
+                              <span>گروه :</span>
+                              <span>{data?.subOrganizationName} </span>
+                            </td>
+                          ) : null}
                           <td className="px-2 md:px-6 py-4 flex justify-center  text-gray70 whitespace-nowrap ">
-                            {data?.machine?.subOrganizationName}
+                            {data?.date}
                           </td>
-                          <td className="px-2 md:px-6 py-2  text-gray70 whitespace-nowrap ">
-                            {data?.time ? data?.date : "---"}
-                          </td>
+
                           <td className="hidden md:table-cell px-6 py-4  text-gray70 whitespace-nowrap ">
-                            {data?.description}
+                            <div>{data?.fromDate}</div>
+                            <div>{data?.toDate}</div>
                           </td>
-                          <td className="px-2 md:px-6 py-4  text-gray70 whitespace-nowrap ">
-                            {data.status === "AVAILABLE" ? (
-                              <span className="text-[0.8rem] bg-greenBg text-greenText py-1 px-2 rounded-xl">
-                                رفع خرابی
-                              </span>
-                            ) : (
-                              <span className="text-[0.8rem] bg-orangeBg text-orangeText py-1 px-2 rounded-xl">
-                                گزارش خرابی
-                              </span>
-                            )}
-                          </td>
+
                           <td
                             scope="row"
                             className="hidden md:flex gap-2 px-6 py-4 justify-center text-gray70 whitespace-nowrap "
                           >
-                            <button
+                            <Link href="new-report">
+                              <svg
+                                xmlns="http://www.w3.org/2000/svg"
+                                width="18"
+                                height="18"
+                                viewBox="0 0 18 18"
+                                fill="none"
+                              >
+                                <path
+                                  d="M9 4.56442V4.55554"
+                                  stroke="#797979"
+                                  stroke-linecap="round"
+                                  stroke-linejoin="round"
+                                />
+                                <path
+                                  d="M9 13.4445V7.22223"
+                                  stroke="#797979"
+                                  stroke-linecap="round"
+                                  stroke-linejoin="round"
+                                />
+                                <path
+                                  d="M9 17C13.4183 17 17 13.4183 17 9C17 4.58172 13.4183 1 9 1C4.58172 1 1 4.58172 1 9C1 13.4183 4.58172 17 9 17Z"
+                                  stroke="#797979"
+                                  stroke-linecap="round"
+                                  stroke-linejoin="round"
+                                />
+                              </svg>
+                            </Link>
+                            {/* <button
                               onClick={() => {
                                 handleOpenMoreInfo(data);
                               }}
@@ -386,7 +393,7 @@ function vehiclesAndEquipment() {
                                   stroke-linejoin="round"
                                 />
                               </svg>
-                            </button>
+                            </button> */}
                           </td>
                         </tr>
                       ))}
