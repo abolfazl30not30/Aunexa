@@ -2,29 +2,14 @@
 import React, { useEffect, useState } from "react";
 
 import {
-  FormControl,
-  InputAdornment,
-  Menu,
-  OutlinedInput,
   Pagination,
   Skeleton,
-  Accordion,
-  AccordionSummary,
-  Typography,
 } from "@mui/material";
-import { useGetAllNewReportsQuery } from "@/redux/features/new-reports/NewReportsSlice";
-import Link from "next/link";
+import {useGetAllNewReportsQuery, useLazyGetAllGPSPointQuery} from "@/redux/features/new-reports/NewReportsSlice";
 import AddDataDialog from "@/components/Dashboard/reports/new-report/AddDataDialog";
 import FilterDialog from "@/components/Panel/sales/FilterDialog";
 import MoreInfoDialog from "@/components/Dashboard/reports/new-report/MoreInfoDialog";
-import DeleteDialog from "@/components/Panel/sales/DeleteDialog";
-import EditInfoDialog from "@/components/Panel/sales/EditInfoDialog";
 import { useSelector } from "react-redux";
-import Checkbox from "@mui/material/Checkbox";
-import RegisterFactorDialog from "@/components/Panel/sales/RegisterFactorDialog";
-import { AccordionDetails } from "@material-ui/core";
-import DeleteItemDialog from "@/components/Panel/sales/DeleteItemDialog";
-import EditItemInfoDialog from "@/components/Panel/sales/EditItemInfoDialog";
 import dynamic from "next/dynamic";
 const ReportMap = dynamic(
   () =>
@@ -46,8 +31,11 @@ export default function page() {
   const handleCloseSortMenu = () => {
     setAnchorElSort(null);
   };
+
   const [openFilter, setOpenFilter] = useState(false);
   const [filterItem, setFilterItem] = useState("");
+  const [filterItemForGps, setFilterItemForGps] = useState("");
+  const [vehiclePoints,setVehiclePoints] = useState("")
 
   const [paymentList, setPaymentList] = useState([]);
 
@@ -59,6 +47,17 @@ export default function page() {
     { page, sort, filterItem },
     { refetchOnMountOrArgChange: true }
   );
+
+  const [getPoints,{
+    data: locations = [],
+    isLoading: isLocationsLoading,
+    isError: isLocationsError,
+  }] = useLazyGetAllGPSPointQuery(
+      {  filterItemForGps },
+      { refetchOnMountOrArgChange: true }
+  );
+
+
   const handlePagination = (event, value) => {
     setPage(value);
   };
@@ -657,17 +656,7 @@ export default function page() {
           />
         </div>
       </section>
-      <FilterDialog
-        filterItem={filterItem}
-        setFilterItem={setFilterItem}
-        openFilter={openFilter}
-        handleCloseFilter={handleCloseFilter}
-      />
-      <RegisterFactorDialog
-        paymentList={paymentList}
-        handleCloseRegisterFactor={handleCloseRegisterFactor}
-        openRegisterFactor={openRegisterFactor}
-      />
+
       <MoreInfoDialog
         handleOpenDelete={handleOpenDelete}
         handleOpenEditInfo={handleOpenEditInfo}
@@ -675,31 +664,15 @@ export default function page() {
         openMoreInfo={openMoreInfo}
         handleCloseMoreInfo={handleCloseMoreInfo}
       />
-      <DeleteDialog
-        deleteTargetId={deleteTargetId}
-        openDelete={openDelete}
-        handleCloseDelete={handleCloseDelete}
-      />
-      <DeleteItemDialog
-        deleteTargetItemId={deleteTargetItemId}
-        openDeleteItem={openDeleteItem}
-        handleCloseDeleteItem={handleCloseDeleteItem}
-      />
-      <EditInfoDialog
-        editInfoTarget={editInfoTarget}
-        handleCloseEditInfo={handleCloseEditInfo}
-        openEditInfo={openEditInfo}
-      />
+
       <AddDataDialog
         filterItem={filterItem}
         setFilterItem={setFilterItem}
+        filterItemForGps={filterItemForGps}
+        setFilterItemForGps={setFilterItemForGps}
+        getPoints={getPoints}
         handleCloseAddData={handleCloseAddData}
         openAddData={openAddData}
-      />
-      <EditItemInfoDialog
-        editInfoItemTarget={editInfoItemTarget}
-        handleCloseEditItemInfo={handleCloseEditItemInfo}
-        openEditItemInfo={openEditItemInfo}
       />
     </div>
   );

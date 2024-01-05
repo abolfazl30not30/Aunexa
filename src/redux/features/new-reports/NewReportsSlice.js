@@ -8,6 +8,12 @@ export const NewReportsSlice = apiSlice.injectEndpoints({
       }),
       providesTags: ["new-reports"],
     }),
+    getAllGPSPoint: builder.query({
+      query: ({ filterItem }) => ({
+        url: `vehicle/gps/filter?${filterItem}`,
+      }),
+      providesTags: ["new-reports"],
+    }),
     saveNewReports: builder.mutation({
       query: (body) => ({
         url: "vehicle/report-history",
@@ -19,5 +25,4 @@ export const NewReportsSlice = apiSlice.injectEndpoints({
   }),
 });
 
-export const { useGetAllNewReportsQuery, useSaveNewReportsMutation } =
-  NewReportsSlice;
+export const { useGetAllNewReportsQuery, useSaveNewReportsMutation, useLazyGetAllGPSPointQuery } = NewReportsSlice;

@@ -37,7 +37,7 @@ export default function MoreInfoDialog(props) {
         }
     }
 
-    const ZOOM_LEVEL = 12;
+    const ZOOM_LEVEL = 14;
     return (
         <>
             <Dialog
@@ -91,7 +91,30 @@ export default function MoreInfoDialog(props) {
                                         </div>
                                     </div>
                                 </div>
-
+                                <div className="flex flex-col">
+                                    <div className="mb-2">
+                                        <span className="text-[0.9rem] text-gray70 ">حداكثر سرعت مجاز</span>
+                                    </div>
+                                    <div className="border border-[#D9D9D9]  flex justify-start px-4">
+                                        <div className="p-2">
+                                            <span className="text-[#29262A] text-[0.9rem]">
+                                                {props.moreInfoTarget?.speed}
+                                            </span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div className="flex flex-col">
+                                    <div className="mb-2">
+                                        <span className="text-[0.9rem] text-gray70 ">حداكثر زمان توقف</span>
+                                    </div>
+                                    <div className="border border-[#D9D9D9]  flex justify-start px-4">
+                                        <div className="p-2">
+                                            <span className="text-[#29262A] text-[0.9rem]">
+                                                {props.moreInfoTarget?.stopTimeInMinutes}
+                                            </span>
+                                        </div>
+                                    </div>
+                                </div>
                                 {
                                     props.moreInfoTarget?.description && (
                                         <div className="flex flex-col">

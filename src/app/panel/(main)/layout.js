@@ -27,18 +27,18 @@ const theme = createTheme({
 });
 
 export default function RootLayout({ children }) {
-  const [nameOfSubOrganization, setNameOfSubOrganization] = useState("");
+
+  const [subOrganizationId, setSubOrganizationId] = useState();
+  const [userInfo, setUserInfo] = useState({})
   useEffect(() => {
-    setNameOfSubOrganization(
-      window.sessionStorage.getItem("subOrganizationId")
-    );
-  }, []);
-  const [subOrganizationId, setSubOrganizationId] = useState(
-    window.sessionStorage.getItem("subOrganizationId")
-  );
-  const [x, setX] = useState();
+      setSubOrganizationId(window.sessionStorage.getItem("subOrganizationId"));
+      setUserInfo({
+        name:window.sessionStorage.getItem("name"),
+        subOrganizationName:window.sessionStorage.getItem("subOrganizationName")
+      })
+    }, []);
+
   useSubscription(`/queue/latest/` + subOrganizationId, (message) => {
-    setX(message);
     const obj = JSON.parse(message.body);
     console.log(obj);
     toast.info(obj.message, {
@@ -375,10 +375,10 @@ export default function RootLayout({ children }) {
                     </div>
                     <div>
                       <h3 className="text-[0.9rem] mb-1 tracking-tighter">
-                        ابوالفضل رمضانیان
+                        {userInfo.name}
                       </h3>
                       <p className="text-[0.7rem] text-gray9F tracking-tighter">
-                        ادمین انبار مواد اولیه
+                        {userInfo.subOrganizationName}
                       </p>
                     </div>
                   </div>
@@ -520,7 +520,6 @@ export default function RootLayout({ children }) {
                             />
                           </svg>
                         </summary>
-                        {console.log(x)}
                         <ul className="flex flex-col gap-1 pr-2">
                           {accessData.hasOwnProperty("PrimaryStoreInput") && (
                             <li>

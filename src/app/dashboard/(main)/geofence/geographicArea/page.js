@@ -49,6 +49,8 @@ function GeographicArea() {
     name: "",
     subOrganizationId: "",
     subOrganizationName:"",
+    speed:"",
+    stopTimeInMinutes:"",
     fenceType: "",
     description: "",
     centerPoint: {
@@ -181,6 +183,8 @@ function GeographicArea() {
     { page, sort, filterItem },
     { refetchOnMountOrArgChange: true }
   );
+
+
 
   return (
     <>
@@ -507,7 +511,6 @@ function GeographicArea() {
                                   />
                                 </svg>
                               </button>
-
                           </td>
                         </tr>
                       ))}
@@ -517,8 +520,7 @@ function GeographicArea() {
           </div>
           <div
             className="flex justify-center mb-5 mt-7"
-            style={{ direction: "rtl" }}
-          >
+            style={{ direction: "rtl" }}>
             <Pagination
               page={page}
               count={inventoryData.totalPages}

@@ -14,6 +14,8 @@ import { useDispatch, useSelector } from "react-redux";
 import { useLazyGetAccessQuery } from "@/redux/features/access/getAccessSlice";
 import { setAccess } from "@/redux/permission/accessSlice";
 import { useLazyGetCounterOfDashboardNotificationQuery } from "@/redux/features/notification/NotificationCounterDashboardSlice";
+import {useSubscription} from "react-stomp-hooks";
+import {toast} from "react-toastify";
 
 const cacheRtl = createCache({
   key: "muirtl",
@@ -24,6 +26,34 @@ const theme = createTheme({
 });
 
 export default function RootLayout({ children }) {
+
+  const [subOrganizationId, setSubOrganizationId] = useState();
+
+  const [userInfo, setUserInfo] = useState({})
+
+  useEffect(() => {
+    setSubOrganizationId(window.sessionStorage.getItem("subOrganizationId"));
+    setUserInfo({
+      name:window.sessionStorage.getItem("name"),
+      subOrganizationName:window.sessionStorage.getItem("subOrganizationName")
+    })
+  }, []);
+
+  useSubscription(`/queue/latest/` + subOrganizationId, (message) => {
+    const obj = JSON.parse(message.body);
+    console.log(obj);
+    toast.info(obj.message, {
+      position: "top-center",
+      autoClose: 5000,
+      hideProgressBar: false,
+      closeOnClick: true,
+      pauseOnHover: true,
+      draggable: true,
+      progress: undefined,
+      theme: "light",
+    });
+  });
+
   const pathname = usePathname();
   const dispatch = useDispatch();
   const [
@@ -37,6 +67,7 @@ export default function RootLayout({ children }) {
   useEffect(() => {
     getCounterList();
   }, [pathname]);
+
 
   const [openAlertMenu, setOpenAlertMenu] = useState(false);
   const [anchorEl, setAnchorEl] = React.useState(null);
@@ -268,10 +299,10 @@ export default function RootLayout({ children }) {
                     </div>
                     <div>
                       <h3 className="text-[0.9rem] mb-1 tracking-tighter">
-                        ابوالفضل رمضانیان
+                        {userInfo.name}
                       </h3>
                       <p className="text-[0.7rem] text-gray9F tracking-tighter">
-                        ادمین انبار مواد اولیه
+                        {userInfo.subOrganizationName}
                       </p>
                     </div>
                   </div>

@@ -16,72 +16,23 @@ import OutlinedInput from '@mui/material/OutlinedInput';
 import InputLabel from '@mui/material/InputLabel';
 import MenuItem from '@mui/material/MenuItem';
 import FormControl from '@mui/material/FormControl';
-import ListItemText from '@mui/material/ListItemText';
 import Select from '@mui/material/Select';
-import Checkbox from '@mui/material/Checkbox';
 import CircularProgress from '@mui/material/CircularProgress';
 import "react-multi-date-picker/styles/colors/red.css"
-import {
-    useLazyGetAllProductQuery,
-    useLazyGetAllUnitQuery,
-} from "@/redux/features/category/CategorySlice";
 import persian from "react-date-object/calendars/persian";
 import persian_fa from "react-date-object/locales/persian_fa";
-import {styled} from "@mui/material/styles";
 import DatePicker, { DateObject } from "react-multi-date-picker";
 import TimePicker from "react-multi-date-picker/plugins/time_picker";
-import DatePanel from "react-multi-date-picker/plugins/date_panel";
-import Switch from "@mui/material/Switch";
 import { useSaveNewReportsMutation } from "@/redux/features/new-reports/NewReportsSlice";
-import { PersianToEnglish } from "@/helper/PersianToEnglish";
 import { useLazyGetAllSubOrganizationQuery } from "@/redux/features/category/CategorySlice";
 import { useLazyGetAllVehicleCategoryQuery } from "@/redux/features/category/CategorySlice";
 import { useLazyGetAllVehicleQuery } from "@/redux/features/category/CategorySlice";
 import { ConvertToNull } from "@/helper/ConvertToNull";
 
-const AntSwitch = styled(Switch)(({ theme }) => ({
-    width: 35,
-    height: 18,
-    padding: 0,
-    display: 'flex',
-    '&:active': {
-        '& .MuiSwitch-thumb': {
-            width: 12,
-        },
-        '& .MuiSwitch-switchBase.Mui-checked': {
-            transform: 'translateX(10px)',
-        },
-    },
-    '& .MuiSwitch-switchBase': {
-        padding: 2,
-        '&.Mui-checked': {
-            transform: 'translateX(17px)',
-            color: '#fff',
-            '& + .MuiSwitch-track': {
-                opacity: 1,
-                backgroundColor: theme.palette.mode === 'dark' ? '#DB3746' : '#DB3746',
-            },
-        },
-    },
-    '& .MuiSwitch-thumb': {
-        boxShadow: '0 2px 4px 0 rgb(0 35 11 / 20%)',
-        width: 12,
-        height: 13,
-        borderRadius: 4,
-        transition: theme.transitions.create(['width'], {
-            duration: 200,
-        }),
-    },
-    '& .MuiSwitch-track': {
-        borderRadius: 16 / 2,
-        opacity: 1,
-        backgroundColor:
-            theme.palette.mode === 'dark' ? 'rgba(255,255,255,.35)' : 'rgba(0,0,0,.25)',
-        boxSizing: 'border-box',
-    },
-}));
+
 
 export default function AddDataDialog(props) {
+
     const [fromDate, setFromDate] = useState(
         ((number) =>
           new DateObject().set({
@@ -104,6 +55,7 @@ export default function AddDataDialog(props) {
             formik.setFieldValue("fromDate", "")
         }
     }
+
     const [toDate, setToDate] = useState(
         ((number) =>
           new DateObject().set({
@@ -181,6 +133,8 @@ export default function AddDataDialog(props) {
 
     //     return errors;
     // };
+
+
     //submit data
     const [submitData, { isLoading:isSubmitLoading ,error}] = useSaveNewReportsMutation()
 
@@ -197,7 +151,9 @@ export default function AddDataDialog(props) {
         fromDate:"",
         toDate:"",
         },
+
         // validate:validate,
+
         validationSchema: schema,
 
         onSubmit: async (product,helpers) => {
@@ -236,7 +192,8 @@ export default function AddDataDialog(props) {
             getVehicleList()
         }
     },[openVehicleList])
-         //subOrganization input
+
+    //subOrganization input
     const [subOrganization,setSubOrganization] = useState(null)
     const [openSubOrganizationList,setOpenSubOrganizationList] = useState(false)
     const [getSubOrganizationList,{ data : subOrganizationList  = [] , isLoading : isSubOrganizationLoading, isError: isSubOrganizationError }] = useLazyGetAllSubOrganizationQuery()
@@ -294,6 +251,7 @@ export default function AddDataDialog(props) {
     //     typeof value === 'string' ? value.split(',') : value,
     //   );
     // };
+
     return (
         <>
             <Dialog
@@ -370,6 +328,7 @@ export default function AddDataDialog(props) {
                                         />
                                                 </div>
                                                 <div >
+
                                                 <Autocomplete
                                                  disabled={(formik.values.subOrganizationId || formik.values.machineId )? true:false}
                                         open={openVehicleCategoryList}

@@ -39,21 +39,24 @@ L.Icon.Default.mergeOptions({
 export default function AddDataDialog(props) {
     const [center, setCenter] = useState([29.120738496597934,55.33779332882627]);
 
-    const edit = useRef(null);
+    let edit = useRef();
 
-    const ZOOM_LEVEL = 12;
+    const ZOOM_LEVEL = 14;
+
+    let lastAddedPolygonID = null;
+    let layerType = null;
 
     const removeAllEditControlLayers = () => {
-        console.log(edit)
-        // let layerContainer = edit.options.edit.featureGroup,
-        //     layers = layerContainer._layers,
-        //     layer_ids = Object.keys(layers),
-        //     layer;
-        //
-        // layer_ids.forEach(id => {
-        //     layer = layers[id]
-        //     layerContainer.removeLayer(layer);
-        // })
+        let layerContainer = edit.current,
+             layers = layerContainer._layers,
+             layer_ids = Object.keys(layers),
+             layer;
+        layer_ids.forEach(id => {
+            layer = layers[id]
+            layerContainer.removeLayer(layer);
+        })
+        lastAddedPolygonID = null;
+        layer_ids = null
     }
 
     const convertPolygon = (arr) =>{
@@ -70,13 +73,11 @@ export default function AddDataDialog(props) {
     }
 
 
-    let lastAddedPolygonID = null;
-    let layerType = null;
-
     const onCreated = (e) => {
-
         if(lastAddedPolygonID !== null){
-            e.sourceTarget._layers[lastAddedPolygonID].remove();
+            if(e.sourceTarget._layers[lastAddedPolygonID]){
+                e.sourceTarget._layers[lastAddedPolygonID].remove();
+            }
             lastAddedPolygonID = null
         }
 
@@ -91,12 +92,10 @@ export default function AddDataDialog(props) {
                 longitude:(Math.round(location.lng * 1000000) / 1000000)
             }
             formik.setFieldValue("centerPoint", locationObject)
-            console.log(radius,locationObject)
         } else {
             formik.setFieldValue("fenceType", "POLYGON")
             const polygonArr = convertPolygon(e.layer.getLatLngs())
             formik.setFieldValue("points", polygonArr)
-            console.log(polygonArr)
         }
         lastAddedPolygonID = e.layer._leaflet_id;
         layerType = e.layerType;
@@ -115,12 +114,10 @@ export default function AddDataDialog(props) {
                 longitude:(Math.round(location.lng * 1000000) / 1000000)
             }
             formik.setFieldValue("centerPoint", locationObject)
-            console.log(radius,locationObject)
         } else {
             formik.setFieldValue("fenceType", "POLYGON")
             const polygonArr = convertPolygon(layer.getLatLngs())
             formik.setFieldValue("points", polygonArr)
-            console.log(polygonArr)
         }
     }
 
@@ -143,12 +140,12 @@ export default function AddDataDialog(props) {
         }
     },[openSubOrganizationList])
 
-
     const handleReset = () =>{
         removeAllEditControlLayers()
+        lastAddedPolygonID = null;
+        layerType = null;
         formik.resetForm()
         setSubOrganization(null)
-
     }
 
     //submit data
@@ -158,6 +155,8 @@ export default function AddDataDialog(props) {
         name: yup.string().required("لطفا نام ناحیه جغرافیایی را وارد کنید"),
         subOrganizationId: yup.string().required("لطفا نام ناحیه جغرافیایی را وارد کنید"),
         fenceType:yup.string().required("لطفا  ناحیه جغرافیایی مورد نظر  را انتخاب کنید"),
+        speed:yup.string().required("لطفا حداكثر سرعت مجاز در اين ناحيه را وارد كنيد"),
+        stopTimeInMinutes:yup.string().required("لطفا حداكثر زمان توقف در اين ناحيه را وارد كنيد"),
     });
 
     const formik = useFormik({
@@ -165,6 +164,8 @@ export default function AddDataDialog(props) {
             name: "",
             subOrganizationId: "",
             subOrganizationName:"",
+            speed:"",
+            stopTimeInMinutes:"",
             fenceType: "",
             description: "",
             centerPoint: "",
@@ -194,6 +195,7 @@ export default function AddDataDialog(props) {
                     style: {
                         fontFamily: "__fonts_2f4189,__fonts_Fallback_2f4189",
                     },}}>
+
                 <DialogContent>
                     <DialogContentText style={{fontFamily: "__fonts_2f4189,__fonts_Fallback_2f4189"}}>
                         <div className="flex justify-end">
@@ -223,22 +225,6 @@ export default function AddDataDialog(props) {
                                         onChange={formik.handleChange}
                                         error={formik.touched.name && Boolean(formik.errors.name)}
                                         helperText={formik.touched.name && formik.errors.name}
-                                        inputProps={{style: {fontFamily: "__fonts_2f4189,__fonts_Fallback_2f4189", fontSize: "0.8rem"}}}
-                                        InputLabelProps={{style: {fontFamily: "__fonts_2f4189,__fonts_Fallback_2f4189"}}}/>
-                                </div>
-                                <div>
-                                    <TextField
-                                        multiline
-                                        rows={1}
-                                        maxRows={4}
-                                        fullWidth
-                                        placeholder="توضيحات (اختياری)"
-                                        type="text"
-                                        name="description"
-                                        value={formik.values.description}
-                                        onChange={formik.handleChange}
-                                        error={formik.touched.description && Boolean(formik.errors.description)}
-                                        helperText={formik.touched.description && formik.errors.description}
                                         inputProps={{style: {fontFamily: "__fonts_2f4189,__fonts_Fallback_2f4189", fontSize: "0.8rem"}}}
                                         InputLabelProps={{style: {fontFamily: "__fonts_2f4189,__fonts_Fallback_2f4189"}}}/>
                                 </div>
@@ -285,11 +271,52 @@ export default function AddDataDialog(props) {
                                             />}
                                     />
                                 </div>
-                                <div className="geofence-map">
+                                <div>
+                                    <TextField
+                                        fullWidth
+                                        placeholder="حداكثر سرعت مجاز (km/h)"
+                                        type="number"
+                                        name="speed"
+                                        value={formik.values.speed}
+                                        onChange={formik.handleChange}
+                                        error={formik.touched.speed && Boolean(formik.errors.speed)}
+                                        helperText={formik.touched.speed && formik.errors.speed}
+                                        inputProps={{style: {fontFamily: "__fonts_2f4189,__fonts_Fallback_2f4189", fontSize: "0.8rem"}}}
+                                        InputLabelProps={{style: {fontFamily: "__fonts_2f4189,__fonts_Fallback_2f4189"}}}/>
+                                </div>
+                                <div>
+                                    <TextField
+                                        fullWidth
+                                        placeholder="حداكثر زمان توقف (دقيقه)"
+                                        type="number"
+                                        name="stopTimeInMinutes"
+                                        value={formik.values.stopTimeInMinutes}
+                                        onChange={formik.handleChange}
+                                        error={formik.touched.stopTimeInMinutes && Boolean(formik.errors.stopTimeInMinutes)}
+                                        helperText={formik.touched.stopTimeInMinutes && formik.errors.stopTimeInMinutes}
+                                        inputProps={{style: {fontFamily: "__fonts_2f4189,__fonts_Fallback_2f4189", fontSize: "0.8rem"}}}
+                                        InputLabelProps={{style: {fontFamily: "__fonts_2f4189,__fonts_Fallback_2f4189"}}}/>
+                                </div>
+                                <div>
+                                    <TextField
+                                        multiline
+                                        rows={1}
+                                        maxRows={4}
+                                        fullWidth
+                                        placeholder="توضيحات (اختياری)"
+                                        type="text"
+                                        name="description"
+                                        value={formik.values.description}
+                                        onChange={formik.handleChange}
+                                        error={formik.touched.description && Boolean(formik.errors.description)}
+                                        helperText={formik.touched.description && formik.errors.description}
+                                        inputProps={{style: {fontFamily: "__fonts_2f4189,__fonts_Fallback_2f4189", fontSize: "0.8rem"}}}
+                                        InputLabelProps={{style: {fontFamily: "__fonts_2f4189,__fonts_Fallback_2f4189"}}}/>
+                                </div>
+                                <div className="geofence-map" >
                                     <MapContainer center={center} zoom={ZOOM_LEVEL} >
-                                        <FeatureGroup>
+                                        <FeatureGroup ref={edit}>
                                             <EditControl
-                                                ref={edit}
                                                 position="topright"
                                                 onCreated={onCreated}
                                                 onEdited={(e)=>{OnEdited(e)}}
