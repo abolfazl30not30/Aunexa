@@ -8,21 +8,15 @@ export const NewReportsSlice = apiSlice.injectEndpoints({
       }),
       providesTags: ["new-reports"],
     }),
+
     getAllGPSPoint: builder.query({
-      query: ({ filterItem }) => ({
-        url: `vehicle/gps/filter?${filterItem}`,
+      query: ({ filterItemForGps }) => ({
+        url: `vehicle/gps/find-all/filter?${filterItemForGps}`,
       }),
       providesTags: ["new-reports"],
     }),
-    saveNewReports: builder.mutation({
-      query: (body) => ({
-        url: "vehicle/report-history",
-        method: "POST",
-        body: body,
-      }),
-      invalidatesTags: ["new-reports"],
-    }),
+
   }),
 });
 
-export const { useGetAllNewReportsQuery, useSaveNewReportsMutation, useLazyGetAllGPSPointQuery } = NewReportsSlice;
+export const { useGetAllNewReportsQuery, useGetAllGPSPointQuery } = NewReportsSlice;

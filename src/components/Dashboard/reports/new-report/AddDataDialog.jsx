@@ -23,11 +23,13 @@ import persian from "react-date-object/calendars/persian";
 import persian_fa from "react-date-object/locales/persian_fa";
 import DatePicker, { DateObject } from "react-multi-date-picker";
 import TimePicker from "react-multi-date-picker/plugins/time_picker";
-import { useSaveNewReportsMutation } from "@/redux/features/new-reports/NewReportsSlice";
+
 import { useLazyGetAllSubOrganizationQuery } from "@/redux/features/category/CategorySlice";
 import { useLazyGetAllVehicleCategoryQuery } from "@/redux/features/category/CategorySlice";
 import { useLazyGetAllVehicleQuery } from "@/redux/features/category/CategorySlice";
 import { ConvertToNull } from "@/helper/ConvertToNull";
+
+import {useSaveNewReportsMutation} from "@/redux/features/new-reports/HistoryOfReportSlice";
 
 
 
@@ -95,6 +97,23 @@ export default function AddDataDialog(props) {
         return params
     }
 
+    const handleURLSearchParamsForGPS = (values) =>{
+        let params = new URLSearchParams()
+        if(values.fromDate){
+            params.set("dateFrom",values.fromDate)
+        }
+        if(values.toDate){
+            params.set("dateTo",values.toDate)
+        }
+        if(values.fromTime){
+            params.set("timeFrom",values.fromTime)
+        }
+        if(values.toTime){
+            params.set("timeTo",values.toTime)
+        }
+        return params
+    }
+
       const handleToDateInput = (value) => {
         if(value){
             setToDate(value)
@@ -127,7 +146,6 @@ export default function AddDataDialog(props) {
         return errors;
     };
 
-
     //submit data
     const [submitData, { isLoading:isSubmitLoading ,error}] = useSaveNewReportsMutation()
 
@@ -152,20 +170,20 @@ export default function AddDataDialog(props) {
         onSubmit: async (product,helpers) => {
             let updateProduct = {...product,machine:{id:(product.machineId===""? null : product.machineId)},fromTime:(product.fromDate===""?null:`${fromDate.hour}:${fromDate.minute}:${fromDate.second}`),toTime:(product.toDate===""?null:`${toDate.hour}:${toDate.minute}:${toDate.second}`)}
 
+            props.setSkipFetch(false)
             let params = handleURLSearchParams(updateProduct)
             props.setFilterItem(params.toString())
 
-            updateProduct=ConvertToNull(updateProduct)
+            let paramsGPS = handleURLSearchParamsForGPS(updateProduct)
+            props.setFilterItemForGps(paramsGPS.toString())
 
+            updateProduct = ConvertToNull(updateProduct)
             const userData = await submitData(updateProduct)
             handleReset()
             props.handleCloseAddData()
             
         },
     });
-
-
-
 
     const [vehicleCategory,setVehicleCategory] = useState(null)
     const [openVehicleCategoryList,setOpenVehicleCategoryList] = useState(false)
@@ -176,7 +194,6 @@ export default function AddDataDialog(props) {
         }
     },[openVehicleCategoryList])
 
-
     const [vehicle,setVehicle] = useState(null)
     const [openVehicleList,setOpenVehicleList] = useState(false)
     const [getVehicleList,{ data : vehicleList  = [] , isLoading : isVehicleLoading, isError: vehicleIsError }] =   useLazyGetAllVehicleQuery()
@@ -185,6 +202,7 @@ export default function AddDataDialog(props) {
             getVehicleList()
         }
     },[openVehicleList])
+
 
     //subOrganization input
     const [subOrganization,setSubOrganization] = useState(null)
@@ -273,7 +291,7 @@ export default function AddDataDialog(props) {
                         </div>
                         <form className="flex justify-center py-3 " onSubmit={formik.handleSubmit} method="POST">
                             <div className="flex flex-col justify-center w-[90%] gap-3">
-                            <div >
+                            <div>
                             <Autocomplete
                             disabled={(formik.values.type || formik.values.machineId )? true:false}
                                             open={openSubOrganizationList}

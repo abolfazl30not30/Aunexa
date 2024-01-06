@@ -35,6 +35,7 @@ export default function page() {
         setTrackingData(obj)
         console.log(obj)
     });
+
     return (
         <div>
             <header className="flex justify-between items-center text-[0.9rem] bg-white py-6 px-5 md:px-10">

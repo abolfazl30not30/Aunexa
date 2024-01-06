@@ -5,7 +5,10 @@ import {
   Pagination,
   Skeleton,
 } from "@mui/material";
-import {useGetAllNewReportsQuery, useLazyGetAllGPSPointQuery} from "@/redux/features/new-reports/NewReportsSlice";
+import {
+  useGetAllGPSPointQuery,
+  useGetAllNewReportsQuery,
+} from "@/redux/features/new-reports/NewReportsSlice";
 import AddDataDialog from "@/components/Dashboard/reports/new-report/AddDataDialog";
 import FilterDialog from "@/components/Panel/sales/FilterDialog";
 import MoreInfoDialog from "@/components/Dashboard/reports/new-report/MoreInfoDialog";
@@ -18,13 +21,19 @@ const ReportMap = dynamic(
 );
 
 export default function page() {
+
+
+  const [skipFetch,setSkipFetch] = useState(true)
+
   let permission = useSelector(
     (state) => state.access?.pages?.primaryStoreInput
   );
+
   const [page, setPage] = useState(1);
   const [sort, setSort] = useState("desc");
   const [anchorElSort, setAnchorElSort] = useState(null);
   const openSort = Boolean(anchorElSort);
+
   const handleOpenSortMenu = (event) => {
     setAnchorElSort(event.currentTarget);
   };
@@ -33,11 +42,10 @@ export default function page() {
   };
 
   const [openFilter, setOpenFilter] = useState(false);
+
   const [filterItem, setFilterItem] = useState("");
   const [filterItemForGps, setFilterItemForGps] = useState("");
   const [vehiclePoints,setVehiclePoints] = useState("")
-
-  const [paymentList, setPaymentList] = useState([]);
 
   const {
     data: inventoryData = [],
@@ -45,37 +53,23 @@ export default function page() {
     isError: isDataError,
   } = useGetAllNewReportsQuery(
     { page, sort, filterItem },
-    { refetchOnMountOrArgChange: true }
+    { skip :skipFetch, refetchOnMountOrArgChange: true }
   );
 
-  const [getPoints,{
+  const{
     data: locations = [],
     isLoading: isLocationsLoading,
     isError: isLocationsError,
-  }] = useLazyGetAllGPSPointQuery(
+  } = useGetAllGPSPointQuery(
       {  filterItemForGps },
-      { refetchOnMountOrArgChange: true }
+      { skip : skipFetch ,refetchOnMountOrArgChange: true }
   );
 
+  console.log(locations)
 
   const handlePagination = (event, value) => {
     setPage(value);
   };
-  const handleOpenFilter = () => {
-    setOpenFilter(true);
-  };
-  const handleCloseFilter = () => {
-    setOpenFilter(false);
-  };
-  const [openRegisterFactor, setOpenRegisterFactor] = useState(false);
-  const handleOpenRegisterFactor = () => {
-    setOpenRegisterFactor(true);
-  };
-  const handleCloseRegisterFactor = () => {
-    setOpenRegisterFactor(false);
-  };
-  const [openDelete, setOpenDelete] = useState(false);
-  const [deleteTargetId, setDeleteTargetId] = useState("");
 
   const [openMoreInfo, setOpenMoreInfo] = useState(false);
   const [moreInfoTarget, setMoreInfoTarget] = useState({
@@ -114,120 +108,7 @@ export default function page() {
     },
   });
 
-  const [openEditInfo, setOpenEditInfo] = useState(false);
-  const [editInfoTarget, setEditInfoTarget] = useState({
-    id: "",
-    productId: "",
-    productName: "",
-    productImage: "",
-    quantity: {
-      unit: "",
-      value: 0,
-    },
-    price: 0,
-    description: "",
-    paymentMethod: "",
-    invoiceId: "",
-    subOrganizationInfo: {
-      subOrganizationId: "",
-      subOrganizationName: "",
-      organizationId: "",
-    },
-    salesDate: "",
-    salesTime: "",
-    confirmationDate: "",
-    confirmationTime: "",
-    confirmerName: "",
-    status: "",
-    sellerName: "",
-    customer: "",
-    receiptFile: "",
-    receiptCode: "",
-    failureReason: {
-      date: "",
-      time: "",
-      description: "",
-      reporter: "",
-    },
-  });
-  const [openEditItemInfo, setOpenEditItemInfo] = useState(false);
-  const [editInfoItemTarget, setEditInfoItemTarget] = useState({
-    id: "",
-    productId: "",
-    productName: "",
-    productImage: "",
-    quantity: {
-      unit: "",
-      value: 0,
-    },
-    price: 0,
-    description: "",
-    paymentMethod: "",
-    invoiceId: "",
-    subOrganizationInfo: {
-      subOrganizationId: "",
-      subOrganizationName: "",
-      organizationId: "",
-    },
-    salesDate: "",
-    salesTime: "",
-    confirmationDate: "",
-    confirmationTime: "",
-    confirmerName: "",
-    status: "",
-    sellerName: "",
-    customer: "",
-    receiptFile: "",
-    receiptCode: "",
-    failureReason: {
-      date: "",
-      time: "",
-      description: "",
-      reporter: "",
-    },
-  });
-  const handleOpenEditItemInfo = (info) => {
-    setEditInfoItemTarget(info);
-    setOpenEditItemInfo(true);
-  };
-  const handleCloseEditItemInfo = () => {
-    setEditInfoItemTarget({
-      id: "",
-      productId: "",
-      productName: "",
-      productImage: "",
-      quantity: {
-        unit: "",
-        value: 0,
-      },
-      price: 0,
-      description: "",
-      paymentMethod: "",
-      invoiceId: "",
-      subOrganizationInfo: {
-        subOrganizationId: "",
-        subOrganizationName: "",
-        organizationId: "",
-      },
-      salesDate: "",
-      salesTime: "",
-      confirmationDate: "",
-      confirmationTime: "",
-      confirmerName: "",
-      status: "",
-      sellerName: "",
-      customer: "",
-      receiptFile: "",
-      receiptCode: "",
-      failureReason: {
-        date: "",
-        time: "",
-        description: "",
-        reporter: "",
-      },
-    });
-    setOpenEditItemInfo(false);
-  };
+
   const handleOpenMoreInfo = (info) => {
     setMoreInfoTarget(info);
     setOpenMoreInfo(true);
@@ -271,69 +152,7 @@ export default function page() {
     });
     setOpenMoreInfo(false);
   };
-  const handleOpenDelete = (id) => {
-    setDeleteTargetId(id);
-    setOpenDelete(true);
-  };
 
-  const handleCloseDelete = () => {
-    setDeleteTargetId("");
-    setOpenDelete(false);
-  };
-
-  const [openDeleteItem, setOpenDeleteItem] = useState(false);
-  const [deleteTargetItemId, setDeleteTargetItemId] = useState("");
-  const handleOpenDeleteItem = (id) => {
-    setDeleteTargetItemId(id);
-    setOpenDeleteItem(true);
-  };
-
-  const handleCloseDeleteItem = () => {
-    setDeleteTargetItemId("");
-    setOpenDeleteItem(false);
-  };
-  const handleOpenEditInfo = (info) => {
-    setEditInfoTarget(info);
-    setOpenEditInfo(true);
-  };
-  const handleCloseEditInfo = () => {
-    setEditInfoTarget({
-      id: "",
-      productId: "",
-      productName: "",
-      productImage: "",
-      quantity: {
-        unit: "",
-        value: 0,
-      },
-      price: 0,
-      description: "",
-      paymentMethod: "",
-      invoiceId: "",
-      subOrganizationInfo: {
-        subOrganizationId: "",
-        subOrganizationName: "",
-        organizationId: "",
-      },
-      salesDate: "",
-      salesTime: "",
-      confirmationDate: "",
-      confirmationTime: "",
-      confirmerName: "",
-      status: "",
-      sellerName: "",
-      customer: "",
-      receiptFile: "",
-      receiptCode: "",
-      failureReason: {
-        date: "",
-        time: "",
-        description: "",
-        reporter: "",
-      },
-    });
-    setOpenEditInfo(false);
-  };
 
   const handleOpenMoreInfoRow = (info) => {
     if (window.innerWidth <= 768) {
@@ -350,10 +169,6 @@ export default function page() {
     setFilterItem(params.toString());
   };
 
-  const [expanded, setExpanded] = React.useState(false);
-  const handleChangeInvoiceList = (panel) => (event, isExpanded) => {
-    setExpanded(isExpanded ? panel : false);
-  };
   const [openAddData, setOpenAddData] = useState(false);
   const handleOpenAddData = () => {
     setOpenAddData(true);
@@ -361,6 +176,8 @@ export default function page() {
   const handleCloseAddData = () => {
     setOpenAddData(false);
   };
+
+
   return (
     <div>
       <header className="flex justify-between items-center text-[0.9rem] bg-white py-6 px-5 md:px-10">
@@ -658,8 +475,6 @@ export default function page() {
       </section>
 
       <MoreInfoDialog
-        handleOpenDelete={handleOpenDelete}
-        handleOpenEditInfo={handleOpenEditInfo}
         moreInfoTarget={moreInfoTarget}
         openMoreInfo={openMoreInfo}
         handleCloseMoreInfo={handleCloseMoreInfo}
@@ -670,7 +485,8 @@ export default function page() {
         setFilterItem={setFilterItem}
         filterItemForGps={filterItemForGps}
         setFilterItemForGps={setFilterItemForGps}
-        getPoints={getPoints}
+        skipFetch = {skipFetch}
+        setSkipFetch = {setSkipFetch}
         handleCloseAddData={handleCloseAddData}
         openAddData={openAddData}
       />
