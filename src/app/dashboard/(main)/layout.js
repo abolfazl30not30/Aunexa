@@ -452,6 +452,22 @@ export default function RootLayout({ children }) {
                 <div className="px-4 py-3">
                   <div>
                     <Link
+                        href="/dashboard"
+                        className="block py-4 px-2 border-b border-b-1 border-b-solid  border-b-borderGray"
+                    >
+                  <span
+                      className={
+                        pathname === "/dashboard"
+                            ? "text-mainRed text-[0.9rem]"
+                            : "text-gray9F hover:text-textGray text-[0.9rem]"
+                      }
+                  >
+                    داشبورد
+                  </span>
+                    </Link>
+                  </div>
+                  <div>
+                    <Link
                       onClick={handleCloseSidebar}
                       href="/dashboard/tracking"
                       className="block py-4 px-2 border-b border-b-1 border-b-solid  border-b-borderGray"
@@ -945,9 +961,24 @@ export default function RootLayout({ children }) {
               </div>
             </Drawer>
           </div>
-
           <div className="hidden md:block mt-5 md:mr-5  md:w-[30%] lg:w-[15%] bg-white">
             <div className="px-4 py-3">
+              <div>
+                <Link
+                    href="/dashboard"
+                    className="block py-4 px-2 border-b border-b-1 border-b-solid  border-b-borderGray"
+                >
+                  <span
+                      className={
+                        pathname === "/dashboard"
+                            ? "text-mainRed text-[0.9rem]"
+                            : "text-gray9F hover:text-textGray text-[0.9rem]"
+                      }
+                  >
+                    داشبورد
+                  </span>
+                </Link>
+              </div>
               <div>
                 <Link
                   href="/dashboard/tracking"

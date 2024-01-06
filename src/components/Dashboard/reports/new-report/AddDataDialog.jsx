@@ -531,7 +531,7 @@ return (<MenuItem style={{fontFamily: "__fonts_2f4189,__fonts_Fallback_2f4189"}}
       
       
                                 </div> */}
-                                <div className="px-2 border-t pt-4 border-[#9F9F9F]">
+                                <div className="px-3 border-t pt-4 border-[#9F9F9F]">
                                     <FormControl fullWidth >
                                         <InputLabel id="demo-simple-select-label" sx={{fontFamily: "__fonts_2f4189,__fonts_Fallback_2f4189", fontSize: "0.8rem",color:"#9F9F9F"}}>گام</InputLabel>
                                         <Select
@@ -548,9 +548,7 @@ return (<MenuItem style={{fontFamily: "__fonts_2f4189,__fonts_Fallback_2f4189"}}
                                             <MenuItem value="امروز" sx={{fontFamily: "__fonts_2f4189,__fonts_Fallback_2f4189", fontSize: "0.8rem"}}>امروز</MenuItem>
                                             <MenuItem value="دیروز" sx={{fontFamily: "__fonts_2f4189,__fonts_Fallback_2f4189", fontSize: "0.8rem"}}>دیروز</MenuItem>
                                             <MenuItem  value="گذشته" sx={{fontFamily: "__fonts_2f4189,__fonts_Fallback_2f4189", fontSize: "0.8rem"}}>گذشته</MenuItem>
-                                           
                                             <MenuItem  value="سال" sx={{fontFamily: "__fonts_2f4189,__fonts_Fallback_2f4189", fontSize: "0.8rem"}}>سال</MenuItem>
-                                           
                                         </Select>
                                     </FormControl>
                                     {/* {!formik.values.step &&

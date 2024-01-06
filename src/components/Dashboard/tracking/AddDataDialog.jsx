@@ -170,7 +170,7 @@ export default function AddDataDialog(props) {
                             </button>
                         </div>
                         <div className="flex justify-center mb-4">
-                            <h3 className="text-[1.1rem]"> انتخاب محرک</h3>
+                            <h3 className="text-[1.1rem]"> انتخاب متحرک</h3>
                         </div>
                         <div className="flex items-center justify-evenly py-3">
                                     <div>
