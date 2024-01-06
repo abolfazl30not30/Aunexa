@@ -13,4 +13,4 @@ export const HistoryOfReportsSlice = apiSlice.injectEndpoints({
   }),
 });
 
-export const { useGetAllHistoryOfReportsQuery } = HistoryOfReportsSlice;
+export const {useGetAllHistoryOfReportsQuery } = HistoryOfReportsSlice;

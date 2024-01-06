@@ -10,7 +10,17 @@ export const HistoryOfReportSlice = apiSlice.injectEndpoints({
       }),
       providesTags: ["report-history"],
     }),
+
+    saveNewReports: builder.mutation({
+      query: (body) => ({
+        url: "vehicle/report-history",
+        method: "POST",
+        body: body,
+      }),
+      invalidatesTags: ["report-history"],
+    }),
+
   }),
 });
 
-export const { useGetAllHistoryOfReportQuery } = HistoryOfReportSlice;
+export const { useSaveNewReportsMutation,useGetAllHistoryOfReportQuery } = HistoryOfReportSlice;
