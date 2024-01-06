@@ -53,7 +53,7 @@ export default function RootLayout({ children }) {
     getLatestNotificationList();
   }, [openLatestNotificationList]);
 
-  useSubscription(`/queue/latest/` + subOrganizationId, (message) => {
+  useSubscription(`/topic/latest`, (message) => {
     const obj = JSON.parse(message.body);
     console.log(obj);
     toast.info(obj.message, {
