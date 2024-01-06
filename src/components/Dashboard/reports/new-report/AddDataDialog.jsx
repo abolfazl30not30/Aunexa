@@ -115,24 +115,17 @@ export default function AddDataDialog(props) {
         setVehicleCategory()
         setVehicle()
     }
-    // const validate = (values, props) => {
-    //     const errors = {};
+    const validate = (values, props) => {
+        const errors = {};
 
-    //     if (!values.type && !values.group) {
-    //         errors.machineCode = "لطفا پلاک یا کد وسیله نقلیه را وارد کنید";
-    //     } else if (!values.machineCode && !values.group) {
-    //         errors.type = "لطفا نوع وسیله نقلیه را وارد کنید";
-    //     } else if (!values.type && !values.machineCode) {
-    //         errors.group = "لطفا گروه را وارد کنید";
-    //     }
-    //     if (!values.fromDate && !values.toDate) {
-    //         errors.step = "لطفا گام زمانی را وارد کنید";
-    //     } else if (!values.step) {
-    //         errors.fromDate = "لطفا تاریخ  را وارد کنید";
-    //     } 
-
-    //     return errors;
-    // };
+        if (!values.type && !values.group && !values.machineId) {
+            errors.machine = "لطفا نوع وسیله یا نام وسیله یا گروه را وارد کنید";
+        }
+        if(!values.step && (!values.fromDate || !values.toDate) ){
+            errors.period = "لطفا گام یا تاریخ را وارد کنید";
+        }
+        return errors;
+    };
 
 
     //submit data
@@ -152,12 +145,12 @@ export default function AddDataDialog(props) {
         toDate:"",
         },
 
-        // validate:validate,
+        validate:validate,
 
         validationSchema: schema,
 
         onSubmit: async (product,helpers) => {
-            let updateProduct = {...product,machine:{id:(product.machineId===""? null : product.machineId)}}
+            let updateProduct = {...product,machine:{id:(product.machineId===""? null : product.machineId)},fromTime:(product.fromDate===""?null:`${fromDate.hour}:${fromDate.minute}:${fromDate.second}`),toTime:(product.toDate===""?null:`${toDate.hour}:${toDate.minute}:${toDate.second}`)}
 
             let params = handleURLSearchParams(updateProduct)
             props.setFilterItem(params.toString())
@@ -422,6 +415,11 @@ export default function AddDataDialog(props) {
                                             />}
                                     />
                                                 </div>
+                                             {   Boolean(formik.errors.machine) && (
+                                                <span className="mx-3 text-[0.6rem] text-red-600 ">
+                                                    {formik.errors.machine}
+                                                </span>
+                                            )}
                             {/* <div className=" flex flex-col">
                             <FormControl sx={{ m: 1 }}>
         <InputLabel id="demo-multiple-checkbox-label"sx={{fontFamily: "__fonts_2f4189,__fonts_Fallback_2f4189", fontSize: "0.8rem",color:"#9F9F9F"}}>کد یا پلاک وسیله نقلیه</InputLabel>
@@ -539,7 +537,7 @@ return (<MenuItem style={{fontFamily: "__fonts_2f4189,__fonts_Fallback_2f4189"}}
                                     disabled={(formik.values.step) ? true : false}
                                     format="YYYY/MM/DD HH:mm:ss"
                                     plugins={[
-                                        <TimePicker position="bottom"  />,
+                                        <TimePicker needsConfirmation={false} position="bottom"  />,
                                         
                                       ]}
                                         calendarPosition={`bottom`}
@@ -554,6 +552,7 @@ return (<MenuItem style={{fontFamily: "__fonts_2f4189,__fonts_Fallback_2f4189"}}
                                         value={fromDate}
                                         onChange={(value) => {
                                             handleFromDateInput(value)
+                                            event.preventDefault()
                                         }}
                                         mapDays={({date}) => {
                                             let props = {}
@@ -590,10 +589,11 @@ return (<MenuItem style={{fontFamily: "__fonts_2f4189,__fonts_Fallback_2f4189"}}
                                 </div>
                                 <div className="w-full px-2">
                                 <DatePicker
+                                
                                     disabled={!formik.values.step ? false : true }
                                     format="YYYY/MM/DD HH:mm:ss"
                                     plugins={[
-                                        <TimePicker position="bottom" />,
+                                        <TimePicker needsConfirmation={false} position="bottom" />,
                                         
                                       ]}
                                         calendarPosition={`bottom`}
@@ -607,7 +607,9 @@ return (<MenuItem style={{fontFamily: "__fonts_2f4189,__fonts_Fallback_2f4189"}}
                                         inputClass={`border border-[#9F9F9F] placeholder-[#9F9F9F] text-gray-900 text-[0.8rem] rounded focus:ring-[#9F9F9F] focus:border-[#9F9F9F] block w-full px-3 py-4`}
                                         value={toDate}
                                         onChange={(value) => {
+
                                             handleToDateInput(value)
+                                            event.preventDefault()
                                         }}
                                         mapDays={({date}) => {
                                             let props = {}
@@ -649,6 +651,11 @@ return (<MenuItem style={{fontFamily: "__fonts_2f4189,__fonts_Fallback_2f4189"}}
                                                 </span>
                                             )
                                         } */}
+                                          {   Boolean(formik.errors.period) && (
+                                                <span className="mx-3 text-[0.6rem] text-red-600 ">
+                                                    {formik.errors.period}
+                                                </span>
+                                            )}
                                 <div>
                                     {
                                         isSubmitLoading ? (<button disabled type="submit"

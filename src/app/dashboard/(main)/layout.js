@@ -14,8 +14,8 @@ import { useDispatch, useSelector } from "react-redux";
 import { useLazyGetAccessQuery } from "@/redux/features/access/getAccessSlice";
 import { setAccess } from "@/redux/permission/accessSlice";
 import { useLazyGetCounterOfDashboardNotificationQuery } from "@/redux/features/notification/NotificationCounterDashboardSlice";
-import {useSubscription} from "react-stomp-hooks";
-import {toast} from "react-toastify";
+import { useSubscription } from "react-stomp-hooks";
+import { toast } from "react-toastify";
 
 const cacheRtl = createCache({
   key: "muirtl",
@@ -24,20 +24,34 @@ const cacheRtl = createCache({
 const theme = createTheme({
   direction: "rtl",
 });
-
+import { useLazyGetLastFiveNotificationDashboardListQuery } from "@/redux/features/notification/NotificationDashboardSlice";
 export default function RootLayout({ children }) {
-
   const [subOrganizationId, setSubOrganizationId] = useState();
 
-  const [userInfo, setUserInfo] = useState({})
+  const [userInfo, setUserInfo] = useState({});
 
   useEffect(() => {
     setSubOrganizationId(window.sessionStorage.getItem("subOrganizationId"));
     setUserInfo({
-      name:window.sessionStorage.getItem("name"),
-      subOrganizationName:window.sessionStorage.getItem("subOrganizationName")
-    })
+      name: window.sessionStorage.getItem("name"),
+      subOrganizationName: window.sessionStorage.getItem("subOrganizationName"),
+    });
   }, []);
+  const [LatestNotification, setLatestNotification] = useState(null);
+  const [openLatestNotificationList, setOpenLatestNotificationList] =
+    useState(false);
+
+  const [
+    getLatestNotificationList,
+    {
+      data: latestNotificationList = [],
+      isLoading: isLatestNotificationListLoading,
+      isError: latestNotificationListIsError,
+    },
+  ] = useLazyGetLastFiveNotificationDashboardListQuery();
+  useEffect(() => {
+    getLatestNotificationList();
+  }, [openLatestNotificationList]);
 
   useSubscription(`/queue/latest/` + subOrganizationId, (message) => {
     const obj = JSON.parse(message.body);
@@ -68,7 +82,6 @@ export default function RootLayout({ children }) {
     getCounterList();
   }, [pathname]);
 
-
   const [openAlertMenu, setOpenAlertMenu] = useState(false);
   const [anchorEl, setAnchorEl] = React.useState(null);
   const [anchorElProfile, setAnchorElProfile] = React.useState(null);
@@ -80,6 +93,7 @@ export default function RootLayout({ children }) {
 
   const handleOpenAlertMenu = (event) => {
     setAnchorEl(event.currentTarget);
+    setOpenLatestNotificationList(!openLatestNotificationList);
   };
   const handleCloseAlertMenu = () => {
     setAnchorEl(null);
@@ -191,32 +205,66 @@ export default function RootLayout({ children }) {
                 <div className="flex justify-center items-center pt-2 pb-4">
                   <h4 className="text-[0.9rem] text-">آخرین پیام ها</h4>
                 </div>
-                <div className="py-3 border-t border-t-[#D9D9D9]">
-                  <div className="flex justify-between">
-                    <h4 className="text-[0.9rem]">تیکت جدید</h4>
-                    <span className="text-[0.7rem] text-[#9F9F9F]">
-                      1402/09/03
-                    </span>
+                {latestNotificationList?.content?.map((item, index) => (
+                  <div className="py-3 border-t border-t-[#D9D9D9]">
+                    <div className="flex justify-between">
+                      <h4 className="text-[0.9rem]">تیکت جدید</h4>
+                      <span className="text-[0.7rem] text-[#9F9F9F]">
+                        {item?.date}
+                      </span>
+                    </div>
+                    <div className="mt-2 ">
+                      <div className="flex justify-between items-center">
+                        <p className="text-[0.8rem] text-gray70">
+                          {item?.message}
+                        </p>
+                        {item?.priority === "HIGH" ? (
+                          <svg
+                            fill="#f5516f"
+                            width="13px"
+                            height="13px"
+                            viewBox="0 0 15 15"
+                            version="1.1"
+                            id="circle"
+                            xmlns="http://www.w3.org/2000/svg"
+                          >
+                            <path d="M14,7.5c0,3.5899-2.9101,6.5-6.5,6.5S1,11.0899,1,7.5S3.9101,1,7.5,1S14,3.9101,14,7.5z" />
+                          </svg>
+                        ) : item?.priority === "MEDIUM" ? (
+                          <svg
+                            fill="#f1d150"
+                            width="13px"
+                            height="13px"
+                            viewBox="0 0 15 15"
+                            version="1.1"
+                            id="circle"
+                            xmlns="http://www.w3.org/2000/svg"
+                          >
+                            <path d="M14,7.5c0,3.5899-2.9101,6.5-6.5,6.5S1,11.0899,1,7.5S3.9101,1,7.5,1S14,3.9101,14,7.5z" />
+                          </svg>
+                        ) : (
+                          <svg
+                            fill="#22e032"
+                            width="13px"
+                            height="13px"
+                            viewBox="0 0 15 15"
+                            version="1.1"
+                            id="circle"
+                            xmlns="http://www.w3.org/2000/svg"
+                          >
+                            <path d="M14,7.5c0,3.5899-2.9101,6.5-6.5,6.5S1,11.0899,1,7.5S3.9101,1,7.5,1S14,3.9101,14,7.5z" />
+                          </svg>
+                        )}
+                      </div>
+                    </div>
                   </div>
-                  <div className="mt-2">
-                    <p className="text-[0.8rem] text-gray70">
-                      لورم ایپسوم متن ساختگی با تولید آن را سادگیا{" "}
-                    </p>
+                ))}
+                {latestNotificationList?.numberOfElements === 0 && (
+                  <div className="flex justify-center pb-1 tex-sm">
+                    <p>پیام جدیدی موجود نیست</p>
                   </div>
-                </div>
-                <div className="py-3 border-t border-t-[#D9D9D9]">
-                  <div className="flex justify-between">
-                    <h4 className="text-[0.9rem]">تیکت جدید</h4>
-                    <span className="text-[0.7rem] text-[#9F9F9F]">
-                      1402/09/03
-                    </span>
-                  </div>
-                  <div className="mt-2">
-                    <p className="text-[0.8rem] text-gray70">
-                      لورم ایپسوم متن ساختگی با تولید آن را سادگیا{" "}
-                    </p>
-                  </div>
-                </div>
+                )}
+
                 <div className="py-3 border-t border-t-[#D9D9D9] flex justify-center">
                   <Link
                     href="/dashboard/notification"
@@ -810,6 +858,30 @@ export default function RootLayout({ children }) {
                   <div>
                     <Link
                       onClick={handleCloseSidebar}
+                      href="/dashboard/notification"
+                      className=" py-4 px-2 border-b border-b-1 border-b-solid  border-b-borderGray flex justify-between"
+                    >
+                      <span
+                        className={
+                          pathname === "/dashboard/notification"
+                            ? "text-mainRed text-[0.9rem]"
+                            : "text-gray9F hover:text-textGray text-[0.9rem]"
+                        }
+                      >
+                        اعلانیه
+                      </span>
+                      <span className=" rounded-lg bg-mainRed w-[1.5rem] text-[0.59rem] h-[1.2rem]  flex  items-center justify-center text-center text-white">
+                        {pathname === "/dashboard/notification"
+                          ? 0
+                          : counterList > 99
+                          ? "99+"
+                          : counterList}
+                      </span>
+                    </Link>
+                  </div>
+                  <div>
+                    <Link
+                      onClick={handleCloseSidebar}
                       href="https://auth.aunexa.net/logout"
                       className="block py-4 px-2 border-b border-b-1 border-b-solid  border-b-borderGray"
                     >
@@ -1219,6 +1291,30 @@ export default function RootLayout({ children }) {
                     }
                   >
                     حساب کاربری
+                  </span>
+                </Link>
+              </div>
+              <div>
+                <Link
+                  onClick={handleCloseSidebar}
+                  href="/dashboard/notification"
+                  className="flex justify-between items-center py-4 px-2 border-b border-b-1 border-b-solid  border-b-borderGray"
+                >
+                  <span
+                    className={
+                      pathname === "/dashboard/notification"
+                        ? "text-mainRed text-[0.9rem]"
+                        : "text-gray9F hover:text-textGray text-[0.9rem]"
+                    }
+                  >
+                    اعلانیه
+                  </span>
+                  <span className=" rounded-lg bg-mainRed w-[1.5rem] text-[0.59rem] h-[1.2rem]  flex  items-center justify-center text-center text-white">
+                    {pathname === "/dashboard/notification"
+                      ? 0
+                      : counterList > 99
+                      ? "99+"
+                      : counterList}
                   </span>
                 </Link>
               </div>
