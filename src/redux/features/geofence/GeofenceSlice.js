@@ -10,6 +10,12 @@ export const GeofenceSlice = apiSlice.injectEndpoints({
             }),
             providesTags: ["geofence"],
         }),
+        getAllGeofenceList: builder.query({
+            query: () => ({
+                url: `vehicle/geo-fence/find-all`,
+            }),
+            providesTags: ["geofence"],
+        }),
         saveGeofence: builder.mutation({
             query: (body) => ({
                 url: "vehicle/geo-fence",
@@ -38,6 +44,7 @@ export const GeofenceSlice = apiSlice.injectEndpoints({
 });
 
 export const {
+    useGetAllGeofenceListQuery,
     useGetAllGeofenceQuery,
     useSaveGeofenceMutation,
     useUpdateGeofenceMutation,

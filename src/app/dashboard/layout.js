@@ -7,7 +7,7 @@ export default function RootLayout({children}) {
 
     return (
         <>
-            <StompSessionProvider url={`http://localhost:8011/ws-endpoint`}>
+            <StompSessionProvider url={`http://194.33.125.112:30815/ws-endpoint`}>
                 {children}
             </StompSessionProvider>
         </>

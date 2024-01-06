@@ -27,7 +27,7 @@ export default function redirect() {
 
   const formData = {
     code: code,
-    redirect_uri: "http://localhost:3000/redirect",
+    redirect_uri: "https://aunexa.net/redirect",
     client_id: "client1",
     grant_type: "authorization_code",
     code_verifier: window.sessionStorage.getItem("codeVerifier"),
@@ -62,8 +62,7 @@ export default function redirect() {
         "refresh_token",
         userData.data.refresh_token
       );
-
-      router.push("/panel");
+      router.push("/dashboard");
     } catch (err) {
       console.log(err);
       if (err) {

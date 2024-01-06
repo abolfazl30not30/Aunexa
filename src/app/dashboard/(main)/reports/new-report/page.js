@@ -65,8 +65,6 @@ export default function page() {
       { skip : skipFetch ,refetchOnMountOrArgChange: true }
   );
 
-  console.log(locations)
-
   const handlePagination = (event, value) => {
     setPage(value);
   };
@@ -319,7 +317,7 @@ export default function page() {
         {/*  </div>*/}
         {/*</div>*/}
         <div className="mt-10">
-          <ReportMap />
+          <ReportMap locations={locations}/>
         </div>
         <div className="mt-10">
           <div className="overflow-x-auto">
@@ -330,11 +328,10 @@ export default function page() {
                   <th className="px-2 md:px-6 py-4">تایم ورود</th>
                   <th className="px-2 md:px-6 px-6 py-4">تایم خروج</th>
                   <th className="px-2 md:px-6 px-6 py-4 xl:table-cell hidden">
-                    مدت زمان حضور در ناحیه
+                    مدت زمان حضور در ناحیه(دقیقه)
                   </th>
                   <th className="table-cell px-6 py-4">ناحیه</th>
-                  <th className="hidden md:table-cell px-6 py-4">مسافت</th>
-
+                  <th className="hidden md:table-cell px-6 py-4">مسافت (کیلومتر)</th>
                   <th className="hidden md:table-cell px-6 py-4">عملیات</th>
                 </tr>
               </thead>

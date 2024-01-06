@@ -303,7 +303,7 @@ export default function AddDataDialog(props) {
                             <h3 className="text-[1.1rem]">ثبت گزارش </h3>
                         </div>
                         <form className="flex justify-center py-3 " onSubmit={formik.handleSubmit} method="POST">
-                            <div className="flex flex-col justify-center w-[90%] gap-3">
+                            <div className="flex flex-col justify-center w-[90%] gap-4">
                             <div>
                             <Autocomplete
                             disabled={(formik.values.type || formik.values.machineId )? true:false}
@@ -349,12 +349,12 @@ export default function AddDataDialog(props) {
                                                     }}
                                                     placeholder="گروه"
                                                 />}
-                                        />
+                            />
                                                 </div>
                                                 <div >
 
                                                 <Autocomplete
-                                                 disabled={(formik.values.subOrganizationId || formik.values.machineId )? true:false}
+                                                  disabled={(formik.values.subOrganizationId || formik.values.machineId )? true:false}
                                         open={openVehicleCategoryList}
                                         onOpen={() => {
                                             setOpenVehicleCategoryList(true);
@@ -422,10 +422,8 @@ export default function AddDataDialog(props) {
                                         )}
                                         value={vehicle}
                                         onChange={(event, newValue) => {
-                                            
                                             setVehicle(newValue)
-                                            formik.setFieldValue("machineId",newValue?.id)
-                                            
+                                            formik.setFieldValue("machineId",newValue?.gpsURL)
                                         }}
                                         renderInput={(params) =>
                                             <TextField
@@ -531,11 +529,10 @@ return (<MenuItem style={{fontFamily: "__fonts_2f4189,__fonts_Fallback_2f4189"}}
       
       
                                 </div> */}
-                                <div className="px-3 border-t pt-4 border-[#9F9F9F]">
+                                <div className="border-t pt-4 border-[#9F9F9F]">
                                     <FormControl fullWidth >
                                         <InputLabel id="demo-simple-select-label" sx={{fontFamily: "__fonts_2f4189,__fonts_Fallback_2f4189", fontSize: "0.8rem",color:"#9F9F9F"}}>گام</InputLabel>
                                         <Select
-                                        
                                         disabled={(formik.values.fromDate || formik.values.toDate) ? true : false }
                                             labelId="demo-simple-select-label"
                                             id="demo-simple-select"
@@ -564,8 +561,6 @@ return (<MenuItem style={{fontFamily: "__fonts_2f4189,__fonts_Fallback_2f4189"}}
                                     <FormControl  fullWidth>
                                         <InputLabel id="demo-simple-select-label" sx={{fontFamily: "__fonts_2f4189,__fonts_Fallback_2f4189", fontSize: "0.8rem",color:"#9F9F9F"}}>تعداد</InputLabel>
                                         <Select
-                                        
-                                        
                                             labelId="demo-simple-select-label"
                                             id="demo-simple-select"
                                             value={count}
@@ -602,8 +597,6 @@ return (<MenuItem style={{fontFamily: "__fonts_2f4189,__fonts_Fallback_2f4189"}}
                                     <FormControl  fullWidth>
                                         <InputLabel id="demo-simple-select-label" sx={{fontFamily: "__fonts_2f4189,__fonts_Fallback_2f4189", fontSize: "0.8rem",color:"#9F9F9F"}}>دوره</InputLabel>
                                         <Select
-                                        
-                                        
                                             labelId="demo-simple-select-label"
                                             id="demo-simple-select"
                                             value={period}
@@ -613,8 +606,6 @@ return (<MenuItem style={{fontFamily: "__fonts_2f4189,__fonts_Fallback_2f4189"}}
                                             onChange={handleChangePeriod}>
                                             <MenuItem value="هفته" sx={{fontFamily: "__fonts_2f4189,__fonts_Fallback_2f4189", fontSize: "0.8rem"}}>هفته </MenuItem>
                                             <MenuItem value="ماه" sx={{fontFamily: "__fonts_2f4189,__fonts_Fallback_2f4189", fontSize: "0.8rem"}}>ماه</MenuItem>
-                                           
-                                           
                                         </Select>
                                     </FormControl>
                                     
@@ -627,7 +618,7 @@ return (<MenuItem style={{fontFamily: "__fonts_2f4189,__fonts_Fallback_2f4189"}}
                                                 </span>
                                             )}
                                 {formik.values.step!=="گذشته" && <div>
-                                <div className="w-full px-2 py-2">
+                                <div className="w-full py-3">
                                 <DatePicker
                                     disabled={(formik.values.step) ? true : false}
                                     format="YYYY/MM/DD HH:mm:ss"
@@ -682,9 +673,8 @@ return (<MenuItem style={{fontFamily: "__fonts_2f4189,__fonts_Fallback_2f4189"}}
                                         
                                     </DatePicker>
                                 </div>
-                                <div className="w-full px-2">
+                                <div className="w-full py-3">
                                 <DatePicker
-                                
                                     disabled={!formik.values.step ? false : true }
                                     format="YYYY/MM/DD HH:mm:ss"
                                     plugins={[

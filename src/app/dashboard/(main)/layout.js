@@ -152,7 +152,7 @@ export default function RootLayout({ children }) {
           </div>
           <div className="w-[6rem] md:w-[7rem]">
             <Image
-              src="/redMICLogo.svg"
+              src="/monaco.svg"
               alt="costumer"
               width={0}
               height={0}
@@ -381,7 +381,7 @@ export default function RootLayout({ children }) {
                       </span>
                     </Link>
                     <Link
-                      href="https://auth.aunexa.net/logout"
+                      href="https://auth.prod.aunexa.net/logout"
                       className="flex gap-2 py-3 px-4 hover:bg-neutral-100 border-t border-t-[#D9D9D9]"
                     >
                       <div>
@@ -440,7 +440,7 @@ export default function RootLayout({ children }) {
                 <div className="flex justify-center mb-4">
                   <div className="w-[6rem] md:w-[3rem]">
                     <Image
-                      src="/redMICLogo.svg"
+                      src="/monaco.svg"
                       alt="costumer"
                       width={0}
                       height={0}
@@ -949,7 +949,7 @@ export default function RootLayout({ children }) {
                   <div>
                     <Link
                       onClick={handleCloseSidebar}
-                      href="https://auth.aunexa.net/logout"
+                      href="https://auth.prod.aunexa.net/logout"
                       className="block py-4 px-2 border-b border-b-1 border-b-solid  border-b-borderGray"
                     >
                       <span className="text-gray9F hover:text-textGray text-[0.9rem]">
@@ -1454,7 +1454,7 @@ export default function RootLayout({ children }) {
               <div>
                 <Link
                   onClick={handleCloseSidebar}
-                  href="https://auth.aunexa.net/logout"
+                  href="https://auth.prod.aunexa.net/logout"
                   className="block py-4 px-2 border-b border-b-1 border-b-solid  border-b-borderGray"
                 >
                   <span className="text-gray9F hover:text-textGray text-[0.9rem]">

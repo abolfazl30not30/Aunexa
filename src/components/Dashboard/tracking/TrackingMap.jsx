@@ -6,6 +6,7 @@ import {EditControl} from "react-leaflet-draw";
 import osm from "@/helper/osm-providers";
 import {useState} from "react";
 import {  iconCar  } from '../../../helper/icon';
+import AllGeofences from "@/components/Dashboard/geofence/geographicArea/AllGeofences";
 
 
 const RecenterAutomatically = ({lat,lng}) => {
@@ -30,8 +31,37 @@ export default function TrackingMap(props) {
                         url={osm.maptiler.url}
                         attribution={osm.maptiler.attribution}/>
                     <Marker position={[props.trackingData?.latitude,props.trackingData?.longitude]} icon={ iconCar }>
+                        <Popup>
+                            <div>
+                                <div className="flex">
+                                    <div className="ml-1">
+                                        شماره پلاک:
+                                    </div>
+                                    <div className="text-bold">
+                                        40- 475 ق 53
+                                    </div>
+                                </div>
+                                <div className="flex">
+                                    <div className="ml-1">
+                                        سرعت:
+                                    </div>
+                                    <div className="text-bold">
+                                        {props.trackingData?.speed}
+                                    </div>
+                                </div>
+                                <div className="flex">
+                                    <div className="ml-1">
+                                        ساعت:
+                                    </div>
+                                    <div className="text-bold">
+                                        {props.trackingData?.timestamp}
+                                    </div>
+                                </div>
+                            </div>
+                        </Popup>
                     </Marker>
                     <RecenterAutomatically lat={props.trackingData?.latitude} lng={props.trackingData?.longitude}/>
+                    <AllGeofences/>
                 </MapContainer>
             </div>
         </>
