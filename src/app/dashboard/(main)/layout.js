@@ -53,7 +53,7 @@ export default function RootLayout({ children }) {
     getLatestNotificationList();
   }, [openLatestNotificationList]);
 
-  useSubscription(`/queue/latest/` + subOrganizationId, (message) => {
+  useSubscription(`/topic/latest`, (message) => {
     const obj = JSON.parse(message.body);
     console.log(obj);
     toast.info(obj.message, {
@@ -704,6 +704,23 @@ export default function RootLayout({ children }) {
                     </Link>
                   </div>
                   <div>
+                    <Link
+                      onClick={handleCloseSidebar}
+                      href="/dashboard/products"
+                      className="block py-4 px-2 border-b border-b-1 border-b-solid  border-b-borderGray"
+                    >
+                      <span
+                        className={
+                          pathname === "/dashboard/products"
+                            ? "text-mainRed text-[0.9rem]"
+                            : "text-gray9F hover:text-textGray text-[0.9rem]"
+                        }
+                      >
+                        کالا و محصولات
+                      </span>
+                    </Link>
+                  </div>
+                  <div>
                     <details className="group py-3 border-b border-b-1 border-b-solid  border-b-borderGray">
                       <summary className="flex items-center justify-between gap-2 p-2 font-medium marker:content-none hover:cursor-pointer">
                         <span className="text-gray9F group-open:text-textGray text-[0.9rem]">
@@ -818,6 +835,40 @@ export default function RootLayout({ children }) {
                         }
                       >
                         فاکتور خرید
+                      </span>
+                    </Link>
+                  </div>
+                  <div>
+                    <Link
+                      onClick={handleCloseSidebar}
+                      href="/dashboard/employees"
+                      className="block py-4 px-2 border-b border-b-1 border-b-solid  border-b-borderGray"
+                    >
+                      <span
+                        className={
+                          pathname === "/dashboard/employees"
+                            ? "text-mainRed text-[0.9rem]"
+                            : "text-gray9F hover:text-textGray text-[0.9rem]"
+                        }
+                      >
+                        کارمندان
+                      </span>
+                    </Link>
+                  </div>
+                  <div>
+                    <Link
+                      onClick={handleCloseSidebar}
+                      href="/dashboard/register/role"
+                      className="block py-4 px-2 border-b border-b-1 border-b-solid  border-b-borderGray"
+                    >
+                      <span
+                        className={
+                          pathname === "/dashboard/register/role"
+                            ? "text-mainRed text-[0.9rem]"
+                            : "text-gray9F hover:text-textGray text-[0.9rem]"
+                        }
+                      >
+                        ثبت نقش
                       </span>
                     </Link>
                   </div>
@@ -1143,6 +1194,23 @@ export default function RootLayout({ children }) {
                 </Link>
               </div>
               <div>
+                <Link
+                  onClick={handleCloseSidebar}
+                  href="/dashboard/products"
+                  className="block py-4 px-2 border-b border-b-1 border-b-solid  border-b-borderGray"
+                >
+                  <span
+                    className={
+                      pathname === "/dashboard/products"
+                        ? "text-mainRed text-[0.9rem]"
+                        : "text-gray9F hover:text-textGray text-[0.9rem]"
+                    }
+                  >
+                    کالا و محصولات
+                  </span>
+                </Link>
+              </div>
+              <div>
                 <details className="group py-3 border-b border-b-1 border-b-solid  border-b-borderGray">
                   <summary className="flex items-center justify-between gap-2 p-2 font-medium marker:content-none hover:cursor-pointer">
                     <span className="text-gray9F group-open:text-textGray text-[0.9rem]">
@@ -1257,6 +1325,40 @@ export default function RootLayout({ children }) {
                     }
                   >
                     فاکتور خرید
+                  </span>
+                </Link>
+              </div>
+              <div>
+                <Link
+                  onClick={handleCloseSidebar}
+                  href="/dashboard/employees"
+                  className="block py-4 px-2 border-b border-b-1 border-b-solid  border-b-borderGray"
+                >
+                  <span
+                    className={
+                      pathname === "/dashboard/employees"
+                        ? "text-mainRed text-[0.9rem]"
+                        : "text-gray9F hover:text-textGray text-[0.9rem]"
+                    }
+                  >
+                    کارمندان
+                  </span>
+                </Link>
+              </div>
+              <div>
+                <Link
+                  onClick={handleCloseSidebar}
+                  href="/dashboard/register/role"
+                  className="block py-4 px-2 border-b border-b-1 border-b-solid  border-b-borderGray"
+                >
+                  <span
+                    className={
+                      pathname === "/dashboard/register/role"
+                        ? "text-mainRed text-[0.9rem]"
+                        : "text-gray9F hover:text-textGray text-[0.9rem]"
+                    }
+                  >
+                    ثبت نقش
                   </span>
                 </Link>
               </div>

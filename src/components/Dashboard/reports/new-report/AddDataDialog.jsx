@@ -114,6 +114,8 @@ export default function AddDataDialog(props) {
         setToDate()
         setVehicleCategory()
         setVehicle()
+        setCount()
+        setPeriod()
     }
     const validate = (values, props) => {
         const errors = {};
@@ -123,6 +125,8 @@ export default function AddDataDialog(props) {
         }
         if(!values.step && (!values.fromDate || !values.toDate) ){
             errors.period = "لطفا گام یا تاریخ را وارد کنید";
+        }if(values.step==="گذشته" && (!count || !period) ){
+            errors.duration = "لطفا گام را وارد کنید";
         }
         return errors;
     };
@@ -150,7 +154,7 @@ export default function AddDataDialog(props) {
         validationSchema: schema,
 
         onSubmit: async (product,helpers) => {
-            let updateProduct = {...product,machine:{id:(product.machineId===""? null : product.machineId)},fromTime:(product.fromDate===""?null:`${fromDate.hour}:${fromDate.minute}:${fromDate.second}`),toTime:(product.toDate===""?null:`${toDate.hour}:${toDate.minute}:${toDate.second}`)}
+            let updateProduct = {...product,machine:{id:(product.machineId===""? null : product.machineId)},fromTime:(product.fromDate===""?null:`${fromDate.hour}:${fromDate.minute}:${fromDate.second}`),toTime:(product.toDate===""?null:`${toDate.hour}:${toDate.minute}:${toDate.second}`),step:(product.step==="گذشته"?`${count} ${period}`:product.step===""?null:product.step)}
 
             let params = handleURLSearchParams(updateProduct)
             props.setFilterItem(params.toString())
@@ -244,7 +248,16 @@ export default function AddDataDialog(props) {
     //     typeof value === 'string' ? value.split(',') : value,
     //   );
     // };
+    const [count, setCount] = React.useState('');
 
+    const handleChangeCount = (event) => {
+      setCount(event.target.value);
+    };
+    const [period, setPeriod] = React.useState('');
+
+    const handleChangePeriod = (event) => {
+      setPeriod(event.target.value);
+    };
     return (
         <>
             <Dialog
@@ -516,10 +529,8 @@ return (<MenuItem style={{fontFamily: "__fonts_2f4189,__fonts_Fallback_2f4189"}}
                                             <MenuItem value="" sx={{fontFamily: "__fonts_2f4189,__fonts_Fallback_2f4189", fontSize: "0.8rem"}}>بدون گام</MenuItem>
                                             <MenuItem value="امروز" sx={{fontFamily: "__fonts_2f4189,__fonts_Fallback_2f4189", fontSize: "0.8rem"}}>امروز</MenuItem>
                                             <MenuItem value="دیروز" sx={{fontFamily: "__fonts_2f4189,__fonts_Fallback_2f4189", fontSize: "0.8rem"}}>دیروز</MenuItem>
-                                            <MenuItem value="هفته گذشته" sx={{fontFamily: "__fonts_2f4189,__fonts_Fallback_2f4189", fontSize: "0.8rem"}}>هفته گذشته</MenuItem>
-                                            <MenuItem value="دو هفته گذشته" sx={{fontFamily: "__fonts_2f4189,__fonts_Fallback_2f4189", fontSize: "0.8rem"}}>دو هفته گذشته</MenuItem>
-                                            <MenuItem value="ماه گذشته" sx={{fontFamily: "__fonts_2f4189,__fonts_Fallback_2f4189", fontSize: "0.8rem"}}>ماه گذشته</MenuItem>
-                                            <MenuItem value="سه ماه گذشت" sx={{fontFamily: "__fonts_2f4189,__fonts_Fallback_2f4189", fontSize: "0.8rem"}}>سه ماه گذشته</MenuItem>
+                                            <MenuItem  value="گذشته" sx={{fontFamily: "__fonts_2f4189,__fonts_Fallback_2f4189", fontSize: "0.8rem"}}>گذشته</MenuItem>
+                                           
                                             <MenuItem  value="سال" sx={{fontFamily: "__fonts_2f4189,__fonts_Fallback_2f4189", fontSize: "0.8rem"}}>سال</MenuItem>
                                            
                                         </Select>
@@ -532,6 +543,74 @@ return (<MenuItem style={{fontFamily: "__fonts_2f4189,__fonts_Fallback_2f4189"}}
                                             )
                                         } */}
                                 </div>
+                                {formik.values.step==="گذشته" &&  <div className="flex justify-between items-center gap-2">
+                                <div className="px-2 w-1/2 pt-4 ">
+                                    <FormControl  fullWidth>
+                                        <InputLabel id="demo-simple-select-label" sx={{fontFamily: "__fonts_2f4189,__fonts_Fallback_2f4189", fontSize: "0.8rem",color:"#9F9F9F"}}>تعداد</InputLabel>
+                                        <Select
+                                        
+                                        
+                                            labelId="demo-simple-select-label"
+                                            id="demo-simple-select"
+                                            value={count}
+                                            name="count"
+                                            input={<OutlinedInput sx={{fontFamily: "__fonts_2f4189,__fonts_Fallback_2f4189", fontSize: "0.8rem"}} label="تعداد" />}
+                                            sx={{fontFamily: "__fonts_2f4189,__fonts_Fallback_2f4189", fontSize: "0.8rem"}}
+                                            onChange={handleChangeCount}>
+                                            <MenuItem value="یک" sx={{fontFamily: "__fonts_2f4189,__fonts_Fallback_2f4189", fontSize: "0.8rem"}}>یک</MenuItem>
+                                            <MenuItem value="دو" sx={{fontFamily: "__fonts_2f4189,__fonts_Fallback_2f4189", fontSize: "0.8rem"}}>دو</MenuItem>
+                                            <MenuItem value="سه" sx={{fontFamily: "__fonts_2f4189,__fonts_Fallback_2f4189", fontSize: "0.8rem"}}>سه</MenuItem>
+                                            <MenuItem  value=" چهار" sx={{fontFamily: "__fonts_2f4189,__fonts_Fallback_2f4189", fontSize: "0.8rem"}}>چهار</MenuItem>   
+                                            <MenuItem  value="پنج" sx={{fontFamily: "__fonts_2f4189,__fonts_Fallback_2f4189", fontSize: "0.8rem"}}>پنج</MenuItem>
+                                            <MenuItem value="شش" sx={{fontFamily: "__fonts_2f4189,__fonts_Fallback_2f4189", fontSize: "0.8rem"}}>شش</MenuItem>
+                                            <MenuItem value="هفت" sx={{fontFamily: "__fonts_2f4189,__fonts_Fallback_2f4189", fontSize: "0.8rem"}}>هفت</MenuItem>
+                                            <MenuItem value="هشت" sx={{fontFamily: "__fonts_2f4189,__fonts_Fallback_2f4189", fontSize: "0.8rem"}}>هشت</MenuItem>
+                                            <MenuItem  value=" نه" sx={{fontFamily: "__fonts_2f4189,__fonts_Fallback_2f4189", fontSize: "0.8rem"}}>نه</MenuItem>   
+                                            <MenuItem  value="ده" sx={{fontFamily: "__fonts_2f4189,__fonts_Fallback_2f4189", fontSize: "0.8rem"}}>ده</MenuItem>
+                                             <MenuItem value="یازده" sx={{fontFamily: "__fonts_2f4189,__fonts_Fallback_2f4189", fontSize: "0.8rem"}}>یازده</MenuItem>
+                                            <MenuItem value="دوازده" sx={{fontFamily: "__fonts_2f4189,__fonts_Fallback_2f4189", fontSize: "0.8rem"}}>دوازده</MenuItem>
+                                            <MenuItem value="سیزده" sx={{fontFamily: "__fonts_2f4189,__fonts_Fallback_2f4189", fontSize: "0.8rem"}}>سیزده</MenuItem>
+                                            <MenuItem  value=" چهارده" sx={{fontFamily: "__fonts_2f4189,__fonts_Fallback_2f4189", fontSize: "0.8rem"}}>چهارده</MenuItem>   
+                                            <MenuItem  value="پانزده" sx={{fontFamily: "__fonts_2f4189,__fonts_Fallback_2f4189", fontSize: "0.8rem"}}>پانزده</MenuItem>
+                                        </Select>
+                                    </FormControl>
+                                    {/* {!formik.values.step &&
+                                            Boolean(formik.errors.step) && (
+                                                <span className="mx-3 text-[0.6rem] text-red-600 ">
+                                                    {formik.errors.step}
+                                                </span>
+                                            )
+                                        } */}
+                                </div>
+                                <div className="px-2 w-1/2 pt-4 ">
+                                    <FormControl  fullWidth>
+                                        <InputLabel id="demo-simple-select-label" sx={{fontFamily: "__fonts_2f4189,__fonts_Fallback_2f4189", fontSize: "0.8rem",color:"#9F9F9F"}}>دوره</InputLabel>
+                                        <Select
+                                        
+                                        
+                                            labelId="demo-simple-select-label"
+                                            id="demo-simple-select"
+                                            value={period}
+                                            name="period"
+                                            input={<OutlinedInput sx={{fontFamily: "__fonts_2f4189,__fonts_Fallback_2f4189", fontSize: "0.8rem"}} label="دوره" />}
+                                            sx={{fontFamily: "__fonts_2f4189,__fonts_Fallback_2f4189", fontSize: "0.8rem"}}
+                                            onChange={handleChangePeriod}>
+                                            <MenuItem value="هفته" sx={{fontFamily: "__fonts_2f4189,__fonts_Fallback_2f4189", fontSize: "0.8rem"}}>هفته </MenuItem>
+                                            <MenuItem value="ماه" sx={{fontFamily: "__fonts_2f4189,__fonts_Fallback_2f4189", fontSize: "0.8rem"}}>ماه</MenuItem>
+                                           
+                                           
+                                        </Select>
+                                    </FormControl>
+                                    
+                                </div>
+                                
+                                </div>}
+                                {   Boolean(formik.errors.duration) && (
+                                                <span className="mx-3 text-[0.6rem] text-red-600 ">
+                                                    {formik.errors.duration}
+                                                </span>
+                                            )}
+                                {formik.values.step!=="گذشته" && <div>
                                 <div className="w-full px-2 py-2">
                                 <DatePicker
                                     disabled={(formik.values.step) ? true : false}
@@ -643,7 +722,7 @@ return (<MenuItem style={{fontFamily: "__fonts_2f4189,__fonts_Fallback_2f4189"}}
                                         </button>
                                         
                                     </DatePicker>
-                                </div>
+                                </div></div>}
                                 {/* {!fromDate && !toDate &&
                                             Boolean(formik.errors.fromDate) && (
                                                 <span className="mx-3 text-[0.6rem] text-red-600 ">
