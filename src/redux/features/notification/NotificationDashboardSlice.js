@@ -6,9 +6,7 @@ export const NotificationDashboardSlice = apiSlice.injectEndpoints({
       query: ({ page, sort, filterItem }) => ({
         url: `notification/machine/filter?page=${
           page - 1
-        }&size=10&sort=date,${sort}&${filterItem}&subOrganizationId=${window.sessionStorage.getItem(
-          "subOrganizationId"
-        )}`,
+        }&size=10&sort=date,${sort}&${filterItem}`,
       }),
       providesTags: ["notification"],
     }),
