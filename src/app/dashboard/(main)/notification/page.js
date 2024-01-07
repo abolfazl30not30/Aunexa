@@ -331,7 +331,7 @@ function primaryStoreInput() {
                               : data.action === "exit"
                               ? "خروج"
                               : data.action === "stop"
-                              ? "توقف"
+                              ? "توقف": data.action === "ticket" ? "تیکت"
                               : null}
                           </td>
                           <td className="px-2 md:px-6 py-4  text-gray70 whitespace-nowrap ">

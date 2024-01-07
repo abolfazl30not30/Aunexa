@@ -208,7 +208,7 @@ export default function RootLayout({ children }) {
                 {latestNotificationList?.content?.map((item, index) => (
                   <div className="py-3 border-t border-t-[#D9D9D9]">
                     <div className="flex justify-between">
-                      <h4 className="text-[0.9rem]">تیکت جدید</h4>
+                      <h4 className="text-[0.9rem]">اعلان جدید</h4>
                       <span className="text-[0.7rem] text-[#9F9F9F]">
                         {item?.date}
                       </span>
