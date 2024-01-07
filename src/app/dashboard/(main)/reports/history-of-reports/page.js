@@ -18,6 +18,7 @@ import FixFailureDialog from "@/components/Panel/failure-and-repair-report/FixFa
 import FilterDialog from "@/components/Dashboard/reports/history-of-reports/FilterDialog";
 import MoreInfoDialog from "@/components/Panel/history-of-reports/MoreInfoDialog";
 import { useGetAllHistoryOfReportQuery } from "@/redux/features/new-reports/HistoryOfReportSlice";
+import ShowDemo from "@/components/Dashboard/reports/history-of-reports/ShowDemo";
 
 function vehiclesAndEquipment() {
   const [searchValue, setSearchValue] = useState("");
@@ -77,6 +78,14 @@ function vehiclesAndEquipment() {
   const handleCloseFilter = () => {
     setOpenFilter(false);
   };
+  const [openDemo, setOpenDemo] = useState(false);
+  const handleOpeDemo = () => {
+    setOpenDemo(true);
+  };
+  const handleCloseDemo = () => {
+    setOpenDemo(false);
+  };
+
   const handleOpenMoreInfo = (info) => {
     setMoreInfoTarget(info);
     setOpenMoreInfo(true);
@@ -331,39 +340,38 @@ function vehiclesAndEquipment() {
 
                           <td
                             scope="row"
-                            className="hidden md:flex gap-2 px-6 py-4 justify-center text-gray70 whitespace-nowrap "
-                          >
-                            <Link href="new-report">
-                              <svg
-                                xmlns="http://www.w3.org/2000/svg"
-                                width="18"
-                                height="18"
-                                viewBox="0 0 18 18"
-                                fill="none"
-                              >
-                                <path
-                                  d="M9 4.56442V4.55554"
-                                  stroke="#797979"
-                                  stroke-linecap="round"
-                                  stroke-linejoin="round"
-                                />
-                                <path
-                                  d="M9 13.4445V7.22223"
-                                  stroke="#797979"
-                                  stroke-linecap="round"
-                                  stroke-linejoin="round"
-                                />
-                                <path
-                                  d="M9 17C13.4183 17 17 13.4183 17 9C17 4.58172 13.4183 1 9 1C4.58172 1 1 4.58172 1 9C1 13.4183 4.58172 17 9 17Z"
-                                  stroke="#797979"
-                                  stroke-linecap="round"
-                                  stroke-linejoin="round"
-                                />
-                              </svg>
-                            </Link>
-                            {/* <button
+                            className="hidden md:flex gap-2 px-6 py-4 justify-center text-gray70 whitespace-nowrap ">
+                            {/*<Link href="new-report">*/}
+                            {/*  <svg*/}
+                            {/*    xmlns="http://www.w3.org/2000/svg"*/}
+                            {/*    width="18"*/}
+                            {/*    height="18"*/}
+                            {/*    viewBox="0 0 18 18"*/}
+                            {/*    fill="none"*/}
+                            {/*  >*/}
+                            {/*    <path*/}
+                            {/*      d="M9 4.56442V4.55554"*/}
+                            {/*      stroke="#797979"*/}
+                            {/*      stroke-linecap="round"*/}
+                            {/*      stroke-linejoin="round"*/}
+                            {/*    />*/}
+                            {/*    <path*/}
+                            {/*      d="M9 13.4445V7.22223"*/}
+                            {/*      stroke="#797979"*/}
+                            {/*      stroke-linecap="round"*/}
+                            {/*      stroke-linejoin="round"*/}
+                            {/*    />*/}
+                            {/*    <path*/}
+                            {/*      d="M9 17C13.4183 17 17 13.4183 17 9C17 4.58172 13.4183 1 9 1C4.58172 1 1 4.58172 1 9C1 13.4183 4.58172 17 9 17Z"*/}
+                            {/*      stroke="#797979"*/}
+                            {/*      stroke-linecap="round"*/}
+                            {/*      stroke-linejoin="round"*/}
+                            {/*    />*/}
+                            {/*  </svg>*/}
+                            {/*</Link>*/}
+                             <button
                               onClick={() => {
-                                handleOpenMoreInfo(data);
+                                handleOpeDemo();
                               }}
                               className="border border-1 border-solid border-gray70 rounded p-[0.4rem] hover:bg-neutral-100"
                             >
@@ -393,7 +401,7 @@ function vehiclesAndEquipment() {
                                   stroke-linejoin="round"
                                 />
                               </svg>
-                            </button> */}
+                            </button>
                           </td>
                         </tr>
                       ))}
@@ -418,6 +426,10 @@ function vehiclesAndEquipment() {
           setFilterItem={setFilterItem}
           openFilter={openFilter}
           handleCloseFilter={handleCloseFilter}
+        />
+        <ShowDemo
+            openDemo={openDemo}
+            handleCloseDemo={handleCloseDemo}
         />
         <MoreInfoDialog
           moreInfoTarget={moreInfoTarget}
