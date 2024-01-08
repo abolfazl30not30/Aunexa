@@ -7,7 +7,9 @@ import osm from "@/helper/osm-providers";
 import {useState} from "react";
 import {  iconCar  } from '../../../helper/icon';
 import AllGeofences from "@/components/Dashboard/geofence/geographicArea/AllGeofences";
-
+import Control from 'react-leaflet-custom-control'
+import {Button, FormControlLabel, Radio, RadioGroup} from "@material-ui/core";
+import {FormControl} from "@mui/material";
 
 const RecenterAutomatically = ({lat,lng}) => {
     const map = useMap();
@@ -21,15 +23,41 @@ export default function TrackingMap(props) {
 
     const [center, setCenter] = useState([29.120738496597934,55.33779332882627]);
 
+    const [radioValue, setRadioValue] = useState("default")
+    const handleChangeSatelliteMode = (e) =>{
+        setRadioValue(e.target.value)
+    }
+
     const ZOOM_LEVEL = 14;
+
+    const SatelliteMap = () =>{
+        return<TileLayer
+            url={ osm.googleSat.url}
+            attribution={osm.googleSat.attribution}
+            maxZoom={osm.googleSat.maxZoom }
+            subdomains={ osm.googleSat.subdomains}
+        />
+    }
+
+    const DefaultMap = () =>{
+        return <TileLayer
+            url={ osm.maptiler.url}
+            attribution={osm.maptiler.attribution}/>
+
+    }
+
 
     return(
         <>
             <div className="report-map">
                 <MapContainer center={[props.trackingData?.latitude,props.trackingData?.longitude]} zoom={ZOOM_LEVEL} >
-                    <TileLayer
-                        url={osm.maptiler.url}
-                        attribution={osm.maptiler.attribution}/>
+                    {
+                       radioValue === "satelliteMap"  ? (
+                            <SatelliteMap/>
+                        ) : (
+                            <DefaultMap/>
+                        )
+                    }
                     <Marker position={[props.trackingData?.latitude,props.trackingData?.longitude]} icon={ iconCar }>
                         <Popup>
                             <div>
@@ -62,6 +90,21 @@ export default function TrackingMap(props) {
                     </Marker>
                     <RecenterAutomatically lat={props.trackingData?.latitude} lng={props.trackingData?.longitude}/>
                     <AllGeofences/>
+                    <Control position={'topmright'}>
+                        <div>
+                            <FormControl>
+                                <RadioGroup
+                                    aria-labelledby="demo-radio-buttons-group-label"
+                                    name="radio-buttons-group"
+                                    value={radioValue}
+                                    onChange={handleChangeSatelliteMode}
+                                >
+                                    <FormControlLabel className="rounded bg-white bg-opacity-50" value="default" control={<Radio />} label="حالت پیش فرض" />
+                                    <FormControlLabel className="rounded bg-white bg-opacity-50" value="satelliteMap" control={<Radio />} label="حالت ماهواره" />
+                                </RadioGroup>
+                            </FormControl>
+                        </div>
+                    </Control>
                 </MapContainer>
             </div>
         </>

@@ -4,7 +4,7 @@ import { logOut, setAccessToken } from "./authSlice";
 import axios from "axios";
 
 const baseQuery = fetchBaseQuery({
-  baseUrl: "https://gateway.prod.aunexa.net/api/v1/",
+  baseUrl: "https://auth.prod.aunexa.net/api/v1/",
   prepareHeaders: (headers, { getState }) => {
     const token = getState().auth.accessToken;
     if (token) {

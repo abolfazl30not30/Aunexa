@@ -5,6 +5,9 @@ import React, {useEffect, useState} from "react";
 import osm from "@/helper/osm-providers";
 import {iconCar} from '../../../../helper/icon';
 import AllGeofences from "@/components/Dashboard/geofence/geographicArea/AllGeofences";
+import {Button, FormControlLabel, Radio, RadioGroup} from "@material-ui/core";
+import Control from "react-leaflet-custom-control";
+import {FormControl} from "@mui/material";
 
 
 const RecenterAutomatically = ({lat, lng}) => {
@@ -58,6 +61,11 @@ export default function ReportMap(props) {
     const [locationArray, setLocationArray] = useState([]);
     const [locations ,setLocations] = useState([])
 
+    const [radioValue, setRadioValue] = useState("default")
+    const handleChangeSatelliteMode = (e) =>{
+        setRadioValue(e.target.value)
+    }
+
     useEffect(() => {
         if(props.locations.length){
             let updateArray = []
@@ -71,17 +79,32 @@ export default function ReportMap(props) {
         }
     }, [props.locations]);
 
-    // const mapMarkers =  locations.map((loc, i) => (
-    //     <CircleMarker radius={8} key={i} center={[loc.latitude, loc.longitude]} fillColor="navy"/>
-    // ));
+    const SatelliteMap = () =>{
+        return<TileLayer
+            url={ osm.googleSat.url}
+            attribution={osm.googleSat.attribution}
+            maxZoom={osm.googleSat.maxZoom }
+            subdomains={ osm.googleSat.subdomains}
+        />
+    }
 
+    const DefaultMap = () =>{
+        return <TileLayer
+                url={ osm.maptiler.url}
+                attribution={osm.maptiler.attribution}/>
+
+    }
     return (
         <>
             <div className="report-map">
                 <MapContainer center={center} zoom={ZOOM_LEVEL}>
-                    <TileLayer
-                        url={osm.maptiler.url}
-                        attribution={osm.maptiler.attribution}/>
+                    {
+                        radioValue === "satelliteMap" ? (
+                            <SatelliteMap/>
+                        ) : (
+                            <DefaultMap/>
+                        )
+                    }
                     {
                         locationArray.length && (
                             <CircleMarker radius={8} center={locationArray[0]} fillColor="navy"/>
@@ -95,6 +118,21 @@ export default function ReportMap(props) {
                     <Polyline pathOptions={{color: "blue"}} positions={locationArray}/>
                     <RecenterAutomatically lat={center[0]} lng={center[1]}/>
                     <AllGeofences/>
+                    <Control position={'topmright'}>
+                        <div>
+                            <FormControl>
+                                <RadioGroup
+                                    aria-labelledby="demo-radio-buttons-group-label"
+                                    name="radio-buttons-group"
+                                    value={radioValue}
+                                    onChange={handleChangeSatelliteMode}
+                                >
+                                    <FormControlLabel className="rounded bg-white bg-opacity-50" value="default" control={<Radio />} label="حالت پیش فرض" />
+                                    <FormControlLabel className="rounded bg-white bg-opacity-50" value="satelliteMap" control={<Radio />} label="حالت ماهواره" />
+                                </RadioGroup>
+                            </FormControl>
+                        </div>
+                    </Control>
                 </MapContainer>
             </div>
         </>
