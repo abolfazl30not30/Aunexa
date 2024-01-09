@@ -24,7 +24,7 @@ const login = async () => {
     grant_type: "refresh_token",
   };
 
-  return await axios.post("https://auth.prod.aunexa.net/oauth2/token", formData, {
+  return await axios.post("https://gateway.prod.aunexa.net/oauth2/token", formData, {
     headers: {
       "Content-Type": "application/x-www-form-urlencoded",
       Authorization: "Basic " + base64encodedData,
