@@ -2,7 +2,9 @@
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 import { logOut, setAccessToken } from "./authSlice";
 import axios from "axios";
-//https://auth.vipsoftware1.com
+
+
+
 const baseQuery = fetchBaseQuery({
   baseUrl: "https://auth.prod.aunexa.net/",
   prepareHeaders: (headers, { getState }) => {
