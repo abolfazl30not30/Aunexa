@@ -11,6 +11,7 @@ import {
     MenuItem, OutlinedInput,
     Select,
 } from "@mui/material";
+import { useTheme } from '@mui/material/styles';
 import Dialog from "@mui/material/Dialog";
 import {TailSpin} from "react-loader-spinner";
 import * as yup from "yup";
@@ -73,6 +74,40 @@ const AntSwitch = styled(Switch)(({ theme }) => ({
     },
 }));
 import { ConvertToNull } from "@/helper/ConvertToNull";
+//
+const ITEM_HEIGHT = 48;
+const ITEM_PADDING_TOP = 8;
+const MenuProps = {
+  PaperProps: {
+    style: {
+      maxHeight: ITEM_HEIGHT * 4.5 + ITEM_PADDING_TOP,
+      fontFamily: "__fonts_2f4189,__fonts_Fallback_2f4189",
+      width: 250,
+    },
+  },
+};
+
+const names = [
+  'ماده اولیه',
+  'تولیدی',
+  'تجهیزات سنگین',
+  'تجهیزات اداری',
+  'سایر'
+];
+
+function getStyles(name, type, theme) {
+  return {
+    fontWeight:
+      type.indexOf(name) === -1
+        ? theme.typography.fontWeightRegular
+        : theme.typography.fontWeightMedium,
+        display:
+      type.indexOf(name) === -1
+        ? "block"
+        : "none",
+        
+  };
+}
 export default function AddDataDialog(props) {
 
     //unit input
@@ -91,19 +126,43 @@ export default function AddDataDialog(props) {
         formik.resetForm()
         setUnit(null)
         setUploadedImage(null)
+        setType([])
     }
-
+    const theme = useTheme();
+    const [type, setType] = React.useState([]);
+  
+    const handleChange = (event) => {
+      const {
+        target: { value },
+      } = event;
+      setType(
+        // On autofill we get a stringified value.
+        typeof value === 'string' ? value.split(',') : value,
+      );
+    };
+    const handleFilterType =(name)=>{
+         setType(type.filter((subName)=>subName!==name))
+    }
     //submit data
     const [submitData, { isLoading:isSubmitLoading ,error}] = useSaveProductMutation()
     const schema = yup.object().shape({
-        type: yup.string().required("لطفا نام محصول را وارد کنید"),
+        // type: yup.string().required("لطفا نام محصول را وارد کنید"),
         persianName: yup.string().required("لطفا نام فارسی محصول را وارد کنید"),
         defaultUnit: yup.string().required("لطفا واحد پیش فرض را وارد کنید"),
     });
+    const validate = (values, props) => {
+        const errors = {};
+
+        if (type.length===0) {
+            errors.type = "لطفانوع محصول را انتخاب کنید";
+        } 
+
+        return errors;
+    };
 
     const formik = useFormik({
         initialValues: {
-            type: "",
+            // type: "",
             code:"",
             persianName: "",
             englishName: "",
@@ -111,12 +170,13 @@ export default function AddDataDialog(props) {
             defaultUnit: "",
             imageURL:"",
             abbreviation:"",
+         
         },
 
         validationSchema: schema,
-
+validate:validate,
         onSubmit: async (product) => {
-            let updatedProduct = {...product,imageURL:uploadedImage}
+            let updatedProduct = {...product,imageURL:uploadedImage,type}
             updatedProduct=ConvertToNull(updatedProduct)
             const userData = await submitData(updatedProduct)
             handleReset()
@@ -137,6 +197,9 @@ export default function AddDataDialog(props) {
     const handleDeleteUpload = () =>{
         setUploadedImage(null)
     }
+
+    // 
+    
     return (
         <>
             <Dialog
@@ -264,23 +327,62 @@ export default function AddDataDialog(props) {
                                     </div>
                                 </div>
                                 <div>
-                                    <FormControl fullWidth error={formik.touched.type && Boolean(formik.errors.type)}>
-                                        <InputLabel id="demo-simple-select-label" sx={{fontFamily: "__fonts_2f4189,__fonts_Fallback_2f4189", fontSize: "0.8rem",color:"#9F9F9F"}}>نوع محصول </InputLabel>
-                                        <Select
-                                            labelId="demo-simple-select-label"
-                                            id="demo-simple-select"
-                                            value={formik.values.type}
-                                            name="type"
-                                            input={<OutlinedInput sx={{fontFamily: "__fonts_2f4189,__fonts_Fallback_2f4189", fontSize: "0.8rem"}} label="نوع محصول" />}
-                                            sx={{fontFamily: "__fonts_2f4189,__fonts_Fallback_2f4189", fontSize: "0.8rem"}}
-                                            onChange={formik.handleChange}>
-                                            <MenuItem value="PRIMARY" sx={{fontFamily: "__fonts_2f4189,__fonts_Fallback_2f4189", fontSize: "0.8rem"}}>ماده اولیه</MenuItem>
-                                            <MenuItem value="EQUIPMENT" sx={{fontFamily: "__fonts_2f4189,__fonts_Fallback_2f4189", fontSize: "0.8rem"}}>تجهیزات</MenuItem>
-                                            <MenuItem value="PRODUCED" sx={{fontFamily: "__fonts_2f4189,__fonts_Fallback_2f4189", fontSize: "0.8rem"}}>تولیدی</MenuItem>
-                                            <MenuItem value="OTHER" sx={{fontFamily: "__fonts_2f4189,__fonts_Fallback_2f4189", fontSize: "0.8rem"}}>سایر</MenuItem>
-                                        </Select>
-                                    </FormControl>
-                                </div>
+      <FormControl
+      
+        fullWidth>
+        <InputLabel sx={{fontFamily: "__fonts_2f4189,__fonts_Fallback_2f4189", fontSize: "0.8rem",color:"#9F9F9F"}} id="demo-multiple-name-label">نوع کالا ها و محصولات </InputLabel>
+        <Select
+       
+          labelId="demo-multiple-name-label"
+          id="demo-multiple-name"
+          multiple
+          value={type}
+          onChange={handleChange}
+          sx={{fontFamily: "__fonts_2f4189,__fonts_Fallback_2f4189", fontSize: "0.8rem"}}
+          input={<OutlinedInput sx={{fontFamily: "__fonts_2f4189,__fonts_Fallback_2f4189", fontSize: "0.8rem"}} label="نوع کالا ها و تجهیزات " />}
+          MenuProps={MenuProps}
+        >
+          {  names.map((name) => (
+            <MenuItem
+            
+            sx={{fontFamily: "__fonts_2f4189,__fonts_Fallback_2f4189", fontSize: "0.8rem"}}
+              key={name}
+              value={name}
+              style={getStyles(name, type, theme)}
+            >
+              {name}
+            </MenuItem>
+          ))}
+        </Select>
+      </FormControl>
+    </div>
+    {type.length===0 && Boolean(formik.errors.type) && (
+                                                <span className="mx-3 text-[0.6rem] text-red-600 ">
+                                                    {formik.errors.type}
+                                                </span>
+                                            )}
+    
+    {type.length>0 &&  <div className="border rounded border-[#9F9F9F] p-2  grid grid-cols-3 gap-2">
+        {  type.map((name)=>(
+            
+                                        
+                                            <div className="border border-[#9F9F9F] px-2 py-1 rounded-full flex justify-between items-center gap-2 w-full box-border h-max">
+                                              <span className="text-xs">{name}</span>
+                                              <button onClick={()=>{handleFilterType(name)}} className="">
+                                              <svg xmlns="http://www.w3.org/2000/svg" width="8" height="8" viewBox="0 0 14 14"
+                                     fill="none">
+                                    <path d="M13 1L1 13M1 1L13 13" stroke="black" stroke-width="2"
+                                          stroke-linecap="round" stroke-linejoin="round"/>
+                                </svg>
+                                              </button>
+                                        </div>
+                                        
+                                    )
+
+                                    )}
+    </div>
+                                  }
+                           
                                 <div>
                                     <Autocomplete
                                         open={openUnitList}
@@ -346,7 +448,7 @@ export default function AddDataDialog(props) {
                                                 visible={true}/>
                                             ثبت
                                         </button>) : (
-                                            <button type="submit"
+                                            <button  type="submit"
                                                     className="w-full rounded-[0.5rem] py-3 hover:border hover:opacity-80 font-bold  bg-mainRed text-white">ثبت
                                             </button>
                                         )

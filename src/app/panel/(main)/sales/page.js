@@ -41,7 +41,7 @@ export default function page() {
   };
   const [openFilter, setOpenFilter] = useState(false);
   const [filterItem, setFilterItem] = useState("");
-
+  const [filterItemCounter, setFilterItemCounter] = useState(0);
   const [paymentList, setPaymentList] = useState([]);
   // const [checkedAll, setCheckedAll] = useState(false);
   // const handleChangeAllCheckbox = (event) => {
@@ -363,6 +363,15 @@ export default function page() {
     setExpanded(isExpanded ? panel : false);
   };
   const [showProduct, setShowProduct] = useState("invoice");
+  const handleCounterOfFilter = () => {
+    let params = new URLSearchParams(filterItem);
+    setFilterItemCounter(params.size);
+  };
+
+  useEffect(() => {
+    handleCounterOfFilter();
+  }, [filterItem]);
+
   return (
     <div>
       <header className="flex justify-between items-center text-[0.9rem] bg-white py-6 px-5 md:px-10">
@@ -450,7 +459,7 @@ export default function page() {
             <div className="flex gap-3">
               <button
                 onClick={handleOpenFilter}
-                className="flex items-center gap-2 text-[0.9rem] text-gray9F border border-1 border-solid border-borderGray rounded px-2 md:px-4 py-2"
+                className="flex relative items-center gap-2 text-[0.9rem] text-gray9F border border-1 border-solid border-borderGray rounded px-2 md:px-4 py-2"
               >
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
@@ -467,6 +476,13 @@ export default function page() {
                     stroke-linejoin="round"
                   />
                 </svg>
+                {filterItemCounter !== 0 && (
+                  <div className="absolute md:top-1 md:right-2 top-1 right-1">
+                    <span className=" rounded-full bg-mainRed w-[1rem] h-[1rem] text-[0.49rem] flex  items-center justify-center text-center text-white">
+                      {filterItemCounter}
+                    </span>
+                  </div>
+                )}
                 <span className="hidden md:inline">فیلتر کردن</span>
               </button>
               <div>

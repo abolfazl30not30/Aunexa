@@ -208,7 +208,7 @@ export default function AddDataDialog(props) {
         driverName: yup.string().required("لطفا نام راننده را وارد کنید"),
         producer: yup.string().required("لطفا تامین کننده را وارد کنید"),
         
-        
+    
     });
 
     const formik = useFormik({
@@ -264,13 +264,15 @@ export default function AddDataDialog(props) {
         <>
             <Dialog
                 fullWidth={true}
+               
                 open={props.openAddData}
                 keepMounted
                 // onClose={()=>{props.handleCloseAddData();handleReset()}}
                 aria-describedby="alert-dialog-slide-description"
                 PaperProps={{
                     style: {
-                        fontFamily: "__fonts_2f4189,__fonts_Fallback_2f4189",
+                        fontFamily: "__fonts_2f4189,__fonts_Fallback_2f4189"
+                        
                     },
                 }}>
                 <DialogContent>
@@ -288,7 +290,7 @@ export default function AddDataDialog(props) {
                             <h3 className="text-[1.1rem]">ثبت مواداولیه ورودی</h3>
                         </div>
                         <form className="flex justify-center " onSubmit={formik.handleSubmit} method="POST">
-                            <div className="flex flex-col justify-center w-[90%] gap-5">
+                            <div className="flex flex-col justify-center w-[90%]  gap-5">
                                 <div className=" flex flex-col">
                                     <Autocomplete
                                         open={openProductList}
@@ -334,7 +336,7 @@ export default function AddDataDialog(props) {
                                             />}
                                     />
                                 </div>
-                                <div className="flex">
+                                <div className="flex gap-2">
                                     <div className="w-[70%]">
                                         <TextField
                                             fullWidth
@@ -385,11 +387,9 @@ export default function AddDataDialog(props) {
                                 </div>
                                 {product?.isExpirable && <div>
                                     <DatePicker
-                                    
-                                    
                                         calendarPosition={`bottom`}
                                         className="red"
-                                        digits={['0', '1', '2', '3', '4', '5', '6', '7', '8', '9']}
+                                        digits={['۰', '۱', '۲', '۳', '۴', '۵', '۶', '۷', '۸', '۹']}
                                         format={`YYYY/MM/DD`}
                                         containerStyle={{
                                             width: "100%"
@@ -412,15 +412,16 @@ export default function AddDataDialog(props) {
 
                                         weekDays={
                                             [
-                                                ["شنبه", "Sat"],
-                                                ["یکشنبه", "Sun"],
-                                                ["دوشنبه", "Mon"],
-                                                ["سه شنبه", "Tue"],
-                                                ["چهارشنبه", "Wed"],
-                                                ["پنجشنبه", "Thu"],
-                                                ["جمعه", "Fri"],
+                                                ["شنبه", "شنبه"],
+                                                ["یکشنبه", "یکشنبه"],
+                                                ["دوشنبه", "دوشنبه"],
+                                                ["سه شنبه", "سه شنبه"],
+                                                ["چهارشنبه", "چهارشنبه"],
+                                                ["پنجشنبه", "پنجشنبه"],
+                                                ["جمعه", "جمعه"],
                                             ]
                                         }
+                                        
                                         calendar={persian}
                                         locale={persian_fa}>
                                         <button className="px-2 pb-4" onClick={(e) => {
@@ -441,8 +442,8 @@ export default function AddDataDialog(props) {
                                             )
                                         }
                                 <div>
-                                    <div className="flex flex-col md:flex-row">
-                                        <div className="plate w-full md:w-[47%] flex items-center pl-4">
+                                    <div className="flex sm:flex-row flex-col">
+                                        <div className="plate w-full sm:w-[47%] flex items-center pl-4">
                                             <div>
                                                 <div className="w-[55px] h-full pt-3  pl-1 pr-3">
                                                     <input disabled={machine!==null } name="part1"
@@ -451,7 +452,7 @@ export default function AddDataDialog(props) {
                                                            className="w-full h-full placeholder-neutral-300 text-center rounded"/>
                                                 </div>
                                             </div>
-                                            <div className="flex">
+                                            <div className="flex ">
                                                 <div className="w-[60px] h-full py-1 pl-1 pr-3 h-full">
                                                     <input disabled={machine!==null } name="part2"
                                                            onChange={handlemachineTag} value={machineTag.part2}
@@ -484,12 +485,12 @@ export default function AddDataDialog(props) {
                                                 </div>
                                             </div>
                                         </div>
-                                        <div className="w-full md:w-[6%] flex justify-center items-center">
+                                        <div className="w-full sm:w-[6%] flex justify-center items-center">
                                             <span className="text-[1rem]">
                                                 یا
                                             </span>
                                         </div>
-                                        <div className="w-full md:w-[47%]">
+                                        <div className="w-full sm:w-[47%]">
                                             {/* <TextField
                                                 disabled={formik.values.machineTag !== ""}
                                                 fullWidth
@@ -576,7 +577,7 @@ export default function AddDataDialog(props) {
                                         </Select>
                                     </FormControl>
                                 </div>
-                                <div className="flex flex-col md:flex-row gap-5 md:gap-1 justify-between">
+                                <div className="flex flex-col sm:flex-row gap-5 md:gap-1 justify-between">
                                     <div className="w-full md:w-1/2">
                                         <TextField
                                             fullWidth
@@ -607,8 +608,8 @@ export default function AddDataDialog(props) {
                                 <div>
                                     <TextField
                                         multiline
-                                        rows={1}
-                                        maxRows={4}
+                                        minRows={2}
+                                        maxRows={2}
                                         fullWidth
                                         placeholder="توضيحات (اختياری)"
                                         type="text"

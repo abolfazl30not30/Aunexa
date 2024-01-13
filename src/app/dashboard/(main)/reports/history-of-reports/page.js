@@ -61,7 +61,7 @@ function vehiclesAndEquipment() {
 
   const [openFilter, setOpenFilter] = useState(false);
   const [filterItem, setFilterItem] = useState("");
-
+  const [filterItemCounter, setFilterItemCounter] = useState(0);
   const [anchorElSort, setAnchorElSort] = useState(null);
   const openSort = Boolean(anchorElSort);
   const handleOpenSortMenu = (event) => {
@@ -127,6 +127,15 @@ function vehiclesAndEquipment() {
   // isPrimaryStoreInputReadAll
   //     :
   //     true
+  const handleCounterOfFilter = () => {
+    let params = new URLSearchParams(filterItem);
+    setFilterItemCounter(params.size);
+  };
+
+  useEffect(() => {
+    handleCounterOfFilter();
+  }, [filterItem]);
+
   return (
     <>
       <div>
@@ -142,7 +151,7 @@ function vehiclesAndEquipment() {
             <div className="flex gap-3">
               <button
                 onClick={handleOpenFilter}
-                className="flex items-center gap-2 text-[0.9rem] text-gray9F border border-1 border-solid border-borderGray rounded px-2 md:px-4 py-2"
+                className="flex relative items-center gap-2 text-[0.9rem] text-gray9F border border-1 border-solid border-borderGray rounded px-2 md:px-4 py-2"
               >
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
@@ -159,6 +168,13 @@ function vehiclesAndEquipment() {
                     stroke-linejoin="round"
                   />
                 </svg>
+                {filterItemCounter !== 0 && (
+                  <div className="absolute md:top-1 md:right-2 top-1 right-1">
+                    <span className=" rounded-full bg-mainRed w-[1rem] h-[1rem] text-[0.49rem] flex  items-center justify-center text-center text-white">
+                      {filterItemCounter}
+                    </span>
+                  </div>
+                )}
                 <span className="hidden md:inline">فیلتر کردن</span>
               </button>
               <div>
@@ -340,7 +356,8 @@ function vehiclesAndEquipment() {
 
                           <td
                             scope="row"
-                            className="hidden md:flex gap-2 px-6 py-4 justify-center text-gray70 whitespace-nowrap ">
+                            className="hidden md:flex gap-2 px-6 py-4 justify-center text-gray70 whitespace-nowrap "
+                          >
                             {/*<Link href="new-report">*/}
                             {/*  <svg*/}
                             {/*    xmlns="http://www.w3.org/2000/svg"*/}
@@ -369,7 +386,7 @@ function vehiclesAndEquipment() {
                             {/*    />*/}
                             {/*  </svg>*/}
                             {/*</Link>*/}
-                             <button
+                            <button
                               onClick={() => {
                                 handleOpeDemo();
                               }}
@@ -427,10 +444,7 @@ function vehiclesAndEquipment() {
           openFilter={openFilter}
           handleCloseFilter={handleCloseFilter}
         />
-        <ShowDemo
-            openDemo={openDemo}
-            handleCloseDemo={handleCloseDemo}
-        />
+        <ShowDemo openDemo={openDemo} handleCloseDemo={handleCloseDemo} />
         <MoreInfoDialog
           moreInfoTarget={moreInfoTarget}
           openMoreInfo={openMoreInfo}

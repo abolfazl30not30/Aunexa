@@ -397,7 +397,7 @@ const [getMachineList,
                                             />}
                                     />
                                 </div>
-                                <div className="flex">
+                                <div className="flex gap-2">
                                     <div className="w-[70%]">
                                         <TextField
                                             fullWidth
@@ -451,7 +451,7 @@ const [getMachineList,
                                 <DatePicker
                                     calendarPosition={`bottom`}
                                     className="red"
-                                    digits={['0', '1', '2', '3', '4', '5', '6', '7', '8', '9']}
+                                    digits={['۰', '۱', '۲', '۳', '۴', '۵', '۶', '۷', '۸', '۹']}
                                     format={`YYYY/MM/DD`}
                                     containerStyle={{
                                         width: "100%"
@@ -474,13 +474,13 @@ const [getMachineList,
 
                                     weekDays={
                                         [
-                                            ["شنبه", "Sat"],
-                                            ["یکشنبه", "Sun"],
-                                            ["دوشنبه", "Mon"],
-                                            ["سه شنبه", "Tue"],
-                                            ["چهارشنبه", "Wed"],
-                                            ["پنجشنبه", "Thu"],
-                                            ["جمعه", "Fri"],
+                                            ["شنبه", "شنبه"],
+                                            ["یکشنبه", "یکشنبه"],
+                                            ["دوشنبه", "دوشنبه"],
+                                            ["سه شنبه", "سه شنبه"],
+                                            ["چهارشنبه", "چهارشنبه"],
+                                            ["پنجشنبه", "پنجشنبه"],
+                                            ["جمعه", "جمعه"],
                                         ]
                                     }
 
@@ -504,8 +504,8 @@ const [getMachineList,
                                             )
                                         }
                                 <div>
-                                    <div className="flex flex-col md:flex-row">
-                                        <div className="plate w-full md:w-[47%] flex items-center pl-4">
+                                    <div className="flex flex-col sm:flex-row">
+                                        <div className="plate w-full sm:w-[47%] flex items-center pl-4">
                                             <div>
                                                 <div className="w-[55px] h-full pt-3  pl-1 pr-3">
                                                     <input disabled={machine!==null && machine!=="" && machine!==undefined } name="part1"
@@ -548,12 +548,12 @@ const [getMachineList,
                                                 </div>
                                             </div>
                                         </div>
-                                        <div className="w-full md:w-[6%] flex justify-center items-center">
+                                        <div className="w-full sm:w-[6%] flex justify-center items-center">
                                             <span className="text-[1rem]">
                                                 یا
                                             </span>
                                         </div>
-                                        <div className="w-full md:w-[47%]">
+                                        <div className="w-full sm:w-[47%]">
                                         <Autocomplete
                                                  disabled={formik.values.machineTag !== ""}
                                         open={openMachineList}
@@ -628,7 +628,7 @@ const [getMachineList,
                                         </Select>
                                     </FormControl>
                                 </div>
-                                <div className="flex flex-col md:flex-row gap-5 md:gap-1 justify-between">
+                                <div className="flex flex-col sm:flex-row gap-5 md:gap-1 justify-between">
                                     <div className="w-full md:w-1/2">
                                         <TextField
                                             fullWidth
@@ -659,8 +659,8 @@ const [getMachineList,
                                 <div>
                                     <TextField
                                         multiline
-                                        rows={1}
-                                        maxRows={4}
+                                        minRows={2}
+                                        maxRows={2}
                                         fullWidth
                                         placeholder="توضيحات (اختياری)"
                                         type="text"

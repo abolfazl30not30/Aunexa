@@ -119,3 +119,9 @@ margin:0px !important;}
     background: transparent !important;
     border: none !important;
 }
+.rmdp-week-day{
+    font-size: 8px !important;
+}
+.rmdp-today .sd{
+    background-color: #9F9F9F !important;
+}

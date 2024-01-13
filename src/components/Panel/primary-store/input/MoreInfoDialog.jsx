@@ -51,7 +51,7 @@ export default function MoreInfoDialog(props) {
                                 </div>
                                 {
                                     props.moreInfoTarget.expirationDate && (
-                                        <div className="flex flex-col">
+                                        <div className="flex flex-col py-1">
                                             <div className="mb-2">
                                                 <span className="text-[0.9rem] text-gray70 ">تاریخ انقضا</span>
                                             </div>
@@ -63,7 +63,7 @@ export default function MoreInfoDialog(props) {
                                         </div>
                                     )
                                 }
-                                <div className="flex flex-col">
+                                <div className="flex flex-col py-1">
                                     <div className="mb-2">
                                         <span className="text-[0.9rem] text-gray70 ">نوع وسیله</span>
                                     </div>
@@ -84,7 +84,8 @@ export default function MoreInfoDialog(props) {
                                         </div>
                                     </div>
                                 </div>
-                                <div className="flex flex-col">
+                               <div className="flex gap-2 py-1">
+                               <div className="flex flex-col grow">
                                     <div className="mb-2">
                                         <span className="text-[0.9rem] text-gray70 ">نام راننده</span>
                                     </div>
@@ -94,7 +95,7 @@ export default function MoreInfoDialog(props) {
                                         </div>
                                     </div>
                                 </div>
-                                <div className="flex flex-col">
+                                <div className="flex flex-col grow">
                                     <div className="mb-2">
                                         <span className="text-[0.9rem] text-gray70 ">تامین کننده</span>
                                     </div>
@@ -104,9 +105,11 @@ export default function MoreInfoDialog(props) {
                                         </div>
                                     </div>
                                 </div>
-                                <div className="flex flex-col">
+                               </div>
+                                <div className="flex gap-2 ">
+                                <div className="flex flex-col w-3/5">
                                     <div className="mb-2">
-                                        <span className="text-[0.9rem] text-gray70 ">تاریخ</span>
+                                        <span className="text-[0.9rem] text-gray70 "> تاریخ ثبت</span>
                                     </div>
                                     <div className="border border-[#D9D9D9]  flex justify-start px-4">
                                         <div className="p-2">
@@ -114,12 +117,12 @@ export default function MoreInfoDialog(props) {
                                         </div>
                                     </div>
                                 </div>
-                                <div className="flex flex-col">
+                                <div className="flex flex-col w-2/5">
                                     <div className="mb-2">
                                         <span className="text-[0.9rem] text-gray70 ">وضیعت</span>
                                     </div>
-                                    <div className="border border-[#D9D9D9]  flex justify-start px-4">
-                                        <div className="p-2">
+                                    <div className="border border-[#D9D9D9]  flex justify-center px-4">
+                                        <div className="py-2">
                                             <span className="text-[#29262A] text-[0.9rem]">
                                                 {props.moreInfoTarget?.status === "CONFIRMED" ? (<span className="text-[0.8rem] bg-greenBg text-greenText py-1 px-2 rounded-xl">تاييد شده</span>) : (
                                                     props.moreInfoTarget?.status === "UNKNOWN" ? (<span className="text-[0.8rem] bg-[#EBEBEB] text-gray70 py-1 px-2 rounded-xl">نامعلوم</span>) : (
@@ -129,6 +132,7 @@ export default function MoreInfoDialog(props) {
                                             </span>
                                         </div>
                                     </div>
+                                </div>
                                 </div>
                                 {
                                     props.moreInfoTarget.description && (
@@ -227,7 +231,7 @@ export default function MoreInfoDialog(props) {
                                 </div>
                                 <div>
                                     <span className="ml-1 text-gray9F text-[0.8rem]">
-                                        تاریخ :
+                                        تاریخ ثبت :
                                     </span>
                                     <span className="text-[#29262A] text-[0.8rem] ">
                                         <span className="">{props.moreInfoTarget?.time}</span> <span className="pr-2">{props.moreInfoTarget?.date}</span>

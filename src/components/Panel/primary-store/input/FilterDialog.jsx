@@ -130,7 +130,7 @@ export default function FilterDialog(props) {
                     },
                 }}>
                 <DialogContent>
-                    <DialogContentText style={{ fontFamily: "__fonts_2f4189,__fonts_Fallback_2f4189" }}>
+                    <DialogContentText style={{ fontFamily: "__fonts_2f4189,__fonts_Fallback_2f4189"}}>
                         <div className="flex justify-end">
                             <button onClick={()=>{props.handleCloseFilter();}}>
                                 <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 14 14" fill="none">
@@ -143,22 +143,23 @@ export default function FilterDialog(props) {
                         </div>
                         <form className="flex justify-center " onSubmit={formik.handleSubmit} method="POST">
                             <div className="flex flex-col justify-center w-[80%] gap-3">
-                                <div className="flex flex-col md:flex-row justify-between gap-3">
-                                    <div className="w-full md:w-1/2">
+                                <div className="flex flex-col sm:flex-row justify-between gap-3">
+                                    <div className="w-full sm:w-1/2">
                                         <DatePicker
                                             placeholder="از تاریخ"
+                                            maxDate={formik.values.dateTo}
                                             calendarPosition={`bottom`}
                                             className="red"
-                                            digits={['0', '1', '2', '3', '4', '5', '6', '7', '8', '9']}
+                                            digits={['۰', '۱', '۲', '۳', '۴', '۵', '۶', '۷', '۸', '۹']}
                                             format={`YYYY/MM/DD`}
                                             containerStyle={{
-                                                width: "100%"
+                                                width: "100%",  
                                             }}
                                             inputClass={`border border-[#D9D9D9] placeholder-neutral-300 text-gray-900 text-[0.8rem] rounded focus:ring-[#3B82F67F] focus:border-[#3B82F67F] block w-full px-3 py-4`}
                                             value={formik.values.dateFrom}
                                             onChange={(value) => {
                                               handleDateFromInput(value)
-                                            }}
+                                            }}                                           
                                             mapDays={({date}) => {
                                                 let props = {}
                                                 let isWeekend = [6].includes(date.weekDay.index)
@@ -170,16 +171,16 @@ export default function FilterDialog(props) {
                                             }}
 
                                             weekDays={
-                                                [
-                                                    ["شنبه", "Sat"],
-                                                    ["یکشنبه", "Sun"],
-                                                    ["دوشنبه", "Mon"],
-                                                    ["سه شنبه", "Tue"],
-                                                    ["چهارشنبه", "Wed"],
-                                                    ["پنجشنبه", "Thu"],
-                                                    ["جمعه", "Fri"],
-                                                ]
-                                            }
+                                            [
+                                                ["شنبه", "شنبه"],
+                                                ["یکشنبه", "یکشنبه"],
+                                                ["دوشنبه", "دوشنبه"],
+                                                ["سه شنبه", "سه شنبه"],
+                                                ["چهارشنبه", "چهارشنبه"],
+                                                ["پنجشنبه", "پنجشنبه"],
+                                                ["جمعه", "جمعه"],
+                                            ]
+                                        }
 
                                             calendar={persian}
                                             locale={persian_fa}>
@@ -192,12 +193,14 @@ export default function FilterDialog(props) {
                                             </button>
                                         </DatePicker>
                                     </div>
-                                    <div className="w-full md:w-1/2">
+                                    <div className="w-full sm:w-1/2">
                                         <DatePicker
+                                        minDate={formik.values.dateFrom}
+                                        
                                             placeholder="تا تاریخ"
                                             calendarPosition={`bottom`}
                                             className="red"
-                                            digits={['0', '1', '2', '3', '4', '5', '6', '7', '8', '9']}
+                                            digits={['۰', '۱', '۲', '۳', '۴', '۵', '۶', '۷', '۸', '۹']}
                                             format={`YYYY/MM/DD`}
                                             containerStyle={{
                                                 width: "100%"
@@ -218,16 +221,16 @@ export default function FilterDialog(props) {
                                             }}
 
                                             weekDays={
-                                                [
-                                                    ["شنبه", "Sat"],
-                                                    ["یکشنبه", "Sun"],
-                                                    ["دوشنبه", "Mon"],
-                                                    ["سه شنبه", "Tue"],
-                                                    ["چهارشنبه", "Wed"],
-                                                    ["پنجشنبه", "Thu"],
-                                                    ["جمعه", "Fri"],
-                                                ]
-                                            }
+                                            [
+                                                ["شنبه", "شنبه"],
+                                                ["یکشنبه", "یکشنبه"],
+                                                ["دوشنبه", "دوشنبه"],
+                                                ["سه شنبه", "سه شنبه"],
+                                                ["چهارشنبه", "چهارشنبه"],
+                                                ["پنجشنبه", "پنجشنبه"],
+                                                ["جمعه", "جمعه"],
+                                            ]
+                                        }
 
                                             calendar={persian}
                                             locale={persian_fa}>
@@ -249,6 +252,7 @@ export default function FilterDialog(props) {
                                         onClose={() => {
                                             setOpenProductList(false);
                                         }}
+                                        
                                         fullWidth
                                         clearOnEscape
                                         disablePortal
@@ -327,7 +331,8 @@ export default function FilterDialog(props) {
                                                 placeholder="وسیله نقلیه"
                                             />}/>
                                 </div>
-                                <div className=" flex flex-col">
+                               <div className="flex gap-2 sm:flex-row flex-col ">
+                               <div className=" flex flex-col grow">
                                     <FormControl fullWidth>
                                         <InputLabel id="demo-simple-select-label" sx={{fontFamily: "__fonts_2f4189,__fonts_Fallback_2f4189", fontSize: "0.8rem",color:"#9F9F9F"}}>وضعیت</InputLabel>
                                         <Select
@@ -346,7 +351,7 @@ export default function FilterDialog(props) {
                                         </Select>
                                     </FormControl>
                                 </div>
-                                <div className=" flex flex-col">
+                                <div className=" flex flex-col grow">
                                     <div className="mb-2">
                                         <TextField
                                             fullWidth
@@ -363,6 +368,7 @@ export default function FilterDialog(props) {
                                     </div>
 
                                 </div>
+                               </div>
                                 <div className="mt-4">
                                     <button type="submit"
                                             className="w-full text-[0.9rem] rounded-[0.5rem] py-3 hover:border hover:opacity-80 font-bold  bg-mainRed text-white">اعمال فیلتر
