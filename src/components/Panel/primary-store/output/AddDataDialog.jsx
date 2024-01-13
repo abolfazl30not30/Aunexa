@@ -360,7 +360,7 @@ export default function AddDataDialog(props) {
                                             />}
                                     />
                                 </div>
-                                <div className="flex">
+                                <div className="flex gap-2">
                                     <div className="w-[70%]">
                                         <TextField
                                             fullWidth
@@ -635,8 +635,8 @@ export default function AddDataDialog(props) {
                                 <div>
                                     <TextField
                                         multiline
-                                        rows={1}
-                                        maxRows={4}
+                                        rows={2}
+                                        maxRows={2}
                                         fullWidth
                                         placeholder="توضيحات (اختياری)"
                                         type="text"

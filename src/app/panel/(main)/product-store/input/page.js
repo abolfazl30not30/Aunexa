@@ -63,7 +63,7 @@ function primaryStoreInput() {
 
   const [openFilter, setOpenFilter] = useState(false);
   const [filterItem, setFilterItem] = useState("");
-
+  const [filterItemCounter, setFilterItemCounter] = useState(0);
   const [anchorElSort, setAnchorElSort] = useState(null);
   const openSort = Boolean(anchorElSort);
   const handleOpenSortMenu = (event) => {
@@ -156,6 +156,14 @@ function primaryStoreInput() {
     { page, sort, filterItem },
     { refetchOnMountOrArgChange: true }
   );
+  const handleCounterOfFilter = () => {
+    let params = new URLSearchParams(filterItem);
+    setFilterItemCounter(params.size);
+  };
+
+  useEffect(() => {
+    handleCounterOfFilter();
+  }, [filterItem]);
 
   return (
     <>
@@ -224,7 +232,7 @@ function primaryStoreInput() {
             <div className="flex gap-3">
               <button
                 onClick={handleOpenFilter}
-                className="flex items-center gap-2 text-[0.9rem] text-gray9F border border-1 border-solid border-borderGray rounded px-2 md:px-4 py-2"
+                className="flex items-center relative gap-2 text-[0.9rem] text-gray9F border border-1 border-solid border-borderGray rounded px-2 md:px-4 py-2"
               >
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
@@ -241,6 +249,13 @@ function primaryStoreInput() {
                     stroke-linejoin="round"
                   />
                 </svg>
+                {filterItemCounter !== 0 && (
+                  <div className="absolute md:top-1 md:right-2 top-1 right-1">
+                    <span className=" rounded-full bg-mainRed w-[1rem] h-[1rem] text-[0.49rem] flex  items-center justify-center text-center text-white">
+                      {filterItemCounter}
+                    </span>
+                  </div>
+                )}
                 <span className="hidden md:inline">فیلتر کردن</span>
               </button>
               <div>

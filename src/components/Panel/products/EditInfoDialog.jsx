@@ -1,5 +1,5 @@
 'use client'
-
+import { useTheme } from "@material-ui/core";
 import TextField from "@mui/material/TextField";
 import React, {useEffect, useState} from "react";
 import {
@@ -73,7 +73,40 @@ const AntSwitch = styled(Switch)(({ theme }) => ({
         boxSizing: 'border-box',
     },
 }));
+//
+const ITEM_HEIGHT = 48;
+const ITEM_PADDING_TOP = 8;
+const MenuProps = {
+  PaperProps: {
+    style: {
+      maxHeight: ITEM_HEIGHT * 4.5 + ITEM_PADDING_TOP,
+      fontFamily: "__fonts_2f4189,__fonts_Fallback_2f4189",
+      width: 250,
+    },
+  },
+};
 
+const names = [
+  'ماده اولیه',
+  'تولیدی',
+  'تجهیزات سنگین',
+  'تجهیزات اداری',
+  'سایر'
+];
+
+function getStyles(name, type, theme) {
+  return {
+    fontWeight:
+      type.indexOf(name) === -1
+        ? theme.typography.fontWeightRegular
+        : theme.typography.fontWeightMedium,
+        display:
+      type.indexOf(name) === -1
+        ? "block"
+        : "none",
+        
+  };
+}
 export default function EditInfoDialog(props) {
 
     //unit input
@@ -92,20 +125,43 @@ export default function EditInfoDialog(props) {
         formik.resetForm()
         setUnit(null)
         setUploadedImage(null)
+        setType([])
     }
-
+    const theme = useTheme();
+    const [type, setType] = React.useState([...props.editInfoTarget.type]);
+  
+    const handleChange = (event) => {
+      const {
+        target: { value },
+      } = event;
+      setType(
+        // On autofill we get a stringified value.
+        typeof value === 'string' ? value.split(',') : value,
+      );
+    };
+    const handleFilterType =(name)=>{
+         setType(type.filter((subName)=>subName!==name))
+    }
     //submit data
     const [submitData, { isLoading:isSubmitLoading ,error}] = useSaveProductMutation()
     const schema = yup.object().shape({
-        type: yup.string().required("لطفا نام محصول را وارد کنید"),
+        // type: yup.string().required("لطفا نام محصول را وارد کنید"),
         persianName: yup.string().required("لطفا نام فارسی محصول را وارد کنید"),
         defaultUnit: yup.string().required("لطفا واحد پیش فرض را وارد کنید"),
     });
+    const validate = (values, props) => {
+        const errors = {};
 
+        if (type.length===0) {
+            errors.type = "لطفانوع محصول را انتخاب کنید";
+        } 
+
+        return errors;
+    };
     const formik = useFormik({
         initialValues: {
             id:"",
-            type: "",
+            // type: "",
             code:"",
             persianName: "",
             englishName: "",
@@ -115,8 +171,9 @@ export default function EditInfoDialog(props) {
             abbreviation:"",
         },
         validationSchema: schema,
+        validate:validate,
         onSubmit: async (product) => {
-            let updatedProduct = {...product,imageURL:uploadedImage}
+            let updatedProduct = {...product,imageURL:uploadedImage,type}
             updatedProduct=ConvertToNull(updatedProduct)
             const userData = await submitData(updatedProduct)
             handleReset()
@@ -148,7 +205,7 @@ export default function EditInfoDialog(props) {
         const editInfoObj = ConvertToEmpty(props.editInfoTarget)
         formik.setValues({
             id:editInfoObj?.id,
-            type: editInfoObj?.type,
+            // type: editInfoObj?.type,
             code:editInfoObj?.code,
             persianName: editInfoObj?.persianName,
             englishName: editInfoObj?.englishName,
@@ -289,23 +346,61 @@ export default function EditInfoDialog(props) {
                                     </div>
                                 </div>
                                 <div>
-                                    <FormControl fullWidth error={formik.touched.type && Boolean(formik.errors.type)}>
-                                        <InputLabel id="demo-simple-select-label" sx={{fontFamily: "__fonts_2f4189,__fonts_Fallback_2f4189", fontSize: "0.8rem",color:"#9F9F9F"}}>نوع محصول </InputLabel>
-                                        <Select
-                                            labelId="demo-simple-select-label"
-                                            id="demo-simple-select"
-                                            value={formik.values.type}
-                                            name="type"
-                                            input={<OutlinedInput sx={{fontFamily: "__fonts_2f4189,__fonts_Fallback_2f4189", fontSize: "0.8rem"}} label="نوع محصول" />}
-                                            sx={{fontFamily: "__fonts_2f4189,__fonts_Fallback_2f4189", fontSize: "0.8rem"}}
-                                            onChange={formik.handleChange}>
-                                            <MenuItem value="PRIMARY" sx={{fontFamily: "__fonts_2f4189,__fonts_Fallback_2f4189", fontSize: "0.8rem"}}>ماده اولیه</MenuItem>
-                                            <MenuItem value="EQUIPMENT" sx={{fontFamily: "__fonts_2f4189,__fonts_Fallback_2f4189", fontSize: "0.8rem"}}>تجهیزات</MenuItem>
-                                            <MenuItem value="PRODUCED" sx={{fontFamily: "__fonts_2f4189,__fonts_Fallback_2f4189", fontSize: "0.8rem"}}>تولیدی</MenuItem>
-                                            <MenuItem value="OTHER" sx={{fontFamily: "__fonts_2f4189,__fonts_Fallback_2f4189", fontSize: "0.8rem"}}>سایر</MenuItem>
-                                        </Select>
-                                    </FormControl>
-                                </div>
+      <FormControl
+      
+        fullWidth>
+        <InputLabel sx={{fontFamily: "__fonts_2f4189,__fonts_Fallback_2f4189", fontSize: "0.8rem",color:"#9F9F9F"}} id="demo-multiple-name-label">نوع کالا ها و محصولات </InputLabel>
+        <Select
+       
+          labelId="demo-multiple-name-label"
+          id="demo-multiple-name"
+          multiple
+          value={type}
+          onChange={handleChange}
+          sx={{fontFamily: "__fonts_2f4189,__fonts_Fallback_2f4189", fontSize: "0.8rem"}}
+          input={<OutlinedInput sx={{fontFamily: "__fonts_2f4189,__fonts_Fallback_2f4189", fontSize: "0.8rem"}} label="نوع کالا ها و تجهیزات " />}
+          MenuProps={MenuProps}
+        >
+          {  names.map((name) => (
+            <MenuItem
+            
+            sx={{fontFamily: "__fonts_2f4189,__fonts_Fallback_2f4189", fontSize: "0.8rem"}}
+              key={name}
+              value={name}
+              style={getStyles(name, type, theme)}
+            >
+              {name}
+            </MenuItem>
+          ))}
+        </Select>
+      </FormControl>
+    </div>
+    {type.length===0 && Boolean(formik.errors.type) && (
+                                                <span className="mx-3 text-[0.6rem] text-red-600 ">
+                                                    {formik.errors.type}
+                                                </span>
+                                            )}
+    
+    {type.length>0 &&  <div className="border rounded border-[#9F9F9F] p-2  grid grid-cols-3 gap-2">
+        {  type.map((name)=>(
+            
+                                        
+                                            <div className="border border-[#9F9F9F] px-2 py-1 rounded-full flex justify-between items-center gap-2 w-full box-border h-max">
+                                              <span className="text-xs">{name}</span>
+                                              <button onClick={()=>{handleFilterType(name)}} className="">
+                                              <svg xmlns="http://www.w3.org/2000/svg" width="8" height="8" viewBox="0 0 14 14"
+                                     fill="none">
+                                    <path d="M13 1L1 13M1 1L13 13" stroke="black" stroke-width="2"
+                                          stroke-linecap="round" stroke-linejoin="round"/>
+                                </svg>
+                                              </button>
+                                        </div>
+                                        
+                                    )
+
+                                    )}
+    </div>
+                                  }
                                 <div>
                                     <Autocomplete
                                         open={openUnitList}
