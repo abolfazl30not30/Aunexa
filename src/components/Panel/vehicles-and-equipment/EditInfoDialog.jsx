@@ -8,7 +8,7 @@ import {
     FormControl, FormHelperText,
     InputLabel,
     MenuItem, OutlinedInput,
-    Select,
+    Select,Checkbox
 } from "@mui/material";
 import Dialog from "@mui/material/Dialog";
 import {TailSpin} from "react-loader-spinner";
@@ -32,6 +32,7 @@ import {
 } from "@/redux/features/vehicles-and-equipment/VehiclesAndEquipmentSlice";
 import { ConvertToNull } from "@/helper/ConvertToNull";
 import { ConvertToEmpty } from "@/helper/ConvertToEmpty";
+import { CheckBox } from "@mui/icons-material";
 
 const AntSwitch = styled(Switch)(({ theme }) => ({
     width: 35,
@@ -177,7 +178,7 @@ export default function EditInfoDialog(props) {
         const errors = {};
 
         if (!values.tag && !values.code) {
-            errors.tag = "لطفا پلاک یا کد وسیله نقلیه را وارد کنید";
+            errors.tag =  "لطفا حداقل یکی از موارد پلاک و کد وسیله نقلیه را وارد کنید";
         } else if ( values.tag) {
             if (!/[۰۱۲۳۴۵۶۷۸۹0-9]{7}./.test(values.tag)) {
                 errors.tag = 'لطفا پلاک  وسیله نقلیه را به صورت صحیح و کامل وارد کنید';
@@ -299,7 +300,7 @@ export default function EditInfoDialog(props) {
                 aria-describedby="alert-dialog-slide-description"
                 PaperProps={{
                     style: {
-                        fontFamily: "__fonts_2f4189,__fonts_Fallback_2f4189",
+                        fontFamily: "__fonts_2f4189,__fonts_Fallback_2f4189",overflow:"visible"
                     },
                 }}>
                 <DialogContent>
@@ -406,7 +407,7 @@ export default function EditInfoDialog(props) {
                                         </div>
                                         <div className="w-full md:w-[6%] flex justify-center items-center">
                                             <span className="text-[1rem]">
-                                                یا
+                                                
                                             </span>
                                         </div>
                                         <div className="w-full md:w-[47%]">
@@ -436,35 +437,33 @@ export default function EditInfoDialog(props) {
                                     </div>
                                 </div>
                                 <div>
-                                    <div className="flex flex-col">
-                                        <div className="flex w-full">
-                                            <div className="border border-[#D9D9D9] py-4 w-1/2 px-3">
+                                <div className="flex flex-col justify-center">
+                                        <div className="flex w-full items-center">
+                                            <div className="border border-[#D9D9D9] py-0.5  px-3">
                                                 <span className="text-[#9F9F9F] text-[0.8rem]">آیا داری GPS می باشد؟</span>
+                                                <Checkbox checked={formik.values.hasGps} onChange={(e)=>{formik.setFieldValue("hasGps", e.target.checked)}} color="default" />
                                             </div>
-                                            <div className="border border-[#D9D9D9] py-4 w-1/2">
-                                                <div className="flex justify-center gap-2">
-                                                    <span className="text-[#9F9F9F] text-[0.8rem]">خیر</span>
-                                                    <AntSwitch checked={formik.values.hasGps} onChange={(e)=>{formik.setFieldValue("hasGps", e.target.checked)}}  inputProps={{ 'aria-label': 'ant design' }} />
-                                                    <span className="text-[#9F9F9F] text-[0.8rem]">بله</span>
-                                                </div>
-                                            </div>
+                                           
+                                        
                                         </div>
                                     </div>
                                 </div>
-                                <div>
-                                    <TextField
-                                        disabled={!formik.values.hasGps}
-                                        fullWidth
-                                        placeholder="API جی پی اس"
-                                        type="text"
-                                        name="gpsURL"
-                                        value={formik.values.gpsURL}
-                                        onChange={formik.handleChange}
-                                        error={formik.touched.gpsURL && Boolean(formik.errors.gpsURL)}
-                                        helperText={formik.touched.gpsURL && formik.errors.gpsURL}
-                                        inputProps={{style: {fontFamily: "__fonts_2f4189,__fonts_Fallback_2f4189", fontSize: "0.8rem"}}}
-                                        InputLabelProps={{style: {fontFamily: "__fonts_2f4189,__fonts_Fallback_2f4189"}}}/>
-                                </div>
+                                {formik.values.hasGps &&
+                                 <div>
+                                 <TextField
+                                     
+                                     fullWidth
+                                     placeholder="imei جی پی اس"
+                                     type="text"
+                                     name="gpsURL"
+                                     value={formik.values.gpsURL}
+                                     onChange={formik.handleChange}
+                                     error={formik.touched.gpsURL && Boolean(formik.errors.gpsURL)}
+                                     helperText={formik.touched.gpsURL && formik.errors.gpsURL}
+                                     inputProps={{style: {fontFamily: "__fonts_2f4189,__fonts_Fallback_2f4189", fontSize: "0.8rem"}}}
+                                     InputLabelProps={{style: {fontFamily: "__fonts_2f4189,__fonts_Fallback_2f4189"}}}/>
+                             </div>}
+                               
                                 <div className=" flex flex-col">
                                     <Autocomplete
                                         open={openSubOrganizationList}
@@ -531,10 +530,10 @@ export default function EditInfoDialog(props) {
                                     )
                                 }
                                 <div>
-                                    <DatePicker
+                                <DatePicker
                                         calendarPosition={`bottom`}
                                         className="red"
-                                        digits={['0', '1', '2', '3', '4', '5', '6', '7', '8', '9']}
+                                        digits={['۰', '۱', '۲', '۳', '۴', '۵', '۶', '۷', '۸', '۹']}
                                         format={`YYYY/MM/DD`}
                                         containerStyle={{
                                             width: "100%"
@@ -556,14 +555,13 @@ export default function EditInfoDialog(props) {
                                         }}
 
                                         weekDays={
-                                            [
-                                                ["شنبه", "Sat"],
-                                                ["یکشنبه", "Sun"],
-                                                ["دوشنبه", "Mon"],
-                                                ["سه شنبه", "Tue"],
-                                                ["چهارشنبه", "Wed"],
-                                                ["پنجشنبه", "Thu"],
-                                                ["جمعه", "Fri"],
+                                            [ ["شنبه", "شنبه"],
+                                            ["یکشنبه", "یکشنبه"],
+                                            ["دوشنبه", "دوشنبه"],
+                                            ["سه شنبه", "سه شنبه"],
+                                            ["چهارشنبه", "چهارشنبه"],
+                                            ["پنجشنبه", "پنجشنبه"],
+                                            ["جمعه", "جمعه"],
                                             ]
                                         }
 
@@ -572,7 +570,8 @@ export default function EditInfoDialog(props) {
                                         <button className="px-2 pb-4" onClick={(e) => {
                                             e.preventDefault()
                                             setDate("")
-                                            formik.setFieldValue("purchaseDate", "")}}>
+                                            formik.setFieldValue("purchaseDate", "")
+                                        }}>
                                             ریست
                                         </button>
                                     </DatePicker>
@@ -593,7 +592,7 @@ export default function EditInfoDialog(props) {
                                             ویرایش
                                         </button>) : (
                                             <button type="submit"
-                                                    className="w-full rounded-[0.5rem] py-3 hover:border hover:opacity-80 font-bold  bg-mainRed text-white">ثبت
+                                                    className="w-full rounded-[0.5rem] py-3  hover:opacity-80 font-bold  bg-mainRed text-white">ثبت
                                             </button>
                                         )
                                     }

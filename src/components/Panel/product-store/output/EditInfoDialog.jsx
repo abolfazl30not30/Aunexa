@@ -331,7 +331,7 @@ const [getMachineList,
                 aria-describedby="alert-dialog-slide-description"
                 PaperProps={{
                     style: {
-                        fontFamily: "__fonts_2f4189,__fonts_Fallback_2f4189",
+                        fontFamily: "__fonts_2f4189,__fonts_Fallback_2f4189",overflow:"visible"
                     },
                 }}>
                 <DialogContent>
@@ -395,7 +395,7 @@ const [getMachineList,
                                             />}
                                     />
                                 </div>
-                                <div className="flex">
+                                <div className="flex gap-2">
                                     <div className="w-[70%]">
                                         <TextField
                                             fullWidth
@@ -446,51 +446,51 @@ const [getMachineList,
                                 </div>
                                 {product?.isExpirable &&<div>
                                     <DatePicker
-                                        calendarPosition={`bottom`}
-                                        className="red"
-                                        digits={['0', '1', '2', '3', '4', '5', '6', '7', '8', '9']}
-                                        format={`YYYY/MM/DD`}
-                                        containerStyle={{
-                                            width: "100%"
-                                        }}
-                                        placeholder="تاریخ انقضا (اختیاری)"
-                                        inputClass={`border border-[#D9D9D9] placeholder-neutral-300 text-gray-900 text-[0.8rem] rounded focus:ring-[#3B82F67F] focus:border-[#3B82F67F] block w-full px-3 py-4`}
-                                        value={date}
-                                        onChange={(value) => {
-                                            handleDateInput(value)
-                                        }}
-                                        mapDays={({date}) => {
-                                            let props = {}
-                                            let isWeekend = [6].includes(date.weekDay.index)
+                                    calendarPosition={`bottom`}
+                                    className="red"
+                                    digits={['۰', '۱', '۲', '۳', '۴', '۵', '۶', '۷', '۸', '۹']}
+                                    format={`YYYY/MM/DD`}
+                                    containerStyle={{
+                                        width: "100%"
+                                    }}
+                                    placeholder="تاریخ انقضا (اجباری)"
+                                    inputClass={`border border-[#D9D9D9] placeholder-neutral-300 text-gray-900 text-[0.8rem] rounded focus:ring-[#3B82F67F] focus:border-[#3B82F67F] block w-full px-3 py-4`}
+                                    value={date}
+                                    onChange={(value) => {
+                                        handleDateInput(value)
+                                    }}
+                                    mapDays={({date}) => {
+                                        let props = {}
+                                        let isWeekend = [6].includes(date.weekDay.index)
 
-                                            if (isWeekend)
-                                                props.className = "highlight highlight-red";
+                                        if (isWeekend)
+                                            props.className = "highlight highlight-red";
 
-                                            return props
-                                        }}
+                                        return props
+                                    }}
 
-                                        weekDays={
-                                            [
-                                                ["شنبه", "Sat"],
-                                                ["یکشنبه", "Sun"],
-                                                ["دوشنبه", "Mon"],
-                                                ["سه شنبه", "Tue"],
-                                                ["چهارشنبه", "Wed"],
-                                                ["پنجشنبه", "Thu"],
-                                                ["جمعه", "Fri"],
-                                            ]
-                                        }
+                                    weekDays={
+                                        [
+                                            ["شنبه", "شنبه"],
+                                            ["یکشنبه", "یکشنبه"],
+                                            ["دوشنبه", "دوشنبه"],
+                                            ["سه شنبه", "سه شنبه"],
+                                            ["چهارشنبه", "چهارشنبه"],
+                                            ["پنجشنبه", "پنجشنبه"],
+                                            ["جمعه", "جمعه"],
+                                        ]
+                                    }
 
-                                        calendar={persian}
-                                        locale={persian_fa}>
-                                        <button className="px-2 pb-4" onClick={(e) => {
-                                            e.preventDefault()
-                                            setDate("")
-                                            formik.setFieldValue("expirationDate", "")
-                                        }}>
-                                            ریست
-                                        </button>
-                                    </DatePicker>
+                                    calendar={persian}
+                                    locale={persian_fa}>
+                                    <button className="px-2 pb-4" onClick={(e) => {
+                                        e.preventDefault()
+                                        setDate("")
+                                        formik.setFieldValue("expirationDate", "")
+                                    }}>
+                                        ریست
+                                    </button>
+                                </DatePicker>
                                 </div>}{ product?.isExpirable&&
                                             Boolean(formik.errors.expirationDate) && (
                                                 <span className="mx-3 text-[0.6rem] text-red-600 ">
@@ -636,8 +636,8 @@ const [getMachineList,
                                 <div>
                                     <TextField
                                         multiline
-                                        rows={1}
-                                        maxRows={4}
+                                        minRows={2}
+                                        maxRows={2}
                                         fullWidth
                                         placeholder="توضيحات (اختياری)"
                                         type="text"
@@ -665,7 +665,7 @@ const [getMachineList,
                                             ویرایش
                                         </button>) : (
                                             <button type="submit"
-                                                    className="w-full rounded-[0.5rem] py-3 hover:border hover:opacity-80 font-bold  bg-mainRed text-white">ثبت
+                                                    className="w-full rounded-[0.5rem] py-3  hover:opacity-80 font-bold  bg-mainRed text-white">ثبت
                                             </button>
                                         )
                                     }

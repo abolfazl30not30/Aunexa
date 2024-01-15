@@ -128,7 +128,8 @@ export default function EditInfoDialog(props) {
         setType([])
     }
     const theme = useTheme();
-    const [type, setType] = React.useState([...props.editInfoTarget.type]);
+    
+    const [type, setType] = React.useState([]);
   
     const handleChange = (event) => {
       const {
@@ -229,7 +230,7 @@ export default function EditInfoDialog(props) {
                 aria-describedby="alert-dialog-slide-description"
                 PaperProps={{
                     style: {
-                        fontFamily: "__fonts_2f4189,__fonts_Fallback_2f4189",
+                        fontFamily: "__fonts_2f4189,__fonts_Fallback_2f4189",overflow:"visible"
                     },
                 }}>
                 <DialogContent>
@@ -244,7 +245,7 @@ export default function EditInfoDialog(props) {
                             </button>
                         </div>
                         <div className="flex justify-center mb-7">
-                            <h3 className="text-[1.1rem]">ویرایش کالا و محصولات</h3>
+                            <h3 className="text-[1.1rem]">ویرایش  محصولات</h3>
                         </div>
                         <form className="flex justify-center " onSubmit={formik.handleSubmit} method="POST">
                             <div className="flex flex-col justify-center w-[90%] gap-5">
@@ -346,6 +347,7 @@ export default function EditInfoDialog(props) {
                                     </div>
                                 </div>
                                 <div>
+                                    
       <FormControl
       
         fullWidth>
@@ -467,7 +469,7 @@ export default function EditInfoDialog(props) {
                                             ثبت
                                         </button>) : (
                                             <button type="submit"
-                                                    className="w-full rounded-[0.5rem] py-3 hover:border hover:opacity-80 font-bold  bg-mainRed text-white">ثبت
+                                                    className="w-full rounded-[0.5rem] py-3  hover:opacity-80 font-bold  bg-mainRed text-white">ثبت
                                             </button>
                                         )
                                     }

@@ -151,7 +151,7 @@ const [includeError,setIncludeError]=useState(false)
                 // }}
                 aria-describedby="alert-dialog-slide-description"
                 PaperProps={{
-                    style: {fontFamily: "__fonts_2f4189,__fonts_Fallback_2f4189"}
+                    style: {fontFamily: "__fonts_2f4189,__fonts_Fallback_2f4189",overflow:"visible"}
                 }}>
                 <DialogContent>
                     <DialogContentText style={{fontFamily: "__fonts_2f4189,__fonts_Fallback_2f4189"}}>
@@ -226,7 +226,7 @@ const [includeError,setIncludeError]=useState(false)
                                             />}
                                     />
                                 </div>
-                                <div className="flex">
+                                <div className="flex gap-2">
                                     <div className="w-[70%]">
                                         <TextField
                                             fullWidth
@@ -366,7 +366,7 @@ const [includeError,setIncludeError]=useState(false)
                                             ثبت
                                         </button>) : (
                                             <button type="submit"
-                                                    className="w-full rounded-[0.5rem] py-3 hover:border hover:opacity-80 font-bold  bg-mainRed text-white">ثبت
+                                                    className="w-full rounded-[0.5rem] py-3  hover:opacity-80 font-bold  bg-mainRed text-white">ثبت
                                             </button>
                                         )
                                     }

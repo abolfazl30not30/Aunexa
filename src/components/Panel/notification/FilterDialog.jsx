@@ -112,7 +112,7 @@ export default function FilterDialog(props) {
                 aria-describedby="alert-dialog-slide-description"
                 PaperProps={{
                     style: {
-                        fontFamily: "__fonts_2f4189,__fonts_Fallback_2f4189",
+                        fontFamily: "__fonts_2f4189,__fonts_Fallback_2f4189",overflow:"visible"
                     },
                 }}>
                 <DialogContent>
@@ -133,9 +133,10 @@ export default function FilterDialog(props) {
                                     <div className="w-full md:w-1/2">
                                         <DatePicker
                                             placeholder="از تاریخ"
+                                            maxDate={formik.values.dateTo}
                                             calendarPosition={`bottom`}
                                             className="red"
-                                            digits={['0', '1', '2', '3', '4', '5', '6', '7', '8', '9']}
+                                             digits={['۰', '۱', '۲', '۳', '۴', '۵', '۶', '۷', '۸', '۹']}
                                             format={`YYYY/MM/DD`}
                                             containerStyle={{
                                                 width: "100%"
@@ -157,13 +158,13 @@ export default function FilterDialog(props) {
 
                                             weekDays={
                                                 [
-                                                    ["شنبه", "Sat"],
-                                                    ["یکشنبه", "Sun"],
-                                                    ["دوشنبه", "Mon"],
-                                                    ["سه شنبه", "Tue"],
-                                                    ["چهارشنبه", "Wed"],
-                                                    ["پنجشنبه", "Thu"],
-                                                    ["جمعه", "Fri"],
+                                                ["شنبه", "شنبه"],
+                                                ["یکشنبه", "یکشنبه"],
+                                                ["دوشنبه", "دوشنبه"],
+                                                ["سه شنبه", "سه شنبه"],
+                                                ["چهارشنبه", "چهارشنبه"],
+                                                ["پنجشنبه", "پنجشنبه"],
+                                                ["جمعه", "جمعه"],
                                                 ]
                                             }
 
@@ -180,10 +181,11 @@ export default function FilterDialog(props) {
                                     </div>
                                     <div className="w-full md:w-1/2">
                                         <DatePicker
+                                        minDate={formik.values.dateFrom}
                                             placeholder="تا تاریخ"
                                             calendarPosition={`bottom`}
                                             className="red"
-                                            digits={['0', '1', '2', '3', '4', '5', '6', '7', '8', '9']}
+                                             digits={['۰', '۱', '۲', '۳', '۴', '۵', '۶', '۷', '۸', '۹']}
                                             format={`YYYY/MM/DD`}
                                             containerStyle={{
                                                 width: "100%"
@@ -205,13 +207,13 @@ export default function FilterDialog(props) {
 
                                             weekDays={
                                                 [
-                                                    ["شنبه", "Sat"],
-                                                    ["یکشنبه", "Sun"],
-                                                    ["دوشنبه", "Mon"],
-                                                    ["سه شنبه", "Tue"],
-                                                    ["چهارشنبه", "Wed"],
-                                                    ["پنجشنبه", "Thu"],
-                                                    ["جمعه", "Fri"],
+                                                ["شنبه", "شنبه"],
+                                                ["یکشنبه", "یکشنبه"],
+                                                ["دوشنبه", "دوشنبه"],
+                                                ["سه شنبه", "سه شنبه"],
+                                                ["چهارشنبه", "چهارشنبه"],
+                                                ["پنجشنبه", "پنجشنبه"],
+                                                ["جمعه", "جمعه"],
                                                 ]
                                             }
 
@@ -292,7 +294,7 @@ export default function FilterDialog(props) {
                                 
                                 <div className="mt-4">
                                     <button type="submit"
-                                            className="w-full text-[0.9rem] rounded-[0.5rem] py-3 hover:border hover:opacity-80 font-bold  bg-mainRed text-white">اعمال فیلتر
+                                            className="w-full text-[0.9rem] rounded-[0.5rem] py-3  hover:opacity-80 font-bold  bg-mainRed text-white">اعمال فیلتر
                                     </button>
                                     <button disabled type="submit"
                                             className="hidden flex text-[0.9rem] gap-3 items-center justify-center w-full rounded-[0.5rem] py-3  border border-solid border-1 border-neutral-400 font-bold text-textGray bg-neutral-200">

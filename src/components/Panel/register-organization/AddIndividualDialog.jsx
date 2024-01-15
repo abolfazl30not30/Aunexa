@@ -132,7 +132,7 @@ export default function AddIndividualDialog(props) {
         // onClose={() => { props.handleCloseAddIndividual(); handleReset() }}
         aria-describedby="alert-dialog-slide-description"
         PaperProps={{
-          style: {fontFamily: "__fonts_2f4189,__fonts_Fallback_2f4189"}
+          style: {fontFamily: "__fonts_2f4189,__fonts_Fallback_2f4189",overflow:"visible"}
         }}>
         <DialogContent>
           <DialogContentText style={{fontFamily: "__fonts_2f4189,__fonts_Fallback_2f4189"}}>
@@ -197,7 +197,7 @@ export default function AddIndividualDialog(props) {
                       
                       calendarPosition={`bottom`}
                       className="red"
-                      digits={['0', '1', '2', '3', '4', '5', '6', '7', '8', '9']}
+                      digits={['۰', '۱', '۲', '۳', '۴', '۵', '۶', '۷', '۸', '۹']}
                       format={`YYYY/MM/DD`}
                       containerStyle={{
                         width: "100%"
@@ -222,13 +222,13 @@ export default function AddIndividualDialog(props) {
 
                       weekDays={
                         [
-                          ["شنبه", "Sat"],
-                          ["یکشنبه", "Sun"],
-                          ["دوشنبه", "Mon"],
-                          ["سه شنبه", "Tue"],
-                          ["چهارشنبه", "Wed"],
-                          ["پنجشنبه", "Thu"],
-                          ["جمعه", "Fri"],
+                          ["شنبه", "شنبه"],
+                          ["یکشنبه", "یکشنبه"],
+                          ["دوشنبه", "دوشنبه"],
+                          ["سه شنبه", "سه شنبه"],
+                          ["چهارشنبه", "چهارشنبه"],
+                          ["پنجشنبه", "پنجشنبه"],
+                          ["جمعه", "جمعه"],
                         ]
                       }
 
@@ -465,7 +465,7 @@ export default function AddIndividualDialog(props) {
                       بعدی
                     </button>) : (
                       <button type="submit" 
-                        className="w-full rounded-[0.5rem] py-3 hover:border hover:opacity-80 font-bold  bg-mainRed text-white">بعدی
+                        className="w-full rounded-[0.5rem] py-3  hover:opacity-80 font-bold  bg-mainRed text-white">بعدی
                       </button>
                     )
                   }

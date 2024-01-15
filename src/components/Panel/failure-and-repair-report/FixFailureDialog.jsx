@@ -251,7 +251,8 @@ export default function FixFailureDialog(props) {
                                 <div className="  flex justify-start ">
                                     <TextField
                                 multiline
-                                rows={3}
+                                minRows={4}
+                                maxRows={4}
                                         fullWidth
                                         placeholder=" توضیحات (اجباری) "
                                         type="text"

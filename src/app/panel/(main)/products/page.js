@@ -173,7 +173,7 @@ function vehiclesAndEquipment() {
         <header className="flex justify-between items-center text-[0.9rem] bg-white py-6 px-5 md:px-10">
           <div className="">
             <h2 className="font-[800] text-[0.9rem] md:text-[1.1rem]">
-              کالا و محصولات
+              محصولات
             </h2>
           </div>
           <div className="">
@@ -181,7 +181,7 @@ function vehiclesAndEquipment() {
               className="flex bg-mainRed text-white items-center text- px-3 py-2 rounded-full md:rounded"
               onClick={handleOpenAddData}
             >
-              <span className="hidden md:inline">ثبت کالا</span>
+              <span className="hidden md:inline">ثبت محصول</span>
               <svg
                 xmlns="http://www.w3.org/2000/svg"
                 width="24"
@@ -311,7 +311,7 @@ function vehiclesAndEquipment() {
                           fontSize: "0.8rem",
                         }}
                       >
-                        كد
+                        کد محصول
                       </MenuItem>
                     </Select>
                   </FormControl>
@@ -412,15 +412,16 @@ function vehiclesAndEquipment() {
                 <thead className="text-[0.9rem] text-gray80  bg-[#F8F8F8] md:bg-[#F2EDED] ">
                   <tr>
                     <th className="hidden md:table-cell px-6 py-4">#</th>
-                    <th className="px-2 md:px-6 py-4">عکس محصول</th>
-                    <th className="px-2 md:px-6 px-6 py-4">نام</th>
                     <th className="hidden md:table-cell px-2 md:px-6 px-6 py-4">
-                      کد
+                      کد محصول
                     </th>
+                    <th className="px-2 md:px-6 py-4">عکس محصول</th>
+                    <th className="px-2 md:px-6 px-6 py-4">نام محصول</th>
+
                     <th className="table-cell px-2 md:px-6 px-6 py-4">
                       <span>منقضی شونده</span>
                     </th>
-                    <th className="px-6 py-4">نام محصول</th>
+                    <th className="px-6 py-4">نوع محصول</th>
                     <th className="hidden md:table-cell px-6 py-4">عملیات</th>
                   </tr>
                 </thead>
@@ -429,6 +430,12 @@ function vehiclesAndEquipment() {
                     ? [...Array(8)].map(() => (
                         <tr className="border-b">
                           <td className="hidden md:table-cell px-6 py-4  text-gray70 whitespace-nowrap ">
+                            <Skeleton
+                              variant="text"
+                              sx={{ fontSize: "1rem" }}
+                            />
+                          </td>
+                          <td className="md:table-cell hidden px-2 md:px-6 py-2  text-gray70 whitespace-nowrap ">
                             <Skeleton
                               variant="text"
                               sx={{ fontSize: "1rem" }}
@@ -447,12 +454,7 @@ function vehiclesAndEquipment() {
                               sx={{ fontSize: "1rem" }}
                             />
                           </td>
-                          <td className="md:table-cell hidden px-2 md:px-6 py-2  text-gray70 whitespace-nowrap ">
-                            <Skeleton
-                              variant="text"
-                              sx={{ fontSize: "1rem" }}
-                            />
-                          </td>
+
                           <td className="px-2 md:px-6 py-4  text-gray70 whitespace-nowrap ">
                             <div className="flex justify-center">
                               <Skeleton
@@ -501,6 +503,9 @@ function vehiclesAndEquipment() {
                           <td className="hidden md:table-cell px-6 py-4  text-gray70 whitespace-nowrap ">
                             {index + 1}
                           </td>
+                          <td className="hidden md:table-cell px-6 py-4  text-gray70 whitespace-nowrap ">
+                            {data?.code}
+                          </td>
                           <td className="flex items-center justify-center px-2 md:px-6 py-2  text-gray70 whitespace-nowrap ">
                             {data?.imageURL !== null &&
                               data?.imageURL !== "" && (
@@ -516,9 +521,7 @@ function vehiclesAndEquipment() {
                           <td className="px-2 md:px-6 py-2  text-gray70 whitespace-nowrap ">
                             {data?.persianName}
                           </td>
-                          <td className="hidden md:table-cell px-6 py-4  text-gray70 whitespace-nowrap ">
-                            {data?.code}
-                          </td>
+
                           <td
                             scope="row"
                             className="flex px-2 md:px-6 py-4  justify-center  text-gray70 whitespace-nowrap "

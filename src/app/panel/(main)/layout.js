@@ -178,7 +178,7 @@ export default function RootLayout({ children }) {
             >
               <div className="relative">
                 <img src="/icons/bell.svg" alt="bell" />
-                {counterList !== 0 && (
+                {counterList > 0 && (
                   <div className="absolute -top-1.5 -right-1">
                     <span className=" rounded-full bg-mainRed w-[1rem] h-[1rem] text-[0.49rem] flex  items-center justify-center text-center text-white">
                       {pathname === "/panel/notification"
@@ -410,7 +410,7 @@ export default function RootLayout({ children }) {
                       </span>
                     </Link>
                     <Link
-                      href="https://auth.prod.aunexa.net/logout"
+                      href="https://auth.aunexa.net/logout"
                       className="flex gap-2 py-3 px-4 hover:bg-neutral-100 border-t border-t-[#D9D9D9]"
                     >
                       <div>
@@ -826,7 +826,7 @@ export default function RootLayout({ children }) {
                               : "text-gray9F hover:text-textGray text-[0.9rem]"
                           }
                         >
-                          کالا و محصولات
+                          محصولات
                         </span>
                       </Link>
                     </div>
@@ -1223,7 +1223,7 @@ export default function RootLayout({ children }) {
                       >
                         اعلانیه
                       </span>
-                      {counterList !== 0 && (
+                      {counterList > 0 && (
                         <span className=" rounded-lg bg-mainRed w-[1.5rem] text-[0.59rem] h-[1.2rem]  flex  items-center justify-center text-center text-white">
                           {pathname === "/panel/notification"
                             ? 0
@@ -1238,7 +1238,7 @@ export default function RootLayout({ children }) {
                   <div>
                     <Link
                       onClick={handleCloseSidebar}
-                      href="https://auth.prod.aunexa.net/logout"
+                      href="https://auth.aunexa.net/logout"
                       className="block py-4 px-2 border-b border-b-1 border-b-solid  border-b-borderGray"
                     >
                       <span className="text-gray9F hover:text-textGray text-[0.9rem]">
@@ -1597,7 +1597,7 @@ export default function RootLayout({ children }) {
                           : "text-gray9F hover:text-textGray text-[0.9rem]"
                       }
                     >
-                      کالا و محصولات
+                      محصولات
                     </span>
                   </Link>
                 </div>
@@ -1994,7 +1994,7 @@ export default function RootLayout({ children }) {
                   >
                     اعلانیه
                   </span>
-                  {counterList !== 0 && (
+                  {counterList > 0 && (
                     <span className=" rounded-lg bg-mainRed w-[1.5rem] text-[0.59rem] h-[1.2rem]  flex  items-center justify-center text-center text-white">
                       {pathname === "/panel/notification"
                         ? 0
@@ -2009,7 +2009,7 @@ export default function RootLayout({ children }) {
               <div>
                 <Link
                   onClick={handleCloseSidebar}
-                  href="https://auth.prod.aunexa.net/logout"
+                  href="https://auth.aunexa.net/logout"
                   className="block py-4 px-2 border-b border-b-1 border-b-solid  border-b-borderGray"
                 >
                   <span className="text-gray9F hover:text-textGray text-[0.9rem]">

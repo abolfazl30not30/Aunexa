@@ -49,7 +49,7 @@ export default function DeleteRoleDialog(props) {
                         <div className="flex justify-center mt-10 gap-4">
                             <div>
                                 <button onClick={deleteData}
-                                        className="px-6 py-2 text-[0.8rem] rounded-[0.5rem] py-3 hover:border hover:opacity-80 font-bold  bg-mainRed text-white">حذف
+                                        className="px-6 py-2 text-[0.8rem] rounded-[0.5rem] py-3  hover:opacity-80 font-bold  bg-mainRed text-white">حذف
                                 </button>
                                 <button disabled type="submit"
                                         className="hidden flex gap-3 items-center justify-center w-full rounded-[0.5rem] py-3  border border-solid border-1 border-neutral-400 font-bold text-textGray bg-neutral-200">
@@ -66,7 +66,7 @@ export default function DeleteRoleDialog(props) {
                                 </button>
                             </div>
                             <div>
-                                <button onClick={props.handleCloseDeleteRole} className="px-6 py-2 text-[0.8rem]  rounded-[0.5rem] py-3 hover:border hover:opacity-80 font-bold bg-neutral-400 text-white">بستن</button>
+                                <button onClick={props.handleCloseDeleteRole} className="px-6 py-2 text-[0.8rem]  rounded-[0.5rem] py-3  hover:opacity-80 font-bold bg-neutral-400 text-white">بستن</button>
                             </div>
                         </div>
                     </DialogContentText>

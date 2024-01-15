@@ -177,7 +177,7 @@ export default function EditItemInfoDialog(props) {
                 aria-describedby="alert-dialog-slide-description"
                 PaperProps={{
                     style: {
-                        fontFamily: "__fonts_2f4189,__fonts_Fallback_2f4189",
+                        fontFamily: "__fonts_2f4189,__fonts_Fallback_2f4189",overflow:"visible"
                     },}}>
                 <DialogContent>
                     <DialogContentText style={{fontFamily: "__fonts_2f4189,__fonts_Fallback_2f4189"}}>
@@ -238,7 +238,7 @@ export default function EditItemInfoDialog(props) {
                                                 placeholder="نام محصول (اجباری)"
                                             />}/>
                                     </div>
-                                    <div className="flex w-full">
+                                    <div className="flex w-full gap-2">
                                     <div className="w-[70%]">
                                         <TextField
                                             fullWidth
@@ -367,7 +367,7 @@ export default function EditItemInfoDialog(props) {
                                             ثبت
                                         </button>) : (
                                             <button type="submit"
-                                                    className="w-full rounded-[0.5rem] py-3 hover:border hover:opacity-80 font-bold  bg-mainRed text-white">ثبت
+                                                    className="w-full rounded-[0.5rem] py-3  hover:opacity-80 font-bold  bg-mainRed text-white">ثبت
                                             </button>
                                         )
                                     }

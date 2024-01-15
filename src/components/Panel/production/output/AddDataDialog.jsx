@@ -144,7 +144,7 @@ export default function AddDataDialog(props) {
                 aria-describedby="alert-dialog-slide-description"
                 PaperProps={{
                     style: {
-                        fontFamily: "__fonts_2f4189,__fonts_Fallback_2f4189",
+                        fontFamily: "__fonts_2f4189,__fonts_Fallback_2f4189",overflow:"visible"
                     },
                 }}>
                 <DialogContent>
@@ -210,7 +210,7 @@ export default function AddDataDialog(props) {
                                             />}
                                     />
                                 </div>
-                                <div className="flex">
+                                <div className="flex gap-2">
                                     <div className="w-[70%]">
                                         <TextField
                                             fullWidth
@@ -263,7 +263,7 @@ export default function AddDataDialog(props) {
                                     <DatePicker
                                         calendarPosition={`bottom`}
                                         className="red"
-                                        digits={['0', '1', '2', '3', '4', '5', '6', '7', '8', '9']}
+                                        digits={['۰', '۱', '۲', '۳', '۴', '۵', '۶', '۷', '۸', '۹']}
                                         format={`YYYY/MM/DD`}
                                         containerStyle={{
                                             width: "100%"
@@ -286,13 +286,13 @@ export default function AddDataDialog(props) {
 
                                         weekDays={
                                             [
-                                                ["شنبه", "Sat"],
-                                                ["یکشنبه", "Sun"],
-                                                ["دوشنبه", "Mon"],
-                                                ["سه شنبه", "Tue"],
-                                                ["چهارشنبه", "Wed"],
-                                                ["پنجشنبه", "Thu"],
-                                                ["جمعه", "Fri"],
+                                                ["شنبه", "شنبه"],
+                                                ["یکشنبه", "یکشنبه"],
+                                                ["دوشنبه", "دوشنبه"],
+                                                ["سه شنبه", "سه شنبه"],
+                                                ["چهارشنبه", "چهارشنبه"],
+                                                ["پنجشنبه", "پنجشنبه"],
+                                                ["جمعه", "جمعه"],
                                             ]
                                         }
 
@@ -325,7 +325,7 @@ export default function AddDataDialog(props) {
                                             ثبت
                                         </button>) : (
                                             <button type="submit"
-                                                    className="w-full rounded-[0.5rem] py-3 hover:border hover:opacity-80 font-bold  bg-mainRed text-white">ثبت
+                                                    className="w-full rounded-[0.5rem] py-3  hover:opacity-80 font-bold  bg-mainRed text-white">ثبت
                                             </button>
                                         )
                                     }

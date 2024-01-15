@@ -346,7 +346,7 @@ const [getMachineList,
                 aria-describedby="alert-dialog-slide-description"
                 PaperProps={{
                     style: {
-                        fontFamily: "__fonts_2f4189,__fonts_Fallback_2f4189",
+                        fontFamily: "__fonts_2f4189,__fonts_Fallback_2f4189",overflow: "visible"
                     },
                 }}>
                 <DialogContent>
@@ -410,7 +410,7 @@ const [getMachineList,
                                             />}
                                     />
                                 </div>
-                                <div className="flex">
+                                <div className="flex gap-2">
                                     <div className="w-[70%]">
                                         <TextField
                                             fullWidth
@@ -684,8 +684,8 @@ const [getMachineList,
                                 <div>
                                     <TextField
                                         multiline
-                                        rows={1}
-                                        maxRows={4}
+                                        minRows={2}
+                                        maxRows={2}
                                         fullWidth
                                         placeholder="توضيحات (اختياری)"
                                         type="text"
@@ -713,7 +713,7 @@ const [getMachineList,
                                             ویرایش
                                         </button>) : (
                                             <button type="submit"
-                                                    className="w-full rounded-[0.5rem] py-3 hover:border hover:opacity-80 font-bold  bg-mainRed text-white">ثبت
+                                                    className="w-full rounded-[0.5rem] py-3  hover:opacity-80 font-bold  bg-mainRed text-white">ثبت
                                             </button>
                                         )
                                     }

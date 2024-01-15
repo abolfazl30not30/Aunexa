@@ -120,16 +120,17 @@ export default function FilterDialog(props) {
         <>
             <Dialog
                 fullWidth={true}
+                
                 open={props.openFilter}
                 // onClose={()=>{props.handleCloseFilter();}}
                 keepMounted
                 aria-describedby="alert-dialog-slide-description"
                 PaperProps={{
                     style: {
-                        fontFamily: "__fonts_2f4189,__fonts_Fallback_2f4189",
+                        fontFamily: "__fonts_2f4189,__fonts_Fallback_2f4189",overflow: "visible"
                     },
                 }}>
-                <DialogContent>
+                <DialogContent >
                     <DialogContentText style={{ fontFamily: "__fonts_2f4189,__fonts_Fallback_2f4189"}}>
                         <div className="flex justify-end">
                             <button onClick={()=>{props.handleCloseFilter();}}>
@@ -144,7 +145,7 @@ export default function FilterDialog(props) {
                         <form className="flex justify-center " onSubmit={formik.handleSubmit} method="POST">
                             <div className="flex flex-col justify-center w-[80%] gap-3">
                                 <div className="flex flex-col sm:flex-row justify-between gap-3">
-                                    <div className="w-full sm:w-1/2">
+                                    <div className="w-full sm:w-1/2 ">
                                         <DatePicker
                                             placeholder="از تاریخ"
                                             maxDate={formik.values.dateTo}
@@ -155,11 +156,14 @@ export default function FilterDialog(props) {
                                             containerStyle={{
                                                 width: "100%",  
                                             }}
+                                            
                                             inputClass={`border border-[#D9D9D9] placeholder-neutral-300 text-gray-900 text-[0.8rem] rounded focus:ring-[#3B82F67F] focus:border-[#3B82F67F] block w-full px-3 py-4`}
                                             value={formik.values.dateFrom}
                                             onChange={(value) => {
+                                                
                                               handleDateFromInput(value)
-                                            }}                                           
+                                            }} 
+                                                                                 
                                             mapDays={({date}) => {
                                                 let props = {}
                                                 let isWeekend = [6].includes(date.weekDay.index)
@@ -371,7 +375,7 @@ export default function FilterDialog(props) {
                                </div>
                                 <div className="mt-4">
                                     <button type="submit"
-                                            className="w-full text-[0.9rem] rounded-[0.5rem] py-3 hover:border hover:opacity-80 font-bold  bg-mainRed text-white">اعمال فیلتر
+                                            className="w-full text-[0.9rem] rounded-[0.5rem] py-3  hover:opacity-80 font-bold  bg-mainRed text-white">اعمال فیلتر
                                     </button>
                                     <button disabled type="submit"
                                             className="hidden flex text-[0.9rem] gap-3 items-center justify-center w-full rounded-[0.5rem] py-3  border border-solid border-1 border-neutral-400 font-bold text-textGray bg-neutral-200">

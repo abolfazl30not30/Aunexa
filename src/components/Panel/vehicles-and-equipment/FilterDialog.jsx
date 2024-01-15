@@ -4,6 +4,7 @@ import React, {useState} from "react";
 import {
     Autocomplete, FormControl, FormHelperText, InputLabel, MenuItem, OutlinedInput, Select,
 } from "@mui/material";
+import { Checkbox } from "@material-ui/core";
 import {
     DialogContent,
     DialogContentText,
@@ -25,6 +26,7 @@ import {
 import {useEffect} from "react";
 import {styled} from "@mui/material/styles";
 import Switch from "@mui/material/Switch";
+
 
 const AntSwitch = styled(Switch)(({ theme }) => ({
     width: 35,
@@ -138,7 +140,7 @@ export default function FilterDialog(props) {
                 aria-describedby="alert-dialog-slide-description"
                 PaperProps={{
                     style: {
-                        fontFamily: "__fonts_2f4189,__fonts_Fallback_2f4189",
+                        fontFamily: "__fonts_2f4189,__fonts_Fallback_2f4189",overflow:"visible"
                     },
                 }}>
                 <DialogContent>
@@ -260,21 +262,22 @@ export default function FilterDialog(props) {
                                 </FormControl>
                                 <div>
                                     <div className="flex flex-col">
-                                        <div className="flex w-full">
-                                            <div className="border border-[#D9D9D9] py-4 w-1/2 px-3">
+                                        <div className="flex w-full items-center justify-between">
+                                            <div className="border flex justify-between items-center border-[#D9D9D9] py-0.5 w-full px-3">
+                                                <div>
                                                 <span className="text-[#9F9F9F] text-[0.8rem]">فقط GPS دار </span>
-                                            </div>
-                                            <div className="border border-[#D9D9D9] py-4 w-1/2">
-                                                <div className="flex justify-center">
-                                                    <AntSwitch checked={formik.values.hasGps} onChange={(e)=>{formik.setFieldValue("hasGps", e.target.checked)}}  inputProps={{ 'aria-label': 'ant design' }} />
                                                 </div>
+                                               <div>
+                                               <Checkbox checked={formik.values.hasGps} onChange={(e)=>{formik.setFieldValue("hasGps", e.target.checked)}}  color="default" />
+                                               </div>
                                             </div>
+                                           
                                         </div>
                                     </div>
                                 </div>
                                 <div className="mt-4">
                                     <button type="submit"
-                                            className="w-full text-[0.9rem] rounded-[0.5rem] py-3 hover:border hover:opacity-80 font-bold  bg-mainRed text-white">اعمال فیلتر
+                                            className="w-full text-[0.9rem] rounded-[0.5rem] py-3  hover:opacity-80 font-bold  bg-mainRed text-white">اعمال فیلتر
                                     </button>
                                     <button disabled type="submit"
                                             className="hidden flex text-[0.9rem] gap-3 items-center justify-center w-full rounded-[0.5rem] py-3  border border-solid border-1 border-neutral-400 font-bold text-textGray bg-neutral-200">

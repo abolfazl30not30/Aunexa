@@ -164,7 +164,7 @@ export default function RegisterFactorDialog(props) {
                 // onClose={()=>{props.handleCloseRegisterFactor();handleReset();setInvoiceItemInput([])}}
                 aria-describedby="alert-dialog-slide-description"
                 PaperProps={{
-                    style: {fontFamily: "__fonts_2f4189,__fonts_Fallback_2f4189"}
+                    style: {fontFamily: "__fonts_2f4189,__fonts_Fallback_2f4189",overflow:"visible"}
                 }}>
                 <DialogContent>
                     <DialogContentText style={{fontFamily: "__fonts_2f4189,__fonts_Fallback_2f4189"}}>
@@ -343,6 +343,9 @@ export default function RegisterFactorDialog(props) {
                                 <div className="border-b pb-3 border-gray50">
                                     <TextField
                                         fullWidth
+                                        multiline
+                                        minRows={2}
+                                        maxRows={2}
                                         placeholder="توضیحات "
                                         type="text"
                                         name="description"
@@ -371,7 +374,7 @@ export default function RegisterFactorDialog(props) {
                                             ثبت
                                         </button>) : (
                                             <button type="submit" 
-                                                    className="w-full rounded-[0.5rem] py-3 hover:border hover:opacity-80 font-bold  bg-mainRed text-white">ثبت
+                                                    className="w-full rounded-[0.5rem] py-3  hover:opacity-80 font-bold  bg-mainRed text-white">ثبت
                                             </button>
                                         
                                         )

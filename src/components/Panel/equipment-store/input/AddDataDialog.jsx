@@ -261,7 +261,7 @@ export default function AddDataDialog(props) {
                 aria-describedby="alert-dialog-slide-description"
                 PaperProps={{
                     style: {
-                        fontFamily: "__fonts_2f4189,__fonts_Fallback_2f4189",
+                        fontFamily: "__fonts_2f4189,__fonts_Fallback_2f4189",overflow:"visible"
                     },
                 }}>
                 <DialogContent>
@@ -325,7 +325,7 @@ export default function AddDataDialog(props) {
                                             />}
                                     />
                                 </div>
-                                <div className="flex">
+                                <div className="flex gap-2">
                                     <div className="w-[70%]">
                                         <TextField
                                             fullWidth
@@ -374,11 +374,11 @@ export default function AddDataDialog(props) {
                                                 />}/>
                                     </div>
                                 </div>
-                                {product?.isExpirable &&  <div>
+                                {product?.isExpirable && <div>
                                     <DatePicker
                                         calendarPosition={`bottom`}
                                         className="red"
-                                        digits={['0', '1', '2', '3', '4', '5', '6', '7', '8', '9']}
+                                        digits={['۰', '۱', '۲', '۳', '۴', '۵', '۶', '۷', '۸', '۹']}
                                         format={`YYYY/MM/DD`}
                                         containerStyle={{
                                             width: "100%"
@@ -401,16 +401,16 @@ export default function AddDataDialog(props) {
 
                                         weekDays={
                                             [
-                                                ["شنبه", "Sat"],
-                                                ["یکشنبه", "Sun"],
-                                                ["دوشنبه", "Mon"],
-                                                ["سه شنبه", "Tue"],
-                                                ["چهارشنبه", "Wed"],
-                                                ["پنجشنبه", "Thu"],
-                                                ["جمعه", "Fri"],
+                                                ["شنبه", "شنبه"],
+                                                ["یکشنبه", "یکشنبه"],
+                                                ["دوشنبه", "دوشنبه"],
+                                                ["سه شنبه", "سه شنبه"],
+                                                ["چهارشنبه", "چهارشنبه"],
+                                                ["پنجشنبه", "پنجشنبه"],
+                                                ["جمعه", "جمعه"],
                                             ]
                                         }
-
+                                        
                                         calendar={persian}
                                         locale={persian_fa}>
                                         <button className="px-2 pb-4" onClick={(e) => {
@@ -420,8 +420,10 @@ export default function AddDataDialog(props) {
                                         }}>
                                             ریست
                                         </button>
+                                        
                                     </DatePicker>
-                                </div>} { product?.isExpirable&&
+                                </div>}
+                                 { product?.isExpirable&&
                                             Boolean(formik.errors.expirationDate) && (
                                                 <span className="mx-3 text-[0.6rem] text-red-600 ">
                                                     {formik.errors.expirationDate}
@@ -583,8 +585,8 @@ export default function AddDataDialog(props) {
                                 <div>
                                     <TextField
                                         multiline
-                                        rows={1}
-                                        maxRows={4}
+                                        minRows={2}
+                                        maxRows={2}
                                         fullWidth
                                         placeholder="توضيحات (اختياری)"
                                         type="text"
@@ -612,7 +614,7 @@ export default function AddDataDialog(props) {
                                             ثبت
                                         </button>) : (
                                             <button type="submit"
-                                                    className="w-full rounded-[0.5rem] py-3 hover:border hover:opacity-80 font-bold  bg-mainRed text-white">ثبت
+                                                    className="w-full rounded-[0.5rem] py-3  hover:opacity-80 font-bold  bg-mainRed text-white">ثبت
                                             </button>
                                         )
                                     }
