@@ -406,7 +406,7 @@ function vehiclesAndEquipment() {
             </div>
           </div>
 
-          <div className="mt-10">
+          <div className="mt-4">
             <div className="overflow-x-auto">
               <table className=" w-full table-auto overflow-scroll border-collapse border-spacing-0 text-sm text-center text-gray70  ">
                 <thead className="text-[0.9rem] text-gray80  bg-[#F8F8F8] md:bg-[#F2EDED] ">
@@ -561,15 +561,10 @@ function vehiclesAndEquipment() {
                               </svg>
                             )}
                           </td>
-                          <td className="px-2 md:px-6 py-4  text-gray70 whitespace-nowrap ">
-                            {data.type === "PRIMARY" ? (
-                              <span>ماده اولیه</span>
-                            ) : data.type === "EQUIPMENT" ? (
-                              <span>تجهیزات</span>
-                            ) : data.type === "PRODUCED" ? (
-                              <span>تولیدی</span>
-                            ) : (
-                              <span>سایر</span>
+                          <td className="px-2 md:px-6 py-4   gap-0.5 text-gray70 whitespace-nowrap ">
+                            {data?.tags?.length === 1 && data?.tags}
+                            {data?.tags?.length > 1 && (
+                              <span>{data?.tags[0]} , ...</span>
                             )}
                           </td>
 

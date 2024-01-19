@@ -95,14 +95,14 @@ const names = [
   'سایر'
 ];
 
-function getStyles(name, type, theme) {
+function getStyles(name, tags, theme) {
   return {
     fontWeight:
-      type.indexOf(name) === -1
+      tags.indexOf(name) === -1
         ? theme.typography.fontWeightRegular
         : theme.typography.fontWeightMedium,
         display:
-      type.indexOf(name) === -1
+      tags.indexOf(name) === -1
         ? "block"
         : "none",
         
@@ -126,22 +126,23 @@ export default function AddDataDialog(props) {
         formik.resetForm()
         setUnit(null)
         setUploadedImage(null)
-        setType([])
+        setTags([])
     }
     const theme = useTheme();
-    const [type, setType] = React.useState([]);
+    const [tags, setTags] = React.useState([]);
   
     const handleChange = (event) => {
       const {
         target: { value },
       } = event;
-      setType(
+      setTags(
         // On autofill we get a stringified value.
         typeof value === 'string' ? value.split(',') : value,
       );
     };
-    const handleFilterType =(name)=>{
-         setType(type.filter((subName)=>subName!==name))
+    const handleFilterTags =(name,e)=>{
+         setTags(tags.filter((subName)=>subName!==name))
+         e.preventDefault()
     }
     //submit data
     const [submitData, { isLoading:isSubmitLoading ,error}] = useSaveProductMutation()
@@ -153,8 +154,8 @@ export default function AddDataDialog(props) {
     const validate = (values, props) => {
         const errors = {};
 
-        if (type.length===0) {
-            errors.type = "لطفانوع محصول را انتخاب کنید";
+        if (tags.length===0) {
+            errors.tags = "لطفانوع محصول را انتخاب کنید";
         } 
 
         return errors;
@@ -176,7 +177,7 @@ export default function AddDataDialog(props) {
         validationSchema: schema,
 validate:validate,
         onSubmit: async (product) => {
-            let updatedProduct = {...product,imageURL:uploadedImage,type}
+            let updatedProduct = {...product,imageURL:uploadedImage,tags}
             updatedProduct=ConvertToNull(updatedProduct)
             const userData = await submitData(updatedProduct)
             handleReset()
@@ -336,7 +337,7 @@ validate:validate,
           labelId="demo-multiple-name-label"
           id="demo-multiple-name"
           multiple
-          value={type}
+          value={tags}
           onChange={handleChange}
           sx={{fontFamily: "__fonts_2f4189,__fonts_Fallback_2f4189", fontSize: "0.8rem"}}
           input={<OutlinedInput sx={{fontFamily: "__fonts_2f4189,__fonts_Fallback_2f4189", fontSize: "0.8rem"}} label="نوع  محصولات " />}
@@ -348,7 +349,7 @@ validate:validate,
             sx={{fontFamily: "__fonts_2f4189,__fonts_Fallback_2f4189", fontSize: "0.8rem"}}
               key={name}
               value={name}
-              style={getStyles(name, type, theme)}
+              style={getStyles(name, tags, theme)}
             >
               {name}
             </MenuItem>
@@ -356,19 +357,19 @@ validate:validate,
         </Select>
       </FormControl>
     </div>
-    {type.length===0 && Boolean(formik.errors.type) && (
+    {tags.length===0 && Boolean(formik.errors.tags) && (
                                                 <span className="mx-3 text-[0.6rem] text-red-600 ">
-                                                    {formik.errors.type}
+                                                    {formik.errors.tags}
                                                 </span>
                                             )}
     
-    {type.length>0 &&  <div className="border rounded border-[#9F9F9F] p-2  grid grid-cols-3 gap-2">
-        {  type.map((name)=>(
+    {tags.length>0 &&  <div className="border rounded border-[#9F9F9F] p-2  grid grid-cols-3 gap-2">
+        {  tags.map((name)=>(
             
                                         
                                             <div className="border border-[#9F9F9F] px-2 py-1 rounded-full flex justify-between items-center gap-2 w-full box-border h-max">
                                               <span className="text-xs">{name}</span>
-                                              <button onClick={()=>{handleFilterType(name)}} className="">
+                                              <button onClick={(e)=>{handleFilterTags(name,e)}} className="">
                                               <svg xmlns="http://www.w3.org/2000/svg" width="8" height="8" viewBox="0 0 14 14"
                                      fill="none">
                                     <path d="M13 1L1 13M1 1L13 13" stroke="black" stroke-width="2"

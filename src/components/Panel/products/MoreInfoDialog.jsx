@@ -106,16 +106,11 @@ export default function MoreInfoDialog(props) {
                                         <span className="text-[0.9rem] text-gray70 ">نوع محصول</span>
                                     </div>
                                     <div className="border border-[#D9D9D9]  flex justify-between px-4">
-                                        <div className="p-2">
-                                            <span className="text-[#29262A] text-[0.9rem]">
-                                                {props.moreInfoTarget?.type === "PRIMARY" ? (<span>ماده اولیه</span>) : (
-                                                    props.moreInfoTarget?.type === "EQUIPMENT" ? (<span>تجهیزات</span>) : (
-                                                        props.moreInfoTarget?.type === "PRODUCED" ? (<span>تولیدی</span>) : (
-                                                            <span>سایر</span>
-                                                        )
-                                                    )
-                                                )}
-                                            </span>
+                                        <div className="p-2 flex gap-1">
+                                        {props.moreInfoTarget?.tags?.map((tag)=>(
+                                            <span className="text-[#29262A] text-[0.7rem]">{tag}</span>
+                                            
+                                        ))}
                                         </div>
                                     </div>
                                 </div>
@@ -185,18 +180,15 @@ export default function MoreInfoDialog(props) {
                                     </span>
                                 </div>
                                 }
-                                <div>
+                                <div className="flex items-center ">
                                     <span className="ml-1 text-gray9F text-[0.8rem]">
                                         نوع محصول :
                                     </span>
-                                    <span className="text-[#29262A] text-[0.8rem]">
-                                        {props.moreInfoTarget?.type === "PRIMARY" ? (<span>ماده اولیه</span>) : (
-                                            props.moreInfoTarget?.type === "EQUIPMENT" ? (<span>تجهیزات</span>) : (
-                                                props.moreInfoTarget?.type === "PRODUCED" ? (<span>تولیدی</span>) : (
-                                                    <span>سایر</span>
-                                                )
-                                            )
-                                        )}
+                                    <span className="text-[#29262A] text-[0.8rem] flex gap-0.5">
+                                        {props.moreInfoTarget?.tags?.map((tag)=>(
+                                            <span className="text-[#29262A] text-[0.6rem]">{tag}</span>
+                                            
+                                        ))}
                                     </span>
                                 </div>
                                 <div>

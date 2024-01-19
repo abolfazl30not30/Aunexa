@@ -324,7 +324,9 @@ function PurchaseRequest() {
                     </th>
                     <th className="px-2 md:px-6 px-6 py-4">محصول</th>
                     <th className="px-2 md:px-6 px-6 py-4">مقدار</th>
-                    <th className="px-2 md:px-6 px-6 py-4">تاریخ</th>
+                    <th className="px-2 md:px-6 px-6 py-4">
+                      تاریخ درخواست خرید
+                    </th>
                     <th className="hidden md:table-cell px-6 py-4">فوری</th>
                     <th className="px-2 md:px-6 px-6 py-4">دپارتمان</th>
                     <th className="hidden md:table-cell px-6 py-4">عملیات</th>

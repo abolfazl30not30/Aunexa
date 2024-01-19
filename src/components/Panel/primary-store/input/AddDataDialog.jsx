@@ -387,6 +387,7 @@ export default function AddDataDialog(props) {
                                 </div>
                                 {product?.isExpirable && <div>
                                     <DatePicker
+                                   
                                         calendarPosition={`bottom`}
                                         className="red"
                                         digits={['۰', '۱', '۲', '۳', '۴', '۵', '۶', '۷', '۸', '۹']}
@@ -394,6 +395,7 @@ export default function AddDataDialog(props) {
                                         containerStyle={{
                                             width: "100%"
                                         }}
+                                        
                                         placeholder="تاریخ انقضا (اجباری)"
                                         inputClass={`border border-[#D9D9D9] placeholder-neutral-300 text-gray-900 text-[0.8rem] rounded focus:ring-[#3B82F67F] focus:border-[#3B82F67F] block w-full px-3 py-4`}
                                         value={date}
@@ -401,6 +403,7 @@ export default function AddDataDialog(props) {
                                             handleDateInput(value)
                                         }}
                                         mapDays={({date}) => {
+                                            
                                             let props = {}
                                             let isWeekend = [6].includes(date.weekDay.index)
 
