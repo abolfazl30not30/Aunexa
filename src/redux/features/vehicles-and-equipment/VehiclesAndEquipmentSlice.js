@@ -4,47 +4,47 @@ export const VehiclesAndEquipmentSlice = apiSlice.injectEndpoints({
   endpoints: (builder) => ({
     getAllVehicles: builder.query({
       query: ({ page, sort, filterItem }) => ({
-        url: `vehicle/machine/filter?page=${
+        url: `golgohar/machine/filter?page=${
           page - 1
         }&size=10&sort=purchaseDate,${sort}&${filterItem}`,
       }),
-      providesTags: ["vehicle-machine"],
+      providesTags: ["golgohar-machine"],
     }),
     saveVehicles: builder.mutation({
       query: (body) => ({
-        url: "vehicle/machine",
+        url: "golgohar/machine",
         method: "POST",
         body: body,
       }),
-      invalidatesTags: ["vehicle-machine"],
+      invalidatesTags: ["golgohar-machine"],
     }),
     updateVehicles: builder.mutation({
       query: (body) => ({
-        url: `vehicle/machine`,
+        url: `golgohar/machine`,
         method: "PUT",
         body: body,
       }),
-      invalidatesTags: ["vehicle-machine"],
+      invalidatesTags: ["golgohar-machine"],
     }),
     deleteVehicles: builder.mutation({
       query: (id) => ({
-        url: `vehicle/machine/${id}`,
+        url: `golgohar/machine/${id}`,
         method: "DELETE",
         body: id,
       }),
-      invalidatesTags: ["vehicle-machine"],
+      invalidatesTags: ["golgohar-machine"],
     }),
     getOneVehiclesByTag: builder.query({
       query: (tag) => ({
-        url: `vehicle/machine/tag/${tag}`,
+        url: `golgohar/machine/tag/${tag}`,
       }),
-      providesTags: ["vehicle-machine"],
+      providesTags: ["golgohar-machine"],
     }),
     getOneVehiclesByCode: builder.query({
       query: (code) => ({
-        url: `vehicle/machine/code/${code}`,
+        url: `golgohar/machine/code/${code}`,
       }),
-      providesTags: ["vehicle-machine"],
+      providesTags: ["golgohar-machine"],
     }),
   }),
 });

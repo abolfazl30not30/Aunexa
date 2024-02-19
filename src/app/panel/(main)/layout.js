@@ -410,7 +410,7 @@ export default function RootLayout({ children }) {
                       </span>
                     </Link>
                     <Link
-                      href="https://auth.aunexa.net/logout"
+                      href="https://auth.prod.aunexa.net/logout"
                       className="flex gap-2 py-3 px-4 hover:bg-neutral-100 border-t border-t-[#D9D9D9]"
                     >
                       <div>
@@ -701,7 +701,7 @@ export default function RootLayout({ children }) {
                       </details>
                     </div>
                   )}
-                  {(accessData.hasOwnProperty("VehiclesAndEquipment") ||
+                  {(accessData.hasOwnProperty("golgoharsAndEquipment") ||
                     accessData.hasOwnProperty("FailureAndRepairReport") ||
                     accessData.hasOwnProperty("HistoryOfReports")) && (
                     <div>
@@ -728,7 +728,7 @@ export default function RootLayout({ children }) {
                         </summary>
                         <ul className="flex flex-col gap-1 pr-2">
                           {accessData.hasOwnProperty(
-                            "VehiclesAndEquipment"
+                            "golgoharsAndEquipment"
                           ) && (
                             <li>
                               <Link
@@ -1238,7 +1238,7 @@ export default function RootLayout({ children }) {
                   <div>
                     <Link
                       onClick={handleCloseSidebar}
-                      href="https://auth.aunexa.net/logout"
+                      href="https://auth.prod.aunexa.net/logout"
                       className="block py-4 px-2 border-b border-b-1 border-b-solid  border-b-borderGray"
                     >
                       <span className="text-gray9F hover:text-textGray text-[0.9rem]">
@@ -1475,7 +1475,7 @@ export default function RootLayout({ children }) {
                 </div>
               )}
 
-              {(accessData.hasOwnProperty("VehiclesAndEquipment") ||
+              {(accessData.hasOwnProperty("golgoharsAndEquipment") ||
                 accessData.hasOwnProperty("FailureAndRepairReport") ||
                 accessData.hasOwnProperty("HistoryOfReports")) && (
                 <div>
@@ -1501,7 +1501,7 @@ export default function RootLayout({ children }) {
                       </svg>
                     </summary>
                     <ul className="flex flex-col gap-1 pr-2">
-                      {accessData.hasOwnProperty("VehiclesAndEquipment") && (
+                      {accessData.hasOwnProperty("golgoharsAndEquipment") && (
                         <li>
                           <Link
                             onClick={handleCloseSidebar}
@@ -2009,7 +2009,7 @@ export default function RootLayout({ children }) {
               <div>
                 <Link
                   onClick={handleCloseSidebar}
-                  href="https://auth.aunexa.net/logout"
+                  href="https://auth.prod.aunexa.net/logout"
                   className="block py-4 px-2 border-b border-b-1 border-b-solid  border-b-borderGray"
                 >
                   <span className="text-gray9F hover:text-textGray text-[0.9rem]">

@@ -8,7 +8,7 @@ import { useSelector } from "react-redux";
 export default function RootLayout({ children }) {
   const pages = useSelector((state) => state.access.pages);
 
-  if (pages.hasOwnProperty("VehiclesAndEquipment")) {
+  if (pages.hasOwnProperty("golgoharsAndEquipment")) {
     return <>{children}</>;
   } else {
     redirect('/panel');
