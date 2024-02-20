@@ -165,7 +165,7 @@ export default function page() {
             </div>
             <div className="flex flex-col gap-3">
               <div className="flex items-center gap-2">
-                <span className="text-[#9F9F9F] text-sm">اسم و فامیل :</span>
+                <span className="text-[#9F9F9F] text-sm">نام و نام‌خانوادگی :</span>
                 <span className="font-bold "> {formik.values.fullName}</span>
               </div>
 
