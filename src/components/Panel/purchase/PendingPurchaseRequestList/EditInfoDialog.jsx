@@ -21,6 +21,8 @@ import {styled} from "@mui/material/styles";
 import Switch from "@mui/material/Switch";
 import { useUpdatePendingPurchaseRequestListMutation } from "@/redux/features/purchase/pending-purchase-request-list/PendingPurchaseRequestListSlice";
 import { PersianToEnglish } from "@/helper/PersianToEnglish";
+import {toast} from "react-toastify";
+import {ConvertToNull} from "@/helper/ConvertToNull";
 
 const AntSwitch = styled(Switch)(({ theme }) => ({
     width: 35,
@@ -141,9 +143,30 @@ export default function EditInfoDialog(props) {
 
         onSubmit: async (product,helpers) => {
             let updateProduct = {id:props.editInfoTarget?.id,quantity:{unit:formik.values.unit,value:PersianToEnglish(`${formik.values.value}`)}}
-            const userData = await submitData(updateProduct)
-            handleReset()
-            props.handleCloseEditInfo()
+            updateProduct = ConvertToNull(updateProduct)
+            try {
+                const userData = await submitData(updatedProduct)
+                if (userData.error) {
+                    if (/.*[a-zA-Z].*/.test(userData.error.data.message)) {
+                        throw new Error("سیستم با خطا رو به رو شده است")
+                    } else {
+                        throw new Error(userData.error.data.message)
+                    }
+                }
+                handleReset()
+                props.handleCloseEditInfo()
+            } catch (error) {
+                toast.error(error.message, {
+                    position: "top-center",
+                    autoClose: 5000,
+                    hideProgressBar: false,
+                    closeOnClick: true,
+                    pauseOnHover: true,
+                    draggable: true,
+                    progress: undefined,
+                    theme: "light",
+                });
+            }
         },
     });
 

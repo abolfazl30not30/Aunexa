@@ -80,9 +80,7 @@ export default function AddIndividualRelationshipDialog(props) {
                     address:individualRelationShip?.secondAddress
                 }
                ] }
-           
-           
-           
+
             const userData = await submitData(updateIndividualRelationShip)
             handleReset()
             props.handleCloseEditIndividualRelationshipInfo()
@@ -134,7 +132,7 @@ export default function AddIndividualRelationshipDialog(props) {
                         <div className="flex justify-center ">
                         
                             <div>
-                                <h3 className="text-[1.1rem]">اطلاعات نزدیکان</h3>
+                                <h3 className="text-[1.1rem]"> ويرايش اطلاعات نزدیکان</h3>
                             </div>
                             {/*<div>
                                 <button

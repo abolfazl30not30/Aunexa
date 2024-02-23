@@ -20,7 +20,7 @@ import CircularProgress from "@mui/material/CircularProgress";
 import {
     useLazyGetAllProductQuery,
     useLazyGetAllSubOrganizationQuery,
-    useLazyGetAllVehicleQuery
+    useLazyGetAllVehicleListQuery
 } from "@/redux/features/category/CategorySlice";
 import {useEffect} from "react";
 
@@ -40,7 +40,7 @@ export default function FilterDialog(props) {
 
     const [vehicle,setVehicle] = useState(null)
     const [openVehicleList,setOpenVehicleList] = useState(false)
-    const [getVehicleList,{ data : vehicleList  = [] , isLoading : isVehicleLoading, isError: IsVehicleError }] = useLazyGetAllVehicleQuery()
+    const [getVehicleList,{ data : vehicleList  = [] , isLoading : isVehicleLoading, isError: IsVehicleError }] = useLazyGetAllVehicleListQuery()
     useEffect(()=>{
         if(openVehicleList){
             getVehicleList()
@@ -213,7 +213,7 @@ export default function FilterDialog(props) {
                                             </button>
                                         </DatePicker>
                                     </div>
-                                    <div className="w-full sm:w-1/2">
+                                    <div className="w-full md:w-1/2">
                                         <DatePicker
                                         minDate={formik.values.dateFrom}
                                         
@@ -285,13 +285,8 @@ export default function FilterDialog(props) {
                                         getOptionLabel={(option) => option.type}
                                         renderOption={(props, option) => (
                                             <Box component="li"  {...props}>
-                                                {option.type} <span className="mx-2">{option.code && (option.code)} {option.tag && !option.code && ( option.tag?.slice(2, 5) +
-                                  "-" +
-                                  option.tag?.slice(5, 7) +
-                                  " " +
-                                  option.tag?.slice(7, 8) +
-                                  " " +
-                                  option.tag?.slice(0, 2))}</span>
+                                                {option.type} {option.code !== null && (option.code)}
+                                                {option.tag !== null && (option?.tag?.slice(5, 7) + "-" + option?.tag?.slice(2, 5)  + " " + option?.tag?.slice(7, 8) + " " + option?.tag?.slice(0, 2))}
                                             </Box>
                                         )}
                                         onChange={(event, newValue) => {

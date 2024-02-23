@@ -8,6 +8,7 @@ import * as yup from "yup";
 import {useFormik} from "formik";
 import CircularProgress from '@mui/material/CircularProgress';
 import { useSaveOrganizationMutation } from "@/redux/features/organization/OrganizationSlice";
+import {toast} from "react-toastify";
 
 export default function AddOrganizationDialog(props) {
   
@@ -28,7 +29,6 @@ export default function AddOrganizationDialog(props) {
     const formik = useFormik({
         initialValues: {
             name:""
-            
         },
       
         
@@ -37,10 +37,33 @@ export default function AddOrganizationDialog(props) {
 
         onSubmit: async (organization,helpers) => {
             let updateOrganization = {...organization}
-            
-            const userData = await submitData(updateOrganization)
-            handleReset()
-            props.handleCloseAddOrganization()
+
+            try {
+                const userData = await submitData(updateOrganization)
+                if (userData.error) {
+                    if (/.*[a-zA-Z].*/.test(userData.error.data.message)) {
+                        throw new Error("سیستم با خطا رو به رو شده است")
+                    } else {
+                        throw new Error(userData.error.data.message)
+                    }
+                }
+                handleReset()
+                props.handleCloseAddOrganization()
+            } catch (error) {
+                toast.error(error.message, {
+                    position: "top-center",
+                    autoClose: 5000,
+                    hideProgressBar: false,
+                    closeOnClick: true,
+                    pauseOnHover: true,
+                    draggable: true,
+                    progress: undefined,
+                    theme: "light",
+                });
+            }
+
+
+
         },
     });
 

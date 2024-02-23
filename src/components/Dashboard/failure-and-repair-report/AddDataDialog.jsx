@@ -22,7 +22,7 @@ import {useFormik} from "formik";
 import CircularProgress from '@mui/material/CircularProgress';
 import "react-multi-date-picker/styles/colors/red.css"
 import { useSaveFailureVehiclesMutation } from "@/redux/features/failure-and-repair-report/FailureAndRepairReportSlice";
-import {   useLazyGetAllVehicleQuery} from "@/redux/features/category/CategorySlice";
+import {   useLazyGetAllVehicleListQuery} from "@/redux/features/category/CategorySlice";
 export default function AddDataDialog(props) {
   
     const handleReset = () => {
@@ -32,7 +32,7 @@ export default function AddDataDialog(props) {
     }
     const [vehicle,setVehicle] = useState(null)
     const [openVehicleList,setOpenVehicleList] = useState(false)
-    const [getVehicleList,{ data : vehicleList  = [] , isLoading : isVehicleLoading, isError: vehicleIsError }] =   useLazyGetAllVehicleQuery()
+    const [getVehicleList,{ data : vehicleList  = [] , isLoading : isVehicleLoading, isError: vehicleIsError }] =   useLazyGetAllVehicleListQuery()
     useEffect(()=>{
         if(openVehicleList){
             getVehicleList()

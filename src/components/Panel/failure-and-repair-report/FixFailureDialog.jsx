@@ -12,6 +12,8 @@ import Dialog from "@mui/material/Dialog";
 import * as yup from "yup";
 import {useFormik} from "formik";
 import { useSaveFailureVehiclesMutation } from "@/redux/features/failure-and-repair-report/FailureAndRepairReportSlice";
+import {ConvertToNull} from "@/helper/ConvertToNull";
+import {toast} from "react-toastify";
 
 export default function FixFailureDialog(props) {
     const handleReset = () => {
@@ -27,12 +29,7 @@ export default function FixFailureDialog(props) {
 
   const formik = useFormik({
       initialValues: {
-          
-          
           description: "",
-          
-          
-          
       },
 
       validationSchema: schema,
@@ -41,10 +38,31 @@ export default function FixFailureDialog(props) {
 
       onSubmit: async (vehicle, helpers) => {
           let updateVehicle = {status:"AVAILABLE",machine:{id:props.fixTarget.machine.id},description:vehicle.description}
-          const userData = await submitData(updateVehicle)
-          props.handleCloseFix()
-          handleReset()
-          
+          updateVehicle = ConvertToNull(updateVehicle)
+
+          try {
+              const userData = await submitData(updateVehicle)
+              if (userData.error) {
+                  if (/.*[a-zA-Z].*/.test(userData.error.data.message)) {
+                      throw new Error("سیستم با خطا رو به رو شده است")
+                  } else {
+                      throw new Error(userData.error.data.message)
+                  }
+              }
+              handleReset()
+              props.handleCloseFix()
+          } catch (error) {
+              toast.error(error.message, {
+                  position: "top-center",
+                  autoClose: 5000,
+                  hideProgressBar: false,
+                  closeOnClick: true,
+                  pauseOnHover: true,
+                  draggable: true,
+                  progress: undefined,
+                  theme: "light",
+              });
+          }
       },
   });
     return(

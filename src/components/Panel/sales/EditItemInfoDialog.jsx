@@ -26,6 +26,7 @@ import {styled} from "@mui/material/styles";
 import Switch from "@mui/material/Switch";
 import { useUpdateSalesItemMutation } from "@/redux/features/sales/SalesSlice";
 import { PersianToEnglish } from "@/helper/PersianToEnglish";
+import {toast} from "react-toastify";
 
 
 
@@ -127,9 +128,30 @@ export default function EditItemInfoDialog(props) {
 
     onSubmit: async (product,helpers) => {
         let updateProduct = {...product,quantity:{unit:formik.values.unit,value:PersianToEnglish(`${formik.values.value}`)},productImage:props.editInfoItemTarget?.imageURL}
-        const userData = await submitData(updateProduct)
-        handleReset()
-        props.handleCloseEditItemInfo()
+
+        try {
+            let userData = await submitData(updateProduct)
+            if (userData.error) {
+                if (/.*[a-zA-Z].*/.test(userData.error.data.message)) {
+                    throw new Error("سیستم با خطا رو به رو شده است")
+                } else {
+                    throw new Error(userData.error.data.message)
+                }
+            }
+            handleReset()
+            props.handleCloseEditItemInfo()
+        } catch (error) {
+            toast.error(error.message, {
+                position: "top-center",
+                autoClose: 5000,
+                hideProgressBar: false,
+                closeOnClick: true,
+                pauseOnHover: true,
+                draggable: true,
+                progress: undefined,
+                theme: "light",
+            });
+        }
     },
 });
     const handleSetProductInput = (id) =>{

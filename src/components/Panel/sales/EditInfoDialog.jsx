@@ -24,6 +24,7 @@ import { useUploadFileMinioMutation } from "@/redux/features/file/FileSlice";
 import { useDeleteFileMinioMutation } from "@/redux/features/file/FileSlice";
 import { ConvertToNull } from "@/helper/ConvertToNull";
 import { ConvertToEmpty } from "@/helper/ConvertToEmpty";
+import {toast} from "react-toastify";
 const AntSwitch = styled(Switch)(({ theme }) => ({
     width: 35,
     height: 18,
@@ -171,9 +172,30 @@ export default function EditInfoDialog(props) {
         onSubmit: async (product,helpers) => {
             let updateProduct = {...product,id:props.editInfoTarget?.id,receiptFile:uploadedImage}
             updateProduct=ConvertToNull(updateProduct)
-            const userData = await submitData(updateProduct)
-            handleReset()
-            props.handleCloseEditInfo()
+
+            try {
+                const userData = await submitData(updateProduct)
+                if (userData.error) {
+                    if (/.*[a-zA-Z].*/.test(userData.error.data.message)) {
+                        throw new Error("سیستم با خطا رو به رو شده است")
+                    } else {
+                        throw new Error(userData.error.data.message)
+                    }
+                }
+                handleReset()
+                props.handleCloseEditInfo()
+            } catch (error) {
+                toast.error(error.message, {
+                    position: "top-center",
+                    autoClose: 5000,
+                    hideProgressBar: false,
+                    closeOnClick: true,
+                    pauseOnHover: true,
+                    draggable: true,
+                    progress: undefined,
+                    theme: "light",
+                });
+            }
         },
     });
 

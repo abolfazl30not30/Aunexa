@@ -20,7 +20,7 @@ import CircularProgress from "@mui/material/CircularProgress";
 import {
     useLazyGetAllProductQuery,
     useLazyGetAllSubOrganizationQuery,
-    useLazyGetAllVehicleQuery
+    useLazyGetAllVehicleListQuery
 } from "@/redux/features/category/CategorySlice";
 import {useEffect} from "react";
 
@@ -209,7 +209,7 @@ export default function FilterDialog(props) {
                                             </button>
                                         </DatePicker>
                                     </div>
-                                    <div className="w-full sm:w-1/2">
+                                    <div className="w-full md:w-1/2">
                                         <DatePicker
                                         minDate={formik.values.dateFrom}
                                         

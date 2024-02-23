@@ -18,7 +18,7 @@ export const CategorySlice = apiSlice.injectEndpoints({
       query: () => "golgohar/category/find-all/machine",
       providesTags: ["category"],
     }),
-    getAllVehicle: builder.query({
+    getAllVehicleList: builder.query({
       query: () => "golgohar/machine/find-all",
       providesTags: ["category"],
     }),
@@ -51,7 +51,7 @@ export const {
   useLazyGetAllMachineQuery,
   useLazyGetAllUnitQuery,
   useLazyGetAllVehicleCategoryQuery,
-  useLazyGetAllVehicleQuery,
+  useLazyGetAllVehicleListQuery,
   useLazyGetAllSubOrganizationQuery,
   useLazyGetAllRoleQuery,
   useLazyGetAllCustomerQuery,

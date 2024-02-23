@@ -17,7 +17,7 @@ import persian_fa from "react-date-object/locales/persian_fa";
 import DatePicker from "react-multi-date-picker";
 import "react-multi-date-picker/styles/colors/red.css"
 import CircularProgress from "@mui/material/CircularProgress";
-import {useLazyGetAllProductQuery, useLazyGetAllVehicleQuery} from "@/redux/features/category/CategorySlice";
+import {useLazyGetAllProductQuery, useLazyGetAllVehicleListQuery} from "@/redux/features/category/CategorySlice";
 import {useEffect} from "react";
 import {styled} from "@mui/material/styles";
 import Switch from "@mui/material/Switch";

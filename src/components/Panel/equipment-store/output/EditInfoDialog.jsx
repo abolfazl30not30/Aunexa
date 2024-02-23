@@ -1,16 +1,7 @@
-
 'use client'
 import TextField from "@mui/material/TextField";
 import React, {useEffect, useState} from "react";
-import {
-    Autocomplete,
-    DialogContent,
-    DialogContentText,
-    FormControl,
-    InputLabel,
-    MenuItem, OutlinedInput,
-    Select,
-} from "@mui/material";
+import {Autocomplete, DialogContent, DialogContentText, FormControl, MenuItem, Select,} from "@mui/material";
 import Dialog from "@mui/material/Dialog";
 import {TailSpin} from "react-loader-spinner";
 import * as yup from "yup";
@@ -21,20 +12,21 @@ import DatePicker, {DateObject} from "react-multi-date-picker";
 import CircularProgress from '@mui/material/CircularProgress';
 import "react-multi-date-picker/styles/colors/red.css"
 import {
-    useLazyGetAllProductQuery, useLazyGetAllSubOrganizationQuery,
-    useLazyGetAllUnitQuery,
-    useLazyGetAllVehicleQuery,
     useLazyGetAllMachineQuery,
+    useLazyGetAllProductQuery,
+    useLazyGetAllSubOrganizationQuery,
+    useLazyGetAllUnitQuery,
 } from "@/redux/features/category/CategorySlice";
 import {
     useLazyGetOneVehiclesByCodeQuery,
     useLazyGetOneVehiclesByTagQuery
 } from "@/redux/features/vehicles-and-equipment/VehiclesAndEquipmentSlice";
-import {useUpdatePSOMutation} from "@/redux/features/primary-store/output/PSOapiSlice";
 import {useUpdateESOMutation} from "@/redux/features/equipment-store/output/ESOapiSlice";
-import { PersianToEnglish } from "@/helper/PersianToEnglish";
-import { ConvertToNull } from "@/helper/ConvertToNull";
-import { ConvertToEmpty } from "@/helper/ConvertToEmpty";
+import {PersianToEnglish} from "@/helper/PersianToEnglish";
+import {ConvertToNull} from "@/helper/ConvertToNull";
+import {ConvertToEmpty} from "@/helper/ConvertToEmpty";
+import {toast} from "react-toastify";
+
 export default function EditInfoDialog(props) {
     const alphabeticalList = [
         {value: "هیچ کدام"},
@@ -71,56 +63,70 @@ export default function EditInfoDialog(props) {
     ]
 
     //product input
-    const [product,setProduct] = useState(null)
-    const [openProductList,setOpenProductList] = useState(false)
-    const [getProductList,{ data : productList  = [] , isLoading : isProductLoading, isError: productIsError }] = useLazyGetAllProductQuery()
-    useEffect(()=>{
-        if(openProductList){
+    const [product, setProduct] = useState(null)
+    const [openProductList, setOpenProductList] = useState(false)
+    const [getProductList, {
+        data: productList = [],
+        isLoading: isProductLoading,
+        isError: productIsError
+    }] = useLazyGetAllProductQuery()
+    useEffect(() => {
+        if (openProductList) {
             getProductList()
         }
-    },[openProductList])
+    }, [openProductList])
 
     //unit input
-    const [unit,setUnit] = useState(null)
-    const [openUnitList,setOpenUnitList] = useState(false)
-    const [getUnitList,{ data : unitList  = [] , isLoading : isUnitLoading, isError: unitIsError }] = useLazyGetAllUnitQuery()
-    useEffect(()=>{
-        if(openUnitList){
+    const [unit, setUnit] = useState(null)
+    const [openUnitList, setOpenUnitList] = useState(false)
+    const [getUnitList, {
+        data: unitList = [],
+        isLoading: isUnitLoading,
+        isError: unitIsError
+    }] = useLazyGetAllUnitQuery()
+    useEffect(() => {
+        if (openUnitList) {
             getUnitList()
         }
-    },[openUnitList])
+    }, [openUnitList])
 
     //subOrganization input
-    const [subOrganization,setSubOrganization] = useState(null)
-    const [openSubOrganizationList,setOpenSubOrganizationList] = useState(false)
-    const [getSubOrganizationList,{ data : subOrganizationList  = [] , isLoading : isSubOrganizationLoading, isError: isSubOrganizationError }] = useLazyGetAllSubOrganizationQuery()
-    useEffect(()=>{
-        if(openSubOrganizationList){
+    const [subOrganization, setSubOrganization] = useState(null)
+    const [openSubOrganizationList, setOpenSubOrganizationList] = useState(false)
+    const [getSubOrganizationList, {
+        data: subOrganizationList = [],
+        isLoading: isSubOrganizationLoading,
+        isError: isSubOrganizationError
+    }] = useLazyGetAllSubOrganizationQuery()
+    useEffect(() => {
+        if (openSubOrganizationList) {
             getSubOrganizationList()
         }
-    },[openSubOrganizationList])
+    }, [openSubOrganizationList])
 //machine code 
 
 
-const [machine,setMachine] = useState(null)
-const [openMachineList,setOpenMachineList] = useState(false)
+    const [machine, setMachine] = useState(null)
+    const [openMachineList, setOpenMachineList] = useState(false)
 
-const [getMachineList,
-   { data:machineList = {content:[{}]},
-    isLoading: isMachineLoading,
-    isError: isMachineError,}
- ] = useLazyGetAllMachineQuery( 
-    
-  );
-  useEffect(()=>{
-    if(openMachineList){
-        getMachineList()
-    }
-},[openMachineList])
+    const [getMachineList,
+        {
+            data: machineList = {content: [{}]},
+            isLoading: isMachineLoading,
+            isError: isMachineError,
+        }
+    ] = useLazyGetAllMachineQuery(
+
+    );
+    useEffect(() => {
+        if (openMachineList) {
+            getMachineList()
+        }
+    }, [openMachineList])
     // //vehicle input
     // const [vehicle,setVehicle] = useState(null)
     // const [openVehicleList,setOpenVehicleList] = useState(false)
-    // const [getVehicleList,{ data : vehicleList  = [] , isLoading : isVehicleLoading, isError: VehicleIsError }] = useLazyGetAllVehicleQueryGet()
+    // const [getVehicleList,{ data : vehicleList  = [] , isLoading : isVehicleLoading, isError: VehicleIsError }] = useLazyGetAllVehicleListQueryGet()
     // useEffect(()=>{
     //     if(openVehicleList){
     //         getVehicleList()
@@ -128,15 +134,15 @@ const [getMachineList,
     // },[openVehicleList])
 
     //date input
-    const [date,setDate] = useState("")
+    const [date, setDate] = useState("")
     const handleDateInput = (value) => {
-        if(value!==null){
+        if (value !== null) {
             setDate(value)
             let month = value?.month < 10 ? ('0' + value?.month) : value?.month;
             let day = value?.day < 10 ? ('0' + value?.day) : value?.day;
             let convertDate = value?.year + '/' + month + '/' + day;
             formik.setFieldValue("expirationDate", convertDate)
-        }else {
+        } else {
             formik.setFieldValue("expirationDate", null)
         }
     }
@@ -148,11 +154,11 @@ const [getMachineList,
         part3: "",
         part4: "",
     })
-    useEffect(()=>{
-        const machineTagString = machineTag.part4 + machineTag.part2  + machineTag.part1  + machineTag.part3
+    useEffect(() => {
+        const machineTagString = machineTag.part4 + machineTag.part2 + machineTag.part1 + machineTag.part3
         console.log(machineTagString)
         formik.setFieldValue("machineTag", machineTagString)
-    },[machineTag])
+    }, [machineTag])
 
     const handlemachineTag = (e) => {
         if (e.target.name === "part1") {
@@ -160,12 +166,12 @@ const [getMachineList,
         } else if (e.target.name === "part2") {
             setmachineTag((co) => ({...co, part2: e.target.value}))
         } else if (e.target.name === "part3") {
-            if(e.target.value!=="هیچ کدام"){
-             setmachineTag((co) => ({...co, part3: e.target.value}))
-            }else{
-             setmachineTag((co) => ({...co, part3: ""}))
+            if (e.target.value !== "هیچ کدام") {
+                setmachineTag((co) => ({...co, part3: e.target.value}))
+            } else {
+                setmachineTag((co) => ({...co, part3: ""}))
             }
-         } else if (e.target.name === "part4") {
+        } else if (e.target.name === "part4") {
             setmachineTag((co) => ({...co, part4: e.target.value}))
         }
     }
@@ -178,15 +184,16 @@ const [getMachineList,
             if (!/[۰۱۲۳۴۵۶۷۸۹0-9]{7}./.test(values.machineTag)) {
                 errors.machineTag = 'لطفا پلاک  وسیله نقلیه را به صورت صحیح و کامل وارد کنید';
             }
-        }if(product?.isExpirable && !values.expirationDate){
-            errors.expirationDate="لطفا تاریخ انقضا را وارد نمایید"
+        }
+        if (product?.isExpirable && !values.expirationDate) {
+            errors.expirationDate = "لطفا تاریخ انقضا را وارد نمایید"
         }
 
         return errors;
     };
 
 
-    const handleReset = () =>{
+    const handleReset = () => {
         formik.resetForm()
         setDate("")
         setProduct(null)
@@ -197,22 +204,31 @@ const [getMachineList,
             part1: "",
             part2: "",
             part3: "",
-            part4: ""})
+            part4: ""
+        })
     }
 
     //submit data
-    const [submitData, { isLoading:isSubmitLoading ,error}] = useUpdateESOMutation()
+    const [submitData, {isLoading: isSubmitLoading, error}] = useUpdateESOMutation()
 
-    const [getVehicleByTag,{ data : vehicleByTag  = {} , isLoading : isVehicleByTagLoading, isError: isVehicleByTagError }] = useLazyGetOneVehiclesByTagQuery()
+    const [getVehicleByTag, {
+        data: vehicleByTag = {},
+        isLoading: isVehicleByTagLoading,
+        isError: isVehicleByTagError
+    }] = useLazyGetOneVehiclesByTagQuery()
 
-    const [getVehicleByCode,{ data : vehicleByCode  = {} , isLoading : isVehicleByCodeLoading, isError: isVehicleByCodeError }] = useLazyGetOneVehiclesByCodeQuery()
-    const [isExpirable,setIsExpirable]=useState()
+    const [getVehicleByCode, {
+        data: vehicleByCode = {},
+        isLoading: isVehicleByCodeLoading,
+        isError: isVehicleByCodeError
+    }] = useLazyGetOneVehiclesByCodeQuery()
+    const [isExpirable, setIsExpirable] = useState()
     const schema = yup.object().shape({
         productId: yup.string().required("لطفا نام محصول را وارد کنید"),
         value: yup.string().required("لطفا مقدار محصول را وارد کنید").matches(
             /^[۰۱۲۳۴۵۶۷۸۹0.-9]+$/,
             "لطفا فقط عدد وارد نمایید"
-          ),
+        ),
         unit: yup.string().required("لطفا واحد محصول را وارد کنید"),
         driverName: yup.string().required("لطفا نام راننده را وارد کنید"),
         destinationSubOrganizationId: yup.string().required("لطفا دپارتمان مورد نظر را انتخاب کنید"),
@@ -228,7 +244,7 @@ const [getMachineList,
             machineTag: "",
             machineCode: "",
             driverName: "",
-            destinationOrganizationId:"",
+            destinationOrganizationId: "",
             destinationSubOrganizationId: "",
             destinationSubOrganizationName: "",
             description: "",
@@ -238,53 +254,74 @@ const [getMachineList,
 
         validationSchema: schema,
 
-        onSubmit: async (product,helpers) => {
-            let updateProduct = {...product,value:PersianToEnglish(`${product.value}`),status:"UNKNOWN"}
+        onSubmit: async (product, helpers) => {
+            let updateProduct = {...product, value: PersianToEnglish(`${product.value}`), status: "UNKNOWN"}
 
-            if(product.machineTag !== ""){
+            if (product.machineTag !== "") {
                 const res = await getVehicleByTag(product.machineTag)
-                if(res?.status !== "rejected"){
-                    updateProduct = {...updateProduct,machineType:res.data.type,machineId:res.data.id}
+                if (res?.status !== "rejected") {
+                    updateProduct = {...updateProduct, machineType: res.data.type, machineId: res.data.id}
                     console.log(updateProduct)
-                }else {
-                    updateProduct = {...updateProduct,machineType:"نا معلوم",machineId:""}
+                } else {
+                    updateProduct = {...updateProduct, machineType: "نا معلوم", machineId: ""}
                 }
-            }else if(product.machineCode !== ""){
+            } else if (product.machineCode !== "") {
                 const res = await getVehicleByCode(product.machineCode)
-                if(res?.status !== "rejected"){
-                    updateProduct = {...updateProduct,machineType:res.data.type,machineId:res.data.id}
+                if (res?.status !== "rejected") {
+                    updateProduct = {...updateProduct, machineType: res.data.type, machineId: res.data.id}
                     console.log(updateProduct)
-                }else {
-                    updateProduct = {...updateProduct,machineType:"نا معلوم",machineId:""}
+                } else {
+                    updateProduct = {...updateProduct, machineType: "نا معلوم", machineId: ""}
                 }
             }
-updateProduct=ConvertToNull(updateProduct)
-            const userData = await submitData(updateProduct)
-            handleReset()
-            props.handleCloseEditInfo()
+            updateProduct = ConvertToNull(updateProduct)
+
+            try {
+                const userData = await submitData(updateProduct)
+                if (userData.error) {
+                    if (/.*[a-zA-Z].*/.test(userData.error.data.message)) {
+                        throw new Error("سیستم با خطا رو به رو شده است")
+                    } else {
+                        throw new Error(userData.error.data.message)
+                    }
+                }
+                handleReset()
+                props.handleCloseEditInfo()
+            } catch (error) {
+                toast.error(error.message, {
+                    position: "top-center",
+                    autoClose: 5000,
+                    hideProgressBar: false,
+                    closeOnClick: true,
+                    pauseOnHover: true,
+                    draggable: true,
+                    progress: undefined,
+                    theme: "light",
+                });
+            }
         },
     });
 //setData
-    const handleSetProductInput = (id) =>{
-        const product = productList.filter((product)=> product.id === id)
+    const handleSetProductInput = (id) => {
+        const product = productList.filter((product) => product.id === id)
         setProduct(product[0])
     }
-    const handleSetMachineInput = (code) =>{
-        const machine = machineList.content.filter((machine)=> machine.code === code)
+    const handleSetMachineInput = (code) => {
+        const machine = machineList.content.filter((machine) => machine.code === code)
         setMachine(machine[0])
     }
-    const handleSetSubOrganizationInput = (id) =>{
-        const subOrg = subOrganizationList.filter((org)=> org.id === id)
+    const handleSetSubOrganizationInput = (id) => {
+        const subOrg = subOrganizationList.filter((org) => org.id === id)
         setSubOrganization(subOrg[0])
     }
 
-    const handleSetUnitInput = (ab) =>{
-        const units= unitList.filter((unit)=> unit.persianName === ab)
+    const handleSetUnitInput = (ab) => {
+        const units = unitList.filter((unit) => unit.persianName === ab)
         setUnit(units[0])
     }
 
-    const handleSetMachineTagInput = (machineTag) =>{
-        if(machineTag !== null) {
+    const handleSetMachineTagInput = (machineTag) => {
+        if (machineTag !== null) {
             const tag = {
                 part1: machineTag.slice(5, 7),
                 part2: machineTag.slice(2, 5),
@@ -294,8 +331,8 @@ updateProduct=ConvertToNull(updateProduct)
             setmachineTag(tag)
         }
     }
-    const handleSetExpirationDate = (date)=>{
-        if( date !==null && date !=="" ){
+    const handleSetExpirationDate = (date) => {
+        if (date !== null && date !== "") {
             const newDate = new DateObject({
                 date: date,
                 format: "YYYY/MM/DD",
@@ -303,32 +340,32 @@ updateProduct=ConvertToNull(updateProduct)
                 locale: persian_fa
             })
             setDate(newDate)
-        }else{
+        } else {
             setDate(null)
         }
     }
 
-    useEffect(()=>{
+    useEffect(() => {
         getMachineList()
         getProductList()
         getUnitList()
         getSubOrganizationList()
         const editInfoObj = ConvertToEmpty(props.editInfoTarget)
         formik.setValues({
-            id:editInfoObj?.id,
+            id: editInfoObj?.id,
             productId: editInfoObj?.productId,
-            productName:editInfoObj?.productName,
+            productName: editInfoObj?.productName,
             value: editInfoObj?.value,
             unit: editInfoObj?.unit,
             expirationDate: editInfoObj?.expirationDate,
             machineTag: editInfoObj?.machineTag,
             machineCode: editInfoObj?.machineCode,
-            machineType:editInfoObj?.machineType,
+            machineType: editInfoObj?.machineType,
             driverName: editInfoObj?.driverName,
             destinationSubOrganizationId: editInfoObj?.destinationSubOrganizationId,
             destinationOrganizationId: editInfoObj?.destinationOrganizationId,
             destinationSubOrganizationName: editInfoObj?.destinationSubOrganizationName,
-            description:editInfoObj?.description
+            description: editInfoObj?.description
         })
         handleSetProductInput(props.editInfoTarget?.productId)
         handleSetMachineInput(props.editInfoTarget?.machineCode)
@@ -336,7 +373,7 @@ updateProduct=ConvertToNull(updateProduct)
         handleSetUnitInput(props.editInfoTarget?.unit)
         handleSetMachineTagInput(props.editInfoTarget?.machineTag)
         handleSetExpirationDate(props.editInfoTarget?.expirationDate)
-    },[props.openEditInfo])
+    }, [props.openEditInfo])
 
     return (
         <>
@@ -348,13 +385,16 @@ updateProduct=ConvertToNull(updateProduct)
                 aria-describedby="alert-dialog-slide-description"
                 PaperProps={{
                     style: {
-                        fontFamily: "__fonts_2f4189,__fonts_Fallback_2f4189",overflow:"visible"
+                        fontFamily: "__fonts_2f4189,__fonts_Fallback_2f4189", overflow: "visible"
                     },
                 }}>
                 <DialogContent>
                     <DialogContentText style={{fontFamily: "__fonts_2f4189,__fonts_Fallback_2f4189"}}>
                         <div className="flex justify-end">
-                            <button onClick={()=>{props.handleCloseEditInfo();handleReset()}}>
+                            <button onClick={() => {
+                                props.handleCloseEditInfo();
+                                handleReset()
+                            }}>
                                 <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 14 14"
                                      fill="none">
                                     <path d="M13 1L1 13M1 1L13 13" stroke="black" stroke-width="2"
@@ -381,7 +421,10 @@ updateProduct=ConvertToNull(updateProduct)
                                         disablePortal
                                         id="combo-box-demo"
                                         ListboxProps={{
-                                            sx: {fontFamily: "__fonts_2f4189,__fonts_Fallback_2f4189", fontSize: "0.8rem"},
+                                            sx: {
+                                                fontFamily: "__fonts_2f4189,__fonts_Fallback_2f4189",
+                                                fontSize: "0.8rem"
+                                            },
                                         }}
                                         options={productList}
                                         getOptionLabel={(option) => option.persianName}
@@ -391,7 +434,7 @@ updateProduct=ConvertToNull(updateProduct)
                                             formik.setFieldValue("productId", newValue?.id)
                                             formik.setFieldValue("productName", newValue?.persianName)
                                             setIsExpirable(newValue?.isExpirable)
-                                            newValue?.isExpirable===false ? (handleDateInput(null)):null 
+                                            newValue?.isExpirable === false ? (handleDateInput(null)) : null
                                         }}
                                         renderInput={(params) =>
                                             <TextField
@@ -400,10 +443,14 @@ updateProduct=ConvertToNull(updateProduct)
                                                 {...params}
                                                 InputProps={{
                                                     ...params.InputProps,
-                                                    style: {fontFamily: "__fonts_2f4189,__fonts_Fallback_2f4189", fontSize: "0.8rem"},
-                                                    endAdornment:(
+                                                    style: {
+                                                        fontFamily: "__fonts_2f4189,__fonts_Fallback_2f4189",
+                                                        fontSize: "0.8rem"
+                                                    },
+                                                    endAdornment: (
                                                         <React.Fragment>
-                                                            {isProductLoading ? <CircularProgress color="inherit" size={20} /> : null}
+                                                            {isProductLoading ?
+                                                                <CircularProgress color="inherit" size={20}/> : null}
                                                             {params.InputProps.endAdornment}
                                                         </React.Fragment>
                                                     )
@@ -423,7 +470,12 @@ updateProduct=ConvertToNull(updateProduct)
                                             onChange={formik.handleChange}
                                             error={formik.touched.value && Boolean(formik.errors.value)}
                                             helperText={formik.touched.value && formik.errors.value}
-                                            inputProps={{style: {fontFamily: "__fonts_2f4189,__fonts_Fallback_2f4189", fontSize: "0.8rem"}}}
+                                            inputProps={{
+                                                style: {
+                                                    fontFamily: "__fonts_2f4189,__fonts_Fallback_2f4189",
+                                                    fontSize: "0.8rem"
+                                                }
+                                            }}
                                             InputLabelProps={{style: {fontFamily: "__fonts_2f4189,__fonts_Fallback_2f4189"}}}/>
                                     </div>
                                     <div className="w-[30%]">
@@ -439,7 +491,10 @@ updateProduct=ConvertToNull(updateProduct)
                                             disablePortal
                                             id="combo-box-demo"
                                             ListboxProps={{
-                                                sx: {fontFamily: "__fonts_2f4189,__fonts_Fallback_2f4189", fontSize: "0.8rem"},
+                                                sx: {
+                                                    fontFamily: "__fonts_2f4189,__fonts_Fallback_2f4189",
+                                                    fontSize: "0.8rem"
+                                                },
                                             }}
                                             options={unitList}
                                             getOptionLabel={(option) => option.persianName}
@@ -455,7 +510,10 @@ updateProduct=ConvertToNull(updateProduct)
                                                     helperText={formik.touched.unit && formik.errors.unit}
                                                     InputProps={{
                                                         ...params.InputProps,
-                                                        style: {fontFamily: "__fonts_2f4189,__fonts_Fallback_2f4189", fontSize: "0.8rem"}
+                                                        style: {
+                                                            fontFamily: "__fonts_2f4189,__fonts_Fallback_2f4189",
+                                                            fontSize: "0.8rem"
+                                                        }
                                                     }}
                                                     placeholder="واحد"
                                                 />}/>
@@ -463,99 +521,111 @@ updateProduct=ConvertToNull(updateProduct)
                                 </div>
                                 {product?.isExpirable && <div>
                                     <DatePicker
-                                    calendarPosition={`bottom`}
-                                    className="red"
-                                    digits={['۰', '۱', '۲', '۳', '۴', '۵', '۶', '۷', '۸', '۹']}
-                                    format={`YYYY/MM/DD`}
-                                    containerStyle={{
-                                        width: "100%"
-                                    }}
-                                    placeholder="تاریخ انقضا (اجباری)"
-                                    inputClass={`border border-[#D9D9D9] placeholder-neutral-300 text-gray-900 text-[0.8rem] rounded focus:ring-[#3B82F67F] focus:border-[#3B82F67F] block w-full px-3 py-4`}
-                                    value={date}
-                                    onChange={(value) => {
-                                        handleDateInput(value)
-                                    }}
-                                    mapDays={({date}) => {
-                                        let props = {}
-                                        let isWeekend = [6].includes(date.weekDay.index)
+                                        calendarPosition={`bottom`}
+                                        className="red"
+                                        digits={['۰', '۱', '۲', '۳', '۴', '۵', '۶', '۷', '۸', '۹']}
+                                        format={`YYYY/MM/DD`}
+                                        containerStyle={{
+                                            width: "100%"
+                                        }}
+                                        placeholder="تاریخ انقضا (اجباری)"
+                                        inputClass={`border border-[#D9D9D9] placeholder-neutral-300 text-gray-900 text-[0.8rem] rounded focus:ring-[#3B82F67F] focus:border-[#3B82F67F] block w-full px-3 py-4`}
+                                        value={date}
+                                        onChange={(value) => {
+                                            handleDateInput(value)
+                                        }}
+                                        mapDays={({date}) => {
+                                            let props = {}
+                                            let isWeekend = [6].includes(date.weekDay.index)
 
-                                        if (isWeekend)
-                                            props.className = "highlight highlight-red";
+                                            if (isWeekend)
+                                                props.className = "highlight highlight-red";
 
-                                        return props
-                                    }}
+                                            return props
+                                        }}
 
-                                    weekDays={
-                                        [
-                                            ["شنبه", "شنبه"],
-                                            ["یکشنبه", "یکشنبه"],
-                                            ["دوشنبه", "دوشنبه"],
-                                            ["سه شنبه", "سه شنبه"],
-                                            ["چهارشنبه", "چهارشنبه"],
-                                            ["پنجشنبه", "پنجشنبه"],
-                                            ["جمعه", "جمعه"],
-                                        ]
-                                    }
+                                        weekDays={
+                                            [
+                                                ["شنبه", "شنبه"],
+                                                ["یکشنبه", "یکشنبه"],
+                                                ["دوشنبه", "دوشنبه"],
+                                                ["سه شنبه", "سه شنبه"],
+                                                ["چهارشنبه", "چهارشنبه"],
+                                                ["پنجشنبه", "پنجشنبه"],
+                                                ["جمعه", "جمعه"],
+                                            ]
+                                        }
 
-                                    calendar={persian}
-                                    locale={persian_fa}>
-                                    <button className="px-2 pb-4" onClick={(e) => {
-                                        e.preventDefault()
-                                        setDate("")
-                                        formik.setFieldValue("expirationDate", "")
-                                    }}>
-                                        ریست
-                                    </button>
-                                </DatePicker>
-                                </div>}{ product?.isExpirable&&
-                                            Boolean(formik.errors.expirationDate) && (
-                                                <span className="mx-3 text-[0.6rem] text-red-600 ">
+                                        calendar={persian}
+                                        locale={persian_fa}>
+                                        <button className="px-2 pb-4" onClick={(e) => {
+                                            e.preventDefault()
+                                            setDate("")
+                                            formik.setFieldValue("expirationDate", "")
+                                        }}>
+                                            ریست
+                                        </button>
+                                    </DatePicker>
+                                </div>}{product?.isExpirable &&
+                                Boolean(formik.errors.expirationDate) && (
+                                    <span className="mx-3 text-[0.6rem] text-red-600 ">
                                                     {formik.errors.expirationDate}
                                                 </span>
-                                            )
-                                        }
+                                )
+                            }
                                 <div>
                                     <div className="flex flex-col md:flex-row">
                                         <div className="plate w-full md:w-[47%] flex items-center pl-4">
                                             <div>
                                                 <div className="w-[55px] h-full pt-3  pl-1 pr-3">
-                                                    <input disabled={machine!==null && machine!=="" && machine!==undefined } name="part1"
-                                                           onChange={handlemachineTag} value={machineTag.part1}
-                                                           type="text" placeholder="55" maxLength="2"
-                                                           className="w-full h-full placeholder-neutral-300 text-center rounded"/>
+                                                    <input
+                                                        disabled={machine !== null && machine !== "" && machine !== undefined}
+                                                        name="part1"
+                                                        onChange={handlemachineTag} value={machineTag.part1}
+                                                        type="number" placeholder="55" maxLength="2"
+                                                        className="w-full h-full placeholder-neutral-300 text-center rounded"/>
                                                 </div>
                                             </div>
                                             <div className="flex">
                                                 <div className="w-[60px] h-full py-1 pl-1 pr-3 h-full">
-                                                    <input disabled={machine!==null && machine!=="" && machine!==undefined } name="part2"
-                                                           onChange={handlemachineTag} value={machineTag.part2}
-                                                           type="text" placeholder="555" maxLength="3"
-                                                           className="w-full h-full placeholder-neutral-300 text-center rounded"/>
+                                                    <input
+                                                        disabled={machine !== null && machine !== "" && machine !== undefined}
+                                                        name="part2"
+                                                        onChange={handlemachineTag} value={machineTag.part2}
+                                                        type="number" placeholder="555" maxLength="3"
+                                                        className="w-full h-full placeholder-neutral-300 text-center rounded"/>
                                                 </div>
                                                 <div>
                                                     <FormControl sx={{width: "58px", bgcolor: "#fff"}} size="small">
                                                         <Select
-                                                        sx={{fontFamily: "__fonts_2f4189,__fonts_Fallback_2f4189", fontSize: "0.8rem"}}
-                                                            disabled={machine!==null && machine!=="" && machine!==undefined }
+                                                            sx={{
+                                                                fontFamily: "__fonts_2f4189,__fonts_Fallback_2f4189",
+                                                                fontSize: "0.8rem"
+                                                            }}
+                                                            disabled={machine !== null && machine !== "" && machine !== undefined}
                                                             name="part3"
                                                             value={machineTag.part3}
                                                             onChange={handlemachineTag}
                                                             labelId="demo-select-small-label"
                                                             id="demo-select-small">
                                                             {
-                                                                alphabeticalList.map((alpha)=>(
-                                                                    <MenuItem  sx={{fontFamily: "__fonts_2f4189,__fonts_Fallback_2f4189", fontSize: "0.8rem"}} value={alpha.value}>{alpha.value}</MenuItem>
+                                                                alphabeticalList.map((alpha) => (
+                                                                    <MenuItem sx={{
+                                                                        fontFamily: "__fonts_2f4189,__fonts_Fallback_2f4189",
+                                                                        fontSize: "0.8rem"
+                                                                    }} value={alpha.value}>{alpha.value}</MenuItem>
                                                                 ))
                                                             }
                                                         </Select>
                                                     </FormControl>
                                                 </div>
                                                 <div className="w-[50px] h-full py-1 pl-2 pr-1 h-full">
-                                                    <input disabled={machine!==null && machine!=="" && machine!==undefined } name="part4"
-                                                           onChange={handlemachineTag} value={machineTag.part4}
-                                                           type="text" placeholder="55" maxLength="2"
-                                                           className="w-full h-full placeholder-neutral-300 text-center rounded"/>
+                                                    <input
+                                                        disabled={machine !== null && machine !== "" && machine !== undefined}
+                                                        name="part4"
+                                                        onChange={handlemachineTag} value={machineTag.part4}
+                                                        type="number" placeholder="55" maxLength="2"
+                                                        className="w-full h-full placeholder-neutral-300 text-center rounded"/>
                                                 </div>
                                             </div>
                                         </div>
@@ -565,51 +635,59 @@ updateProduct=ConvertToNull(updateProduct)
                                             </span>
                                         </div>
                                         <div className="w-full md:w-[47%]">
-                                        <Autocomplete
-                                                 disabled={formik.values.machineTag !== ""}
-                                        open={openMachineList}
-                                        onOpen={() => {
-                                            setOpenMachineList(true);
-                                            
-                                            
-                                        }}
-                                        onClose={() => {
-                                            setOpenMachineList(false);
-                                        }}
-                                        fullWidth
-                                        clearOnEscape
-                                        disablePortal
-                                        id="combo-box-demo"
-                                        ListboxProps={{
-                                            sx: {fontFamily: "__fonts_2f4189,__fonts_Fallback_2f4189", fontSize: "0.8rem"},
-                                        }}
-                                        options={machineList?.content}
-                                        getOptionLabel={(option) => option?.code}
-                                        value={machine}
-                                        onChange={(event, newValue) => {
-                                            
-                                            setMachine(newValue)
-                                            formik.setFieldValue("machineCode", newValue?.code)
-                                        }}
-                                        renderInput={(params) =>
-                                            <TextField
-                                           
-                                            error={formik.touched.machineCode && Boolean(formik.errors.machineCode)}
-                                            helperText={formik.touched.machineTag && formik.errors.machineTag}
-                                                {...params}
-                                                InputProps={{
-                                                    ...params.InputProps,
-                                                    style: {fontFamily: "__fonts_2f4189,__fonts_Fallback_2f4189", fontSize: "0.8rem"},
-                                                    endAdornment:(
-                                                        <React.Fragment>
-                                                            {isMachineLoading ? <CircularProgress color="inherit" size={20} /> : null}
-                                                            
-                                                        </React.Fragment>
-                                                    )
-                                            }}
-                                                placeholder="  کد وسیله "
-                                            />}
-                                    />
+                                            <Autocomplete
+                                                disabled={formik.values.machineTag !== ""}
+                                                open={openMachineList}
+                                                onOpen={() => {
+                                                    setOpenMachineList(true);
+
+
+                                                }}
+                                                onClose={() => {
+                                                    setOpenMachineList(false);
+                                                }}
+                                                fullWidth
+                                                clearOnEscape
+                                                disablePortal
+                                                id="combo-box-demo"
+                                                ListboxProps={{
+                                                    sx: {
+                                                        fontFamily: "__fonts_2f4189,__fonts_Fallback_2f4189",
+                                                        fontSize: "0.8rem"
+                                                    },
+                                                }}
+                                                options={machineList?.content}
+                                                getOptionLabel={(option) => option?.code}
+                                                value={machine}
+                                                onChange={(event, newValue) => {
+
+                                                    setMachine(newValue)
+                                                    formik.setFieldValue("machineCode", newValue?.code)
+                                                }}
+                                                renderInput={(params) =>
+                                                    <TextField
+
+                                                        error={formik.touched.machineCode && Boolean(formik.errors.machineCode)}
+                                                        helperText={formik.touched.machineTag && formik.errors.machineTag}
+                                                        {...params}
+                                                        InputProps={{
+                                                            ...params.InputProps,
+                                                            style: {
+                                                                fontFamily: "__fonts_2f4189,__fonts_Fallback_2f4189",
+                                                                fontSize: "0.8rem"
+                                                            },
+                                                            endAdornment: (
+                                                                <React.Fragment>
+                                                                    {isMachineLoading ?
+                                                                        <CircularProgress color="inherit"
+                                                                                          size={20}/> : null}
+
+                                                                </React.Fragment>
+                                                            )
+                                                        }}
+                                                        placeholder="  کد وسیله "
+                                                    />}
+                                            />
                                         </div>
                                     </div>
                                     <div>
@@ -633,7 +711,12 @@ updateProduct=ConvertToNull(updateProduct)
                                             onChange={formik.handleChange}
                                             error={formik.touched.driverName && Boolean(formik.errors.driverName)}
                                             helperText={formik.touched.driverName && formik.errors.driverName}
-                                            inputProps={{style: {fontFamily: "__fonts_2f4189,__fonts_Fallback_2f4189", fontSize: "0.8rem"}}}
+                                            inputProps={{
+                                                style: {
+                                                    fontFamily: "__fonts_2f4189,__fonts_Fallback_2f4189",
+                                                    fontSize: "0.8rem"
+                                                }
+                                            }}
                                             InputLabelProps={{style: {fontFamily: "__fonts_2f4189,__fonts_Fallback_2f4189"}}}/>
                                     </div>
                                     <div className="w-full md:w-1/2">
@@ -650,7 +733,10 @@ updateProduct=ConvertToNull(updateProduct)
                                             disablePortal
                                             id="combo-box-demo"
                                             ListboxProps={{
-                                                sx: {fontFamily: "__fonts_2f4189,__fonts_Fallback_2f4189", fontSize: "0.8rem"},
+                                                sx: {
+                                                    fontFamily: "__fonts_2f4189,__fonts_Fallback_2f4189",
+                                                    fontSize: "0.8rem"
+                                                },
                                             }}
                                             options={subOrganizationList}
                                             getOptionLabel={(option) => option.name}
@@ -667,7 +753,10 @@ updateProduct=ConvertToNull(updateProduct)
                                                     {...params}
                                                     InputProps={{
                                                         ...params.InputProps,
-                                                        style: {fontFamily: "__fonts_2f4189,__fonts_Fallback_2f4189", fontSize: "0.8rem"},
+                                                        style: {
+                                                            fontFamily: "__fonts_2f4189,__fonts_Fallback_2f4189",
+                                                            fontSize: "0.8rem"
+                                                        },
                                                         endAdornment: (
                                                             <React.Fragment>
                                                                 {isSubOrganizationLoading ?
@@ -695,7 +784,12 @@ updateProduct=ConvertToNull(updateProduct)
                                         onChange={formik.handleChange}
                                         error={formik.touched.description && Boolean(formik.errors.description)}
                                         helperText={formik.touched.description && formik.errors.description}
-                                        inputProps={{style: {fontFamily: "__fonts_2f4189,__fonts_Fallback_2f4189", fontSize: "0.8rem"}}}
+                                        inputProps={{
+                                            style: {
+                                                fontFamily: "__fonts_2f4189,__fonts_Fallback_2f4189",
+                                                fontSize: "0.8rem"
+                                            }
+                                        }}
                                         InputLabelProps={{style: {fontFamily: "__fonts_2f4189,__fonts_Fallback_2f4189"}}}/>
                                 </div>
                                 <div>

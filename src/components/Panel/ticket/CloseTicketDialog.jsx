@@ -10,13 +10,13 @@ import { useUpdateTicketMutation } from "@/redux/features/ticket/TicketSlice";
 import * as yup from "yup";
 import {useFormik} from "formik";
 import { useEffect,useState } from "react";
+import {toast} from "react-toastify";
+import {ConvertToNull} from "@/helper/ConvertToNull";
 export default function CloseTicketDialog(props) {
     
     const [submitData, { isLoading:isSubmitLoading ,error}] = useUpdateTicketMutation()
     const schema = yup.object().shape({
          status:yup.string()
-        
-        
       });
   
       const formik = useFormik({
@@ -30,37 +30,43 @@ export default function CloseTicketDialog(props) {
             createAt:"",
             updateAt:"", 
             ticketNumber:"", 
-            title:"", 
-            
+            title:"",
           },
-  
-          
-  
+
           validationSchema: schema,
   
           onSubmit: async (ticket,helpers) => {
-              const body = {...ticket,status:"closed",id:props.editTicketInfoTarget
+              let body = {...ticket,status:"closed",id:props.editTicketInfoTarget.id}
+              try {
+                  const userData = await submitData(body)
+                  if (userData.error) {
+                      if (/.*[a-zA-Z].*/.test(userData.error.data.message)) {
+                          throw new Error("سیستم با خطا رو به رو شده است")
+                      } else {
+                          throw new Error(userData.error.data.message)
+                      }
+                  }
+                  handleReset()
+                  props.handleCloseEditTicketInfo()
+              } catch (error) {
+                  toast.error(error.message, {
+                      position: "top-center",
+                      autoClose: 5000,
+                      hideProgressBar: false,
+                      closeOnClick: true,
+                      pauseOnHover: true,
+                      draggable: true,
+                      progress: undefined,
+                      theme: "light",
+                  });
               }
-              const userData = await submitData(body)
-              console.log(error)
-              console.log(userData)
-              
-              helpers.resetForm({
-                  ticket
-              });
-              
-              
-              
-  
-              props.handleCloseEditTicketInfo()
           },
       });
      
      
       
       useEffect(()=>{
-          
-          
+          console.log(props.editTicketInfoTarget)
           formik.setValues({
               id:props.editTicketInfoTarget?.id,
               status:props.editTicketInfoTarget?.status,
@@ -72,22 +78,11 @@ export default function CloseTicketDialog(props) {
               updateAt: props.editTicketInfoTarget?.updateAt,
               ticketNumber: props.editTicketInfoTarget?.ticketNumber,
               title: props.editTicketInfoTarget?.title,
-              
-              
           })
-          
-          
       },[props.openEditTicketInfo])
-  
-      
-  
-     
-      
-  
+
       const handleReset = () =>{
           formik.resetForm()
-         
-         
       }
   
     return(
@@ -105,7 +100,7 @@ export default function CloseTicketDialog(props) {
                     <DialogContentText style={{fontFamily: "__fonts_2f4189,__fonts_Fallback_2f4189"}}>
                     <form className=" " onSubmit={formik.handleSubmit} method="POST">
                         <div className="flex justify-end">
-                            <button onClick={props.handleCloseEditTicketInfo}>
+                            <button type="button"  onClick={props.handleCloseEditTicketInfo}>
                                 <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 14 14" fill="none">
                                     <path d="M13 1L1 13M1 1L13 13" stroke="black" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
                                 </svg>
@@ -121,7 +116,7 @@ export default function CloseTicketDialog(props) {
                             <div>
                             {
                                         isSubmitLoading ? (<button disabled type="submit"
-                                                                   className="hidden flex gap-3 items-center justify-center w-full rounded-[0.5rem] py-2 px-6 border border-solid border-1 border-neutral-400 font-bold text-textGray bg-neutral-200">
+                                                                   className="flex gap-3 items-center justify-center w-full rounded-[0.5rem] py-2 px-6 border border-solid border-1 border-neutral-400 font-bold text-textGray bg-neutral-200">
                                             <TailSpin
                                                 height="20"
                                                 width="20"
@@ -140,7 +135,7 @@ export default function CloseTicketDialog(props) {
                                     }
                             </div>
                             <div>
-                                <button onClick={console.log(props.editTicketInfoTarget)} className="px-6 py-2.5 text-[0.8rem]  rounded-[0.5rem]   hover:opacity-80 font-bold bg-neutral-400 text-white">انصراف</button>
+                                <button type="button" onClick={props.handleCloseEditTicketInfo} className="px-6 py-2.5 text-[0.8rem]  rounded-[0.5rem]   hover:opacity-80 font-bold bg-neutral-400 text-white">انصراف</button>
                             </div>
                         </div>
                         </form>

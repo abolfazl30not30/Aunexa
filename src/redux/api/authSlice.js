@@ -15,8 +15,6 @@ const authSlice = createSlice({
     },
     logOut: (state, action) => {
       state.accessToken = "";
-      window.sessionStorage.clear();
-      window.location.href = "https://auth.prod.aunexa.net/logout";
     },
   },
 });

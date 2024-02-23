@@ -1,73 +1,66 @@
 'use client'
 import TextField from "@mui/material/TextField";
 import React, {useEffect, useState} from "react";
-import {
-    Autocomplete,
-    DialogContent,
-    DialogContentText,
-    FormControl,
-    InputLabel,
-    MenuItem, OutlinedInput,
-    Select,
-} from "@mui/material";
+import {Autocomplete, DialogContent, DialogContentText,} from "@mui/material";
 import Dialog from "@mui/material/Dialog";
 import {TailSpin} from "react-loader-spinner";
 import * as yup from "yup";
 import {useFormik} from "formik";
-import persian from "react-date-object/calendars/persian";
-import persian_fa from "react-date-object/locales/persian_fa";
-import DatePicker from "react-multi-date-picker";
 import CircularProgress from '@mui/material/CircularProgress';
 import "react-multi-date-picker/styles/colors/red.css"
-import {
-    useLazyGetAllProductQuery,
-    useLazyGetAllUnitQuery,
-    useLazyGetAllVehicleQuery
-} from "@/redux/features/category/CategorySlice";
-import {useSavePSIMutation} from "@/redux/features/primary-store/input/PSIapiSlice";
-import {
-    useLazyGetOneVehiclesByCodeQuery,
-    useLazyGetOneVehiclesByTagQuery
-} from "@/redux/features/vehicles-and-equipment/VehiclesAndEquipmentSlice";
-import { useSaveProductionInputMutation } from "@/redux/features/production/input/ProductionInputSlice";
-import { PersianToEnglish } from "@/helper/PersianToEnglish";
-import { ConvertToNull } from "@/helper/ConvertToNull";
+import {useLazyGetAllProductQuery, useLazyGetAllUnitQuery} from "@/redux/features/category/CategorySlice";
+import {useSaveProductionInputMutation} from "@/redux/features/production/input/ProductionInputSlice";
+import {PersianToEnglish} from "@/helper/PersianToEnglish";
+import {ConvertToNull} from "@/helper/ConvertToNull";
+import {toast} from "react-toastify";
+
 export default function AddDataDialog(props) {
 
     //product input
-    const [product,setProduct] = useState(null)
-    const [openProductList,setOpenProductList] = useState(false)
-    const [getProductList,{ data : productList  = [] , isLoading : isProductLoading, isError: productIsError }] = useLazyGetAllProductQuery()
-    useEffect(()=>{
-        if(openProductList){
+    const [product, setProduct] = useState(null)
+    const [openProductList, setOpenProductList] = useState(false)
+    const [getProductList, {
+        data: productList = [],
+        isLoading: isProductLoading,
+        isError: productIsError
+    }] = useLazyGetAllProductQuery()
+    useEffect(() => {
+        if (openProductList) {
             getProductList()
         }
-    },[openProductList])
+    }, [openProductList])
 
 
     //product input
-    const [producedProduct,setProducedProduct] = useState(null)
-    const [openProducedProductList,setOpenProducedProductList] = useState(false)
-    const [getProducedProductList,{ data : ProducedProductList  = [] , isLoading : isProducedProductLoading, isError: producedProductIsError }] = useLazyGetAllProductQuery()
-    useEffect(()=>{
-        if(openProducedProductList){
+    const [producedProduct, setProducedProduct] = useState(null)
+    const [openProducedProductList, setOpenProducedProductList] = useState(false)
+    const [getProducedProductList, {
+        data: ProducedProductList = [],
+        isLoading: isProducedProductLoading,
+        isError: producedProductIsError
+    }] = useLazyGetAllProductQuery()
+    useEffect(() => {
+        if (openProducedProductList) {
             getProducedProductList()
         }
-    },[openProducedProductList])
+    }, [openProducedProductList])
 
     //unit input
-    const [unit,setUnit] = useState(null)
-    const [openUnitList,setOpenUnitList] = useState(false)
-    const [getUnitList,{ data : unitList  = [] , isLoading : isUnitLoading, isError: unitIsError }] = useLazyGetAllUnitQuery()
-    useEffect(()=>{
-        if(openUnitList){
+    const [unit, setUnit] = useState(null)
+    const [openUnitList, setOpenUnitList] = useState(false)
+    const [getUnitList, {
+        data: unitList = [],
+        isLoading: isUnitLoading,
+        isError: unitIsError
+    }] = useLazyGetAllUnitQuery()
+    useEffect(() => {
+        if (openUnitList) {
             getUnitList()
         }
-    },[openUnitList])
+    }, [openUnitList])
 
 
-
-    const handleReset = () =>{
+    const handleReset = () => {
         formik.resetForm()
         setProduct(null)
         setProducedProduct(null)
@@ -75,14 +68,14 @@ export default function AddDataDialog(props) {
     }
 
     //submit data
-    const [submitData, { isLoading:isSubmitLoading ,error}] = useSaveProductionInputMutation()
+    const [submitData, {isLoading: isSubmitLoading, error}] = useSaveProductionInputMutation()
 
     const schema = yup.object().shape({
         productId: yup.string().required("لطفا نام محصول را وارد کنید"),
         value: yup.string().required("لطفا مقدار محصول را وارد کنید").matches(
             /^[۰۱۲۳۴۵۶۷۸۹0.-9]+$/,
             "لطفا فقط عدد وارد نمایید"
-          ),
+        ),
         unit: yup.string().required("لطفا واحد محصول را وارد کنید"),
         producedProductId: yup.string().required("لطفا محصول تولیدی را وارد کنید"),
     });
@@ -90,21 +83,41 @@ export default function AddDataDialog(props) {
     const formik = useFormik({
         initialValues: {
             productId: "",
-            productName:"",
+            productName: "",
             value: "",
             unit: "",
-            producedProductId:"",
-            producedProductName:""
+            producedProductId: "",
+            producedProductName: ""
         },
 
         validationSchema: schema,
 
-        onSubmit: async (product,helpers) => {
-            let updateProduct = {...product,value:PersianToEnglish(product.value)}
-updateProduct=ConvertToNull(updateProduct)
-            const userData = await submitData(updateProduct)
-            handleReset()
-            props.handleCloseAddData()
+        onSubmit: async (product, helpers) => {
+            let updateProduct = {...product, value: PersianToEnglish(product.value)}
+            updateProduct = ConvertToNull(updateProduct)
+            try {
+                const userData = await submitData(updateProduct)
+                if (userData.error) {
+                    if (/.*[a-zA-Z].*/.test(userData.error.data.message)) {
+                        throw new Error("سیستم با خطا رو به رو شده است")
+                    } else {
+                        throw new Error(userData.error.data.message)
+                    }
+                }
+                handleReset()
+                props.handleCloseAddData()
+            } catch (error) {
+                toast.error(error.message, {
+                    position: "top-center",
+                    autoClose: 5000,
+                    hideProgressBar: false,
+                    closeOnClick: true,
+                    pauseOnHover: true,
+                    draggable: true,
+                    progress: undefined,
+                    theme: "light",
+                });
+            }
         },
     });
 
@@ -118,12 +131,16 @@ updateProduct=ConvertToNull(updateProduct)
                 aria-describedby="alert-dialog-slide-description"
                 PaperProps={{
                     style: {
-                        fontFamily: "__fonts_2f4189,__fonts_Fallback_2f4189",overflow:"visible"
-                    },}}>
+                        fontFamily: "__fonts_2f4189,__fonts_Fallback_2f4189", overflow: "visible"
+                    },
+                }}>
                 <DialogContent>
                     <DialogContentText style={{fontFamily: "__fonts_2f4189,__fonts_Fallback_2f4189"}}>
                         <div className="flex justify-end">
-                            <button onClick={()=>{props.handleCloseAddData();handleReset()}}>
+                            <button onClick={() => {
+                                props.handleCloseAddData();
+                                handleReset()
+                            }}>
                                 <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 14 14"
                                      fill="none">
                                     <path d="M13 1L1 13M1 1L13 13" stroke="black" stroke-width="2"
@@ -150,7 +167,10 @@ updateProduct=ConvertToNull(updateProduct)
                                         disablePortal
                                         id="combo-box-demo"
                                         ListboxProps={{
-                                            sx: {fontFamily: "__fonts_2f4189,__fonts_Fallback_2f4189", fontSize: "0.8rem"},
+                                            sx: {
+                                                fontFamily: "__fonts_2f4189,__fonts_Fallback_2f4189",
+                                                fontSize: "0.8rem"
+                                            },
                                         }}
                                         options={productList}
                                         getOptionLabel={(option) => option.persianName}
@@ -167,14 +187,18 @@ updateProduct=ConvertToNull(updateProduct)
                                                 {...params}
                                                 InputProps={{
                                                     ...params.InputProps,
-                                                    style: {fontFamily: "__fonts_2f4189,__fonts_Fallback_2f4189", fontSize: "0.8rem"},
-                                                    endAdornment:(
+                                                    style: {
+                                                        fontFamily: "__fonts_2f4189,__fonts_Fallback_2f4189",
+                                                        fontSize: "0.8rem"
+                                                    },
+                                                    endAdornment: (
                                                         <React.Fragment>
-                                                            {isProductLoading ? <CircularProgress color="inherit" size={20} /> : null}
+                                                            {isProductLoading ?
+                                                                <CircularProgress color="inherit" size={20}/> : null}
                                                             {params.InputProps.endAdornment}
                                                         </React.Fragment>
                                                     )
-                                            }}
+                                                }}
                                                 placeholder="نام محصول (اجباری)"
                                             />}
                                     />
@@ -190,7 +214,12 @@ updateProduct=ConvertToNull(updateProduct)
                                             onChange={formik.handleChange}
                                             error={formik.touched.value && Boolean(formik.errors.value)}
                                             helperText={formik.touched.value && formik.errors.value}
-                                            inputProps={{style: {fontFamily: "__fonts_2f4189,__fonts_Fallback_2f4189", fontSize: "0.8rem"}}}
+                                            inputProps={{
+                                                style: {
+                                                    fontFamily: "__fonts_2f4189,__fonts_Fallback_2f4189",
+                                                    fontSize: "0.8rem"
+                                                }
+                                            }}
                                             InputLabelProps={{style: {fontFamily: "__fonts_2f4189,__fonts_Fallback_2f4189"}}}/>
                                     </div>
                                     <div className="w-[30%]">
@@ -206,7 +235,10 @@ updateProduct=ConvertToNull(updateProduct)
                                             disablePortal
                                             id="combo-box-demo"
                                             ListboxProps={{
-                                                sx: {fontFamily: "__fonts_2f4189,__fonts_Fallback_2f4189", fontSize: "0.8rem"},
+                                                sx: {
+                                                    fontFamily: "__fonts_2f4189,__fonts_Fallback_2f4189",
+                                                    fontSize: "0.8rem"
+                                                },
                                             }}
                                             options={unitList}
                                             getOptionLabel={(option) => option.persianName}
@@ -222,7 +254,10 @@ updateProduct=ConvertToNull(updateProduct)
                                                     helperText={formik.touched.unit && formik.errors.unit}
                                                     InputProps={{
                                                         ...params.InputProps,
-                                                        style: {fontFamily: "__fonts_2f4189,__fonts_Fallback_2f4189", fontSize: "0.8rem"}
+                                                        style: {
+                                                            fontFamily: "__fonts_2f4189,__fonts_Fallback_2f4189",
+                                                            fontSize: "0.8rem"
+                                                        }
                                                     }}
                                                     placeholder="واحد"
                                                 />}/>
@@ -242,7 +277,10 @@ updateProduct=ConvertToNull(updateProduct)
                                         disablePortal
                                         id="combo-box-demo"
                                         ListboxProps={{
-                                            sx: {fontFamily: "__fonts_2f4189,__fonts_Fallback_2f4189", fontSize: "0.8rem"},
+                                            sx: {
+                                                fontFamily: "__fonts_2f4189,__fonts_Fallback_2f4189",
+                                                fontSize: "0.8rem"
+                                            },
                                         }}
                                         options={ProducedProductList}
                                         getOptionLabel={(option) => option.persianName}
@@ -259,10 +297,14 @@ updateProduct=ConvertToNull(updateProduct)
                                                 {...params}
                                                 InputProps={{
                                                     ...params.InputProps,
-                                                    style: {fontFamily: "__fonts_2f4189,__fonts_Fallback_2f4189", fontSize: "0.8rem"},
-                                                    endAdornment:(
+                                                    style: {
+                                                        fontFamily: "__fonts_2f4189,__fonts_Fallback_2f4189",
+                                                        fontSize: "0.8rem"
+                                                    },
+                                                    endAdornment: (
                                                         <React.Fragment>
-                                                            {isProductLoading ? <CircularProgress color="inherit" size={20} /> : null}
+                                                            {isProductLoading ?
+                                                                <CircularProgress color="inherit" size={20}/> : null}
                                                             {params.InputProps.endAdornment}
                                                         </React.Fragment>
                                                     )

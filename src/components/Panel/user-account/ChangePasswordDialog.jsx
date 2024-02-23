@@ -101,7 +101,6 @@ const validate = (values, props) => {
 
         onSubmit: async (password, helpers) => {
             let updatePassword = {...password}
-            // const userData = await submitData(updatePassword)
             setClickForSubmit(false)
            handleReset()
            props.handleCloseChangePassword()

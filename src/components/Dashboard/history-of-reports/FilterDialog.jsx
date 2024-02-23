@@ -20,7 +20,7 @@ import CircularProgress from "@mui/material/CircularProgress";
 import {
     useLazyGetAllProductQuery,
     useLazyGetAllSubOrganizationQuery,
-    useLazyGetAllVehicleQuery
+    useLazyGetAllVehicleListQuery
 } from "@/redux/features/category/CategorySlice";
 import {useEffect} from "react";
 
@@ -40,7 +40,7 @@ export default function FilterDialog(props) {
 
     const [vehicle,setVehicle] = useState(null)
     const [openVehicleList,setOpenVehicleList] = useState(false)
-    const [getVehicleList,{ data : vehicleList  = [] , isLoading : isVehicleLoading, isError: IsVehicleError }] = useLazyGetAllVehicleQuery()
+    const [getVehicleList,{ data : vehicleList  = [] , isLoading : isVehicleLoading, isError: IsVehicleError }] = useLazyGetAllVehicleListQuery()
     useEffect(()=>{
         if(openVehicleList){
             getVehicleList()
@@ -279,7 +279,8 @@ export default function FilterDialog(props) {
                                         getOptionLabel={(option) => option.type}
                                         renderOption={(props, option) => (
                                             <Box component="li"  {...props}>
-                                                {option.type} ({option.code} {option.tag.slice(2, 5) + "-" + option.tag.slice(5, 7) + " " + option.tag.slice(7, 8) + " " + option.tag.slice(0, 2)} )
+                                                {option.type} {option.code !== null && (option.code)}
+                                                {option.tag !== null && (option?.tag?.slice(5, 7) + "-" + option?.tag?.slice(2, 5)  + " " + option?.tag?.slice(7, 8) + " " + option?.tag?.slice(0, 2))}
                                             </Box>
                                         )}
                                         onChange={(event, newValue) => {

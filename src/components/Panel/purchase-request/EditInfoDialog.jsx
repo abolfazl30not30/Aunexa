@@ -67,6 +67,7 @@ const AntSwitch = styled(Switch)(({ theme }) => ({
     },
 }));
 import { PersianToEnglish } from "@/helper/PersianToEnglish";
+import {toast} from "react-toastify";
 export default function EditInfoDialog(props) {
 
     //product input
@@ -153,8 +154,30 @@ export default function EditInfoDialog(props) {
             let updateProduct = {...product,value:PersianToEnglish(`${product.value}`)}
             updateProduct=ConvertToNull(updateProduct)
             const userData = await submitData(updateProduct)
-            handleReset()
-            props.handleCloseEditInfo()
+
+            try {
+                const userData = await submitData(updateProduct)
+                if (userData.error) {
+                    if (/.*[a-zA-Z].*/.test(userData.error.data.message)) {
+                        throw new Error("سیستم با خطا رو به رو شده است")
+                    } else {
+                        throw new Error(userData.error.data.message)
+                    }
+                }
+                handleReset()
+                props.handleCloseEditInfo()
+            } catch (error) {
+                toast.error(error.message, {
+                    position: "top-center",
+                    autoClose: 5000,
+                    hideProgressBar: false,
+                    closeOnClick: true,
+                    pauseOnHover: true,
+                    draggable: true,
+                    progress: undefined,
+                    theme: "light",
+                });
+            }
         },
     });
 

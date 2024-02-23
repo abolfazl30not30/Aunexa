@@ -398,7 +398,7 @@ export default function page() {
           </h2>
         </div>
       </header>
-      <section className="py-4 md:px-8 mt-5 bg-white h-[50rem]">
+      <section className="py-4 md:px-8 mt-5 bg-white ">
         {showProduct === "purchase" && (
           <div className="px-4 flex justify-between">
             <div className="xl:w-1/4 md:w-1/3">

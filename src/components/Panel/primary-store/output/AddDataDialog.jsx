@@ -35,6 +35,7 @@ import {useSavePSOMutation} from "@/redux/features/primary-store/output/PSOapiSl
 
 import { PersianToEnglish } from "@/helper/PersianToEnglish";
 import { ConvertToNull } from "@/helper/ConvertToNull";
+import {toast} from "react-toastify";
 export default function AddDataDialog(props) {
     const alphabeticalList = [
         {value: "هیچ کدام"},
@@ -128,7 +129,7 @@ export default function AddDataDialog(props) {
     // //vehicle input
     // const [vehicle,setVehicle] = useState(null)
     // const [openVehicleList,setOpenVehicleList] = useState(false)
-    // const [getVehicleList,{ data : vehicleList  = [] , isLoading : isVehicleLoading, isError: VehicleIsError }] = useLazyGetAllVehicleQueryGet()
+    // const [getVehicleList,{ data : vehicleList  = [] , isLoading : isVehicleLoading, isError: VehicleIsError }] = useLazyGetAllVehicleListQueryGet()
     // useEffect(()=>{
     //     if(openVehicleList){
     //         getVehicleList()
@@ -197,6 +198,7 @@ export default function AddDataDialog(props) {
         formik.resetForm()
         setDate("")
         setIsExpirable()
+        setMachine(null)
         setProduct(null)
         setUnit(null)
         setSubOrganization(null)
@@ -273,10 +275,32 @@ export default function AddDataDialog(props) {
                     updateProduct = {...updateProduct, machineType: "نا معلوم", machineId: ""}
                 }
             }
+
             updateProduct=ConvertToNull(updateProduct)
-            const userData = await submitData(updateProduct)
-            handleReset()
-            props.handleCloseAddData()
+
+            try {
+                const userData = await submitData(updateProduct)
+                if (userData.error) {
+                    if (/.*[a-zA-Z].*/.test(userData.error.data.message)) {
+                        throw new Error("سیستم با خطا رو به رو شده است")
+                    } else {
+                        throw new Error(userData.error.data.message)
+                    }
+                }
+                handleReset()
+                props.handleCloseAddData()
+            } catch (error) {
+                toast.error(error.message, {
+                    position: "top-center",
+                    autoClose: 5000,
+                    hideProgressBar: false,
+                    closeOnClick: true,
+                    pauseOnHover: true,
+                    draggable: true,
+                    progress: undefined,
+                    theme: "light",
+                });
+            }
         },
     });
 
@@ -472,7 +496,7 @@ export default function AddDataDialog(props) {
                                                 <div className="w-[55px] h-full pt-3  pl-1 pr-3">
                                                     <input disabled={machine!==null }  name="part1"
                                                            onChange={handlemachineTag} value={machineTag.part1}
-                                                           type="text" placeholder="55" maxLength="2"
+                                                           type="number" placeholder="55" maxLength="2"
                                                            className="w-full h-full placeholder-neutral-300 text-center rounded"/>
                                                 </div>
                                             </div>
@@ -480,7 +504,7 @@ export default function AddDataDialog(props) {
                                                 <div className="w-[60px] h-full py-1 pl-1 pr-3 h-full">
                                                     <input disabled={machine!==null }  name="part2"
                                                            onChange={handlemachineTag} value={machineTag.part2}
-                                                           type="text" placeholder="555" maxLength="3"
+                                                           type="number" placeholder="555" maxLength="3"
                                                            className="w-full h-full placeholder-neutral-300 text-center rounded"/>
                                                 </div>
                                                 <div>
@@ -505,7 +529,7 @@ export default function AddDataDialog(props) {
                                                 <div className="w-[50px] h-full py-1 pl-2 pr-1 h-full">
                                                     <input disabled={machine!==null }  name="part4"
                                                            onChange={handlemachineTag} value={machineTag.part4}
-                                                           type="text" placeholder="55" maxLength="2"
+                                                           type="number" placeholder="55" maxLength="2"
                                                            className="w-full h-full placeholder-neutral-300 text-center rounded"/>
                                                 </div>
                                             </div>

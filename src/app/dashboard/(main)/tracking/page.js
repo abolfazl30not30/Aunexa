@@ -63,7 +63,7 @@ export default function page() {
                     </button>
                 </div>
             </header>
-            <section className="py-2 mt-4 md:px-8  bg-white h-[50rem]">
+            <section className="py-2 mt-4 md:px-8  bg-white ">
                 <div className="mt-5">
                     <div>
                         <TrackingMap trackingData={trackingData}/>

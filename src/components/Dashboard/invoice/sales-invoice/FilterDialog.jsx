@@ -20,7 +20,7 @@ import CircularProgress from "@mui/material/CircularProgress";
 import {
     useLazyGetAllProductQuery,
     useLazyGetAllSubOrganizationQuery,
-    useLazyGetAllVehicleQuery
+    useLazyGetAllVehicleListQuery
 } from "@/redux/features/category/CategorySlice";
 import {useEffect} from "react";
 import {styled} from "@mui/material/styles";

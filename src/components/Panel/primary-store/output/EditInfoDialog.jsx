@@ -23,7 +23,7 @@ import "react-multi-date-picker/styles/colors/red.css"
 import {
     useLazyGetAllProductQuery, useLazyGetAllSubOrganizationQuery,
     useLazyGetAllUnitQuery,
-    useLazyGetAllVehicleQuery,
+    useLazyGetAllVehicleListQuery,
     useLazyGetAllMachineQuery
 } from "@/redux/features/category/CategorySlice";
 import {
@@ -34,6 +34,7 @@ import {useUpdatePSOMutation} from "@/redux/features/primary-store/output/PSOapi
 import { PersianToEnglish } from "@/helper/PersianToEnglish";
 import { ConvertToEmpty } from "@/helper/ConvertToEmpty";
 import { ConvertToNull } from "@/helper/ConvertToNull";
+import {toast} from "react-toastify";
 export default function EditInfoDialog(props) {
     const alphabeticalList = [
         {value: "هیچ کدام"},
@@ -119,7 +120,7 @@ const [getMachineList,
     // //vehicle input
     // const [vehicle,setVehicle] = useState(null)
     // const [openVehicleList,setOpenVehicleList] = useState(false)
-    // const [getVehicleList,{ data : vehicleList  = [] , isLoading : isVehicleLoading, isError: VehicleIsError }] = useLazyGetAllVehicleQueryGet()
+    // const [getVehicleList,{ data : vehicleList  = [] , isLoading : isVehicleLoading, isError: VehicleIsError }] = useLazyGetAllVehicleListQueryGet()
     // useEffect(()=>{
     //     if(openVehicleList){
     //         getVehicleList()
@@ -258,9 +259,30 @@ const [getMachineList,
                 }
             }
             updateProduct=ConvertToNull(updateProduct)
-            const userData = await submitData(updateProduct)
-            handleReset()
-            props.handleCloseEditInfo()
+
+            try {
+                const userData = await submitData(updateProduct)
+                if (userData.error) {
+                    if (/.*[a-zA-Z].*/.test(userData.error.data.message)) {
+                        throw new Error("سیستم با خطا رو به رو شده است")
+                    } else {
+                        throw new Error(userData.error.data.message)
+                    }
+                }
+                handleReset()
+                props.handleCloseEditInfo()
+            } catch (error) {
+                toast.error(error.message, {
+                    position: "top-center",
+                    autoClose: 5000,
+                    hideProgressBar: false,
+                    closeOnClick: true,
+                    pauseOnHover: true,
+                    draggable: true,
+                    progress: undefined,
+                    theme: "light",
+                });
+            }
         },
     });
 //setData
@@ -521,7 +543,7 @@ const [getMachineList,
                                                 <div className="w-[55px] h-full pt-3  pl-1 pr-3">
                                                     <input disabled={machine!==null && machine!=="" && machine!==undefined }  name="part1"
                                                            onChange={handlemachineTag} value={machineTag.part1}
-                                                           type="text" placeholder="55" maxLength="2"
+                                                           type="number" placeholder="55" maxLength="2"
                                                            className="w-full h-full placeholder-neutral-300 text-center rounded"/>
                                                 </div>
                                             </div>
@@ -529,7 +551,7 @@ const [getMachineList,
                                                 <div className="w-[60px] h-full py-1 pl-1 pr-3 h-full">
                                                     <input disabled={machine!==null && machine!=="" && machine!==undefined }  name="part2"
                                                            onChange={handlemachineTag} value={machineTag.part2}
-                                                           type="text" placeholder="555" maxLength="3"
+                                                           type="number" placeholder="555" maxLength="3"
                                                            className="w-full h-full placeholder-neutral-300 text-center rounded"/>
                                                 </div>
                                                 <div>
@@ -553,7 +575,7 @@ const [getMachineList,
                                                 <div className="w-[50px] h-full py-1 pl-2 pr-1 h-full">
                                                     <input disabled={machine!==null && machine!=="" && machine!==undefined }  name="part4"
                                                            onChange={handlemachineTag} value={machineTag.part4}
-                                                           type="text" placeholder="55" maxLength="2"
+                                                           type="number" placeholder="55" maxLength="2"
                                                            className="w-full h-full placeholder-neutral-300 text-center rounded"/>
                                                 </div>
                                             </div>

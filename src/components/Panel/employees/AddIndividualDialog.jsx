@@ -13,14 +13,16 @@ import DatePicker from "react-multi-date-picker";
 import AddIndividualRelationshipDialog from "./AddIndividualRelationshipDialog";
 import { useSaveIndividualMutation } from "@/redux/features/organization/individual/IndividualSlice";
 import { useLazyGetAllRoleListQuery } from "@/redux/features/category/CategoryRoleSlice";
+import {ConvertToNull} from "@/helper/ConvertToNull";
+import {toast} from "react-toastify";
 
 export default function AddIndividualDialog(props) {
 
   const [individual, setIndividual] = useState(null)
   const [cLevel,setCLevel]=useState(false)
+
   const handleChangeClevel = (event) => {
-    setCLevel(event.target.checked);
-  };
+    setCLevel(event.target.checked);};
   
   const [role,setRole] = useState(null)
   const [openRoleList,setOpenRoleList] = useState(false)
@@ -99,12 +101,33 @@ export default function AddIndividualDialog(props) {
 
     onSubmit: async (individual, helpers) => {
       let updateIndividual = { ...individual,organizationId:props.organizationIdTarget,subOrganizationId:props.subOrganizationIdTarget,cLevel:cLevel }
-      const userData = await submitData(updateIndividual)
-      handleReset()
-      
-      props.handleCloseAddIndividual()
-      props.handleOpenAddIndividualRelationship(userData.data.id)
-      
+
+      try{
+        const userData = await submitData(updateIndividual)
+        if (userData.error) {
+          if (/.*[a-zA-Z].*/.test(userData.error.data.message)) {
+            throw new Error("سیستم با خطا رو به رو شده است")
+          } else {
+            throw new Error(userData.error.data.message)
+          }
+        }
+        handleReset()
+        props.handleCloseAddIndividual()
+        props.handleOpenAddIndividualRelationship(userData.data.id)
+
+      } catch (error) {
+        toast.error(error.message, {
+          position: "top-center",
+          autoClose: 5000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+          theme: "light",
+        });
+      }
+
     },
   });
   
@@ -121,6 +144,7 @@ export default function AddIndividualDialog(props) {
       formik.setFieldValue("birthDate", "")
     }
   }
+
   return (
     <>
       <Dialog
@@ -440,12 +464,7 @@ export default function AddIndividualDialog(props) {
 
                 </div>
                 <div className="w-full  border border-[#D9D9D9] flex flex-col gap-2 px-4">
-                    <FormControlLabel 
-                     onClick={()=>{setCLevel(!cLevel)}} control={<Checkbox checked={
-                      cLevel
-                     }
-                     
-                     onChange={handleChangeClevel} />}  label={<Typography sx={{fontFamily: "__fonts_2f4189,__fonts_Fallback_2f4189",fontSize:"14px"}}>دسترسی مدیریت</Typography>} />
+                    <FormControlLabel control={<Checkbox checked={cLevel} onChange={handleChangeClevel} />}  label={<Typography sx={{fontFamily: "__fonts_2f4189,__fonts_Fallback_2f4189",fontSize:"14px"}}>دسترسی مدیریت</Typography>} />
                 </div>
                 <div>
                   {

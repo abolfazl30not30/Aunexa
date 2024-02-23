@@ -16,6 +16,7 @@ import {
 import {
     useRejectPurchaseRequestListMutation
 } from "@/redux/features/purchase/purchase-request-list/PurchaseRequestListSlice";
+import {toast} from "react-toastify";
 
 export default function RejectionDialog(props) {
     const handleReset = () =>{
@@ -43,9 +44,30 @@ export default function RejectionDialog(props) {
                 description:purchase.description
             }
             updateProduct = {...updateProduct,failureReason:failureReason}
-            const userData = await submitData(updateProduct)
-            handleReset()
-            props.handleCloseRejection()
+
+            try {
+                const userData = await submitData(updateProduct)
+                if (userData.error) {
+                    if (/.*[a-zA-Z].*/.test(userData.error.data.message)) {
+                        throw new Error("سیستم با خطا رو به رو شده است")
+                    } else {
+                        throw new Error(userData.error.data.message)
+                    }
+                }
+                handleReset()
+                props.handleCloseRejection()
+            } catch (error) {
+                toast.error(error.message, {
+                    position: "top-center",
+                    autoClose: 5000,
+                    hideProgressBar: false,
+                    closeOnClick: true,
+                    pauseOnHover: true,
+                    draggable: true,
+                    progress: undefined,
+                    theme: "light",
+                });
+            }
         },
     });
 

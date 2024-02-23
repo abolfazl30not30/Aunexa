@@ -22,7 +22,9 @@ import {useFormik} from "formik";
 import CircularProgress from '@mui/material/CircularProgress';
 import "react-multi-date-picker/styles/colors/red.css"
 import { useSaveFailureVehiclesMutation } from "@/redux/features/failure-and-repair-report/FailureAndRepairReportSlice";
-import {   useLazyGetAllVehicleQuery} from "@/redux/features/category/CategorySlice";
+import {   useLazyGetAllVehicleListQuery} from "@/redux/features/category/CategorySlice";
+import {ConvertToNull} from "@/helper/ConvertToNull";
+import {toast} from "react-toastify";
 export default function AddDataDialog(props) {
   
     const handleReset = () => {
@@ -32,7 +34,7 @@ export default function AddDataDialog(props) {
     }
     const [vehicle,setVehicle] = useState(null)
     const [openVehicleList,setOpenVehicleList] = useState(false)
-    const [getVehicleList,{ data : vehicleList  = [] , isLoading : isVehicleLoading, isError: vehicleIsError }] =   useLazyGetAllVehicleQuery()
+    const [getVehicleList,{ data : vehicleList  = [] , isLoading : isVehicleLoading, isError: vehicleIsError }] =   useLazyGetAllVehicleListQuery()
     useEffect(()=>{
         if(openVehicleList){
             getVehicleList()
@@ -58,9 +60,30 @@ export default function AddDataDialog(props) {
 
         onSubmit: async (vehicle, helpers) => {
             let updateVehicle = {description:vehicle.description,status:"BROKEN",machine:{id:vehicle.id}}
-            const userData = await submitData(updateVehicle)
-            handleReset()
-            props.handleCloseAddData()
+            updateVehicle = ConvertToNull(updateVehicle)
+            try {
+                const userData = await submitData(updateVehicle)
+                if (userData.error) {
+                    if (/.*[a-zA-Z].*/.test(userData.error.data.message)) {
+                        throw new Error("سیستم با خطا رو به رو شده است")
+                    } else {
+                        throw new Error(userData.error.data.message)
+                    }
+                }
+                handleReset()
+                props.handleCloseAddData()
+            } catch (error) {
+                toast.error(error.message, {
+                    position: "top-center",
+                    autoClose: 5000,
+                    hideProgressBar: false,
+                    closeOnClick: true,
+                    pauseOnHover: true,
+                    draggable: true,
+                    progress: undefined,
+                    theme: "light",
+                });
+            }
         },
     });
 

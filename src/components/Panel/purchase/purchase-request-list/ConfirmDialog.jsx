@@ -12,6 +12,8 @@ import {
     useAcceptPurchaseRequestListMutation
 } from "@/redux/features/purchase/purchase-request-list/PurchaseRequestListSlice";
 import { PersianToEnglish } from "@/helper/PersianToEnglish";
+import {toast} from "react-toastify";
+import {ConvertToNull} from "@/helper/ConvertToNull";
 
 export default function ConfirmDialog(props) {
 
@@ -80,10 +82,31 @@ export default function ConfirmDialog(props) {
             let updatePurchase = {...props.confirmTarget}
             updatePurchase = {...updatePurchase,unit:purchase.unit}
             updatePurchase = {...updatePurchase,value:PersianToEnglish(`${purchase.value}`)}
-            console.log(updatePurchase)
-            const userData = await submitData(updatePurchase)
-            handleReset()
-            props.handleCloseConfirm()
+            updatePurchase = ConvertToNull(updatePurchase)
+
+            try {
+                const userData = await submitData(updatePurchase)
+                if (userData.error) {
+                    if (/.*[a-zA-Z].*/.test(userData.error.data.message)) {
+                        throw new Error("سیستم با خطا رو به رو شده است")
+                    } else {
+                        throw new Error(userData.error.data.message)
+                    }
+                }
+                handleReset()
+                props.handleCloseConfirm()
+            } catch (error) {
+                toast.error(error.message, {
+                    position: "top-center",
+                    autoClose: 5000,
+                    hideProgressBar: false,
+                    closeOnClick: true,
+                    pauseOnHover: true,
+                    draggable: true,
+                    progress: undefined,
+                    theme: "light",
+                });
+            }
         },
     });
 

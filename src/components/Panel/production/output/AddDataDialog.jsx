@@ -30,6 +30,7 @@ import {
 import { useSaveProductionOutputMutation } from "@/redux/features/production/output/ProductionOutputSlice";
 import { ConvertToNull } from "@/helper/ConvertToNull";
 import { PersianToEnglish } from "@/helper/PersianToEnglish";
+import {toast} from "react-toastify";
 export default function AddDataDialog(props) {
   
 
@@ -65,7 +66,7 @@ export default function AddDataDialog(props) {
     // //vehicle input
     // const [vehicle,setVehicle] = useState(null)
     // const [openVehicleList,setOpenVehicleList] = useState(false)
-    // const [getVehicleList,{ data : vehicleList  = [] , isLoading : isVehicleLoading, isError: VehicleIsError }] = useLazyGetAllVehicleQueryGet()
+    // const [getVehicleList,{ data : vehicleList  = [] , isLoading : isVehicleLoading, isError: VehicleIsError }] = useLazyGetAllVehicleListQueryGet()
     // useEffect(()=>{
     //     if(openVehicleList){
     //         getVehicleList()
@@ -125,9 +126,30 @@ export default function AddDataDialog(props) {
         onSubmit: async (product, helpers) => {
             let updateProduct = {...product,value:PersianToEnglish(product.value)}
             updateProduct=ConvertToNull(updateProduct)
-            const userData = await submitData(updateProduct)
-            handleReset()
-            props.handleCloseAddData()
+
+            try {
+                const userData = await submitData(updateProduct)
+                if (userData.error) {
+                    if (/.*[a-zA-Z].*/.test(userData.error.data.message)) {
+                        throw new Error("سیستم با خطا رو به رو شده است")
+                    } else {
+                        throw new Error(userData.error.data.message)
+                    }
+                }
+                handleReset()
+                props.handleCloseAddData()
+            } catch (error) {
+                toast.error(error.message, {
+                    position: "top-center",
+                    autoClose: 5000,
+                    hideProgressBar: false,
+                    closeOnClick: true,
+                    pauseOnHover: true,
+                    draggable: true,
+                    progress: undefined,
+                    theme: "light",
+                });
+            }
         },
     });
 

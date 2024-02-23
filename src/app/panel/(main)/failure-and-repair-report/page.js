@@ -182,7 +182,7 @@ function FailureAndRepairReport() {
             </button>
           </div>
         </header>
-        <section className="py-4 md:px-8 mt-5 bg-white h-[50rem]">
+        <section className="py-4 md:px-8 mt-5 bg-white ">
           <div className="px-4 flex justify-end">
             <div className="flex gap-3">
               <button

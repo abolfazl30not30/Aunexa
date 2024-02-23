@@ -15,6 +15,7 @@ import { useSaveChatMutation } from "@/redux/features/ticket/ChatSlice";
 import { ConstructionOutlined } from "@mui/icons-material";
 import { TailSpin } from "react-loader-spinner";
 import { useGetAllChatsQuery } from "@/redux/features/ticket/ChatSlice";
+import {toast} from "react-toastify";
 export default function page({ params }) {
   const router = useRouter();
 
@@ -86,9 +87,29 @@ export default function page({ params }) {
 
     onSubmit: async (chat, helpers) => {
       let updateChat = { ...chat, ticketId: ticketId, status: status };
-      const userData = await submitData(updateChat);
-      console.log(userData);
-      handleReset();
+
+      try {
+        const userData = await submitData(updateChat);
+        if (userData.error) {
+          if (/.*[a-zA-Z].*/.test(userData.error.data.message)) {
+            throw new Error("سیستم با خطا رو به رو شده است")
+          } else {
+            throw new Error(userData.error.data.message)
+          }
+        }
+        handleReset();
+      } catch (error) {
+        toast.error(error.message, {
+          position: "top-center",
+          autoClose: 5000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+          theme: "light",
+        });
+      }
     },
   });
 

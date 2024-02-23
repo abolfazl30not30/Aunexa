@@ -309,7 +309,7 @@ export default function AddDataDialog(props) {
                                                 <div className="w-[55px] h-full pt-3  pl-1 pr-3">
                                                     <input  name="part1"
                                                            onChange={handleTag} value={tag.part1}
-                                                           type="text" placeholder="55" maxLength="2"
+                                                           type="number" placeholder="55" maxLength="2"
                                                            className="w-full h-full placeholder-neutral-300 text-center rounded"/>
                                                 </div>
                                             </div>
@@ -317,7 +317,7 @@ export default function AddDataDialog(props) {
                                                 <div className="w-[60px] h-full py-1 pl-1 pr-3 h-full">
                                                     <input  name="part2"
                                                            onChange={handleTag} value={tag.part2}
-                                                           type="text" placeholder="555" maxLength="3"
+                                                           type="number" placeholder="555" maxLength="3"
                                                            className="w-full h-full placeholder-neutral-300 text-center rounded"/>
                                                 </div>
                                                 <div>
@@ -341,7 +341,7 @@ export default function AddDataDialog(props) {
                                                 <div className="w-[50px] h-full py-1 pl-2 pr-1 h-full">
                                                     <input  name="part4"
                                                            onChange={handleTag} value={tag.part4}
-                                                           type="text" placeholder="55" maxLength="2"
+                                                           type="number" placeholder="55" maxLength="2"
                                                            className="w-full h-full placeholder-neutral-300 text-center rounded"/>
                                                 </div>
                                             </div>

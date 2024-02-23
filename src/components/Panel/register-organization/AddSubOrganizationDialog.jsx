@@ -20,6 +20,7 @@ import CircularProgress from '@mui/material/CircularProgress';
 import { useSaveSubOrganizationMutation } from "@/redux/features/organization/sub-organization/SubOrganizationSlice";
 import { PersianToEnglish } from "@/helper/PersianToEnglish";
 import { ConvertToNull } from "@/helper/ConvertToNull";
+import {toast} from "react-toastify";
 export default function AddSubOrganizationDialog(props) {
 
     const handleReset = () =>{
@@ -48,12 +49,31 @@ export default function AddSubOrganizationDialog(props) {
         validationSchema: schema,
 
         onSubmit: async (subOrganization,helpers) => {
-            
             let updateSubOrganization = {...subOrganization,organizationId:props.organizationIdTarget,capacity:PersianToEnglish(subOrganization.capacity)}
             updateSubOrganization=ConvertToNull(updateSubOrganization)
-            const userData = await submitData(updateSubOrganization)
-            handleReset()
-            props.handleCloseAddSubOrganization()
+            try {
+                const userData = await submitData(updateSubOrganization)
+                if (userData.error) {
+                    if (/.*[a-zA-Z].*/.test(userData.error.data.message)) {
+                        throw new Error("سیستم با خطا رو به رو شده است")
+                    } else {
+                        throw new Error(userData.error.data.message)
+                    }
+                }
+                handleReset()
+                props.handleCloseAddSubOrganization()
+            } catch (error) {
+                toast.error(error.message, {
+                    position: "top-center",
+                    autoClose: 5000,
+                    hideProgressBar: false,
+                    closeOnClick: true,
+                    pauseOnHover: true,
+                    draggable: true,
+                    progress: undefined,
+                    theme: "light",
+                });
+            }
         },
     });
 

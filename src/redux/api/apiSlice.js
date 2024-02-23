@@ -3,8 +3,9 @@ import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 import { logOut, setAccessToken } from "./authSlice";
 import axios from "axios";
 
+
 const baseQuery = fetchBaseQuery({
-  baseUrl: "https://gateway.prod.aunexa.net/api/v1/",
+  baseUrl: "https://gateway.aunexa.net/api/v1/",
   prepareHeaders: (headers, { getState }) => {
     const token = getState().auth.accessToken;
     if (token) {
@@ -25,7 +26,7 @@ const login = async () => {
     grant_type: "refresh_token",
   };
 
-  return await axios.post("https://auth.prod.aunexa.net/oauth2/token", formData, {
+  return await axios.post("https://auth.aunexa.net/oauth2/token", formData, {
     headers: {
       "Content-Type": "application/x-www-form-urlencoded",
       Authorization: "Basic " + base64encodedData,
@@ -35,13 +36,15 @@ const login = async () => {
 
 const baseQueryWithReauth = async (args, api, extraOptions) => {
   let result = await baseQuery(args, api, extraOptions);
-  if (result?.error?.status === 401 || result?.error?.status === 500) {
+  if (result?.error?.status === 401) {
     const refreshResult = await login();
     api.dispatch(setAccessToken(refreshResult?.data?.access_token));
     if (refreshResult?.data) {
       result = await baseQuery(args, api, extraOptions);
     } else {
       api.dispatch(logOut());
+      window.sessionStorage.clear();
+      window.location.href = "https://auth.aunexa.net/logout";
     }
   }
   return result;

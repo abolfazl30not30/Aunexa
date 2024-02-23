@@ -16,6 +16,7 @@ import CircularProgress from '@mui/material/CircularProgress';
 import { PersianToEnglish } from "@/helper/PersianToEnglish";
 import { ConvertToNull } from "@/helper/ConvertToNull";
 import { ConvertToEmpty } from "@/helper/ConvertToEmpty";
+import {toast} from "react-toastify";
 export default function EditIndividualInfoDialog(props) {
     
   const [individual,setIndividual] = useState(null)
@@ -100,18 +101,30 @@ export default function EditIndividualInfoDialog(props) {
                 
             }
             body=ConvertToNull(body)
-            const userData = await submitData(body)
-            
-            console.log(userData)
-            helpers.resetForm({
-                individual
-            });
-            
-            setIndividual(null)
-            
-
-            props.handleCloseEditIndividualInfo()
-            props.handleOpenEditIndividualRelationshipInfo(userData.data)
+            try {
+                const userData = await submitData(body)
+                if (userData.error) {
+                    if (/.*[a-zA-Z].*/.test(userData.error.data.message)) {
+                        throw new Error("سیستم با خطا رو به رو شده است")
+                    } else {
+                        throw new Error(userData.error.data.message)
+                    }
+                }
+                handleReset()
+                props.handleCloseEditIndividualInfo()
+                props.handleOpenEditIndividualRelationshipInfo(userData.data)
+            } catch (error) {
+                toast.error(error.message, {
+                    position: "top-center",
+                    autoClose: 5000,
+                    hideProgressBar: false,
+                    closeOnClick: true,
+                    pauseOnHover: true,
+                    draggable: true,
+                    progress: undefined,
+                    theme: "light",
+                });
+            }
         },
     });
     
@@ -499,12 +512,7 @@ export default function EditIndividualInfoDialog(props) {
 
                 </div>
                 <div className="w-full  border border-[#D9D9D9] flex flex-col gap-2 px-4">
-                    <FormControlLabel 
-                     onClick={()=>{setCLevel(!cLevel)}} control={<Checkbox checked={
-                      cLevel
-                     }
-                     
-                     onChange={handleChangeClevel} />}   label={<Typography sx={{fontFamily: "__fonts_2f4189,__fonts_Fallback_2f4189",fontSize:"14px"}}>دسترسی مدیریت</Typography>} />
+                    <FormControlLabel control={<Checkbox checked={cLevel} onChange={handleChangeClevel} />}   label={<Typography sx={{fontFamily: "__fonts_2f4189,__fonts_Fallback_2f4189",fontSize:"14px"}}>دسترسی مدیریت</Typography>} />
                 </div>
                 <div>
                   {

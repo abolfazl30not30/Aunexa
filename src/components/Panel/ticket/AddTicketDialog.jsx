@@ -14,6 +14,7 @@ import {
 
 
 import { useRouter, usePathname } from "next/navigation";
+import {toast} from "react-toastify";
 
 
 
@@ -48,8 +49,6 @@ export default function AddTicketDialog(props) {
         initialValues: {
             title:"",
             targetDepartmentId: "",
-            
-            
         },
       
         
@@ -58,12 +57,31 @@ export default function AddTicketDialog(props) {
 
         onSubmit: async (tiket,helpers) => {
             let updateTiket = {...tiket}
-            const userData = await submitData(updateTiket)
-            console.log(userData)
-            handleReset()
-            props.handleCloseAddTicket()
-            // history.pushState({ ticketInfo: userData }, "", pathname + "/chat-page"+`/id=${data.id}&&status=${data.status}&&ticketNumber=${data.ticketNumber}`);
-            router.push(`ticket/chat-page/id=${userData.data.id}&&status=${userData.data.status}&&ticketNumber=${userData.data.ticketNumber}`);
+
+            try {
+                const userData = await submitData(updateTiket)
+                if (userData.error) {
+                    if (/.*[a-zA-Z].*/.test(userData.error.data.message)) {
+                        throw new Error("سیستم با خطا رو به رو شده است")
+                    } else {
+                        throw new Error(userData.error.data.message)
+                    }
+                }
+                handleReset()
+                props.handleCloseAddTicket()
+                router.push(`ticket/chat-page/id=${userData.data.id}&&status=${userData.data.status}&&ticketNumber=${userData.data.ticketNumber}`);
+            } catch (error) {
+                toast.error(error.message, {
+                    position: "top-center",
+                    autoClose: 5000,
+                    hideProgressBar: false,
+                    closeOnClick: true,
+                    pauseOnHover: true,
+                    draggable: true,
+                    progress: undefined,
+                    theme: "light",
+                });
+            }
             
         },
     });

@@ -24,6 +24,7 @@ import {
 import { useUploadFileMinioMutation} from "@/redux/features/file/FileSlice";
 import {useDeleteFileMinioMutation} from "@/redux/features/file/FileSlice";
 import { ConvertToNull } from "@/helper/ConvertToNull";
+import {toast} from "react-toastify";
 export default function RegisterFactorDialog(props) {
     const [handleDelete ,{isLoading}] = useDeleteFileMinioMutation()
     const handleDeleteUpload = async () =>{
@@ -105,9 +106,32 @@ export default function RegisterFactorDialog(props) {
 
             let updateRegisterFactor = {...registerFactor,receiptFile:uploadedImage}
             updateRegisterFactor=ConvertToNull(updateRegisterFactor)
-            const userData = await submitData(updateRegisterFactor)
-            handleReset()
-            props.handleCloseRegisterFactor()
+
+            try {
+                const userData = await submitData(updateRegisterFactor)
+                if (userData.error) {
+                    if (/.*[a-zA-Z].*/.test(userData.error.data.message)) {
+                        throw new Error("سیستم با خطا رو به رو شده است")
+                    } else {
+                        throw new Error(userData.error.data.message)
+                    }
+                }
+                handleReset()
+                props.handleCloseRegisterFactor()
+            } catch (error) {
+                toast.error(error.message, {
+                    position: "top-center",
+                    autoClose: 5000,
+                    hideProgressBar: false,
+                    closeOnClick: true,
+                    pauseOnHover: true,
+                    draggable: true,
+                    progress: undefined,
+                    theme: "light",
+                });
+            }
+
+
         },
     });
 

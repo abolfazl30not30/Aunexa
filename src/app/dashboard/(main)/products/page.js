@@ -207,7 +207,7 @@ function vehiclesAndEquipment() {
             </button>
           </div>
         </header>
-        <section className="py-4 md:px-8 mt-5 bg-white h-[50rem]">
+        <section className="py-4 md:px-8 mt-5 bg-white ">
           <div className="px-4 flex flex-col md:flex-row justify-between gap-2 md:gap-0">
             <div className="w-full md:w-[50%] flex ">
               <div className="grow">

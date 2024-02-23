@@ -11,6 +11,7 @@ import CircularProgress from '@mui/material/CircularProgress';
 
 
 import { useSaveRelationshipMutation } from "@/redux/features/organization/individual/IndividualRelationshipSlice";
+import {toast} from "react-toastify";
 
 export default function AddIndividualRelationshipDialog(props) {
   
@@ -53,10 +54,6 @@ export default function AddIndividualRelationshipDialog(props) {
         secondPhoneNumber:"",
         secondRelationship:"",
         secondAddress:""
-          
-            
-
-
         },
       
         
@@ -81,10 +78,30 @@ export default function AddIndividualRelationshipDialog(props) {
                     address:individualRelationShip.secondAddress
                 }
                ]}
-           
-            const userData = await submitData(updateIndividualRelationShip)
-            handleReset()
-            props.handleCloseAddIndividualRelationship()
+
+            try{
+                const userData = await submitData(updateIndividualRelationShip)
+                if (userData.error) {
+                    if (/.*[a-zA-Z].*/.test(userData.error.data.message)) {
+                        throw new Error("سیستم با خطا رو به رو شده است")
+                    } else {
+                        throw new Error(userData.error.data.message)
+                    }
+                }
+                handleReset()
+                props.handleCloseAddIndividualRelationship()
+            } catch (error) {
+                toast.error(error.message, {
+                    position: "top-center",
+                    autoClose: 5000,
+                    hideProgressBar: false,
+                    closeOnClick: true,
+                    pauseOnHover: true,
+                    draggable: true,
+                    progress: undefined,
+                    theme: "light",
+                });
+            }
         },
     });
     

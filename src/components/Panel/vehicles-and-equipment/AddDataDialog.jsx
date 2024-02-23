@@ -29,6 +29,7 @@ import Switch from '@mui/material/Switch';
 import {useSaveVehiclesMutation} from "@/redux/features/vehicles-and-equipment/VehiclesAndEquipmentSlice";
 import { ConvertToNull } from "@/helper/ConvertToNull";
 import { Checkbox } from "@material-ui/core";
+import {toast} from "react-toastify";
 
 const AntSwitch = styled(Switch)(({ theme }) => ({
     width: 35,
@@ -224,10 +225,30 @@ export default function AddDataDialog(props) {
 
         onSubmit: async (vehicle) => {
             const updateVehicle = ConvertToNull(vehicle)
-            console.log(updateVehicle)
-            const userData = await submitData(updateVehicle)
-            handleReset()
-            props.handleCloseAddData()
+
+            try {
+                const userData = await submitData(updateVehicle)
+                if (userData.error) {
+                    if (/.*[a-zA-Z].*/.test(userData.error.data.message)) {
+                        throw new Error("سیستم با خطا رو به رو شده است")
+                    } else {
+                        throw new Error(userData.error.data.message)
+                    }
+                }
+                handleReset()
+                props.handleCloseAddData()
+            } catch (error) {
+                toast.error(error.message, {
+                    position: "top-center",
+                    autoClose: 5000,
+                    hideProgressBar: false,
+                    closeOnClick: true,
+                    pauseOnHover: true,
+                    draggable: true,
+                    progress: undefined,
+                    theme: "light",
+                });
+            }
         },
     });
 
@@ -310,7 +331,7 @@ export default function AddDataDialog(props) {
                                                 <div className="w-[55px] h-full pt-3  pl-1 pr-3">
                                                     <input  name="part1"
                                                            onChange={handleTag} value={tag.part1}
-                                                           type="text" placeholder="55" maxLength="2"
+                                                           type="number" placeholder="55" maxLength="2"
                                                            className="w-full h-full placeholder-neutral-300 text-center rounded"/>
                                                 </div>
                                             </div>
@@ -318,7 +339,7 @@ export default function AddDataDialog(props) {
                                                 <div className="w-[60px] h-full py-1 pl-1 pr-3 h-full">
                                                     <input  name="part2"
                                                            onChange={handleTag} value={tag.part2}
-                                                           type="text" placeholder="555" maxLength="3"
+                                                           type="number" placeholder="555" maxLength="3"
                                                            className="w-full h-full placeholder-neutral-300 text-center rounded"/>
                                                 </div>
                                                 <div>
@@ -342,7 +363,7 @@ export default function AddDataDialog(props) {
                                                 <div className="w-[50px] h-full py-1 pl-2 pr-1 h-full">
                                                     <input  name="part4"
                                                            onChange={handleTag} value={tag.part4}
-                                                           type="text" placeholder="55" maxLength="2"
+                                                           type="number" placeholder="55" maxLength="2"
                                                            className="w-full h-full placeholder-neutral-300 text-center rounded"/>
                                                 </div>
                                             </div>
@@ -354,7 +375,6 @@ export default function AddDataDialog(props) {
                                         </div>
                                         <div className="w-full md:w-[47%]">
                                             <TextField
-                                                
                                                 fullWidth
                                                 placeholder="کد وسیله نقلیه(اجباری)"
                                                 type="text"

@@ -383,7 +383,7 @@ function Ticket() {
                                   </Link>
                                   <button
                                     onClick={() => {
-                                      handleOpenEditTicketInfo(data.id);
+                                      handleOpenEditTicketInfo(data);
                                     }}
                                     className="border border-1 border-solid border-[#FE4949] rounded p-[0.4rem] hover:bg-red-100"
                                   >

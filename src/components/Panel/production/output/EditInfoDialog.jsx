@@ -1,16 +1,7 @@
-
 'use client'
 import TextField from "@mui/material/TextField";
 import React, {useEffect, useState} from "react";
-import {
-    Autocomplete,
-    DialogContent,
-    DialogContentText,
-    FormControl,
-    InputLabel,
-    MenuItem, OutlinedInput,
-    Select,
-} from "@mui/material";
+import {Autocomplete, DialogContent, DialogContentText,} from "@mui/material";
 import Dialog from "@mui/material/Dialog";
 import {TailSpin} from "react-loader-spinner";
 import * as yup from "yup";
@@ -20,85 +11,81 @@ import persian_fa from "react-date-object/locales/persian_fa";
 import DatePicker, {DateObject} from "react-multi-date-picker";
 import CircularProgress from '@mui/material/CircularProgress';
 import "react-multi-date-picker/styles/colors/red.css"
-import {
-    useLazyGetAllProductQuery, useLazyGetAllSubOrganizationQuery,
-    useLazyGetAllUnitQuery,
-    useLazyGetAllVehicleQuery
-} from "@/redux/features/category/CategorySlice";
-import {
-    useLazyGetOneVehiclesByCodeQuery,
-    useLazyGetOneVehiclesByTagQuery
-} from "@/redux/features/vehicles-and-equipment/VehiclesAndEquipmentSlice";
-import { useUpdateProductionOutputMutation } from "@/redux/features/production/output/ProductionOutputSlice";
-import { PersianToEnglish } from "@/helper/PersianToEnglish";
-import { ConvertToNull } from "@/helper/ConvertToNull";
-import { ConvertToEmpty } from "@/helper/ConvertToEmpty";
+import {useLazyGetAllProductQuery, useLazyGetAllUnitQuery} from "@/redux/features/category/CategorySlice";
+import {useUpdateProductionOutputMutation} from "@/redux/features/production/output/ProductionOutputSlice";
+import {PersianToEnglish} from "@/helper/PersianToEnglish";
+import {ConvertToNull} from "@/helper/ConvertToNull";
+import {ConvertToEmpty} from "@/helper/ConvertToEmpty";
+import {toast} from "react-toastify";
+
 export default function EditInfoDialog(props) {
-   
+
 
     //product input
-    const [product,setProduct] = useState(null)
-    const [openProductList,setOpenProductList] = useState(false)
-    const [getProductList,{ data : productList  = [] , isLoading : isProductLoading, isError: productIsError }] = useLazyGetAllProductQuery()
-    useEffect(()=>{
-        if(openProductList){
+    const [product, setProduct] = useState(null)
+    const [openProductList, setOpenProductList] = useState(false)
+    const [getProductList, {
+        data: productList = [],
+        isLoading: isProductLoading,
+        isError: productIsError
+    }] = useLazyGetAllProductQuery()
+    useEffect(() => {
+        if (openProductList) {
             getProductList()
         }
-    },[openProductList])
+    }, [openProductList])
 
     //unit input
-    const [unit,setUnit] = useState(null)
-    const [openUnitList,setOpenUnitList] = useState(false)
-    const [getUnitList,{ data : unitList  = [] , isLoading : isUnitLoading, isError: unitIsError }] = useLazyGetAllUnitQuery()
-    useEffect(()=>{
-        if(openUnitList){
+    const [unit, setUnit] = useState(null)
+    const [openUnitList, setOpenUnitList] = useState(false)
+    const [getUnitList, {
+        data: unitList = [],
+        isLoading: isUnitLoading,
+        isError: unitIsError
+    }] = useLazyGetAllUnitQuery()
+    useEffect(() => {
+        if (openUnitList) {
             getUnitList()
         }
-    },[openUnitList])
+    }, [openUnitList])
 
-  
-
-  
 
     //date input
-    const [date,setDate] = useState("")
+    const [date, setDate] = useState("")
     const handleDateInput = (value) => {
-        if(value){
+        if (value) {
             setDate(value)
             let month = value?.month < 10 ? ('0' + value?.month) : value?.month;
             let day = value?.day < 10 ? ('0' + value?.day) : value?.day;
             let convertDate = value?.year + '/' + month + '/' + day;
             formik.setFieldValue("expirationDate", convertDate)
-        }else {
+        } else {
             formik.setFieldValue("expirationDate", "")
         }
     }
 
-  
 
-
-    const handleReset = () =>{
+    const handleReset = () => {
         formik.resetForm()
         setDate("")
         setProduct(null)
         setUnit(null)
-       
+
     }
 
     //submit data
-    const [submitData, { isLoading:isSubmitLoading ,error}] = useUpdateProductionOutputMutation()
+    const [submitData, {isLoading: isSubmitLoading, error}] = useUpdateProductionOutputMutation()
 
-    
 
     const schema = yup.object().shape({
         productId: yup.string().required("لطفا نام محصول را وارد کنید"),
         value: yup.string().required("لطفا مقدار محصول را وارد کنید").matches(
             /^[۰۱۲۳۴۵۶۷۸۹0.-9]+$/,
             "لطفا فقط عدد وارد نمایید"
-          ),
+        ),
         unit: yup.string().required("لطفا واحد محصول را وارد کنید"),
-        
-        
+
+
     });
 
     const formik = useFormik({
@@ -108,37 +95,56 @@ export default function EditInfoDialog(props) {
             value: "",
             unit: "",
             expirationDate: "",
-            
+
         },
 
-       
 
         validationSchema: schema,
 
-        onSubmit: async (product,helpers) => {
-            let updateProduct = {...product,type:"PRIMARY",value:PersianToEnglish(`${product.value}`)}
+        onSubmit: async (product, helpers) => {
+            let updateProduct = {...product, type: "PRIMARY", value: PersianToEnglish(`${product.value}`)}
 
-updateProduct=ConvertToNull(updateProduct)
-            const userData = await submitData(updateProduct)
-            handleReset()
-            props.handleCloseEditInfo()
+            updateProduct = ConvertToNull(updateProduct)
+            try {
+                const userData = await submitData(updateProduct)
+                if (userData.error) {
+                    if (/.*[a-zA-Z].*/.test(userData.error.data.message)) {
+                        throw new Error("سیستم با خطا رو به رو شده است")
+                    } else {
+                        throw new Error(userData.error.data.message)
+                    }
+                }
+                handleReset()
+                props.handleCloseEditInfo()
+            } catch (error) {
+                toast.error(error.message, {
+                    position: "top-center",
+                    autoClose: 5000,
+                    hideProgressBar: false,
+                    closeOnClick: true,
+                    pauseOnHover: true,
+                    draggable: true,
+                    progress: undefined,
+                    theme: "light",
+                });
+            }
         },
     });
 //setData
-    const handleSetProductInput = (id) =>{
-        const product = productList.filter((product)=> product.id === id)
+    const handleSetProductInput = (id) => {
+        const product = productList.filter((product) => product.id === id)
         setProduct(product[0])
     }
-   
 
-    const handleSetUnitInput = (ab) =>{
-        const units= unitList.filter((unit)=> unit.persianName === ab)
+
+    const handleSetUnitInput = (ab) => {
+        const units = unitList.filter((unit) => unit.persianName === ab)
         setUnit(units[0])
     }
 
-   
-    const handleSetExpirationDate = (date)=>{
-        if(date !== null && date !==""){
+
+    const handleSetExpirationDate = (date) => {
+        if (date !== null && date !== "") {
             const newDate = new DateObject({
                 date: date,
                 format: "YYYY/MM/DD",
@@ -149,25 +155,25 @@ updateProduct=ConvertToNull(updateProduct)
         }
     }
 
-    useEffect(()=>{
+    useEffect(() => {
         getProductList()
         getUnitList()
         const editInfoObj = ConvertToEmpty(props.editInfoTarget)
         formik.setValues({
-            id:editInfoObj?.id,
+            id: editInfoObj?.id,
             productId: editInfoObj?.productId,
-            productName:editInfoObj?.productName,
+            productName: editInfoObj?.productName,
             value: editInfoObj?.value,
             unit: editInfoObj?.unit,
             expirationDate: editInfoObj?.expirationDate,
-           
+
         })
         handleSetProductInput(props.editInfoTarget?.productId)
-        
+
         handleSetUnitInput(props.editInfoTarget?.unit)
-        
+
         handleSetExpirationDate(props.editInfoTarget?.expirationDate)
-    },[props.openEditInfo])
+    }, [props.openEditInfo])
 
     return (
         <>
@@ -179,13 +185,16 @@ updateProduct=ConvertToNull(updateProduct)
                 aria-describedby="alert-dialog-slide-description"
                 PaperProps={{
                     style: {
-                        fontFamily: "__fonts_2f4189,__fonts_Fallback_2f4189",overflow:"visible"
+                        fontFamily: "__fonts_2f4189,__fonts_Fallback_2f4189", overflow: "visible"
                     },
                 }}>
                 <DialogContent>
                     <DialogContentText style={{fontFamily: "__fonts_2f4189,__fonts_Fallback_2f4189"}}>
                         <div className="flex justify-end">
-                            <button onClick={()=>{props.handleCloseEditInfo();handleReset()}}>
+                            <button onClick={() => {
+                                props.handleCloseEditInfo();
+                                handleReset()
+                            }}>
                                 <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 14 14"
                                      fill="none">
                                     <path d="M13 1L1 13M1 1L13 13" stroke="black" stroke-width="2"
@@ -194,7 +203,7 @@ updateProduct=ConvertToNull(updateProduct)
                             </button>
                         </div>
                         <div className="flex justify-center mb-7">
-                            <h3 className="text-[1.1rem]">ویرایش  خروجی</h3>
+                            <h3 className="text-[1.1rem]">ویرایش خروجی</h3>
                         </div>
                         <form className="flex justify-center " onSubmit={formik.handleSubmit} method="POST">
                             <div className="flex flex-col justify-center w-[90%] gap-5">
@@ -212,7 +221,10 @@ updateProduct=ConvertToNull(updateProduct)
                                         disablePortal
                                         id="combo-box-demo"
                                         ListboxProps={{
-                                            sx: {fontFamily: "__fonts_2f4189,__fonts_Fallback_2f4189", fontSize: "0.8rem"},
+                                            sx: {
+                                                fontFamily: "__fonts_2f4189,__fonts_Fallback_2f4189",
+                                                fontSize: "0.8rem"
+                                            },
                                         }}
                                         options={productList}
                                         getOptionLabel={(option) => option.persianName}
@@ -229,10 +241,14 @@ updateProduct=ConvertToNull(updateProduct)
                                                 {...params}
                                                 InputProps={{
                                                     ...params.InputProps,
-                                                    style: {fontFamily: "__fonts_2f4189,__fonts_Fallback_2f4189", fontSize: "0.8rem"},
-                                                    endAdornment:(
+                                                    style: {
+                                                        fontFamily: "__fonts_2f4189,__fonts_Fallback_2f4189",
+                                                        fontSize: "0.8rem"
+                                                    },
+                                                    endAdornment: (
                                                         <React.Fragment>
-                                                            {isProductLoading ? <CircularProgress color="inherit" size={20} /> : null}
+                                                            {isProductLoading ?
+                                                                <CircularProgress color="inherit" size={20}/> : null}
                                                             {params.InputProps.endAdornment}
                                                         </React.Fragment>
                                                     )
@@ -252,7 +268,12 @@ updateProduct=ConvertToNull(updateProduct)
                                             onChange={formik.handleChange}
                                             error={formik.touched.value && Boolean(formik.errors.value)}
                                             helperText={formik.touched.value && formik.errors.value}
-                                            inputProps={{style: {fontFamily: "__fonts_2f4189,__fonts_Fallback_2f4189", fontSize: "0.8rem"}}}
+                                            inputProps={{
+                                                style: {
+                                                    fontFamily: "__fonts_2f4189,__fonts_Fallback_2f4189",
+                                                    fontSize: "0.8rem"
+                                                }
+                                            }}
                                             InputLabelProps={{style: {fontFamily: "__fonts_2f4189,__fonts_Fallback_2f4189"}}}/>
                                     </div>
                                     <div className="w-[30%]">
@@ -268,7 +289,10 @@ updateProduct=ConvertToNull(updateProduct)
                                             disablePortal
                                             id="combo-box-demo"
                                             ListboxProps={{
-                                                sx: {fontFamily: "__fonts_2f4189,__fonts_Fallback_2f4189", fontSize: "0.8rem"},
+                                                sx: {
+                                                    fontFamily: "__fonts_2f4189,__fonts_Fallback_2f4189",
+                                                    fontSize: "0.8rem"
+                                                },
                                             }}
                                             options={unitList}
                                             getOptionLabel={(option) => option.persianName}
@@ -284,7 +308,10 @@ updateProduct=ConvertToNull(updateProduct)
                                                     helperText={formik.touched.unit && formik.errors.unit}
                                                     InputProps={{
                                                         ...params.InputProps,
-                                                        style: {fontFamily: "__fonts_2f4189,__fonts_Fallback_2f4189", fontSize: "0.8rem"}
+                                                        style: {
+                                                            fontFamily: "__fonts_2f4189,__fonts_Fallback_2f4189",
+                                                            fontSize: "0.8rem"
+                                                        }
                                                     }}
                                                     placeholder="واحد"
                                                 />}/>
@@ -338,7 +365,7 @@ updateProduct=ConvertToNull(updateProduct)
                                         </button>
                                     </DatePicker>
                                 </div>
-                               
+
                                 <div>
                                     {
                                         isSubmitLoading ? (<button disabled type="submit"

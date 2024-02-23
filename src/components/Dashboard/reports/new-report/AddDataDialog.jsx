@@ -26,7 +26,7 @@ import TimePicker from "react-multi-date-picker/plugins/time_picker";
 
 import { useLazyGetAllSubOrganizationQuery } from "@/redux/features/category/CategorySlice";
 import { useLazyGetAllVehicleCategoryQuery } from "@/redux/features/category/CategorySlice";
-import { useLazyGetAllVehicleQuery } from "@/redux/features/category/CategorySlice";
+import { useLazyGetAllVehicleListQuery } from "@/redux/features/category/CategorySlice";
 import { ConvertToNull } from "@/helper/ConvertToNull";
 
 import {useSaveNewReportsMutation} from "@/redux/features/new-reports/HistoryOfReportSlice";
@@ -200,7 +200,7 @@ export default function AddDataDialog(props) {
 
     const [vehicle,setVehicle] = useState(null)
     const [openVehicleList,setOpenVehicleList] = useState(false)
-    const [getVehicleList,{ data : vehicleList  = [] , isLoading : isVehicleLoading, isError: vehicleIsError }] =   useLazyGetAllVehicleQuery()
+    const [getVehicleList,{ data : vehicleList  = [] , isLoading : isVehicleLoading, isError: vehicleIsError }] =   useLazyGetAllVehicleListQuery()
     useEffect(()=>{
         if(openVehicleList){
             getVehicleList()

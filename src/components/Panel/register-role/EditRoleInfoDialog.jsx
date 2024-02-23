@@ -18,6 +18,7 @@ import Checkbox from '@mui/material/Checkbox';
 import FormControlLabel from '@mui/material/FormControlLabel';
 import {useSelector} from "react-redux";
 import Link from "next/link";
+import {toast} from "react-toastify";
 
 export default function EditRoleInfoDialog(props) {
     const [authorities,setAuthorities] = useState([])
@@ -61,9 +62,31 @@ export default function EditRoleInfoDialog(props) {
                 authorities:authorities,
                 pages:pages,
             }
-            const res = await submitData(sendObj)
-            handleReset()
-            props.handleCloseEditRoleInfo()
+
+
+            try {
+                const userData = await submitData(sendObj)
+                if (userData.error) {
+                    if (/.*[a-zA-Z].*/.test(userData.error.data.message)) {
+                        throw new Error("سیستم با خطا رو به رو شده است")
+                    } else {
+                        throw new Error(userData.error.data.message)
+                    }
+                }
+                handleReset()
+                props.handleCloseEditRoleInfo()
+            } catch (error) {
+                toast.error(error.message, {
+                    position: "top-center",
+                    autoClose: 5000,
+                    hideProgressBar: false,
+                    closeOnClick: true,
+                    pauseOnHover: true,
+                    draggable: true,
+                    progress: undefined,
+                    theme: "light",
+                });
+            }
         },
     });
 

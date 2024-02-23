@@ -9,6 +9,7 @@ import {useFormik} from "formik";
 import "react-multi-date-picker/styles/colors/red.css"
 
 import { useAcceptPurchaseInvoiceMutation } from "@/redux/features/invoice/purchase-invoice/PurchaseInvoiceSlice";
+import {toast} from "react-toastify";
 
 
 export default function ConfirmDialog(props) {
@@ -27,9 +28,31 @@ export default function ConfirmDialog(props) {
         },
         onSubmit: async (invoice) => {
             let updateInvoice = {id: props.editRejectionInvoiceInfoTarget?.id,}
-            const userData = await submitData(updateInvoice)
-            handleReset()
-            props.handleCloseEditRejectionInvoiceInfo()
+
+            try {
+                const userData = await submitData(updateInvoice)
+                if (userData.error) {
+                    if (/.*[a-zA-Z].*/.test(userData.error.data.message)) {
+                        throw new Error("سیستم با خطا رو به رو شده است")
+                    } else {
+                        throw new Error(userData.error.data.message)
+                    }
+                }
+                handleReset()
+                props.handleCloseEditRejectionInvoiceInfo()
+            } catch (error) {
+                toast.error(error.message, {
+                    position: "top-center",
+                    autoClose: 5000,
+                    hideProgressBar: false,
+                    closeOnClick: true,
+                    pauseOnHover: true,
+                    draggable: true,
+                    progress: undefined,
+                    theme: "light",
+                });
+            }
+
         },
     });
     return (
