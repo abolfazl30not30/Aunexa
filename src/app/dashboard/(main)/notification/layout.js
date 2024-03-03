@@ -10,6 +10,6 @@ export default function RootLayout({ children }) {
   // if (pages.hasOwnProperty("notification")) {
   return <>{children}</>;
   // } else {
-  //   redirect('/panel');
+  //   return <>{children}</>;
   // }
 }

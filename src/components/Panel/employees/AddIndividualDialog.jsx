@@ -174,6 +174,7 @@ export default function AddIndividualDialog(props) {
               <div className="flex flex-col justify-center w-[90%] gap-5">
                 <div>
                   <TextField
+                                        FormHelperTextProps={{ style: { fontFamily: '__fonts_2f4189,__fonts_Fallback_2f4189',fontSize:"0.6rem"}}}
                     fullWidth
                     placeholder="نام و نام خانوادگی"
                     type="text"
@@ -188,6 +189,7 @@ export default function AddIndividualDialog(props) {
                 <div className="flex justify-between">
                   <div className="w-[45%]">
                     <TextField
+                                        FormHelperTextProps={{ style: { fontFamily: '__fonts_2f4189,__fonts_Fallback_2f4189',fontSize:"0.6rem"}}}
                       fullWidth
                       placeholder="کدملی"
                       type="text"
@@ -201,6 +203,7 @@ export default function AddIndividualDialog(props) {
                   </div>
                   <div className="w-[45%]">
                     <TextField
+                                        FormHelperTextProps={{ style: { fontFamily: '__fonts_2f4189,__fonts_Fallback_2f4189',fontSize:"0.6rem"}}}
                       fullWidth
                       placeholder="کد پرسنلی"
                       type="text"
@@ -277,6 +280,7 @@ export default function AddIndividualDialog(props) {
                   <div className="w-[45%]">
 
                     <TextField
+                                        FormHelperTextProps={{ style: { fontFamily: '__fonts_2f4189,__fonts_Fallback_2f4189',fontSize:"0.6rem"}}}
                       fullWidth
                       placeholder="نام پدر"
                       type="text"
@@ -315,6 +319,7 @@ export default function AddIndividualDialog(props) {
                   </div>
                   <div className="w-[45%]">
                   <Autocomplete
+                                        FormHelperTextProps={{ style: { fontFamily: '__fonts_2f4189,__fonts_Fallback_2f4189',fontSize:"0.6rem"}}}
                                         open={openRoleList}
                                         onOpen={() => {
                                             setOpenRoleList(true);
@@ -339,6 +344,7 @@ export default function AddIndividualDialog(props) {
                                         }}
                                         renderInput={(params) =>
                                             <TextField
+                                        FormHelperTextProps={{ style: { fontFamily: '__fonts_2f4189,__fonts_Fallback_2f4189',fontSize:"0.6rem"}}}
                                                 error={formik.touched.role && Boolean(formik.errors.role)}
                                                 helperText={formik.touched.role && formik.errors.role}
                                                 {...params}
@@ -361,6 +367,7 @@ export default function AddIndividualDialog(props) {
                 <div className="flex justify-between">
                   <div className="w-[45%]">
                     <TextField
+                                        FormHelperTextProps={{ style: { fontFamily: '__fonts_2f4189,__fonts_Fallback_2f4189',fontSize:"0.6rem"}}}
                       fullWidth
                       placeholder="شماره همراه"
                       type="text"
@@ -374,6 +381,7 @@ export default function AddIndividualDialog(props) {
                   </div>
                   <div className="w-[45%]">
                        <TextField
+                                        FormHelperTextProps={{ style: { fontFamily: '__fonts_2f4189,__fonts_Fallback_2f4189',fontSize:"0.6rem"}}}
                          
                          fullWidth
                          placeholder="شماره همراه دوم"
@@ -390,6 +398,7 @@ export default function AddIndividualDialog(props) {
                 </div>
                 <div className="">
                     <TextField
+                                        FormHelperTextProps={{ style: { fontFamily: '__fonts_2f4189,__fonts_Fallback_2f4189',fontSize:"0.6rem"}}}
                       fullWidth
                       placeholder="شماره ثابت"
                       type="text"
@@ -434,6 +443,7 @@ export default function AddIndividualDialog(props) {
                 <div className="">
 
                   <TextField
+                                        FormHelperTextProps={{ style: { fontFamily: '__fonts_2f4189,__fonts_Fallback_2f4189',fontSize:"0.6rem"}}}
                     fullWidth
                     placeholder="ایمیل"
                     type="text"
@@ -450,6 +460,7 @@ export default function AddIndividualDialog(props) {
                 <div className="">
 
                   <TextField
+                                        FormHelperTextProps={{ style: { fontFamily: '__fonts_2f4189,__fonts_Fallback_2f4189',fontSize:"0.6rem"}}}
                     fullWidth
                     placeholder="آدرس"
                     type="text"

@@ -139,6 +139,7 @@ export default function EditSubOrganizationInfoDialog(props) {
 
                                 <div className="w-full">
                                     <TextField
+                                        FormHelperTextProps={{ style: { fontFamily: '__fonts_2f4189,__fonts_Fallback_2f4189',fontSize:"0.6rem"}}}
                                         fullWidth
                                         placeholder="نام دپارتمان (اجباری)"
                                         type="text"
@@ -157,6 +158,7 @@ export default function EditSubOrganizationInfoDialog(props) {
                                 </div>
                                 <div className="w-full">
                                     <TextField
+                                        FormHelperTextProps={{ style: { fontFamily: '__fonts_2f4189,__fonts_Fallback_2f4189',fontSize:"0.6rem"}}}
                                         fullWidth
                                         placeholder="ظرفیت (اختیاری)"
                                         type="text"
@@ -175,6 +177,7 @@ export default function EditSubOrganizationInfoDialog(props) {
                                 </div>
                                 <div className="w-full">
                                     <TextField
+                                        FormHelperTextProps={{ style: { fontFamily: '__fonts_2f4189,__fonts_Fallback_2f4189',fontSize:"0.6rem"}}}
                                         fullWidth
                                         placeholder="واحد (اختیاری)"
                                         type="text"

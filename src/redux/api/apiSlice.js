@@ -5,7 +5,7 @@ import axios from "axios";
 
 
 const baseQuery = fetchBaseQuery({
-  baseUrl: "https://gateway.aunexa.net/api/v1/",
+  baseUrl: "https://gateway.prod.aunexa.net/api/v1/",
   prepareHeaders: (headers, { getState }) => {
     const token = getState().auth.accessToken;
     if (token) {
@@ -26,7 +26,7 @@ const login = async () => {
     grant_type: "refresh_token",
   };
 
-  return await axios.post("https://auth.aunexa.net/oauth2/token", formData, {
+  return await axios.post("https://auth.prod.aunexa.net/oauth2/token", formData, {
     headers: {
       "Content-Type": "application/x-www-form-urlencoded",
       Authorization: "Basic " + base64encodedData,
@@ -44,7 +44,7 @@ const baseQueryWithReauth = async (args, api, extraOptions) => {
     } else {
       api.dispatch(logOut());
       window.sessionStorage.clear();
-      window.location.href = "https://auth.aunexa.net/logout";
+      window.location.href = "https://auth.prod.aunexa.net/logout";
     }
   }
   return result;

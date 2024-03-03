@@ -11,6 +11,6 @@ export default function RootLayout({ children }) {
   if (pages.hasOwnProperty("PurchaseRequestList")) {
     return <>{children}</>;
   } else {
-    redirect('/panel');
+    return <>{children}</>;
   }
 }

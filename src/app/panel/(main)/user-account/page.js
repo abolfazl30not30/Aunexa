@@ -187,6 +187,7 @@ export default function page() {
                   نام سازمان
                 </label>
                 <TextField
+                                        FormHelperTextProps={{ style: { fontFamily: '__fonts_2f4189,__fonts_Fallback_2f4189',fontSize:"0.6rem"}}}
                   type="text"
                   className="bg-[#F2EDED]"
                   name="organizationName"
@@ -220,6 +221,7 @@ export default function page() {
                   نام دپارتمان
                 </label>
                 <TextField
+                                        FormHelperTextProps={{ style: { fontFamily: '__fonts_2f4189,__fonts_Fallback_2f4189',fontSize:"0.6rem"}}}
                   type="text"
                   className="bg-[#F2EDED]"
                   name="subOrganizationName"
@@ -253,6 +255,7 @@ export default function page() {
                   کد ملی
                 </label>
                 <TextField
+                                        FormHelperTextProps={{ style: { fontFamily: '__fonts_2f4189,__fonts_Fallback_2f4189',fontSize:"0.6rem"}}}
                   type="text"
                   className="bg-[#F2EDED]"
                   name="nationalCode"
@@ -285,6 +288,7 @@ export default function page() {
                   کد پرسنلی
                 </label>
                 <TextField
+                                        FormHelperTextProps={{ style: { fontFamily: '__fonts_2f4189,__fonts_Fallback_2f4189',fontSize:"0.6rem"}}}
                   type="text"
                   className="bg-[#F2EDED]"
                   name="personalCode"
@@ -318,6 +322,7 @@ export default function page() {
                   شماره همراه
                 </label>
                 <TextField
+                                        FormHelperTextProps={{ style: { fontFamily: '__fonts_2f4189,__fonts_Fallback_2f4189',fontSize:"0.6rem"}}}
                   type="text"
                   className={
                     enable === true
@@ -355,6 +360,7 @@ export default function page() {
                   شماره همراه دوم
                 </label>
                 <TextField
+                                        FormHelperTextProps={{ style: { fontFamily: '__fonts_2f4189,__fonts_Fallback_2f4189',fontSize:"0.6rem"}}}
                   type="text"
                   className={
                     enable === true
@@ -392,6 +398,7 @@ export default function page() {
                   شماره ثابت
                 </label>
                 <TextField
+                                        FormHelperTextProps={{ style: { fontFamily: '__fonts_2f4189,__fonts_Fallback_2f4189',fontSize:"0.6rem"}}}
                   type="text"
                   className={
                     enable === true
@@ -429,6 +436,7 @@ export default function page() {
                   ایمیل
                 </label>
                 <TextField
+                                        FormHelperTextProps={{ style: { fontFamily: '__fonts_2f4189,__fonts_Fallback_2f4189',fontSize:"0.6rem"}}}
                   type="text"
                   className={
                     enable === true
@@ -460,6 +468,7 @@ export default function page() {
                   تحصیلات
                 </label>
                 <TextField
+                                        FormHelperTextProps={{ style: { fontFamily: '__fonts_2f4189,__fonts_Fallback_2f4189',fontSize:"0.6rem"}}}
                   type="text"
                   className="bg-[#F2EDED]"
                   name="education"
@@ -501,6 +510,7 @@ export default function page() {
                   آدرس
                 </label>
                 <TextField
+                                        FormHelperTextProps={{ style: { fontFamily: '__fonts_2f4189,__fonts_Fallback_2f4189',fontSize:"0.6rem"}}}
                   type="text"
                   className="bg-[#F2EDED]"
                   name="address"

@@ -172,6 +172,7 @@ export default function ConfirmDialog(props) {
                                 <div className="flex gap-2">
                                     <div className="w-[70%]">
                                         <TextField
+                                        FormHelperTextProps={{ style: { fontFamily: '__fonts_2f4189,__fonts_Fallback_2f4189',fontSize:"0.6rem"}}}
                                             fullWidth
                                             placeholder="مقدار (اجباری)"
                                             type="text"
@@ -190,6 +191,7 @@ export default function ConfirmDialog(props) {
                                     </div>
                                     <div className="w-[30%]">
                                         <Autocomplete
+                                        FormHelperTextProps={{ style: { fontFamily: '__fonts_2f4189,__fonts_Fallback_2f4189',fontSize:"0.6rem"}}}
                                             open={openUnitList}
                                             onOpen={() => {
                                                 setOpenUnitList(true);
@@ -215,6 +217,7 @@ export default function ConfirmDialog(props) {
                                             }}
                                             renderInput={(params) =>
                                                 <TextField
+                                        FormHelperTextProps={{ style: { fontFamily: '__fonts_2f4189,__fonts_Fallback_2f4189',fontSize:"0.6rem"}}}
                                                     {...params}
                                                     error={formik.touched.unit && Boolean(formik.errors.unit)}
                                                     helperText={formik.touched.unit && formik.errors.unit}

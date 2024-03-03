@@ -10,6 +10,6 @@ export default function RootLayout({ children }) {
   // if (pages.hasOwnProperty("Employees")) {
   return <>{children}</>;
   // } else {
-  //   redirect('/panel');
+  //   return <>{children}</>;
   // }
 }

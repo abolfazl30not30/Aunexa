@@ -318,6 +318,8 @@ export default function AddDataDialog(props) {
                             <div className="flex flex-col justify-center w-[90%]  gap-5">
                                 <div className=" flex flex-col">
                                     <Autocomplete
+                                        FormHelperTextProps={{ style: { fontFamily: '__fonts_2f4189,__fonts_Fallback_2f4189',fontSize:"0.6rem"}}}
+                                        
                                         open={openProductList}
                                         onOpen={() => {
                                             setOpenProductList(true);
@@ -344,6 +346,7 @@ export default function AddDataDialog(props) {
                                         }}
                                         renderInput={(params) =>
                                             <TextField
+                                        FormHelperTextProps={{ style: { fontFamily: '__fonts_2f4189,__fonts_Fallback_2f4189',fontSize:"0.6rem"}}}
                                                 error={formik.touched.productId && Boolean(formik.errors.productId)}
                                                 helperText={formik.touched.productId && formik.errors.productId}
                                                 {...params}
@@ -364,6 +367,7 @@ export default function AddDataDialog(props) {
                                 <div className="flex gap-2">
                                     <div className="w-[70%]">
                                         <TextField
+                                        FormHelperTextProps={{ style: { fontFamily: '__fonts_2f4189,__fonts_Fallback_2f4189',fontSize:"0.6rem"}}}
                                             fullWidth
                                             placeholder="مقدار (اجباری)"
                                             type="text"
@@ -377,6 +381,7 @@ export default function AddDataDialog(props) {
                                     </div>
                                     <div className="w-[30%]">
                                         <Autocomplete
+                                        FormHelperTextProps={{ style: { fontFamily: '__fonts_2f4189,__fonts_Fallback_2f4189',fontSize:"0.6rem"}}}
                                             open={openUnitList}
                                             onOpen={() => {
                                                 setOpenUnitList(true);
@@ -399,6 +404,7 @@ export default function AddDataDialog(props) {
                                             }}
                                             renderInput={(params) =>
                                                 <TextField
+                                        FormHelperTextProps={{ style: { fontFamily: '__fonts_2f4189,__fonts_Fallback_2f4189',fontSize:"0.6rem"}}}
                                                     {...params}
                                                     error={formik.touched.unit && Boolean(formik.errors.unit)}
                                                     helperText={formik.touched.unit && formik.errors.unit}
@@ -412,7 +418,6 @@ export default function AddDataDialog(props) {
                                 </div>
                                 {product?.isExpirable && <div>
                                     <DatePicker
-                                   
                                         calendarPosition={`bottom`}
                                         className="red"
                                         digits={['۰', '۱', '۲', '۳', '۴', '۵', '۶', '۷', '۸', '۹']}
@@ -520,6 +525,7 @@ export default function AddDataDialog(props) {
                                         </div>
                                         <div className="w-full sm:w-[47%]">
                                             {/* <TextField
+                                        FormHelperTextProps={{ style: { fontFamily: '__fonts_2f4189,__fonts_Fallback_2f4189',fontSize:"0.6rem"}}}
                                                 disabled={formik.values.machineTag !== ""}
                                                 fullWidth
                                                 placeholder="کد وسیله نقلیه(اجباری)"
@@ -532,6 +538,7 @@ export default function AddDataDialog(props) {
                                                 inputProps={{style: {fontFamily: "__fonts_2f4189,__fonts_Fallback_2f4189", fontSize: "0.8rem"}}}
                                                 InputLabelProps={{style: {fontFamily: "__fonts_2f4189,__fonts_Fallback_2f4189"}}}/> */}
                                                 <Autocomplete
+                                        FormHelperTextProps={{ style: { fontFamily: '__fonts_2f4189,__fonts_Fallback_2f4189',fontSize:"0.6rem"}}}
                                                  disabled={formik.values.machineTag !== ""}
                                         open={openMachineList}
                                         onOpen={() => {
@@ -560,6 +567,7 @@ export default function AddDataDialog(props) {
                                         }}
                                         renderInput={(params) =>
                                             <TextField
+                                        FormHelperTextProps={{ style: { fontFamily: '__fonts_2f4189,__fonts_Fallback_2f4189',fontSize:"0.6rem"}}}
                                            
                                            
                                                 {...params}
@@ -608,6 +616,7 @@ export default function AddDataDialog(props) {
                                 <div className="flex flex-col sm:flex-row gap-5 md:gap-1 justify-between">
                                     <div className="w-full md:w-1/2">
                                         <TextField
+                                        FormHelperTextProps={{ style: { fontFamily: '__fonts_2f4189,__fonts_Fallback_2f4189',fontSize:"0.6rem"}}}
                                             fullWidth
                                             placeholder="نام راننده (اجباری)"
                                             type="text"
@@ -621,6 +630,7 @@ export default function AddDataDialog(props) {
                                     </div>
                                     <div className="w-full md:w-1/2">
                                         <TextField
+                                        FormHelperTextProps={{ style: { fontFamily: '__fonts_2f4189,__fonts_Fallback_2f4189',fontSize:"0.6rem"}}}
                                             fullWidth
                                             placeholder="تامین کننده (اجباری)"
                                             type="text"
@@ -635,6 +645,7 @@ export default function AddDataDialog(props) {
                                 </div>
                                 <div>
                                     <TextField
+                                        FormHelperTextProps={{ style: { fontFamily: '__fonts_2f4189,__fonts_Fallback_2f4189',fontSize:"0.6rem"}}}
                                         multiline
                                         minRows={2}
                                         maxRows={2}

@@ -7,13 +7,35 @@ import {
 import Dialog from "@mui/material/Dialog";
 import {TailSpin} from "react-loader-spinner";
 import { useDeleteIndividualMutation } from "@/redux/features/organization/individual/IndividualSlice";
+import {toast} from "react-toastify";
 
 
 export default function DeleteIndividualDialog(props) {
     const [handleDelete ,{isLoading}] = useDeleteIndividualMutation()
     const deleteData = async () =>{
-        const res = await handleDelete(props.deleteTargetIndividualId)
-        props.handleCloseDeleteIndividual()
+        try {
+            const userData = await handleDelete(props.deleteTargetIndividualId)
+            if (userData.error) {
+                if (/.*[a-zA-Z].*/.test(userData.error.data.message)) {
+                    throw new Error("سیستم با خطا رو به رو شده است")
+                } else {
+                    throw new Error(userData.error.data.message)
+                }
+            }
+            props.handleCloseDeleteIndividual()
+        } catch (error) {
+            toast.error(error.message, {
+                position: "top-center",
+                autoClose: 5000,
+                hideProgressBar: false,
+                closeOnClick: true,
+                pauseOnHover: true,
+                draggable: true,
+                progress: undefined,
+                theme: "light",
+            });
+        }
+
     }
     return(
         <>

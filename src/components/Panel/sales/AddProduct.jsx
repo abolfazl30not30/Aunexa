@@ -173,6 +173,7 @@ const [includeError,setIncludeError]=useState(false)
                             <div className="flex flex-col justify-center w-[90%] gap-5">
                                 <div className=" flex flex-col">
                                     <Autocomplete
+                                        FormHelperTextProps={{ style: { fontFamily: '__fonts_2f4189,__fonts_Fallback_2f4189',fontSize:"0.6rem"}}}
                                         open={openProductList}
                                         onOpen={() => {
                                             setOpenProductList(true);
@@ -203,6 +204,7 @@ const [includeError,setIncludeError]=useState(false)
                                         }}
                                         renderInput={(params) =>
                                             <TextField
+                                        FormHelperTextProps={{ style: { fontFamily: '__fonts_2f4189,__fonts_Fallback_2f4189',fontSize:"0.6rem"}}}
                                                 error={formik.touched.productId && Boolean(formik.errors.productId)}
                                                 helperText={formik.touched.productId && formik.errors.productId}
                                                 {...params}
@@ -227,6 +229,7 @@ const [includeError,setIncludeError]=useState(false)
                                 <div className="flex gap-2">
                                     <div className="w-[70%]">
                                         <TextField
+                                        FormHelperTextProps={{ style: { fontFamily: '__fonts_2f4189,__fonts_Fallback_2f4189',fontSize:"0.6rem"}}}
                                             fullWidth
                                             placeholder="مقدار (اجباری)"
                                             type="text"
@@ -245,6 +248,7 @@ const [includeError,setIncludeError]=useState(false)
                                     </div>
                                     <div className="w-[30%]">
                                         <Autocomplete
+                                        FormHelperTextProps={{ style: { fontFamily: '__fonts_2f4189,__fonts_Fallback_2f4189',fontSize:"0.6rem"}}}
                                             open={openUnitList}
                                             onOpen={() => {
                                                 setOpenUnitList(true);
@@ -270,6 +274,7 @@ const [includeError,setIncludeError]=useState(false)
                                             }}
                                             renderInput={(params) =>
                                                 <TextField
+                                        FormHelperTextProps={{ style: { fontFamily: '__fonts_2f4189,__fonts_Fallback_2f4189',fontSize:"0.6rem"}}}
                                                     {...params}
                                                     error={formik.touched.unit && Boolean(formik.errors.unit)}
                                                     helperText={formik.touched.unit && formik.errors.unit}

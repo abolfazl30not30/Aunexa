@@ -159,6 +159,7 @@ export default function AddIndividualRelationshipDialog(props) {
                                 </div>
                                 <div>
                                     <TextField
+                                        FormHelperTextProps={{ style: { fontFamily: '__fonts_2f4189,__fonts_Fallback_2f4189',fontSize:"0.6rem"}}}
                                         fullWidth
                                         placeholder="نام و نام خانوادگی"
                                         type="text"
@@ -173,6 +174,7 @@ export default function AddIndividualRelationshipDialog(props) {
                                 <div className="flex justify-between">
                                   <div className="w-[45%]">
                                     <TextField
+                                        FormHelperTextProps={{ style: { fontFamily: '__fonts_2f4189,__fonts_Fallback_2f4189',fontSize:"0.6rem"}}}
                                         fullWidth
                                         placeholder="شماره تماس"
                                         type="text"
@@ -186,6 +188,7 @@ export default function AddIndividualRelationshipDialog(props) {
                                   </div>
                                   <div className="w-[45%]">
                                     <TextField
+                                        FormHelperTextProps={{ style: { fontFamily: '__fonts_2f4189,__fonts_Fallback_2f4189',fontSize:"0.6rem"}}}
                                         fullWidth
                                         placeholder="نسبت"
                                         type="text"
@@ -201,6 +204,7 @@ export default function AddIndividualRelationshipDialog(props) {
                                   <div className="">
                                     
                                       <TextField
+                                        FormHelperTextProps={{ style: { fontFamily: '__fonts_2f4189,__fonts_Fallback_2f4189',fontSize:"0.6rem"}}}
                                         fullWidth
                                         placeholder="آدرس"
                                         type="text"
@@ -221,6 +225,7 @@ export default function AddIndividualRelationshipDialog(props) {
                                 </div>
                                 <div>
                                     <TextField
+                                        FormHelperTextProps={{ style: { fontFamily: '__fonts_2f4189,__fonts_Fallback_2f4189',fontSize:"0.6rem"}}}
                                         fullWidth
                                         placeholder="نام و نام خانوادگی"
                                         type="text"
@@ -235,6 +240,7 @@ export default function AddIndividualRelationshipDialog(props) {
                                 <div className="flex justify-between">
                                   <div className="w-[45%]">
                                     <TextField
+                                        FormHelperTextProps={{ style: { fontFamily: '__fonts_2f4189,__fonts_Fallback_2f4189',fontSize:"0.6rem"}}}
                                         fullWidth
                                         placeholder="شماره تماس"
                                         type="text"
@@ -248,6 +254,7 @@ export default function AddIndividualRelationshipDialog(props) {
                                   </div>
                                   <div className="w-[45%]">
                                     <TextField
+                                        FormHelperTextProps={{ style: { fontFamily: '__fonts_2f4189,__fonts_Fallback_2f4189',fontSize:"0.6rem"}}}
                                         fullWidth
                                         placeholder="نسبت"
                                         type="text"
@@ -263,6 +270,7 @@ export default function AddIndividualRelationshipDialog(props) {
                                   <div className="">
                                     
                                       <TextField
+                                        FormHelperTextProps={{ style: { fontFamily: '__fonts_2f4189,__fonts_Fallback_2f4189',fontSize:"0.6rem"}}}
                                         fullWidth
                                         placeholder="آدرس"
                                         type="text"

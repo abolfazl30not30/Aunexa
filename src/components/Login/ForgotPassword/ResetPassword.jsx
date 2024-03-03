@@ -58,6 +58,7 @@ export default function ResetPassword() {
                     <div className="flex flex-col">
                         <label htmlFor="name" className="text-textGray mb-4">رمزعبور جدید</label>
                         <TextField
+                                        FormHelperTextProps={{ style: { fontFamily: '__fonts_2f4189,__fonts_Fallback_2f4189',fontSize:"0.6rem"}}}
                             type={showPassword ? "text" : "password"}
                             name="newPassword"
                             value={formik.values.newPassword}
@@ -79,6 +80,7 @@ export default function ResetPassword() {
                     <div className="flex flex-col">
                         <label htmlFor="name" className="text-textGray mb-4">تکرار رمزعبور جدید</label>
                         <TextField
+                                        FormHelperTextProps={{ style: { fontFamily: '__fonts_2f4189,__fonts_Fallback_2f4189',fontSize:"0.6rem"}}}
                             type={showPasswordAgain ? "text" : "password"}
                             name="newPasswordAgain"
                             value={formik.values.newPasswordAgain}

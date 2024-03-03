@@ -101,6 +101,7 @@ export default function EditConfirmInvoiceInfoDialog(props) {
                                 <h3 className="text-[0.9rem]">آیا می خواهید وضعیت این فاکتور را به را رد شده تغییر دهید؟</h3>
                                 <div>
                                     <TextField
+                                        FormHelperTextProps={{ style: { fontFamily: '__fonts_2f4189,__fonts_Fallback_2f4189',fontSize:"0.6rem"}}}
                                         multiline
                                         minRows={3}
                                         maxRows={3}

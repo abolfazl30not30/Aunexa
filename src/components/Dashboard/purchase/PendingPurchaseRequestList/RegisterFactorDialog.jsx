@@ -155,6 +155,7 @@ export default function RegisterFactorDialog(props) {
                             <div className="flex flex-col justify-center w-[90%] gap-5">
                             <div>
                                     <TextField
+                                        FormHelperTextProps={{ style: { fontFamily: '__fonts_2f4189,__fonts_Fallback_2f4189',fontSize:"0.6rem"}}}
                                         fullWidth
                                         placeholder="مسئول خرید (اختیاری )"
                                         type="text"
@@ -168,6 +169,7 @@ export default function RegisterFactorDialog(props) {
                                 </div>
                                 <div>
                                     <TextField
+                                        FormHelperTextProps={{ style: { fontFamily: '__fonts_2f4189,__fonts_Fallback_2f4189',fontSize:"0.6rem"}}}
                                         fullWidth
                                         placeholder="تامین کننده (اختیاری )"
                                         type="text"
@@ -245,7 +247,8 @@ export default function RegisterFactorDialog(props) {
                                                 </FormControl>
                                             </div>
                                             {/*<div>*/}
-                                            {/*    <Autocomplete*/}
+                                            {/*    <Autocomplete
+                                        FormHelperTextProps={{ style: { fontFamily: '__fonts_2f4189,__fonts_Fallback_2f4189',fontSize:"0.6rem"}}}*/}
                                             {/*        open={openPaymentMethodList}*/}
                                             {/*        onOpen={() => {*/}
                                             {/*            setOpenPaymentMethodList(true);*/}
@@ -268,7 +271,8 @@ export default function RegisterFactorDialog(props) {
                                             {/*            formik.setFieldValue("paymentMethod", newValue?.name)*/}
                                             {/*        }}*/}
                                             {/*        renderInput={(params) =>*/}
-                                            {/*            <TextField*/}
+                                            {/*            <TextField
+                                        FormHelperTextProps={{ style: { fontFamily: '__fonts_2f4189,__fonts_Fallback_2f4189',fontSize:"0.6rem"}}}*/}
                                             {/*                error={formik.touched.paymentMethod && Boolean(formik.errors.paymentMethod)}*/}
                                             {/*                helperText={formik.touched.paymentMethod && formik.errors.paymentMethod}*/}
                                             {/*                {...params}*/}
@@ -292,6 +296,7 @@ export default function RegisterFactorDialog(props) {
                                 <div className="flex justify-between gap-2 items-center border-t pt-4 border-gray50">
                                     <div className="w-[45%]">
                                     <TextField
+                                        FormHelperTextProps={{ style: { fontFamily: '__fonts_2f4189,__fonts_Fallback_2f4189',fontSize:"0.6rem"}}}
                                         fullWidth
                                         placeholder="شماره فاکتور (اجباری )"
                                         type="text"

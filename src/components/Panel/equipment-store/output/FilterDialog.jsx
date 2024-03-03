@@ -264,6 +264,7 @@ export default function FilterDialog(props) {
                                 </div>
                                 <div className=" flex flex-col">
                                     <Autocomplete
+                                        FormHelperTextProps={{ style: { fontFamily: '__fonts_2f4189,__fonts_Fallback_2f4189',fontSize:"0.6rem"}}}
                                         open={openProductList}
                                         onOpen={() => {
                                             setOpenProductList(true);
@@ -287,6 +288,7 @@ export default function FilterDialog(props) {
                                         }}
                                         renderInput={(params) =>
                                             <TextField
+                                        FormHelperTextProps={{ style: { fontFamily: '__fonts_2f4189,__fonts_Fallback_2f4189',fontSize:"0.6rem"}}}
                                                 error={formik.touched.productId && Boolean(formik.errors.productId)}
                                                 helperText={formik.touched.productId && formik.errors.productId}
                                                 {...params}
@@ -306,6 +308,7 @@ export default function FilterDialog(props) {
                                 </div>
                                 <div className=" flex flex-col">
                                     <Autocomplete
+                                        FormHelperTextProps={{ style: { fontFamily: '__fonts_2f4189,__fonts_Fallback_2f4189',fontSize:"0.6rem"}}}
                                         open={openVehicleList}
                                         onOpen={() => {
                                             setOpenVehicleList(true);
@@ -336,6 +339,7 @@ export default function FilterDialog(props) {
 
                                         renderInput={(params) =>
                                             <TextField
+                                        FormHelperTextProps={{ style: { fontFamily: '__fonts_2f4189,__fonts_Fallback_2f4189',fontSize:"0.6rem"}}}
                                                 {...params}
                                                 InputProps={{
                                                     ...params.InputProps,
@@ -371,6 +375,7 @@ export default function FilterDialog(props) {
                                 </div>
                                 <div className=" flex flex-col">
                                     <Autocomplete
+                                        FormHelperTextProps={{ style: { fontFamily: '__fonts_2f4189,__fonts_Fallback_2f4189',fontSize:"0.6rem"}}}
                                         open={openSubOrganizationList}
                                         onOpen={() => {
                                             setOpenSubOrganizationList(true);
@@ -394,6 +399,7 @@ export default function FilterDialog(props) {
                                         }}
                                         renderInput={(params) =>
                                             <TextField
+                                        FormHelperTextProps={{ style: { fontFamily: '__fonts_2f4189,__fonts_Fallback_2f4189',fontSize:"0.6rem"}}}
                                                 error={formik.touched.destinationSubOrganizationId && Boolean(formik.errors.destinationSubOrganizationId)}
                                                 helperText={formik.touched.destinationSubOrganizationId && formik.errors.destinationSubOrganizationId}
                                                 {...params}

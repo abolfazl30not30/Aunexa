@@ -107,6 +107,7 @@ export default function AddTicketDialog(props) {
                                         </span>
                                      </div>
                                     <Autocomplete
+                                        FormHelperTextProps={{ style: { fontFamily: '__fonts_2f4189,__fonts_Fallback_2f4189',fontSize:"0.6rem"}}}
                                             open={openSubOrganizationList}
                                             onOpen={() => {
                                                 setOpenSubOrganizationList(true);
@@ -131,6 +132,7 @@ export default function AddTicketDialog(props) {
                                             }}
                                             renderInput={(params) =>
                                                 <TextField
+                                        FormHelperTextProps={{ style: { fontFamily: '__fonts_2f4189,__fonts_Fallback_2f4189',fontSize:"0.6rem"}}}
                                                     error={formik.touched.targetDepartmentId && Boolean(formik.errors.targetDepartmentId)}
                                                     helperText={formik.touched.targetDepartmentId && formik.errors.targetDepartmentId}
                                                     {...params}
@@ -158,6 +160,7 @@ export default function AddTicketDialog(props) {
                                         </span>
                                      </div>
                                     <TextField
+                                        FormHelperTextProps={{ style: { fontFamily: '__fonts_2f4189,__fonts_Fallback_2f4189',fontSize:"0.6rem"}}}
                                         fullWidth
                                         placeholder="موضوع پیام (اجباری)"
                                         type="text"

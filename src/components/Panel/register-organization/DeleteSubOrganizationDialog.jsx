@@ -7,13 +7,34 @@ import {
 import Dialog from "@mui/material/Dialog";
 import {TailSpin} from "react-loader-spinner";
 import { useDeleteSubOrganizationMutation } from "@/redux/features/organization/sub-organization/SubOrganizationSlice";
+import {toast} from "react-toastify";
 
 
 export default function DeleteSubOrganizationDialog(props) {
     const [handleDelete ,{isLoading}] = useDeleteSubOrganizationMutation()
     const deleteData = async () =>{
-        const res = await handleDelete(props.deleteTargetSubOrganizationId)
-        props.handleCloseDeleteSubOrganization()
+        try {
+            const userData = await handleDelete(props.deleteTargetSubOrganizationId)
+            if (userData.error) {
+                if (/.*[a-zA-Z].*/.test(userData.error.data.message)) {
+                    throw new Error("سیستم با خطا رو به رو شده است")
+                } else {
+                    throw new Error(userData.error.data.message)
+                }
+            }
+            props.handleCloseDeleteSubOrganization()
+        } catch (error) {
+            toast.error(error.message, {
+                position: "top-center",
+                autoClose: 5000,
+                hideProgressBar: false,
+                closeOnClick: true,
+                pauseOnHover: true,
+                draggable: true,
+                progress: undefined,
+                theme: "light",
+            });
+        }
     }
     return(
         <>

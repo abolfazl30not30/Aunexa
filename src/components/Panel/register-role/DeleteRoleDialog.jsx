@@ -8,14 +8,37 @@ import Dialog from "@mui/material/Dialog";
 import {TailSpin} from "react-loader-spinner";
 import { useDeleteRoleMutation } from "@/redux/features/role/RoleSlice";
 import {useSelector} from "react-redux";
+import {toast} from "react-toastify";
 
 
 export default function DeleteRoleDialog(props) {
     const [handleDelete ,{isLoading}] = useDeleteRoleMutation()
 
     const deleteData = async () =>{
-        const res = await handleDelete({id:props.deleteTargetRoleId})
-        props.handleCloseDeleteRole()
+        try {
+            const userData = await handleDelete({id:props.deleteTargetRoleId})
+            if (userData.error) {
+                if (/.*[a-zA-Z].*/.test(userData.error.data.message)) {
+                    throw new Error("سیستم با خطا رو به رو شده است")
+                } else {
+                    throw new Error(userData.error.data.message)
+                }
+            }
+            props.handleCloseDeleteRole()
+        } catch (error) {
+            toast.error(error.message, {
+                position: "top-center",
+                autoClose: 5000,
+                hideProgressBar: false,
+                closeOnClick: true,
+                pauseOnHover: true,
+                draggable: true,
+                progress: undefined,
+                theme: "light",
+            });
+        }
+
+
     }
     
     return(

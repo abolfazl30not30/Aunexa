@@ -266,6 +266,7 @@ export default function FilterDialog(props) {
                                 
                                 <div className=" flex flex-col">
                                     <Autocomplete
+                                        FormHelperTextProps={{ style: { fontFamily: '__fonts_2f4189,__fonts_Fallback_2f4189',fontSize:"0.6rem"}}}
                                         open={openVehicleList}
                                         onOpen={() => {
                                             setOpenVehicleList(true);
@@ -296,6 +297,7 @@ export default function FilterDialog(props) {
 
                                         renderInput={(params) =>
                                             <TextField
+                                        FormHelperTextProps={{ style: { fontFamily: '__fonts_2f4189,__fonts_Fallback_2f4189',fontSize:"0.6rem"}}}
                                                 {...params}
                                                 InputProps={{
                                                     ...params.InputProps,
@@ -313,6 +315,7 @@ export default function FilterDialog(props) {
 
                                 <div className=" flex flex-col">
                                     <Autocomplete
+                                        FormHelperTextProps={{ style: { fontFamily: '__fonts_2f4189,__fonts_Fallback_2f4189',fontSize:"0.6rem"}}}
                                         open={openSubOrganizationList}
                                         onOpen={() => {
                                             setOpenSubOrganizationList(true);
@@ -336,6 +339,7 @@ export default function FilterDialog(props) {
                                         }}
                                         renderInput={(params) =>
                                             <TextField
+                                        FormHelperTextProps={{ style: { fontFamily: '__fonts_2f4189,__fonts_Fallback_2f4189',fontSize:"0.6rem"}}}
                                                 error={formik.touched.subOrganizationId && Boolean(formik.errors.subOrganizationId)}
                                                 helperText={formik.touched.subOrganizationId && formik.errors.subOrganizationId}
                                                 {...params}

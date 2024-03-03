@@ -158,6 +158,7 @@ export default function AddDataDialog(props) {
                             <div className="flex flex-col justify-center w-[90%] gap-5">
                                 <div className=" flex flex-col">
                                     <Autocomplete
+                                        FormHelperTextProps={{ style: { fontFamily: '__fonts_2f4189,__fonts_Fallback_2f4189',fontSize:"0.6rem"}}}
                                         open={openProductList}
                                         onOpen={() => {
                                             setOpenProductList(true);
@@ -183,6 +184,7 @@ export default function AddDataDialog(props) {
                                         }}
                                         renderInput={(params) =>
                                             <TextField
+                                        FormHelperTextProps={{ style: { fontFamily: '__fonts_2f4189,__fonts_Fallback_2f4189',fontSize:"0.6rem"}}}
                                                 error={formik.touched.productId && Boolean(formik.errors.productId)}
                                                 helperText={formik.touched.productId && formik.errors.productId}
                                                 {...params}
@@ -203,6 +205,7 @@ export default function AddDataDialog(props) {
                                 <div className="flex">
                                     <div className="w-[70%]">
                                         <TextField
+                                        FormHelperTextProps={{ style: { fontFamily: '__fonts_2f4189,__fonts_Fallback_2f4189',fontSize:"0.6rem"}}}
                                             fullWidth
                                             placeholder="مقدار (اجباری)"
                                             type="text"
@@ -216,6 +219,7 @@ export default function AddDataDialog(props) {
                                     </div>
                                     <div className="w-[30%]">
                                         <Autocomplete
+                                        FormHelperTextProps={{ style: { fontFamily: '__fonts_2f4189,__fonts_Fallback_2f4189',fontSize:"0.6rem"}}}
                                             open={openUnitList}
                                             onOpen={() => {
                                                 setOpenUnitList(true);
@@ -238,6 +242,7 @@ export default function AddDataDialog(props) {
                                             }}
                                             renderInput={(params) =>
                                                 <TextField
+                                        FormHelperTextProps={{ style: { fontFamily: '__fonts_2f4189,__fonts_Fallback_2f4189',fontSize:"0.6rem"}}}
                                                     {...params}
                                                     error={formik.touched.unit && Boolean(formik.errors.unit)}
                                                     helperText={formik.touched.unit && formik.errors.unit}
@@ -267,6 +272,7 @@ export default function AddDataDialog(props) {
                                 </div>
                                 <div>
                                     <TextField
+                                        FormHelperTextProps={{ style: { fontFamily: '__fonts_2f4189,__fonts_Fallback_2f4189',fontSize:"0.6rem"}}}
                                         multiline
                                         rows={1}
                                         maxRows={4}

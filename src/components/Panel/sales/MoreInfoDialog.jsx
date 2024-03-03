@@ -17,8 +17,6 @@ export default function MoreInfoDialog(props) {
         link.download = "file";
         link.href = res.data.fileUrl;
         link.click();
-
-
      }
 
      const [getDownload,{ data : downLoadURL  = [] , isLoading : isDownloadLoading, isError: downloadIsError }] = useLazyDownloadFileMinioQuery(name)

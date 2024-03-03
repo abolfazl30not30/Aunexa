@@ -206,6 +206,7 @@ export default function RegisterFactorDialog(props) {
                             <div className="flex flex-col justify-center w-[90%] gap-5">
                                 <div className="border-b pb-3 border-gray50">
                                     <TextField
+                                        FormHelperTextProps={{ style: { fontFamily: '__fonts_2f4189,__fonts_Fallback_2f4189',fontSize:"0.6rem"}}}
                                         fullWidth
                                         placeholder="مشتری (اجباری)"
                                         type="text"
@@ -316,6 +317,7 @@ export default function RegisterFactorDialog(props) {
                                     className="flex justify-between sm:flex-row  flex-col gap-4 items-center border-t py-2 border-gray50">
                                     <div className="w-full">
                                         <TextField
+                                        FormHelperTextProps={{ style: { fontFamily: '__fonts_2f4189,__fonts_Fallback_2f4189',fontSize:"0.6rem"}}}
                                             fullWidth
                                             placeholder="شماره فاکتور (اجباری )"
                                             type="text"
@@ -397,6 +399,7 @@ export default function RegisterFactorDialog(props) {
                                 </div>
                                 <div className="border-b pb-3 border-gray50">
                                     <TextField
+                                        FormHelperTextProps={{ style: { fontFamily: '__fonts_2f4189,__fonts_Fallback_2f4189',fontSize:"0.6rem"}}}
                                         fullWidth
                                         multiline
                                         minRows={2}

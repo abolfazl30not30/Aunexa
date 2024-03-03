@@ -95,7 +95,6 @@ export default function EditInfoDialog(props) {
         formData.append('file', event.target.files[0]);
         const res = await uploadFile(formData)
         if(res.data){
-            
             setUploadedImage(res.data?.name)
         }
     }
@@ -108,39 +107,19 @@ export default function EditInfoDialog(props) {
     const handleReset = () =>{
         formik.resetForm()
         setUploadedImage("")
-        // setProduct(null)
-        // setUnit(null)
-        // setProduct(null)
     }
 
-    // const handleSetProductInput = (id) =>{
-    //     const product = productList.filter((product)=> product.id === id)
-    //     setProduct(product[0])
-    // }
-    // const handleSetUnitInput = (ab) =>{
-    //     const units= unitList.filter((unit)=> unit.persianName === ab)
-    //     setUnit(units[0])
-    // }
 
     useEffect(()=>{
-        // getProductList()
-        // getUnitList()
         const editInfoObj = ConvertToEmpty(props.editInfoTarget)
         formik.setValues({
             id:editInfoObj?.id,
             customer:editInfoObj?.customer,
             receiptCode:editInfoObj?.receiptCode,
             description:editInfoObj?.description,
-            receiptFile:editInfoObj?.receiptFile,
-            
-            // unit:props.editInfoTarget?.quantity?.unit,
-            // value:props.editInfoTarget?.quantity?.value,
-            
-            
+            receiptFile:editInfoObj?.receiptFile !== "" ? (editInfoObj?.receiptFile) : "",
         })
-        setUploadedImage(props.editInfoTarget?.receiptFile)
-        // handleSetProductInput(props.editInfoTarget?.billCycle?.productId)
-        // handleSetUnitInput(props.editInfoTarget?.quantity?.unit)
+        setUploadedImage(editInfoObj?.receiptFile !== "" ? (editInfoObj?.receiptFile) : "")
     },[props.openEditInfo])
 
     //submit data
@@ -230,6 +209,7 @@ export default function EditInfoDialog(props) {
                             <div className="flex gap-2">
                             <div className="w-[60%]">
                                         <TextField
+                                        FormHelperTextProps={{ style: { fontFamily: '__fonts_2f4189,__fonts_Fallback_2f4189',fontSize:"0.6rem"}}}
                                             fullWidth
                                             placeholder="نام مشتری (اجباری)"
                                             type="text"
@@ -243,6 +223,7 @@ export default function EditInfoDialog(props) {
                                     </div>
                                     <div className="w-[40%]">
                                         <TextField
+                                        FormHelperTextProps={{ style: { fontFamily: '__fonts_2f4189,__fonts_Fallback_2f4189',fontSize:"0.6rem"}}}
                                             fullWidth
                                             placeholder="شماره فاکتور (اجباری)"
                                             type="text"
@@ -302,6 +283,7 @@ export default function EditInfoDialog(props) {
                             </div>
                             <div className="">
                             <TextField
+                                        FormHelperTextProps={{ style: { fontFamily: '__fonts_2f4189,__fonts_Fallback_2f4189',fontSize:"0.6rem"}}}
                                             fullWidth
                                             placeholder="توضیحات "
                                             multiline

@@ -103,6 +103,7 @@ export default function RejectionDialog(props) {
                                 <h3 className="text-[0.9rem]">آیا مطمئن به رد درخواست هستید؟</h3>
                                 <div>
                                     <TextField
+                                        FormHelperTextProps={{ style: { fontFamily: '__fonts_2f4189,__fonts_Fallback_2f4189',fontSize:"0.6rem"}}}
                                         multiline
                                         minRows={2}
                                         maxRows={2}

@@ -306,6 +306,7 @@ export default function AddDataDialog(props) {
                             <div className="flex flex-col justify-center w-[90%] gap-4">
                             <div>
                             <Autocomplete
+                                        FormHelperTextProps={{ style: { fontFamily: '__fonts_2f4189,__fonts_Fallback_2f4189',fontSize:"0.6rem"}}}
                             disabled={(formik.values.type || formik.values.machineId )? true:false}
                                             open={openSubOrganizationList}
                                             onOpen={() => {
@@ -332,6 +333,7 @@ export default function AddDataDialog(props) {
                                             }}
                                             renderInput={(params) =>
                                                 <TextField
+                                        FormHelperTextProps={{ style: { fontFamily: '__fonts_2f4189,__fonts_Fallback_2f4189',fontSize:"0.6rem"}}}
                                                     error={formik.touched.subOrganizationId && Boolean(formik.errors.subOrganizationId)}
                                                     helperText={formik.touched.subOrganizationId && formik.errors.subOrganizationId}
                                                     {...params}
@@ -354,6 +356,7 @@ export default function AddDataDialog(props) {
                                                 <div >
 
                                                 <Autocomplete
+                                        FormHelperTextProps={{ style: { fontFamily: '__fonts_2f4189,__fonts_Fallback_2f4189',fontSize:"0.6rem"}}}
                                                   disabled={(formik.values.subOrganizationId || formik.values.machineId )? true:false}
                                         open={openVehicleCategoryList}
                                         onOpen={() => {
@@ -379,6 +382,7 @@ export default function AddDataDialog(props) {
                                         }}
                                         renderInput={(params) =>
                                             <TextField
+                                        FormHelperTextProps={{ style: { fontFamily: '__fonts_2f4189,__fonts_Fallback_2f4189',fontSize:"0.6rem"}}}
                                                 error={formik.touched.type && Boolean(formik.errors.type)}
                                                 helperText={formik.touched.type && formik.errors.type}
                                                 {...params}
@@ -398,6 +402,7 @@ export default function AddDataDialog(props) {
                                                 </div>
                                                 <div >
                                                 <Autocomplete
+                                        FormHelperTextProps={{ style: { fontFamily: '__fonts_2f4189,__fonts_Fallback_2f4189',fontSize:"0.6rem"}}}
                                                  disabled={formik.values.type || formik.values.subOrganizationId ? true : false}
                                         open={openVehicleList}
                                         onOpen={() => {
@@ -427,6 +432,7 @@ export default function AddDataDialog(props) {
                                         }}
                                         renderInput={(params) =>
                                             <TextField
+                                        FormHelperTextProps={{ style: { fontFamily: '__fonts_2f4189,__fonts_Fallback_2f4189',fontSize:"0.6rem"}}}
                                                 error={formik.touched.machineId && Boolean(formik.errors.machineId)}
                                                 helperText={formik.touched.machineId && formik.errors.machineId}
                                                 {...params}

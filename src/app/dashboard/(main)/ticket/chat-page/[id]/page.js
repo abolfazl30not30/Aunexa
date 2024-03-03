@@ -255,6 +255,7 @@ export default function page({ params }) {
 
             <div className="w-full space-y-3">
               <TextField
+                                        FormHelperTextProps={{ style: { fontFamily: '__fonts_2f4189,__fonts_Fallback_2f4189',fontSize:"0.6rem"}}}
                 value={formik.values.value}
                 onChange={formik.handleChange}
                 type="text"

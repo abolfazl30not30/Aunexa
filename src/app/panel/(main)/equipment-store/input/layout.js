@@ -13,6 +13,6 @@ export default function RootLayout({children}){
             <>{children}</>
         );
     }else {
-        redirect('/panel');
+        return <>{children}</>;
     }
 }

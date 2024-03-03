@@ -170,6 +170,7 @@ export default function EditInfoDialog(props) {
                                
                             <div className=" flex flex-col">
                                     <Autocomplete
+                                        FormHelperTextProps={{ style: { fontFamily: '__fonts_2f4189,__fonts_Fallback_2f4189',fontSize:"0.6rem"}}}
                                         open={openGroupList}
                                         onOpen={() => {
                                             setOpenGroupList(true);
@@ -194,6 +195,7 @@ export default function EditInfoDialog(props) {
                                         }}
                                         renderInput={(params) =>
                                             <TextField
+                                        FormHelperTextProps={{ style: { fontFamily: '__fonts_2f4189,__fonts_Fallback_2f4189',fontSize:"0.6rem"}}}
                                                 error={formik.touched.groupId && Boolean(formik.errors.groupId)}
                                                 helperText={formik.touched.groupId && formik.errors.groupId}
                                                 {...params}

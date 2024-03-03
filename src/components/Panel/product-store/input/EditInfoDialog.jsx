@@ -390,6 +390,7 @@ const [getMachineList,
                             <div className="flex flex-col justify-center w-[90%] gap-5">
                                 <div className=" flex flex-col">
                                     <Autocomplete
+                                        FormHelperTextProps={{ style: { fontFamily: '__fonts_2f4189,__fonts_Fallback_2f4189',fontSize:"0.6rem"}}}
                                         open={openProductList}
                                         onOpen={() => {
                                             setOpenProductList(true);
@@ -416,6 +417,7 @@ const [getMachineList,
                                         }}
                                         renderInput={(params) =>
                                             <TextField
+                                        FormHelperTextProps={{ style: { fontFamily: '__fonts_2f4189,__fonts_Fallback_2f4189',fontSize:"0.6rem"}}}
                                                 error={formik.touched.productId && Boolean(formik.errors.productId)}
                                                 helperText={formik.touched.productId && formik.errors.productId}
                                                 {...params}
@@ -436,6 +438,7 @@ const [getMachineList,
                                 <div className="flex gap-2">
                                     <div className="w-[70%]">
                                         <TextField
+                                        FormHelperTextProps={{ style: { fontFamily: '__fonts_2f4189,__fonts_Fallback_2f4189',fontSize:"0.6rem"}}}
                                             fullWidth
                                             placeholder="مقدار (اجباری)"
                                             type="text"
@@ -449,6 +452,7 @@ const [getMachineList,
                                     </div>
                                     <div className="w-[30%]">
                                         <Autocomplete
+                                        FormHelperTextProps={{ style: { fontFamily: '__fonts_2f4189,__fonts_Fallback_2f4189',fontSize:"0.6rem"}}}
                                             open={openUnitList}
                                             onOpen={() => {
                                                 setOpenUnitList(true);
@@ -471,6 +475,7 @@ const [getMachineList,
                                             }}
                                             renderInput={(params) =>
                                                 <TextField
+                                        FormHelperTextProps={{ style: { fontFamily: '__fonts_2f4189,__fonts_Fallback_2f4189',fontSize:"0.6rem"}}}
                                                     {...params}
                                                     error={formik.touched.unit && Boolean(formik.errors.unit)}
                                                     helperText={formik.touched.unit && formik.errors.unit}
@@ -587,6 +592,7 @@ const [getMachineList,
                                         </div>
                                         <div className="w-full md:w-[47%]">
                                         <Autocomplete
+                                        FormHelperTextProps={{ style: { fontFamily: '__fonts_2f4189,__fonts_Fallback_2f4189',fontSize:"0.6rem"}}}
                                                  disabled={formik.values.machineTag !== ""}
                                         open={openMachineList}
                                         onOpen={() => {
@@ -614,6 +620,7 @@ const [getMachineList,
                                         }}
                                         renderInput={(params) =>
                                             <TextField
+                                        FormHelperTextProps={{ style: { fontFamily: '__fonts_2f4189,__fonts_Fallback_2f4189',fontSize:"0.6rem"}}}
                                            
                                             error={formik.touched.machineCode && Boolean(formik.errors.machineCode)}
                                             helperText={formik.touched.machineTag && formik.errors.machineTag}
@@ -646,6 +653,7 @@ const [getMachineList,
                                 <div className="flex flex-col md:flex-row gap-5 md:gap-1 justify-between">
                                     <div className="w-full md:w-1/2">
                                         <TextField
+                                        FormHelperTextProps={{ style: { fontFamily: '__fonts_2f4189,__fonts_Fallback_2f4189',fontSize:"0.6rem"}}}
                                             fullWidth
                                             placeholder="نام راننده (اجباری)"
                                             type="text"
@@ -659,6 +667,7 @@ const [getMachineList,
                                     </div>
                                     <div className="w-full md:w-1/2">
                                         <Autocomplete
+                                        FormHelperTextProps={{ style: { fontFamily: '__fonts_2f4189,__fonts_Fallback_2f4189',fontSize:"0.6rem"}}}
                                             open={openSubOrganizationList}
                                             onOpen={() => {
                                                 setOpenSubOrganizationList(true);
@@ -683,6 +692,7 @@ const [getMachineList,
                                             }}
                                             renderInput={(params) =>
                                                 <TextField
+                                        FormHelperTextProps={{ style: { fontFamily: '__fonts_2f4189,__fonts_Fallback_2f4189',fontSize:"0.6rem"}}}
                                                     error={formik.touched.sourceSubOrganizationId && Boolean(formik.errors.sourceSubOrganizationId)}
                                                     helperText={formik.touched.sourceSubOrganizationId && formik.errors.sourceSubOrganizationId}
                                                     {...params}
@@ -705,6 +715,7 @@ const [getMachineList,
                                 </div>
                                 <div>
                                     <TextField
+                                        FormHelperTextProps={{ style: { fontFamily: '__fonts_2f4189,__fonts_Fallback_2f4189',fontSize:"0.6rem"}}}
                                         multiline
                                         minRows={2}
                                         maxRows={2}

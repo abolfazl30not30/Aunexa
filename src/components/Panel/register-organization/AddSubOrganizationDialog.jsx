@@ -106,6 +106,7 @@ export default function AddSubOrganizationDialog(props) {
                             <div className="flex flex-col justify-center w-[90%] gap-5">
                             <div>
                                     <TextField
+                                        FormHelperTextProps={{ style: { fontFamily: '__fonts_2f4189,__fonts_Fallback_2f4189',fontSize:"0.6rem"}}}
                                         fullWidth
                                         placeholder="نام دپارتمان"
                                         type="text"
@@ -119,6 +120,7 @@ export default function AddSubOrganizationDialog(props) {
                                 </div>
                                 <div>
                                     <TextField
+                                        FormHelperTextProps={{ style: { fontFamily: '__fonts_2f4189,__fonts_Fallback_2f4189',fontSize:"0.6rem"}}}
                                         fullWidth
                                         placeholder=" ظرفیت (اختیاری)"
                                         type="text"
@@ -132,6 +134,7 @@ export default function AddSubOrganizationDialog(props) {
                                 </div>
                                 <div>
                                     <TextField
+                                        FormHelperTextProps={{ style: { fontFamily: '__fonts_2f4189,__fonts_Fallback_2f4189',fontSize:"0.6rem"}}}
                                         fullWidth
                                         placeholder=" واحد (اختیاری)"
                                         type="text"

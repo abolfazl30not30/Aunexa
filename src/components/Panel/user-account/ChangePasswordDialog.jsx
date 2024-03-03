@@ -196,6 +196,7 @@ const validate = (values, props) => {
                                 </div>
                                 <div>
                                     <TextField
+                                        FormHelperTextProps={{ style: { fontFamily: '__fonts_2f4189,__fonts_Fallback_2f4189',fontSize:"0.6rem"}}}
                                         fullWidth
                                         placeholder="رمز عبور جدید"
                                         type="text"
@@ -209,6 +210,7 @@ const validate = (values, props) => {
                                 </div>
                                 <div>
                                     <TextField
+                                        FormHelperTextProps={{ style: { fontFamily: '__fonts_2f4189,__fonts_Fallback_2f4189',fontSize:"0.6rem"}}}
                                         fullWidth
                                         placeholder="تکرار رمز عبور جدید"
                                         type="text"

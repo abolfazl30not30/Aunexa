@@ -184,6 +184,7 @@ const handleChangeChecked = (event, geofence) => {
                             <div className="flex flex-col justify-center w-[90%] gap-5">
                             <div className=" flex flex-col">
                                     <Autocomplete
+                                        FormHelperTextProps={{ style: { fontFamily: '__fonts_2f4189,__fonts_Fallback_2f4189',fontSize:"0.6rem"}}}
                                         open={openGroupList}
                                         onOpen={() => {
                                             setOpenGroupList(true);
@@ -208,6 +209,7 @@ const handleChangeChecked = (event, geofence) => {
                                         }}
                                         renderInput={(params) =>
                                             <TextField
+                                        FormHelperTextProps={{ style: { fontFamily: '__fonts_2f4189,__fonts_Fallback_2f4189',fontSize:"0.6rem"}}}
                                                 error={formik.touched.groupId && Boolean(formik.errors.groupId)}
                                                 helperText={formik.touched.groupId && formik.errors.groupId}
                                                 {...params}
@@ -267,6 +269,7 @@ const handleChangeChecked = (event, geofence) => {
                                 </div>
                                 {/* <div>
                                     <TextField
+                                        FormHelperTextProps={{ style: { fontFamily: '__fonts_2f4189,__fonts_Fallback_2f4189',fontSize:"0.6rem"}}}
                                         multiline
                                         rows={1}
                                         maxRows={4}
@@ -283,6 +286,7 @@ const handleChangeChecked = (event, geofence) => {
                                 </div>
                                 <div className=" flex flex-col">
                                     <Autocomplete
+                                        FormHelperTextProps={{ style: { fontFamily: '__fonts_2f4189,__fonts_Fallback_2f4189',fontSize:"0.6rem"}}}
                                         open={openProductList}
                                         onOpen={() => {
                                             setOpenProductList(true);
@@ -308,6 +312,7 @@ const handleChangeChecked = (event, geofence) => {
                                         }}
                                         renderInput={(params) =>
                                             <TextField
+                                        FormHelperTextProps={{ style: { fontFamily: '__fonts_2f4189,__fonts_Fallback_2f4189',fontSize:"0.6rem"}}}
                                                 error={formik.touched.productId && Boolean(formik.errors.productId)}
                                                 helperText={formik.touched.productId && formik.errors.productId}
                                                 {...params}

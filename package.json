@@ -1,6 +1,6 @@
 {
   "name": "msc-frontend",
-  "version": "0.0.42",
+  "version": "0.1.42",
   "private": true,
   "scripts": {
     "dev": "next dev",

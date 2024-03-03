@@ -42,7 +42,7 @@ export default function MainForm() {
 
         onSubmit: async ({username, password}) => {
             try{
-                const {data} = await axios.post('http://localhost:3000/realms/msc/protocol/openid-connect/token', {...formData,username,password}, {
+                const {data} = await axios.post('https://aunexa.net/realms/msc/protocol/openid-connect/token', {...formData,username,password}, {
                     headers: {
                         'Content-Type': 'application/x-www-form-urlencoded'
                     },
@@ -76,6 +76,7 @@ export default function MainForm() {
                     <div className=" flex flex-col ">
                         <label htmlFor="name" className="text-textGray mb-4">کد پرسنلی</label>
                         <TextField
+                                        FormHelperTextProps={{ style: { fontFamily: '__fonts_2f4189,__fonts_Fallback_2f4189',fontSize:"0.6rem"}}}
                             type="text"
                             name="username"
                             value={formik.values.username}
@@ -89,6 +90,7 @@ export default function MainForm() {
                     <div className="flex flex-col ">
                         <label htmlFor="name" className="text-textGray mb-4">رمز عبور</label>
                         <TextField
+                                        FormHelperTextProps={{ style: { fontFamily: '__fonts_2f4189,__fonts_Fallback_2f4189',fontSize:"0.6rem"}}}
                             type={showPassword ? "text" : "password"}
                             name="password"
                             value={formik.values.password}

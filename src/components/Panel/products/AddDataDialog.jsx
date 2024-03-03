@@ -304,6 +304,7 @@ export default function AddDataDialog(props) {
                                 </div>
                                 <div>
                                     <TextField
+                                        FormHelperTextProps={{ style: { fontFamily: '__fonts_2f4189,__fonts_Fallback_2f4189',fontSize:"0.6rem"}}}
                                         fullWidth
                                         placeholder="نام فارسي محصول"
                                         type="text"
@@ -322,6 +323,7 @@ export default function AddDataDialog(props) {
                                 </div>
                                 <div>
                                     <TextField
+                                        FormHelperTextProps={{ style: { fontFamily: '__fonts_2f4189,__fonts_Fallback_2f4189',fontSize:"0.6rem"}}}
                                         fullWidth
                                         placeholder="نام انگليسی محصول (اختیاری)"
                                         type="text"
@@ -341,6 +343,7 @@ export default function AddDataDialog(props) {
                                 <div className={"flex flex-col md:flex-row gap-5 md:gap-1 justify-between"}>
                                     <div className="w-full md:w-1/2">
                                         <TextField
+                                        FormHelperTextProps={{ style: { fontFamily: '__fonts_2f4189,__fonts_Fallback_2f4189',fontSize:"0.6rem"}}}
 
                                             fullWidth
                                             placeholder="نام مخفف (اختیاری)"
@@ -360,6 +363,7 @@ export default function AddDataDialog(props) {
                                     </div>
                                     <div className="w-full md:w-1/2">
                                         <TextField
+                                        FormHelperTextProps={{ style: { fontFamily: '__fonts_2f4189,__fonts_Fallback_2f4189',fontSize:"0.6rem"}}}
                                             fullWidth
                                             placeholder="کد محصول (اختیاری)"
                                             type="text"
@@ -453,6 +457,7 @@ export default function AddDataDialog(props) {
 
                                 <div>
                                     <Autocomplete
+                                        FormHelperTextProps={{ style: { fontFamily: '__fonts_2f4189,__fonts_Fallback_2f4189',fontSize:"0.6rem"}}}
                                         open={openUnitList}
                                         onOpen={() => {
                                             setOpenUnitList(true);
@@ -478,6 +483,7 @@ export default function AddDataDialog(props) {
                                         }}
                                         renderInput={(params) =>
                                             <TextField
+                                        FormHelperTextProps={{ style: { fontFamily: '__fonts_2f4189,__fonts_Fallback_2f4189',fontSize:"0.6rem"}}}
                                                 {...params}
                                                 error={formik.touched.defaultUnit && Boolean(formik.errors.defaultUnit)}
                                                 helperText={formik.touched.defaultUnit && formik.errors.defaultUnit}

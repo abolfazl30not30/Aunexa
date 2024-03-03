@@ -52,6 +52,7 @@ export default function GetUsername() {
                     <div className="flex flex-col">
                         <label htmlFor="name" className="text-textGray mb-4">کد پرسنلی</label>
                         <TextField
+                                        FormHelperTextProps={{ style: { fontFamily: '__fonts_2f4189,__fonts_Fallback_2f4189',fontSize:"0.6rem"}}}
                             type="number"
                             name="username"
                             value={formik.values.username}

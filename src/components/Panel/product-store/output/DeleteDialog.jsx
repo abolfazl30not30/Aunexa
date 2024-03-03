@@ -8,13 +8,34 @@ import Dialog from "@mui/material/Dialog";
 import {TailSpin} from "react-loader-spinner";
 import {useDeleteESIMutation} from "@/redux/features/equipment-store/input/ESIapiSlice";
 import {useDeletePOSOMutation} from "@/redux/features/product-store/output/POSOapiSlice";
+import {toast} from "react-toastify";
 
 
 export default function DeleteDialog(props) {
     const [handleDelete ,{isLoading}] = useDeletePOSOMutation()
     const deleteData = async () =>{
-        const res = await handleDelete(props.deleteTargetId)
-        props.handleCloseDelete()
+        try {
+            const userData = await handleDelete(props.deleteTargetId)
+            if (userData.error) {
+                if (/.*[a-zA-Z].*/.test(userData.error.data.message)) {
+                    throw new Error("سیستم با خطا رو به رو شده است")
+                } else {
+                    throw new Error(userData.error.data.message)
+                }
+            }
+            props.handleCloseDelete()
+        } catch (error) {
+            toast.error(error.message, {
+                position: "top-center",
+                autoClose: 5000,
+                hideProgressBar: false,
+                closeOnClick: true,
+                pauseOnHover: true,
+                draggable: true,
+                progress: undefined,
+                theme: "light",
+            });
+        }
     }
     return(
         <>

@@ -179,6 +179,7 @@ export default function FixFailureDialog(props) {
                                     </div>
                                     <div className="  flex justify-start ">
                                     <TextField
+                                        FormHelperTextProps={{ style: { fontFamily: '__fonts_2f4189,__fonts_Fallback_2f4189',fontSize:"0.6rem"}}}
                                 multiline
                                 rows={3}
                                         fullWidth
@@ -268,6 +269,7 @@ export default function FixFailureDialog(props) {
                                 </div>
                                 <div className="  flex justify-start ">
                                     <TextField
+                                        FormHelperTextProps={{ style: { fontFamily: '__fonts_2f4189,__fonts_Fallback_2f4189',fontSize:"0.6rem"}}}
                                 multiline
                                 minRows={4}
                                 maxRows={4}

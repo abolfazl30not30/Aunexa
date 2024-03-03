@@ -13,8 +13,28 @@ import {useDeletePurchaseRequestMutation} from "@/redux/features/purchase-reques
 export default function DeleteDialog(props) {
     const [handleDelete ,{isLoading}] = useDeletePurchaseRequestMutation()
     const deleteData = async () =>{
-        const res = await handleDelete(props.deleteTargetId)
-        props.handleCloseDelete()
+        try {
+            const userData = await handleDelete(props.deleteTargetId)
+            if (userData.error) {
+                if (/.*[a-zA-Z].*/.test(userData.error.data.message)) {
+                    throw new Error("سیستم با خطا رو به رو شده است")
+                } else {
+                    throw new Error(userData.error.data.message)
+                }
+            }
+            props.handleCloseDelete()
+        } catch (error) {
+            toast.error(error.message, {
+                position: "top-center",
+                autoClose: 5000,
+                hideProgressBar: false,
+                closeOnClick: true,
+                pauseOnHover: true,
+                draggable: true,
+                progress: undefined,
+                theme: "light",
+            });
+        }
     }
     return(
         <>
