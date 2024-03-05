@@ -185,8 +185,8 @@ export default function RootLayout({ children }) {
                       {pathname === "/panel/notification"
                         ? 0
                         : counterList > 99
-                        ? "99+"
-                        : counterList}
+                          ? "99+"
+                          : counterList}
                     </span>
                   </div>
                 )}
@@ -500,300 +500,300 @@ export default function RootLayout({ children }) {
 
                   {(accessData.hasOwnProperty("PrimaryStoreInput") ||
                     accessData.hasOwnProperty("PrimaryStoreOutput")) && (
-                    <div>
-                      <details className="group py-3 border-b border-b-1 border-b-solid  border-b-borderGray">
-                        <summary className="flex items-center justify-between gap-2 p-2 font-medium marker:content-none hover:cursor-pointer">
-                          <span className="text-gray9F group-open:text-textGray text-[0.9rem]">
-                            انبار مواد اولیه
-                          </span>
-                          <svg
-                            className="transition group-open:rotate-90"
-                            xmlns="http://www.w3.org/2000/svg"
-                            width="16"
-                            height="16"
-                            viewBox="0 0 16 16"
-                            fill="none"
-                          >
-                            <path
-                              d="M10 4L6 8L10 12"
-                              stroke="#9F9F9F"
-                              stroke-linecap="round"
-                              stroke-linejoin="round"
-                            />
-                          </svg>
-                        </summary>
-                        <ul className="flex flex-col gap-1 pr-2">
-                          {accessData.hasOwnProperty("PrimaryStoreInput") && (
-                            <li>
-                              <Link
-                                onClick={handleCloseSidebar}
-                                href="/panel/primary-store/input"
-                                className="block py-2 px-5"
-                              >
-                                {" "}
-                                <span
-                                  className={
-                                    pathname === "/panel/primary-store/input"
-                                      ? "text-mainRed text-[0.9rem]"
-                                      : "text-gray9F hover:text-textGray text-[0.9rem]"
-                                  }
+                      <div>
+                        <details className="group py-3 border-b border-b-1 border-b-solid  border-b-borderGray">
+                          <summary className="flex items-center justify-between gap-2 p-2 font-medium marker:content-none hover:cursor-pointer">
+                            <span className="text-gray9F group-open:text-textGray text-[0.9rem]">
+                              انبار مواد اولیه
+                            </span>
+                            <svg
+                              className="transition group-open:rotate-90"
+                              xmlns="http://www.w3.org/2000/svg"
+                              width="16"
+                              height="16"
+                              viewBox="0 0 16 16"
+                              fill="none"
+                            >
+                              <path
+                                d="M10 4L6 8L10 12"
+                                stroke="#9F9F9F"
+                                stroke-linecap="round"
+                                stroke-linejoin="round"
+                              />
+                            </svg>
+                          </summary>
+                          <ul className="flex flex-col gap-1 pr-2">
+                            {accessData.hasOwnProperty("PrimaryStoreInput") && (
+                              <li>
+                                <Link
+                                  onClick={handleCloseSidebar}
+                                  href="/panel/primary-store/input"
+                                  className="block py-2 px-5"
                                 >
-                                  بخش ورودی
-                                </span>
-                              </Link>
-                            </li>
-                          )}
-                          {accessData.hasOwnProperty("PrimaryStoreOutput") && (
-                            <li>
-                              <Link
-                                onClick={handleCloseSidebar}
-                                href="/panel/primary-store/output"
-                                className="block py-2 px-5"
-                              >
-                                <span
-                                  className={
-                                    pathname === "/panel/primary-store/output"
-                                      ? "text-mainRed text-[0.9rem]"
-                                      : "text-gray9F hover:text-textGray text-[0.9rem]"
-                                  }
+                                  {" "}
+                                  <span
+                                    className={
+                                      pathname === "/panel/primary-store/input"
+                                        ? "text-mainRed text-[0.9rem]"
+                                        : "text-gray9F hover:text-textGray text-[0.9rem]"
+                                    }
+                                  >
+                                    بخش ورودی
+                                  </span>
+                                </Link>
+                              </li>
+                            )}
+                            {accessData.hasOwnProperty("PrimaryStoreOutput") && (
+                              <li>
+                                <Link
+                                  onClick={handleCloseSidebar}
+                                  href="/panel/primary-store/output"
+                                  className="block py-2 px-5"
                                 >
-                                  بخش خروجی
-                                </span>
-                              </Link>
-                            </li>
-                          )}
-                        </ul>
-                      </details>
-                    </div>
-                  )}
+                                  <span
+                                    className={
+                                      pathname === "/panel/primary-store/output"
+                                        ? "text-mainRed text-[0.9rem]"
+                                        : "text-gray9F hover:text-textGray text-[0.9rem]"
+                                    }
+                                  >
+                                    بخش خروجی
+                                  </span>
+                                </Link>
+                              </li>
+                            )}
+                          </ul>
+                        </details>
+                      </div>
+                    )}
                   {(accessData.hasOwnProperty("EquipmentStoreInput") ||
                     accessData.hasOwnProperty("EquipmentStoreOutput")) && (
-                    <div>
-                      <details className="group py-3 border-b border-b-1 border-b-solid  border-b-borderGray">
-                        <summary className="flex items-center justify-between gap-2 p-2 font-medium marker:content-none hover:cursor-pointer">
-                          <span className="text-gray9F group-open:text-textGray text-[0.9rem]">
-                            انبار تجهیزات
-                          </span>
-                          <svg
-                            className="transition group-open:rotate-90"
-                            xmlns="http://www.w3.org/2000/svg"
-                            width="16"
-                            height="16"
-                            viewBox="0 0 16 16"
-                            fill="none"
-                          >
-                            <path
-                              d="M10 4L6 8L10 12"
-                              stroke="#9F9F9F"
-                              stroke-linecap="round"
-                              stroke-linejoin="round"
-                            />
-                          </svg>
-                        </summary>
-                        <ul className="flex flex-col gap-1 pr-2">
-                          {accessData.hasOwnProperty("EquipmentStoreInput") && (
-                            <li>
-                              <Link
-                                onClick={handleCloseSidebar}
-                                href="/panel/equipment-store/input"
-                                className="block py-2 px-5"
-                              >
-                                <span
-                                  className={
-                                    pathname === "/panel/equipment-store/input"
-                                      ? "text-mainRed text-[0.9rem]"
-                                      : "text-gray9F hover:text-textGray text-[0.9rem]"
-                                  }
+                      <div>
+                        <details className="group py-3 border-b border-b-1 border-b-solid  border-b-borderGray">
+                          <summary className="flex items-center justify-between gap-2 p-2 font-medium marker:content-none hover:cursor-pointer">
+                            <span className="text-gray9F group-open:text-textGray text-[0.9rem]">
+                              انبار تجهیزات
+                            </span>
+                            <svg
+                              className="transition group-open:rotate-90"
+                              xmlns="http://www.w3.org/2000/svg"
+                              width="16"
+                              height="16"
+                              viewBox="0 0 16 16"
+                              fill="none"
+                            >
+                              <path
+                                d="M10 4L6 8L10 12"
+                                stroke="#9F9F9F"
+                                stroke-linecap="round"
+                                stroke-linejoin="round"
+                              />
+                            </svg>
+                          </summary>
+                          <ul className="flex flex-col gap-1 pr-2">
+                            {accessData.hasOwnProperty("EquipmentStoreInput") && (
+                              <li>
+                                <Link
+                                  onClick={handleCloseSidebar}
+                                  href="/panel/equipment-store/input"
+                                  className="block py-2 px-5"
                                 >
-                                  بخش ورودی
-                                </span>
-                              </Link>
-                            </li>
-                          )}
-                          {accessData.hasOwnProperty(
-                            "EquipmentStoreOutput"
-                          ) && (
-                            <li>
-                              <Link
-                                onClick={handleCloseSidebar}
-                                href="/panel/equipment-store/output"
-                                className="block py-2 px-5"
-                              >
-                                <span
-                                  className={
-                                    pathname === "/panel/equipment-store/output"
-                                      ? "text-mainRed text-[0.9rem]"
-                                      : "text-gray9F hover:text-textGray text-[0.9rem]"
-                                  }
-                                >
-                                  بخش خروجی
-                                </span>
-                              </Link>
-                            </li>
-                          )}
-                        </ul>
-                      </details>
-                    </div>
-                  )}
+                                  <span
+                                    className={
+                                      pathname === "/panel/equipment-store/input"
+                                        ? "text-mainRed text-[0.9rem]"
+                                        : "text-gray9F hover:text-textGray text-[0.9rem]"
+                                    }
+                                  >
+                                    بخش ورودی
+                                  </span>
+                                </Link>
+                              </li>
+                            )}
+                            {accessData.hasOwnProperty(
+                              "EquipmentStoreOutput"
+                            ) && (
+                                <li>
+                                  <Link
+                                    onClick={handleCloseSidebar}
+                                    href="/panel/equipment-store/output"
+                                    className="block py-2 px-5"
+                                  >
+                                    <span
+                                      className={
+                                        pathname === "/panel/equipment-store/output"
+                                          ? "text-mainRed text-[0.9rem]"
+                                          : "text-gray9F hover:text-textGray text-[0.9rem]"
+                                      }
+                                    >
+                                      بخش خروجی
+                                    </span>
+                                  </Link>
+                                </li>
+                              )}
+                          </ul>
+                        </details>
+                      </div>
+                    )}
                   {(accessData.hasOwnProperty("ProductStoreInput") ||
                     accessData.hasOwnProperty("ProductStoreOutput")) && (
-                    <div>
-                      <details className="group py-3 border-b border-b-1 border-b-solid  border-b-borderGray">
-                        <summary className="flex items-center justify-between gap-2 p-2 font-medium marker:content-none hover:cursor-pointer">
-                          <span className="text-gray9F group-open:text-textGray text-[0.9rem]">
-                            انبار محصولات
-                          </span>
-                          <svg
-                            className="transition group-open:rotate-90"
-                            xmlns="http://www.w3.org/2000/svg"
-                            width="16"
-                            height="16"
-                            viewBox="0 0 16 16"
-                            fill="none"
-                          >
-                            <path
-                              d="M10 4L6 8L10 12"
-                              stroke="#9F9F9F"
-                              stroke-linecap="round"
-                              stroke-linejoin="round"
-                            />
-                          </svg>
-                        </summary>
-                        <ul className="flex flex-col gap-1 pr-2">
-                          {accessData.hasOwnProperty("ProductStoreInput") && (
-                            <li>
-                              <Link
-                                onClick={handleCloseSidebar}
-                                href="/panel/product-store/input"
-                                className="block py-2 px-5"
-                              >
-                                <span
-                                  className={
-                                    pathname === "/panel/product-store/input"
-                                      ? "text-mainRed text-[0.9rem]"
-                                      : "text-gray9F hover:text-textGray text-[0.9rem]"
-                                  }
+                      <div>
+                        <details className="group py-3 border-b border-b-1 border-b-solid  border-b-borderGray">
+                          <summary className="flex items-center justify-between gap-2 p-2 font-medium marker:content-none hover:cursor-pointer">
+                            <span className="text-gray9F group-open:text-textGray text-[0.9rem]">
+                              انبار محصولات
+                            </span>
+                            <svg
+                              className="transition group-open:rotate-90"
+                              xmlns="http://www.w3.org/2000/svg"
+                              width="16"
+                              height="16"
+                              viewBox="0 0 16 16"
+                              fill="none"
+                            >
+                              <path
+                                d="M10 4L6 8L10 12"
+                                stroke="#9F9F9F"
+                                stroke-linecap="round"
+                                stroke-linejoin="round"
+                              />
+                            </svg>
+                          </summary>
+                          <ul className="flex flex-col gap-1 pr-2">
+                            {accessData.hasOwnProperty("ProductStoreInput") && (
+                              <li>
+                                <Link
+                                  onClick={handleCloseSidebar}
+                                  href="/panel/product-store/input"
+                                  className="block py-2 px-5"
                                 >
-                                  بخش ورودی
-                                </span>
-                              </Link>
-                            </li>
-                          )}
-                          {accessData.hasOwnProperty("ProductStoreOutput") && (
-                            <li>
-                              <Link
-                                onClick={handleCloseSidebar}
-                                href="/panel/product-store/output"
-                                className="block py-2 px-5"
-                              >
-                                <span
-                                  className={
-                                    pathname === "/panel/product-store/output"
-                                      ? "text-mainRed text-[0.9rem]"
-                                      : "text-gray9F hover:text-textGray text-[0.9rem]"
-                                  }
+                                  <span
+                                    className={
+                                      pathname === "/panel/product-store/input"
+                                        ? "text-mainRed text-[0.9rem]"
+                                        : "text-gray9F hover:text-textGray text-[0.9rem]"
+                                    }
+                                  >
+                                    بخش ورودی
+                                  </span>
+                                </Link>
+                              </li>
+                            )}
+                            {accessData.hasOwnProperty("ProductStoreOutput") && (
+                              <li>
+                                <Link
+                                  onClick={handleCloseSidebar}
+                                  href="/panel/product-store/output"
+                                  className="block py-2 px-5"
                                 >
-                                  بخش خروجی
-                                </span>
-                              </Link>
-                            </li>
-                          )}
-                        </ul>
-                      </details>
-                    </div>
-                  )}
-                  {(accessData.hasOwnProperty("golgoharsAndEquipment") ||
+                                  <span
+                                    className={
+                                      pathname === "/panel/product-store/output"
+                                        ? "text-mainRed text-[0.9rem]"
+                                        : "text-gray9F hover:text-textGray text-[0.9rem]"
+                                    }
+                                  >
+                                    بخش خروجی
+                                  </span>
+                                </Link>
+                              </li>
+                            )}
+                          </ul>
+                        </details>
+                      </div>
+                    )}
+                  {(accessData.hasOwnProperty("VehiclesAndEquipment") ||
                     accessData.hasOwnProperty("FailureAndRepairReport") ||
                     accessData.hasOwnProperty("HistoryOfReports")) && (
-                    <div>
-                      <details className="group py-3 border-b border-b-1 border-b-solid  border-b-borderGray">
-                        <summary className="flex items-center justify-between gap-2 p-2 font-medium marker:content-none hover:cursor-pointer">
-                          <span className="text-gray9F group-open:text-textGray text-[0.9rem]">
-                            وسایل و تجهیزات
-                          </span>
-                          <svg
-                            className="transition group-open:rotate-90"
-                            xmlns="http://www.w3.org/2000/svg"
-                            width="16"
-                            height="16"
-                            viewBox="0 0 16 16"
-                            fill="none"
-                          >
-                            <path
-                              d="M10 4L6 8L10 12"
-                              stroke="#9F9F9F"
-                              stroke-linecap="round"
-                              stroke-linejoin="round"
-                            />
-                          </svg>
-                        </summary>
-                        <ul className="flex flex-col gap-1 pr-2">
-                          {accessData.hasOwnProperty(
-                            "golgoharsAndEquipment"
-                          ) && (
-                            <li>
-                              <Link
-                                onClick={handleCloseSidebar}
-                                href="/panel/vehicles-and-equipment"
-                                className="block py-2 px-5"
-                              >
-                                <span
-                                  className={
-                                    pathname === "/panel/vehicles-and-equipment"
-                                      ? "text-mainRed text-[0.9rem]"
-                                      : "text-gray9F hover:text-textGray text-[0.9rem]"
-                                  }
+                      <div>
+                        <details className="group py-3 border-b border-b-1 border-b-solid  border-b-borderGray">
+                          <summary className="flex items-center justify-between gap-2 p-2 font-medium marker:content-none hover:cursor-pointer">
+                            <span className="text-gray9F group-open:text-textGray text-[0.9rem]">
+                              وسایل و تجهیزات
+                            </span>
+                            <svg
+                              className="transition group-open:rotate-90"
+                              xmlns="http://www.w3.org/2000/svg"
+                              width="16"
+                              height="16"
+                              viewBox="0 0 16 16"
+                              fill="none"
+                            >
+                              <path
+                                d="M10 4L6 8L10 12"
+                                stroke="#9F9F9F"
+                                stroke-linecap="round"
+                                stroke-linejoin="round"
+                              />
+                            </svg>
+                          </summary>
+                          <ul className="flex flex-col gap-1 pr-2">
+                            {accessData.hasOwnProperty(
+                              "VehiclesAndEquipment"
+                            ) && (
+                                <li>
+                                  <Link
+                                    onClick={handleCloseSidebar}
+                                    href="/panel/vehicles-and-equipment"
+                                    className="block py-2 px-5"
+                                  >
+                                    <span
+                                      className={
+                                        pathname === "/panel/vehicles-and-equipment"
+                                          ? "text-mainRed text-[0.9rem]"
+                                          : "text-gray9F hover:text-textGray text-[0.9rem]"
+                                      }
+                                    >
+                                      وسایل و تجهیزات
+                                    </span>
+                                  </Link>
+                                </li>
+                              )}
+                            {accessData.hasOwnProperty(
+                              "FailureAndRepairReport"
+                            ) && (
+                                <li>
+                                  <Link
+                                    onClick={handleCloseSidebar}
+                                    href="/panel/failure-and-repair-report"
+                                    className="block py-2 px-5"
+                                  >
+                                    <span
+                                      className={
+                                        pathname ===
+                                          "/panel/failure-and-repair-report"
+                                          ? "text-mainRed text-[0.9rem]"
+                                          : "text-gray9F hover:text-textGray text-[0.9rem]"
+                                      }
+                                    >
+                                      گزارش خرابی و تعمیرات
+                                    </span>
+                                  </Link>
+                                </li>
+                              )}
+                            {accessData.hasOwnProperty("HistoryOfReports") && (
+                              <li>
+                                <Link
+                                  onClick={handleCloseSidebar}
+                                  href="/panel/history-of-reports"
+                                  className="block py-2 px-5"
                                 >
-                                  وسایل و تجهیزات
-                                </span>
-                              </Link>
-                            </li>
-                          )}
-                          {accessData.hasOwnProperty(
-                            "FailureAndRepairReport"
-                          ) && (
-                            <li>
-                              <Link
-                                onClick={handleCloseSidebar}
-                                href="/panel/failure-and-repair-report"
-                                className="block py-2 px-5"
-                              >
-                                <span
-                                  className={
-                                    pathname ===
-                                    "/panel/failure-and-repair-report"
-                                      ? "text-mainRed text-[0.9rem]"
-                                      : "text-gray9F hover:text-textGray text-[0.9rem]"
-                                  }
-                                >
-                                  گزارش خرابی و تعمیرات
-                                </span>
-                              </Link>
-                            </li>
-                          )}
-                          {accessData.hasOwnProperty("HistoryOfReports") && (
-                            <li>
-                              <Link
-                                onClick={handleCloseSidebar}
-                                href="/panel/history-of-reports"
-                                className="block py-2 px-5"
-                              >
-                                <span
-                                  className={
-                                    pathname === "/panel/history-of-reports"
-                                      ? "text-mainRed text-[0.9rem]"
-                                      : "text-gray9F hover:text-textGray text-[0.9rem]"
-                                  }
-                                >
-                                  سابقه گزارشات
-                                </span>
-                              </Link>
-                            </li>
-                          )}
-                        </ul>
-                      </details>
-                    </div>
-                  )}
+                                  <span
+                                    className={
+                                      pathname === "/panel/history-of-reports"
+                                        ? "text-mainRed text-[0.9rem]"
+                                        : "text-gray9F hover:text-textGray text-[0.9rem]"
+                                    }
+                                  >
+                                    سابقه گزارشات
+                                  </span>
+                                </Link>
+                              </li>
+                            )}
+                          </ul>
+                        </details>
+                      </div>
+                    )}
                   {accessData.hasOwnProperty("PurchaseRequest") && (
                     <div>
                       <Link
@@ -834,71 +834,71 @@ export default function RootLayout({ children }) {
                   )}
                   {(accessData.hasOwnProperty("ProductionInput") ||
                     accessData.hasOwnProperty("ProductionOutput")) && (
-                    <div>
-                      <details className="group py-3 border-b border-b-1 border-b-solid  border-b-borderGray">
-                        <summary className="flex items-center justify-between gap-2 p-2 font-medium marker:content-none hover:cursor-pointer">
-                          <span className="text-gray9F group-open:text-textGray text-[0.9rem]">
-                            تولید
-                          </span>
-                          <svg
-                            className="transition group-open:rotate-90"
-                            xmlns="http://www.w3.org/2000/svg"
-                            width="16"
-                            height="16"
-                            viewBox="0 0 16 16"
-                            fill="none"
-                          >
-                            <path
-                              d="M10 4L6 8L10 12"
-                              stroke="#9F9F9F"
-                              stroke-linecap="round"
-                              stroke-linejoin="round"
-                            />
-                          </svg>
-                        </summary>
-                        <ul className="flex flex-col gap-1 pr-2">
-                          {accessData.hasOwnProperty("ProductionInput") && (
-                            <li>
-                              <Link
-                                onClick={handleCloseSidebar}
-                                href="/panel/production/input"
-                                className="block py-2 px-5"
-                              >
-                                <span
-                                  className={
-                                    pathname === "/panel/production/input"
-                                      ? "text-mainRed text-[0.9rem]"
-                                      : "text-gray9F hover:text-textGray text-[0.9rem]"
-                                  }
+                      <div>
+                        <details className="group py-3 border-b border-b-1 border-b-solid  border-b-borderGray">
+                          <summary className="flex items-center justify-between gap-2 p-2 font-medium marker:content-none hover:cursor-pointer">
+                            <span className="text-gray9F group-open:text-textGray text-[0.9rem]">
+                              تولید
+                            </span>
+                            <svg
+                              className="transition group-open:rotate-90"
+                              xmlns="http://www.w3.org/2000/svg"
+                              width="16"
+                              height="16"
+                              viewBox="0 0 16 16"
+                              fill="none"
+                            >
+                              <path
+                                d="M10 4L6 8L10 12"
+                                stroke="#9F9F9F"
+                                stroke-linecap="round"
+                                stroke-linejoin="round"
+                              />
+                            </svg>
+                          </summary>
+                          <ul className="flex flex-col gap-1 pr-2">
+                            {accessData.hasOwnProperty("ProductionInput") && (
+                              <li>
+                                <Link
+                                  onClick={handleCloseSidebar}
+                                  href="/panel/production/input"
+                                  className="block py-2 px-5"
                                 >
-                                  بخش ورودی
-                                </span>
-                              </Link>
-                            </li>
-                          )}
-                          {accessData.hasOwnProperty("ProductionOutput") && (
-                            <li>
-                              <Link
-                                onClick={handleCloseSidebar}
-                                href="/panel/production/output"
-                                className="block py-2 px-5"
-                              >
-                                <span
-                                  className={
-                                    pathname === "/panel/production/output"
-                                      ? "text-mainRed text-[0.9rem]"
-                                      : "text-gray9F hover:text-textGray text-[0.9rem]"
-                                  }
+                                  <span
+                                    className={
+                                      pathname === "/panel/production/input"
+                                        ? "text-mainRed text-[0.9rem]"
+                                        : "text-gray9F hover:text-textGray text-[0.9rem]"
+                                    }
+                                  >
+                                    بخش ورودی
+                                  </span>
+                                </Link>
+                              </li>
+                            )}
+                            {accessData.hasOwnProperty("ProductionOutput") && (
+                              <li>
+                                <Link
+                                  onClick={handleCloseSidebar}
+                                  href="/panel/production/output"
+                                  className="block py-2 px-5"
                                 >
-                                  بخش خروجی
-                                </span>
-                              </Link>
-                            </li>
-                          )}
-                        </ul>
-                      </details>
-                    </div>
-                  )}
+                                  <span
+                                    className={
+                                      pathname === "/panel/production/output"
+                                        ? "text-mainRed text-[0.9rem]"
+                                        : "text-gray9F hover:text-textGray text-[0.9rem]"
+                                    }
+                                  >
+                                    بخش خروجی
+                                  </span>
+                                </Link>
+                              </li>
+                            )}
+                          </ul>
+                        </details>
+                      </div>
+                    )}
 
                   {(accessData.hasOwnProperty("PurchaseRequestList") ||
                     accessData.hasOwnProperty("PendingPurchaseRequestList") ||
@@ -908,120 +908,120 @@ export default function RootLayout({ children }) {
                     accessData.hasOwnProperty(
                       "UnsuccessfulPurchaseRequestList"
                     )) && (
-                    <div>
-                      <details className="group py-3 border-b border-b-1 border-b-solid  border-b-borderGray">
-                        <summary className="flex items-center justify-between gap-2 p-2 font-medium marker:content-none hover:cursor-pointer">
-                          <span className="text-gray9F group-open:text-textGray text-[0.9rem]">
-                            خرید
-                          </span>
-                          <svg
-                            className="transition group-open:rotate-90"
-                            xmlns="http://www.w3.org/2000/svg"
-                            width="16"
-                            height="16"
-                            viewBox="0 0 16 16"
-                            fill="none"
-                          >
-                            <path
-                              d="M10 4L6 8L10 12"
-                              stroke="#9F9F9F"
-                              stroke-linecap="round"
-                              stroke-linejoin="round"
-                            />
-                          </svg>
-                        </summary>
-                        <ul className="flex flex-col gap-1 pr-2">
-                          {accessData.hasOwnProperty("PurchaseRequestList") && (
-                            <li>
-                              <Link
-                                onClick={handleCloseSidebar}
-                                href="/panel/purchase/purchase-request-list"
-                                className="block py-2 px-5"
-                              >
-                                <span
-                                  className={
-                                    pathname ===
-                                    "/panel/purchase/purchase-request-list"
-                                      ? "text-mainRed text-[0.8rem]"
-                                      : "text-gray9F hover:text-textGray text-[0.8rem]"
-                                  }
+                      <div>
+                        <details className="group py-3 border-b border-b-1 border-b-solid  border-b-borderGray">
+                          <summary className="flex items-center justify-between gap-2 p-2 font-medium marker:content-none hover:cursor-pointer">
+                            <span className="text-gray9F group-open:text-textGray text-[0.9rem]">
+                              خرید
+                            </span>
+                            <svg
+                              className="transition group-open:rotate-90"
+                              xmlns="http://www.w3.org/2000/svg"
+                              width="16"
+                              height="16"
+                              viewBox="0 0 16 16"
+                              fill="none"
+                            >
+                              <path
+                                d="M10 4L6 8L10 12"
+                                stroke="#9F9F9F"
+                                stroke-linecap="round"
+                                stroke-linejoin="round"
+                              />
+                            </svg>
+                          </summary>
+                          <ul className="flex flex-col gap-1 pr-2">
+                            {accessData.hasOwnProperty("PurchaseRequestList") && (
+                              <li>
+                                <Link
+                                  onClick={handleCloseSidebar}
+                                  href="/panel/purchase/purchase-request-list"
+                                  className="block py-2 px-5"
                                 >
-                                  لیست درخواست‌های خرید
-                                </span>
-                              </Link>
-                            </li>
-                          )}
+                                  <span
+                                    className={
+                                      pathname ===
+                                        "/panel/purchase/purchase-request-list"
+                                        ? "text-mainRed text-[0.8rem]"
+                                        : "text-gray9F hover:text-textGray text-[0.8rem]"
+                                    }
+                                  >
+                                    لیست درخواست‌های خرید
+                                  </span>
+                                </Link>
+                              </li>
+                            )}
 
-                          {accessData.hasOwnProperty(
-                            "PendingPurchaseRequestList"
-                          ) && (
-                            <li>
-                              <Link
-                                onClick={handleCloseSidebar}
-                                href="/panel/purchase/pending-purchase-request-list"
-                                className="block py-2 px-5"
-                              >
-                                <span
-                                  className={
-                                    pathname ===
-                                    "/panel/purchase/pending-purchase-request-list"
-                                      ? "text-mainRed text-[0.8rem]"
-                                      : "text-gray9F hover:text-textGray text-[0.8rem]"
-                                  }
-                                >
-                                  صفحه در انتظار خرید
-                                </span>
-                              </Link>
-                            </li>
-                          )}
-                          {accessData.hasOwnProperty(
-                            "SuccessfulPurchaseRequestList"
-                          ) && (
-                            <li>
-                              <Link
-                                onClick={handleCloseSidebar}
-                                href="/panel/purchase/successful-purchase-request-list"
-                                className="block py-2 px-5"
-                              >
-                                <span
-                                  className={
-                                    pathname ===
-                                    "/panel/purchase/successful-purchase-request-list"
-                                      ? "text-mainRed text-[0.8rem]"
-                                      : "text-gray9F hover:text-textGray text-[0.8rem]"
-                                  }
-                                >
-                                  صفحه کالاهای خریداری شده
-                                </span>
-                              </Link>
-                            </li>
-                          )}
-                          {accessData.hasOwnProperty(
-                            "UnsuccessfulPurchaseRequestList"
-                          ) && (
-                            <li>
-                              <Link
-                                onClick={handleCloseSidebar}
-                                href="/panel/purchase/unsuccessful-purchase-request-list"
-                                className="block py-2 px-5"
-                              >
-                                <span
-                                  className={
-                                    pathname ===
-                                    "/panel/purchase/unsuccessful-purchase-request-list"
-                                      ? "text-mainRed text-[0.8rem]"
-                                      : "text-gray9F hover:text-textGray text-[0.8rem]"
-                                  }
-                                >
-                                  صفحه درخواستهای رد شده
-                                </span>
-                              </Link>
-                            </li>
-                          )}
-                        </ul>
-                      </details>
-                    </div>
-                  )}
+                            {accessData.hasOwnProperty(
+                              "PendingPurchaseRequestList"
+                            ) && (
+                                <li>
+                                  <Link
+                                    onClick={handleCloseSidebar}
+                                    href="/panel/purchase/pending-purchase-request-list"
+                                    className="block py-2 px-5"
+                                  >
+                                    <span
+                                      className={
+                                        pathname ===
+                                          "/panel/purchase/pending-purchase-request-list"
+                                          ? "text-mainRed text-[0.8rem]"
+                                          : "text-gray9F hover:text-textGray text-[0.8rem]"
+                                      }
+                                    >
+                                      صفحه در انتظار خرید
+                                    </span>
+                                  </Link>
+                                </li>
+                              )}
+                            {accessData.hasOwnProperty(
+                              "SuccessfulPurchaseRequestList"
+                            ) && (
+                                <li>
+                                  <Link
+                                    onClick={handleCloseSidebar}
+                                    href="/panel/purchase/successful-purchase-request-list"
+                                    className="block py-2 px-5"
+                                  >
+                                    <span
+                                      className={
+                                        pathname ===
+                                          "/panel/purchase/successful-purchase-request-list"
+                                          ? "text-mainRed text-[0.8rem]"
+                                          : "text-gray9F hover:text-textGray text-[0.8rem]"
+                                      }
+                                    >
+                                      صفحه کالاهای خریداری شده
+                                    </span>
+                                  </Link>
+                                </li>
+                              )}
+                            {accessData.hasOwnProperty(
+                              "UnsuccessfulPurchaseRequestList"
+                            ) && (
+                                <li>
+                                  <Link
+                                    onClick={handleCloseSidebar}
+                                    href="/panel/purchase/unsuccessful-purchase-request-list"
+                                    className="block py-2 px-5"
+                                  >
+                                    <span
+                                      className={
+                                        pathname ===
+                                          "/panel/purchase/unsuccessful-purchase-request-list"
+                                          ? "text-mainRed text-[0.8rem]"
+                                          : "text-gray9F hover:text-textGray text-[0.8rem]"
+                                      }
+                                    >
+                                      صفحه درخواستهای رد شده
+                                    </span>
+                                  </Link>
+                                </li>
+                              )}
+                          </ul>
+                        </details>
+                      </div>
+                    )}
                   {accessData.hasOwnProperty("Sales") && (
                     <div>
                       <Link
@@ -1044,73 +1044,73 @@ export default function RootLayout({ children }) {
 
                   {(accessData.hasOwnProperty("SalesInvoice") ||
                     accessData.hasOwnProperty("PurchaseInvoice")) && (
-                    <div>
-                      <details className="group py-3 border-b border-b-1 border-b-solid  border-b-borderGray">
-                        <summary className="flex items-center justify-between gap-2 p-2 font-medium marker:content-none hover:cursor-pointer">
-                          <span className="text-gray9F group-open:text-textGray text-[0.9rem]">
-                            فاکتور
-                          </span>
-                          <svg
-                            className="transition group-open:rotate-90"
-                            xmlns="http://www.w3.org/2000/svg"
-                            width="16"
-                            height="16"
-                            viewBox="0 0 16 16"
-                            fill="none"
-                          >
-                            <path
-                              d="M10 4L6 8L10 12"
-                              stroke="#9F9F9F"
-                              stroke-linecap="round"
-                              stroke-linejoin="round"
-                            />
-                          </svg>
-                        </summary>
-                        <ul className="flex flex-col gap-1 pr-2">
-                          {accessData.hasOwnProperty("SalesInvoice") && (
-                            <li>
-                              <Link
-                                onClick={handleCloseSidebar}
-                                href="/panel/invoice/sales-invoice"
-                                className="block py-2 px-5"
-                              >
-                                <span
-                                  className={
-                                    pathname === "/panel/invoice/sales-invoice"
-                                      ? "text-mainRed text-[0.8rem]"
-                                      : "text-gray9F hover:text-textGray text-[0.8rem]"
-                                  }
+                      <div>
+                        <details className="group py-3 border-b border-b-1 border-b-solid  border-b-borderGray">
+                          <summary className="flex items-center justify-between gap-2 p-2 font-medium marker:content-none hover:cursor-pointer">
+                            <span className="text-gray9F group-open:text-textGray text-[0.9rem]">
+                              فاکتور
+                            </span>
+                            <svg
+                              className="transition group-open:rotate-90"
+                              xmlns="http://www.w3.org/2000/svg"
+                              width="16"
+                              height="16"
+                              viewBox="0 0 16 16"
+                              fill="none"
+                            >
+                              <path
+                                d="M10 4L6 8L10 12"
+                                stroke="#9F9F9F"
+                                stroke-linecap="round"
+                                stroke-linejoin="round"
+                              />
+                            </svg>
+                          </summary>
+                          <ul className="flex flex-col gap-1 pr-2">
+                            {accessData.hasOwnProperty("SalesInvoice") && (
+                              <li>
+                                <Link
+                                  onClick={handleCloseSidebar}
+                                  href="/panel/invoice/sales-invoice"
+                                  className="block py-2 px-5"
                                 >
-                                  فاکتور فروش
-                                </span>
-                              </Link>
-                            </li>
-                          )}
+                                  <span
+                                    className={
+                                      pathname === "/panel/invoice/sales-invoice"
+                                        ? "text-mainRed text-[0.8rem]"
+                                        : "text-gray9F hover:text-textGray text-[0.8rem]"
+                                    }
+                                  >
+                                    فاکتور فروش
+                                  </span>
+                                </Link>
+                              </li>
+                            )}
 
-                          {accessData.hasOwnProperty("PurchaseInvoice") && (
-                            <li>
-                              <Link
-                                onClick={handleCloseSidebar}
-                                href="/panel/invoice/purchase-invoice"
-                                className="block py-2 px-5"
-                              >
-                                <span
-                                  className={
-                                    pathname ===
-                                    "/panel/invoice/purchase-invoice"
-                                      ? "text-mainRed text-[0.8rem]"
-                                      : "text-gray9F hover:text-textGray text-[0.8rem]"
-                                  }
+                            {accessData.hasOwnProperty("PurchaseInvoice") && (
+                              <li>
+                                <Link
+                                  onClick={handleCloseSidebar}
+                                  href="/panel/invoice/purchase-invoice"
+                                  className="block py-2 px-5"
                                 >
-                                  فاکتور خرید
-                                </span>
-                              </Link>
-                            </li>
-                          )}
-                        </ul>
-                      </details>
-                    </div>
-                  )}
+                                  <span
+                                    className={
+                                      pathname ===
+                                        "/panel/invoice/purchase-invoice"
+                                        ? "text-mainRed text-[0.8rem]"
+                                        : "text-gray9F hover:text-textGray text-[0.8rem]"
+                                    }
+                                  >
+                                    فاکتور خرید
+                                  </span>
+                                </Link>
+                              </li>
+                            )}
+                          </ul>
+                        </details>
+                      </div>
+                    )}
 
                   {accessData.hasOwnProperty("Ticket") && (
                     <div>
@@ -1229,8 +1229,8 @@ export default function RootLayout({ children }) {
                           {pathname === "/panel/notification"
                             ? 0
                             : counterList > 99
-                            ? "99+"
-                            : counterList}
+                              ? "99+"
+                              : counterList}
                         </span>
                       )}
                     </Link>
@@ -1274,295 +1274,295 @@ export default function RootLayout({ children }) {
 
               {(accessData.hasOwnProperty("PrimaryStoreInput") ||
                 accessData.hasOwnProperty("PrimaryStoreOutput")) && (
-                <div>
-                  <details className="group py-3 border-b border-b-1 border-b-solid  border-b-borderGray">
-                    <summary className="flex items-center justify-between gap-2 p-2 font-medium marker:content-none hover:cursor-pointer">
-                      <span className="text-gray9F group-open:text-textGray text-[0.9rem]">
-                        انبار مواد اولیه
-                      </span>
-                      <svg
-                        className="transition group-open:rotate-90"
-                        xmlns="http://www.w3.org/2000/svg"
-                        width="16"
-                        height="16"
-                        viewBox="0 0 16 16"
-                        fill="none"
-                      >
-                        <path
-                          d="M10 4L6 8L10 12"
-                          stroke="#9F9F9F"
-                          stroke-linecap="round"
-                          stroke-linejoin="round"
-                        />
-                      </svg>
-                    </summary>
-                    <ul className="flex flex-col gap-1 pr-2">
-                      {accessData.hasOwnProperty("PrimaryStoreInput") && (
-                        <li>
-                          <Link
-                            onClick={handleCloseSidebar}
-                            href="/panel/primary-store/input"
-                            className="block py-2 px-5"
-                          >
-                            <span
-                              className={
-                                pathname === "/panel/primary-store/input"
-                                  ? "text-mainRed text-[0.9rem]"
-                                  : "text-gray9F hover:text-textGray text-[0.9rem]"
-                              }
+                  <div>
+                    <details className="group py-3 border-b border-b-1 border-b-solid  border-b-borderGray">
+                      <summary className="flex items-center justify-between gap-2 p-2 font-medium marker:content-none hover:cursor-pointer">
+                        <span className="text-gray9F group-open:text-textGray text-[0.9rem]">
+                          انبار مواد اولیه
+                        </span>
+                        <svg
+                          className="transition group-open:rotate-90"
+                          xmlns="http://www.w3.org/2000/svg"
+                          width="16"
+                          height="16"
+                          viewBox="0 0 16 16"
+                          fill="none"
+                        >
+                          <path
+                            d="M10 4L6 8L10 12"
+                            stroke="#9F9F9F"
+                            stroke-linecap="round"
+                            stroke-linejoin="round"
+                          />
+                        </svg>
+                      </summary>
+                      <ul className="flex flex-col gap-1 pr-2">
+                        {accessData.hasOwnProperty("PrimaryStoreInput") && (
+                          <li>
+                            <Link
+                              onClick={handleCloseSidebar}
+                              href="/panel/primary-store/input"
+                              className="block py-2 px-5"
                             >
-                              بخش ورودی
-                            </span>
-                          </Link>
-                        </li>
-                      )}
-                      {accessData.hasOwnProperty("PrimaryStoreOutput") && (
-                        <li>
-                          <Link
-                            onClick={handleCloseSidebar}
-                            href="/panel/primary-store/output"
-                            className="block py-2 px-5"
-                          >
-                            <span
-                              className={
-                                pathname === "/panel/primary-store/output"
-                                  ? "text-mainRed text-[0.9rem]"
-                                  : "text-gray9F hover:text-textGray text-[0.9rem]"
-                              }
+                              <span
+                                className={
+                                  pathname === "/panel/primary-store/input"
+                                    ? "text-mainRed text-[0.9rem]"
+                                    : "text-gray9F hover:text-textGray text-[0.9rem]"
+                                }
+                              >
+                                بخش ورودی
+                              </span>
+                            </Link>
+                          </li>
+                        )}
+                        {accessData.hasOwnProperty("PrimaryStoreOutput") && (
+                          <li>
+                            <Link
+                              onClick={handleCloseSidebar}
+                              href="/panel/primary-store/output"
+                              className="block py-2 px-5"
                             >
-                              بخش خروجی
-                            </span>
-                          </Link>
-                        </li>
-                      )}
-                    </ul>
-                  </details>
-                </div>
-              )}
+                              <span
+                                className={
+                                  pathname === "/panel/primary-store/output"
+                                    ? "text-mainRed text-[0.9rem]"
+                                    : "text-gray9F hover:text-textGray text-[0.9rem]"
+                                }
+                              >
+                                بخش خروجی
+                              </span>
+                            </Link>
+                          </li>
+                        )}
+                      </ul>
+                    </details>
+                  </div>
+                )}
 
               {(accessData.hasOwnProperty("EquipmentStoreInput") ||
                 accessData.hasOwnProperty("EquipmentStoreOutput")) && (
-                <div>
-                  <details className="group py-3 border-b border-b-1 border-b-solid  border-b-borderGray">
-                    <summary className="flex items-center justify-between gap-2 p-2 font-medium marker:content-none hover:cursor-pointer">
-                      <span className="text-gray9F group-open:text-textGray text-[0.9rem]">
-                        انبار تجهیزات
-                      </span>
-                      <svg
-                        className="transition group-open:rotate-90"
-                        xmlns="http://www.w3.org/2000/svg"
-                        width="16"
-                        height="16"
-                        viewBox="0 0 16 16"
-                        fill="none"
-                      >
-                        <path
-                          d="M10 4L6 8L10 12"
-                          stroke="#9F9F9F"
-                          stroke-linecap="round"
-                          stroke-linejoin="round"
-                        />
-                      </svg>
-                    </summary>
-                    <ul className="flex flex-col gap-1 pr-2">
-                      {accessData.hasOwnProperty("EquipmentStoreInput") && (
-                        <li>
-                          <Link
-                            onClick={handleCloseSidebar}
-                            href="/panel/equipment-store/input"
-                            className="block py-2 px-5"
-                          >
-                            <span
-                              className={
-                                pathname === "/panel/equipment-store/input"
-                                  ? "text-mainRed text-[0.9rem]"
-                                  : "text-gray9F hover:text-textGray text-[0.9rem]"
-                              }
+                  <div>
+                    <details className="group py-3 border-b border-b-1 border-b-solid  border-b-borderGray">
+                      <summary className="flex items-center justify-between gap-2 p-2 font-medium marker:content-none hover:cursor-pointer">
+                        <span className="text-gray9F group-open:text-textGray text-[0.9rem]">
+                          انبار تجهیزات
+                        </span>
+                        <svg
+                          className="transition group-open:rotate-90"
+                          xmlns="http://www.w3.org/2000/svg"
+                          width="16"
+                          height="16"
+                          viewBox="0 0 16 16"
+                          fill="none"
+                        >
+                          <path
+                            d="M10 4L6 8L10 12"
+                            stroke="#9F9F9F"
+                            stroke-linecap="round"
+                            stroke-linejoin="round"
+                          />
+                        </svg>
+                      </summary>
+                      <ul className="flex flex-col gap-1 pr-2">
+                        {accessData.hasOwnProperty("EquipmentStoreInput") && (
+                          <li>
+                            <Link
+                              onClick={handleCloseSidebar}
+                              href="/panel/equipment-store/input"
+                              className="block py-2 px-5"
                             >
-                              بخش ورودی
-                            </span>
-                          </Link>
-                        </li>
-                      )}
-                      {accessData.hasOwnProperty("EquipmentStoreOutput") && (
-                        <li>
-                          <Link
-                            onClick={handleCloseSidebar}
-                            href="/panel/equipment-store/output"
-                            className="block py-2 px-5"
-                          >
-                            <span
-                              className={
-                                pathname === "/panel/equipment-store/output"
-                                  ? "text-mainRed text-[0.9rem]"
-                                  : "text-gray9F hover:text-textGray text-[0.9rem]"
-                              }
+                              <span
+                                className={
+                                  pathname === "/panel/equipment-store/input"
+                                    ? "text-mainRed text-[0.9rem]"
+                                    : "text-gray9F hover:text-textGray text-[0.9rem]"
+                                }
+                              >
+                                بخش ورودی
+                              </span>
+                            </Link>
+                          </li>
+                        )}
+                        {accessData.hasOwnProperty("EquipmentStoreOutput") && (
+                          <li>
+                            <Link
+                              onClick={handleCloseSidebar}
+                              href="/panel/equipment-store/output"
+                              className="block py-2 px-5"
                             >
-                              بخش خروجی
-                            </span>
-                          </Link>
-                        </li>
-                      )}
-                    </ul>
-                  </details>
-                </div>
-              )}
+                              <span
+                                className={
+                                  pathname === "/panel/equipment-store/output"
+                                    ? "text-mainRed text-[0.9rem]"
+                                    : "text-gray9F hover:text-textGray text-[0.9rem]"
+                                }
+                              >
+                                بخش خروجی
+                              </span>
+                            </Link>
+                          </li>
+                        )}
+                      </ul>
+                    </details>
+                  </div>
+                )}
 
               {(accessData.hasOwnProperty("ProductStoreInput") ||
                 accessData.hasOwnProperty("ProductStoreOutput")) && (
-                <div>
-                  <details className="group py-3 border-b border-b-1 border-b-solid  border-b-borderGray">
-                    <summary className="flex items-center justify-between gap-2 p-2 font-medium marker:content-none hover:cursor-pointer">
-                      <span className="text-gray9F group-open:text-textGray text-[0.9rem]">
-                        انبار محصولات
-                      </span>
-                      <svg
-                        className="transition group-open:rotate-90"
-                        xmlns="http://www.w3.org/2000/svg"
-                        width="16"
-                        height="16"
-                        viewBox="0 0 16 16"
-                        fill="none"
-                      >
-                        <path
-                          d="M10 4L6 8L10 12"
-                          stroke="#9F9F9F"
-                          stroke-linecap="round"
-                          stroke-linejoin="round"
-                        />
-                      </svg>
-                    </summary>
-                    <ul className="flex flex-col gap-1 pr-2">
-                      {accessData.hasOwnProperty("ProductStoreInput") && (
-                        <li>
-                          <Link
-                            onClick={handleCloseSidebar}
-                            href="/panel/product-store/input"
-                            className="block py-2 px-5"
-                          >
-                            <span
-                              className={
-                                pathname === "/panel/product-store/input"
-                                  ? "text-mainRed text-[0.9rem]"
-                                  : "text-gray9F hover:text-textGray text-[0.9rem]"
-                              }
+                  <div>
+                    <details className="group py-3 border-b border-b-1 border-b-solid  border-b-borderGray">
+                      <summary className="flex items-center justify-between gap-2 p-2 font-medium marker:content-none hover:cursor-pointer">
+                        <span className="text-gray9F group-open:text-textGray text-[0.9rem]">
+                          انبار محصولات
+                        </span>
+                        <svg
+                          className="transition group-open:rotate-90"
+                          xmlns="http://www.w3.org/2000/svg"
+                          width="16"
+                          height="16"
+                          viewBox="0 0 16 16"
+                          fill="none"
+                        >
+                          <path
+                            d="M10 4L6 8L10 12"
+                            stroke="#9F9F9F"
+                            stroke-linecap="round"
+                            stroke-linejoin="round"
+                          />
+                        </svg>
+                      </summary>
+                      <ul className="flex flex-col gap-1 pr-2">
+                        {accessData.hasOwnProperty("ProductStoreInput") && (
+                          <li>
+                            <Link
+                              onClick={handleCloseSidebar}
+                              href="/panel/product-store/input"
+                              className="block py-2 px-5"
                             >
-                              بخش ورودی
-                            </span>
-                          </Link>
-                        </li>
-                      )}
-                      {accessData.hasOwnProperty("ProductStoreOutput") && (
-                        <li>
-                          <Link
-                            onClick={handleCloseSidebar}
-                            href="/panel/product-store/output"
-                            className="block py-2 px-5"
-                          >
-                            <span
-                              className={
-                                pathname === "/panel/product-store/output"
-                                  ? "text-mainRed text-[0.9rem]"
-                                  : "text-gray9F hover:text-textGray text-[0.9rem]"
-                              }
+                              <span
+                                className={
+                                  pathname === "/panel/product-store/input"
+                                    ? "text-mainRed text-[0.9rem]"
+                                    : "text-gray9F hover:text-textGray text-[0.9rem]"
+                                }
+                              >
+                                بخش ورودی
+                              </span>
+                            </Link>
+                          </li>
+                        )}
+                        {accessData.hasOwnProperty("ProductStoreOutput") && (
+                          <li>
+                            <Link
+                              onClick={handleCloseSidebar}
+                              href="/panel/product-store/output"
+                              className="block py-2 px-5"
                             >
-                              بخش خروجی
-                            </span>
-                          </Link>
-                        </li>
-                      )}
-                    </ul>
-                  </details>
-                </div>
-              )}
+                              <span
+                                className={
+                                  pathname === "/panel/product-store/output"
+                                    ? "text-mainRed text-[0.9rem]"
+                                    : "text-gray9F hover:text-textGray text-[0.9rem]"
+                                }
+                              >
+                                بخش خروجی
+                              </span>
+                            </Link>
+                          </li>
+                        )}
+                      </ul>
+                    </details>
+                  </div>
+                )}
 
               {(accessData.hasOwnProperty("golgoharsAndEquipment") ||
                 accessData.hasOwnProperty("FailureAndRepairReport") ||
                 accessData.hasOwnProperty("HistoryOfReports")) && (
-                <div>
-                  <details className="group py-3 border-b border-b-1 border-b-solid  border-b-borderGray">
-                    <summary className="flex items-center justify-between gap-2 p-2 font-medium marker:content-none hover:cursor-pointer">
-                      <span className="text-gray9F group-open:text-textGray text-[0.9rem]">
-                        وسایل و تجهیزات
-                      </span>
-                      <svg
-                        className="transition group-open:rotate-90"
-                        xmlns="http://www.w3.org/2000/svg"
-                        width="16"
-                        height="16"
-                        viewBox="0 0 16 16"
-                        fill="none"
-                      >
-                        <path
-                          d="M10 4L6 8L10 12"
-                          stroke="#9F9F9F"
-                          stroke-linecap="round"
-                          stroke-linejoin="round"
-                        />
-                      </svg>
-                    </summary>
-                    <ul className="flex flex-col gap-1 pr-2">
-                      {accessData.hasOwnProperty("golgoharsAndEquipment") && (
-                        <li>
-                          <Link
-                            onClick={handleCloseSidebar}
-                            href="/panel/vehicles-and-equipment"
-                            className="block py-2 px-5"
-                          >
-                            <span
-                              className={
-                                pathname === "/panel/vehicles-and-equipment"
-                                  ? "text-mainRed text-[0.9rem]"
-                                  : "text-gray9F hover:text-textGray text-[0.9rem]"
-                              }
+                  <div>
+                    <details className="group py-3 border-b border-b-1 border-b-solid  border-b-borderGray">
+                      <summary className="flex items-center justify-between gap-2 p-2 font-medium marker:content-none hover:cursor-pointer">
+                        <span className="text-gray9F group-open:text-textGray text-[0.9rem]">
+                          وسایل و تجهیزات
+                        </span>
+                        <svg
+                          className="transition group-open:rotate-90"
+                          xmlns="http://www.w3.org/2000/svg"
+                          width="16"
+                          height="16"
+                          viewBox="0 0 16 16"
+                          fill="none"
+                        >
+                          <path
+                            d="M10 4L6 8L10 12"
+                            stroke="#9F9F9F"
+                            stroke-linecap="round"
+                            stroke-linejoin="round"
+                          />
+                        </svg>
+                      </summary>
+                      <ul className="flex flex-col gap-1 pr-2">
+                        {accessData.hasOwnProperty("golgoharsAndEquipment") && (
+                          <li>
+                            <Link
+                              onClick={handleCloseSidebar}
+                              href="/panel/vehicles-and-equipment"
+                              className="block py-2 px-5"
                             >
-                              وسایل و تجهیزات
-                            </span>
-                          </Link>
-                        </li>
-                      )}
-                      {accessData.hasOwnProperty("FailureAndRepairReport") && (
-                        <li>
-                          <Link
-                            onClick={handleCloseSidebar}
-                            href="/panel/failure-and-repair-report"
-                            className="block py-2 px-5"
-                          >
-                            <span
-                              className={
-                                pathname === "/panel/failure-and-repair-report"
-                                  ? "text-mainRed text-[0.9rem]"
-                                  : "text-gray9F hover:text-textGray text-[0.9rem]"
-                              }
+                              <span
+                                className={
+                                  pathname === "/panel/vehicles-and-equipment"
+                                    ? "text-mainRed text-[0.9rem]"
+                                    : "text-gray9F hover:text-textGray text-[0.9rem]"
+                                }
+                              >
+                                وسایل و تجهیزات
+                              </span>
+                            </Link>
+                          </li>
+                        )}
+                        {accessData.hasOwnProperty("FailureAndRepairReport") && (
+                          <li>
+                            <Link
+                              onClick={handleCloseSidebar}
+                              href="/panel/failure-and-repair-report"
+                              className="block py-2 px-5"
                             >
-                              گزارش خرابی و تعمیرات
-                            </span>
-                          </Link>
-                        </li>
-                      )}
-                      {accessData.hasOwnProperty("HistoryOfReports") && (
-                        <li>
-                          <Link
-                            onClick={handleCloseSidebar}
-                            href="/panel/history-of-reports"
-                            className="block py-2 px-5"
-                          >
-                            <span
-                              className={
-                                pathname === "/panel/history-of-reports"
-                                  ? "text-mainRed text-[0.9rem]"
-                                  : "text-gray9F hover:text-textGray text-[0.9rem]"
-                              }
+                              <span
+                                className={
+                                  pathname === "/panel/failure-and-repair-report"
+                                    ? "text-mainRed text-[0.9rem]"
+                                    : "text-gray9F hover:text-textGray text-[0.9rem]"
+                                }
+                              >
+                                گزارش خرابی و تعمیرات
+                              </span>
+                            </Link>
+                          </li>
+                        )}
+                        {accessData.hasOwnProperty("HistoryOfReports") && (
+                          <li>
+                            <Link
+                              onClick={handleCloseSidebar}
+                              href="/panel/history-of-reports"
+                              className="block py-2 px-5"
                             >
-                              سابقه گزارشات
-                            </span>
-                          </Link>
-                        </li>
-                      )}
-                    </ul>
-                  </details>
-                </div>
-              )}
+                              <span
+                                className={
+                                  pathname === "/panel/history-of-reports"
+                                    ? "text-mainRed text-[0.9rem]"
+                                    : "text-gray9F hover:text-textGray text-[0.9rem]"
+                                }
+                              >
+                                سابقه گزارشات
+                              </span>
+                            </Link>
+                          </li>
+                        )}
+                      </ul>
+                    </details>
+                  </div>
+                )}
 
               {accessData.hasOwnProperty("PurchaseRequest") && (
                 <div>
@@ -1606,71 +1606,71 @@ export default function RootLayout({ children }) {
 
               {(accessData.hasOwnProperty("ProductionInput") ||
                 accessData.hasOwnProperty("ProductionOutput")) && (
-                <div>
-                  <details className="group py-3 border-b border-b-1 border-b-solid  border-b-borderGray">
-                    <summary className="flex items-center justify-between gap-2 p-2 font-medium marker:content-none hover:cursor-pointer">
-                      <span className="text-gray9F group-open:text-textGray text-[0.9rem]">
-                        تولید
-                      </span>
-                      <svg
-                        className="transition group-open:rotate-90"
-                        xmlns="http://www.w3.org/2000/svg"
-                        width="16"
-                        height="16"
-                        viewBox="0 0 16 16"
-                        fill="none"
-                      >
-                        <path
-                          d="M10 4L6 8L10 12"
-                          stroke="#9F9F9F"
-                          stroke-linecap="round"
-                          stroke-linejoin="round"
-                        />
-                      </svg>
-                    </summary>
-                    <ul className="flex flex-col gap-1 pr-2">
-                      {accessData.hasOwnProperty("ProductionInput") && (
-                        <li>
-                          <Link
-                            onClick={handleCloseSidebar}
-                            href="/panel/production/input"
-                            className="block py-2 px-5"
-                          >
-                            <span
-                              className={
-                                pathname === "/panel/production/input"
-                                  ? "text-mainRed text-[0.9rem]"
-                                  : "text-gray9F hover:text-textGray text-[0.9rem]"
-                              }
+                  <div>
+                    <details className="group py-3 border-b border-b-1 border-b-solid  border-b-borderGray">
+                      <summary className="flex items-center justify-between gap-2 p-2 font-medium marker:content-none hover:cursor-pointer">
+                        <span className="text-gray9F group-open:text-textGray text-[0.9rem]">
+                          تولید
+                        </span>
+                        <svg
+                          className="transition group-open:rotate-90"
+                          xmlns="http://www.w3.org/2000/svg"
+                          width="16"
+                          height="16"
+                          viewBox="0 0 16 16"
+                          fill="none"
+                        >
+                          <path
+                            d="M10 4L6 8L10 12"
+                            stroke="#9F9F9F"
+                            stroke-linecap="round"
+                            stroke-linejoin="round"
+                          />
+                        </svg>
+                      </summary>
+                      <ul className="flex flex-col gap-1 pr-2">
+                        {accessData.hasOwnProperty("ProductionInput") && (
+                          <li>
+                            <Link
+                              onClick={handleCloseSidebar}
+                              href="/panel/production/input"
+                              className="block py-2 px-5"
                             >
-                              بخش ورودی
-                            </span>
-                          </Link>
-                        </li>
-                      )}
-                      {accessData.hasOwnProperty("ProductionOutput") && (
-                        <li>
-                          <Link
-                            onClick={handleCloseSidebar}
-                            href="/panel/production/output"
-                            className="block py-2 px-5"
-                          >
-                            <span
-                              className={
-                                pathname === "/panel/production/output"
-                                  ? "text-mainRed text-[0.9rem]"
-                                  : "text-gray9F hover:text-textGray text-[0.9rem]"
-                              }
+                              <span
+                                className={
+                                  pathname === "/panel/production/input"
+                                    ? "text-mainRed text-[0.9rem]"
+                                    : "text-gray9F hover:text-textGray text-[0.9rem]"
+                                }
+                              >
+                                بخش ورودی
+                              </span>
+                            </Link>
+                          </li>
+                        )}
+                        {accessData.hasOwnProperty("ProductionOutput") && (
+                          <li>
+                            <Link
+                              onClick={handleCloseSidebar}
+                              href="/panel/production/output"
+                              className="block py-2 px-5"
                             >
-                              بخش خروجی
-                            </span>
-                          </Link>
-                        </li>
-                      )}
-                    </ul>
-                  </details>
-                </div>
-              )}
+                              <span
+                                className={
+                                  pathname === "/panel/production/output"
+                                    ? "text-mainRed text-[0.9rem]"
+                                    : "text-gray9F hover:text-textGray text-[0.9rem]"
+                                }
+                              >
+                                بخش خروجی
+                              </span>
+                            </Link>
+                          </li>
+                        )}
+                      </ul>
+                    </details>
+                  </div>
+                )}
 
               {(accessData.hasOwnProperty("PurchaseRequestList") ||
                 accessData.hasOwnProperty("PendingPurchaseRequestList") ||
@@ -1678,120 +1678,120 @@ export default function RootLayout({ children }) {
                 accessData.hasOwnProperty(
                   "UnsuccessfulPurchaseRequestList"
                 )) && (
-                <div>
-                  <details className="group py-3 border-b border-b-1 border-b-solid  border-b-borderGray">
-                    <summary className="flex items-center justify-between gap-2 p-2 font-medium marker:content-none hover:cursor-pointer">
-                      <span className="text-gray9F group-open:text-textGray text-[0.9rem]">
-                        خرید
-                      </span>
-                      <svg
-                        className="transition group-open:rotate-90"
-                        xmlns="http://www.w3.org/2000/svg"
-                        width="16"
-                        height="16"
-                        viewBox="0 0 16 16"
-                        fill="none"
-                      >
-                        <path
-                          d="M10 4L6 8L10 12"
-                          stroke="#9F9F9F"
-                          stroke-linecap="round"
-                          stroke-linejoin="round"
-                        />
-                      </svg>
-                    </summary>
-                    <ul className="flex flex-col gap-1 pr-2">
-                      {accessData.hasOwnProperty("PurchaseRequestList") && (
-                        <li>
-                          <Link
-                            onClick={handleCloseSidebar}
-                            href="/panel/purchase/purchase-request-list"
-                            className="block py-2 px-5"
-                          >
-                            <span
-                              className={
-                                pathname ===
-                                "/panel/purchase/purchase-request-list"
-                                  ? "text-mainRed text-[0.8rem]"
-                                  : "text-gray9F hover:text-textGray text-[0.8rem]"
-                              }
+                  <div>
+                    <details className="group py-3 border-b border-b-1 border-b-solid  border-b-borderGray">
+                      <summary className="flex items-center justify-between gap-2 p-2 font-medium marker:content-none hover:cursor-pointer">
+                        <span className="text-gray9F group-open:text-textGray text-[0.9rem]">
+                          خرید
+                        </span>
+                        <svg
+                          className="transition group-open:rotate-90"
+                          xmlns="http://www.w3.org/2000/svg"
+                          width="16"
+                          height="16"
+                          viewBox="0 0 16 16"
+                          fill="none"
+                        >
+                          <path
+                            d="M10 4L6 8L10 12"
+                            stroke="#9F9F9F"
+                            stroke-linecap="round"
+                            stroke-linejoin="round"
+                          />
+                        </svg>
+                      </summary>
+                      <ul className="flex flex-col gap-1 pr-2">
+                        {accessData.hasOwnProperty("PurchaseRequestList") && (
+                          <li>
+                            <Link
+                              onClick={handleCloseSidebar}
+                              href="/panel/purchase/purchase-request-list"
+                              className="block py-2 px-5"
                             >
-                              لیست درخواست‌های خرید
-                            </span>
-                          </Link>
-                        </li>
-                      )}
+                              <span
+                                className={
+                                  pathname ===
+                                    "/panel/purchase/purchase-request-list"
+                                    ? "text-mainRed text-[0.8rem]"
+                                    : "text-gray9F hover:text-textGray text-[0.8rem]"
+                                }
+                              >
+                                لیست درخواست‌های خرید
+                              </span>
+                            </Link>
+                          </li>
+                        )}
 
-                      {accessData.hasOwnProperty(
-                        "PendingPurchaseRequestList"
-                      ) && (
-                        <li>
-                          <Link
-                            onClick={handleCloseSidebar}
-                            href="/panel/purchase/pending-purchase-request-list"
-                            className="block py-2 px-5"
-                          >
-                            <span
-                              className={
-                                pathname ===
-                                "/panel/purchase/pending-purchase-request-list"
-                                  ? "text-mainRed text-[0.8rem]"
-                                  : "text-gray9F hover:text-textGray text-[0.8rem]"
-                              }
-                            >
-                              صفحه در انتظار خرید
-                            </span>
-                          </Link>
-                        </li>
-                      )}
-                      {accessData.hasOwnProperty(
-                        "SuccessfulPurchaseRequestList"
-                      ) && (
-                        <li>
-                          <Link
-                            onClick={handleCloseSidebar}
-                            href="/panel/purchase/successful-purchase-request-list"
-                            className="block py-2 px-5"
-                          >
-                            <span
-                              className={
-                                pathname ===
-                                "/panel/purchase/successful-purchase-request-list"
-                                  ? "text-mainRed text-[0.8rem]"
-                                  : "text-gray9F hover:text-textGray text-[0.8rem]"
-                              }
-                            >
-                              صفحه کالاهای خریداری شده
-                            </span>
-                          </Link>
-                        </li>
-                      )}
-                      {accessData.hasOwnProperty(
-                        "UnsuccessfulPurchaseRequestList"
-                      ) && (
-                        <li>
-                          <Link
-                            onClick={handleCloseSidebar}
-                            href="/panel/purchase/unsuccessful-purchase-request-list"
-                            className="block py-2 px-5"
-                          >
-                            <span
-                              className={
-                                pathname ===
-                                "/panel/purchase/unsuccessful-purchase-request-list"
-                                  ? "text-mainRed text-[0.8rem]"
-                                  : "text-gray9F hover:text-textGray text-[0.8rem]"
-                              }
-                            >
-                              صفحه درخواستهای رد شده
-                            </span>
-                          </Link>
-                        </li>
-                      )}
-                    </ul>
-                  </details>
-                </div>
-              )}
+                        {accessData.hasOwnProperty(
+                          "PendingPurchaseRequestList"
+                        ) && (
+                            <li>
+                              <Link
+                                onClick={handleCloseSidebar}
+                                href="/panel/purchase/pending-purchase-request-list"
+                                className="block py-2 px-5"
+                              >
+                                <span
+                                  className={
+                                    pathname ===
+                                      "/panel/purchase/pending-purchase-request-list"
+                                      ? "text-mainRed text-[0.8rem]"
+                                      : "text-gray9F hover:text-textGray text-[0.8rem]"
+                                  }
+                                >
+                                  صفحه در انتظار خرید
+                                </span>
+                              </Link>
+                            </li>
+                          )}
+                        {accessData.hasOwnProperty(
+                          "SuccessfulPurchaseRequestList"
+                        ) && (
+                            <li>
+                              <Link
+                                onClick={handleCloseSidebar}
+                                href="/panel/purchase/successful-purchase-request-list"
+                                className="block py-2 px-5"
+                              >
+                                <span
+                                  className={
+                                    pathname ===
+                                      "/panel/purchase/successful-purchase-request-list"
+                                      ? "text-mainRed text-[0.8rem]"
+                                      : "text-gray9F hover:text-textGray text-[0.8rem]"
+                                  }
+                                >
+                                  صفحه کالاهای خریداری شده
+                                </span>
+                              </Link>
+                            </li>
+                          )}
+                        {accessData.hasOwnProperty(
+                          "UnsuccessfulPurchaseRequestList"
+                        ) && (
+                            <li>
+                              <Link
+                                onClick={handleCloseSidebar}
+                                href="/panel/purchase/unsuccessful-purchase-request-list"
+                                className="block py-2 px-5"
+                              >
+                                <span
+                                  className={
+                                    pathname ===
+                                      "/panel/purchase/unsuccessful-purchase-request-list"
+                                      ? "text-mainRed text-[0.8rem]"
+                                      : "text-gray9F hover:text-textGray text-[0.8rem]"
+                                  }
+                                >
+                                  صفحه درخواستهای رد شده
+                                </span>
+                              </Link>
+                            </li>
+                          )}
+                      </ul>
+                    </details>
+                  </div>
+                )}
 
               {accessData.hasOwnProperty("Sales") && (
                 <div>
@@ -1815,72 +1815,72 @@ export default function RootLayout({ children }) {
 
               {(accessData.hasOwnProperty("SalesInvoice") ||
                 accessData.hasOwnProperty("PurchaseInvoice")) && (
-                <div>
-                  <details className="group py-3 border-b border-b-1 border-b-solid  border-b-borderGray">
-                    <summary className="flex items-center justify-between gap-2 p-2 font-medium marker:content-none hover:cursor-pointer">
-                      <span className="text-gray9F group-open:text-textGray text-[0.9rem]">
-                        فاکتور
-                      </span>
-                      <svg
-                        className="transition group-open:rotate-90"
-                        xmlns="http://www.w3.org/2000/svg"
-                        width="16"
-                        height="16"
-                        viewBox="0 0 16 16"
-                        fill="none"
-                      >
-                        <path
-                          d="M10 4L6 8L10 12"
-                          stroke="#9F9F9F"
-                          stroke-linecap="round"
-                          stroke-linejoin="round"
-                        />
-                      </svg>
-                    </summary>
-                    <ul className="flex flex-col gap-1 pr-2">
-                      {accessData.hasOwnProperty("SalesInvoice") && (
-                        <li>
-                          <Link
-                            onClick={handleCloseSidebar}
-                            href="/panel/invoice/sales-invoice"
-                            className="block py-2 px-5"
-                          >
-                            <span
-                              className={
-                                pathname === "/panel/invoice/sales-invoice"
-                                  ? "text-mainRed text-[0.8rem]"
-                                  : "text-gray9F hover:text-textGray text-[0.8rem]"
-                              }
+                  <div>
+                    <details className="group py-3 border-b border-b-1 border-b-solid  border-b-borderGray">
+                      <summary className="flex items-center justify-between gap-2 p-2 font-medium marker:content-none hover:cursor-pointer">
+                        <span className="text-gray9F group-open:text-textGray text-[0.9rem]">
+                          فاکتور
+                        </span>
+                        <svg
+                          className="transition group-open:rotate-90"
+                          xmlns="http://www.w3.org/2000/svg"
+                          width="16"
+                          height="16"
+                          viewBox="0 0 16 16"
+                          fill="none"
+                        >
+                          <path
+                            d="M10 4L6 8L10 12"
+                            stroke="#9F9F9F"
+                            stroke-linecap="round"
+                            stroke-linejoin="round"
+                          />
+                        </svg>
+                      </summary>
+                      <ul className="flex flex-col gap-1 pr-2">
+                        {accessData.hasOwnProperty("SalesInvoice") && (
+                          <li>
+                            <Link
+                              onClick={handleCloseSidebar}
+                              href="/panel/invoice/sales-invoice"
+                              className="block py-2 px-5"
                             >
-                              فاکتور فروش
-                            </span>
-                          </Link>
-                        </li>
-                      )}
+                              <span
+                                className={
+                                  pathname === "/panel/invoice/sales-invoice"
+                                    ? "text-mainRed text-[0.8rem]"
+                                    : "text-gray9F hover:text-textGray text-[0.8rem]"
+                                }
+                              >
+                                فاکتور فروش
+                              </span>
+                            </Link>
+                          </li>
+                        )}
 
-                      {accessData.hasOwnProperty("PurchaseInvoice") && (
-                        <li>
-                          <Link
-                            onClick={handleCloseSidebar}
-                            href="/panel/invoice/purchase-invoice"
-                            className="block py-2 px-5"
-                          >
-                            <span
-                              className={
-                                pathname === "/panel/invoice/purchase-invoice"
-                                  ? "text-mainRed text-[0.8rem]"
-                                  : "text-gray9F hover:text-textGray text-[0.8rem]"
-                              }
+                        {accessData.hasOwnProperty("PurchaseInvoice") && (
+                          <li>
+                            <Link
+                              onClick={handleCloseSidebar}
+                              href="/panel/invoice/purchase-invoice"
+                              className="block py-2 px-5"
                             >
-                              فاکتور خرید
-                            </span>
-                          </Link>
-                        </li>
-                      )}
-                    </ul>
-                  </details>
-                </div>
-              )}
+                              <span
+                                className={
+                                  pathname === "/panel/invoice/purchase-invoice"
+                                    ? "text-mainRed text-[0.8rem]"
+                                    : "text-gray9F hover:text-textGray text-[0.8rem]"
+                                }
+                              >
+                                فاکتور خرید
+                              </span>
+                            </Link>
+                          </li>
+                        )}
+                      </ul>
+                    </details>
+                  </div>
+                )}
 
               {accessData.hasOwnProperty("Ticket") && (
                 <div>
@@ -2000,8 +2000,8 @@ export default function RootLayout({ children }) {
                       {pathname === "/panel/notification"
                         ? 0
                         : counterList > 99
-                        ? "99+"
-                        : counterList}
+                          ? "99+"
+                          : counterList}
                     </span>
                   )}
                 </Link>
