@@ -1476,7 +1476,7 @@ export default function RootLayout({ children }) {
                   </div>
                 )}
 
-              {(accessData.hasOwnProperty("golgoharsAndEquipment") ||
+              {(accessData.hasOwnProperty("VehiclesAndEquipment") ||
                 accessData.hasOwnProperty("FailureAndRepairReport") ||
                 accessData.hasOwnProperty("HistoryOfReports")) && (
                   <div>
@@ -1502,7 +1502,7 @@ export default function RootLayout({ children }) {
                         </svg>
                       </summary>
                       <ul className="flex flex-col gap-1 pr-2">
-                        {accessData.hasOwnProperty("golgoharsAndEquipment") && (
+                        {accessData.hasOwnProperty("VehiclesAndEquipment") && (
                           <li>
                             <Link
                               onClick={handleCloseSidebar}

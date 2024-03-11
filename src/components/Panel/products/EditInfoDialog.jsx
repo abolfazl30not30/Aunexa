@@ -227,7 +227,10 @@ export default function EditInfoDialog(props) {
     useEffect(()=>{
         getUnitList()
         const editInfoObj = ConvertToEmpty(props.editInfoTarget)
-        setTags([...editInfoObj?.tags])
+        if(editInfoObj.tags){
+            setTags([...editInfoObj?.tags])
+        }
+
         formik.setValues({
             id:editInfoObj?.id,
             // type: editInfoObj?.type,
