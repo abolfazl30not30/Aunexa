@@ -7,7 +7,7 @@ import { redirect } from 'next/navigation';
 export default function RootLayout({children}) {
     const pages = useSelector((state)=> state.access.pages)
 
-    if(pages.hasOwnProperty("ProductionInput")){
+    if(pages?.hasOwnProperty("ProductionInput")){
         return (
             <>{children}</>
         );

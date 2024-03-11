@@ -8,7 +8,7 @@ export default function RootLayout({ children }) {
   const pages = useSelector((state) => state.access.pages);
 
 
-  if (pages.hasOwnProperty("ProductStoreOutput")) {
+  if (pages?.hasOwnProperty("ProductStoreOutput")) {
     return <>{children}</>;
   } else {
     return <>{children}</>;

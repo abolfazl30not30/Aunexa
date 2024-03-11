@@ -34,14 +34,16 @@ const login = async () => {
 
 const baseQueryWithReauth = async (args, api, extraOptions) => {
   let result = await baseQuery(args, api, extraOptions);
-
   if (result?.error?.status === 500) {
-    const refreshResult = await login();
-    api.dispatch(setAccessToken(refreshResult?.data?.access_token));
-    if (refreshResult?.data) {
-      result = await baseQuery(args, api, extraOptions);
-    } else {
-      api.dispatch(logOut());
+    try{
+      const refreshResult = await login();
+      api.dispatch(setAccessToken(refreshResult?.data?.access_token));
+      if (refreshResult?.data) {
+        result = await baseQuery(args, api, extraOptions);
+      }
+    }catch (err){
+      window.location.href = "https://auth.prod.aunexa.net/logout";
+      window.sessionStorage.clear();
     }
   }
   return result;

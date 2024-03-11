@@ -9,7 +9,7 @@ export default function RootLayout({children}) {
     const pages = useSelector((state)=> state.access.pages)
 
 
-    if(pages.hasOwnProperty("SuccessfulPurchaseRequestList")){
+    if(pages?.hasOwnProperty("SuccessfulPurchaseRequestList")){
         return (
             <>{children}</>
         );
